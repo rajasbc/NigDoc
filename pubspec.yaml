@@ -44,6 +44,7 @@ dependencies:
   localstorage: ^4.0.1+2
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  enhance_stepper: ^0.1.1
 
 dev_dependencies:
   flutter_test:
