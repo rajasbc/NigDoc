@@ -5,3 +5,5 @@ String DoctorListEndpoint = "auth/getClinicDoctorList";
 String patientListEndpoint ="auth/getDocCustomerList";
 String treatmentListEndpoint ="auth/docGetTreatment";
 String getMediAndLabNameListEndpoint ="auth/getMediAndLabNameList";
+String getlabtestListEndpoint ="auth/linkLabList";
+String getmedicineListEndpoint ="auth/linkMedicineList";
