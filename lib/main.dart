@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 
-import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
+// import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -55,6 +56,6 @@ class _docWrapperState extends State<docWrapper> {
   Widget build(BuildContext context) {
     return isLoggedIn == 
          
-         true ? Dashboardpage() : Loginpage();
+         true ? Dash() : Loginpage();
   }
 }

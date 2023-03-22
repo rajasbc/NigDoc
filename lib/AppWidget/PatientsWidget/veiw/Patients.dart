@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+// import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/common/utils.dart';
 
 class Patients extends StatefulWidget {
   const Patients({super.key});
@@ -16,6 +20,9 @@ class _PatientsState extends State<Patients> {
 
   int? _vacciSelected = 2;
   String _vacciVal = "";
+
+  int? _typeSelected = 1;
+  String _typeVal = "";
 
   TextEditingController namecontroller = TextEditingController();
   TextEditingController mobilecontroller = TextEditingController();
@@ -44,12 +51,13 @@ class _PatientsState extends State<Patients> {
   TextEditingController consultcontroller = TextEditingController();
   TextEditingController reasoncontroller = TextEditingController();
   TextEditingController feescontroller = TextEditingController();
+  bool loading = false;
 
   String titleDropdownvalue = 'Mr';
   String heightunitDropdownvalue = 'Ft';
   String weightunittDropdownvalue = 'Pounds';
   String tempunitDropdownvalue = '°F';
-
+  var accesstoken;
   var title = [
     'Mr',
     'Mrs',
@@ -88,6 +96,14 @@ class _PatientsState extends State<Patients> {
   //   super.initState();
   //   referalcontroller.text = 'Self';
   // }
+  @override
+  void initState() {
+    accesstoken = storage.getItem('userResponse')['access_token'];
+
+    // getdoctorlist();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +119,48 @@ class _PatientsState extends State<Patients> {
             children: [
               SizedBox(
                 height: 15,
+              ),
+              //   SizedBox(
+              //   height: 10,
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Radio(
+                        value: 1,
+                        groupValue: _typeSelected,
+                        activeColor: Colors.blue,
+                        onChanged: (value) {
+                          setState(() {
+                            _typeSelected = value as int;
+                            _typeVal = 'IN';
+                            print(_typeVal);
+                          });
+                        },
+                      ),
+                      const Text("IN"),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio(
+                        value: 2,
+                        groupValue: _typeSelected,
+                        activeColor: Colors.blue,
+                        onChanged: (value) {
+                          setState(() {
+                            _typeSelected = value as int;
+                            _typeVal = 'OUT';
+                            print(_typeVal);
+                          });
+                        },
+                      ),
+                      const Text("OUT"),
+                    ],
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -154,19 +212,20 @@ class _PatientsState extends State<Patients> {
                         ),
                       ),
                     ),
-                   Container(
-                    width: screenWidth * 0.65,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: namecontroller,
+                    Container(
+                      width: screenWidth * 0.65,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: namecontroller,
 
-                        // keyboardType: TextInputType.none,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(), labelText: 'Full Nme'),
+                          // keyboardType: TextInputType.none,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Full Nme'),
+                        ),
                       ),
                     ),
-                  ),
                   ],
                 ),
               ),
@@ -229,6 +288,7 @@ class _PatientsState extends State<Patients> {
                   ),
                 ],
               ),
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -632,10 +692,12 @@ class _PatientsState extends State<Patients> {
                     decoration: InputDecoration.collapsed(hintText: ''),
                     isExpanded: true,
                     hint: Padding(
-                      padding: const EdgeInsets.only(top:8.0,left: 8,right: 8),
+                      padding:
+                          const EdgeInsets.only(top: 8.0, left: 8, right: 8),
                       child: Text(
                         'Select Doctor',
-                        style: TextStyle(color: Color.fromARGB(255, 112, 107, 107)),
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 112, 107, 107)),
                       ),
                     ),
                     // value:' _selectedState[i]',
@@ -657,7 +719,7 @@ class _PatientsState extends State<Patients> {
                   ),
                 ),
               ),
-               Padding(
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: consultcontroller,
@@ -667,7 +729,7 @@ class _PatientsState extends State<Patients> {
                       border: OutlineInputBorder(), labelText: 'Consulting'),
                 ),
               ),
-               Padding(
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: reasoncontroller,
@@ -677,7 +739,7 @@ class _PatientsState extends State<Patients> {
                       border: OutlineInputBorder(), labelText: 'Reason'),
                 ),
               ),
-               Padding(
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: feescontroller,
@@ -687,60 +749,69 @@ class _PatientsState extends State<Patients> {
                       border: OutlineInputBorder(), labelText: 'Fess'),
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    child: Text('Vaccination ?',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
+                    child: Text(
+                      'Vaccination ?',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
                   ),
                   Container(
                     child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    children: [
-                      Radio(
-                        value: 1,
-                        groupValue: _vacciSelected,
-                        activeColor: Colors.blue,
-                        onChanged: (value) {
-                          setState(() {
-                            _vacciSelected = value as int;
-                            _vacciVal = 'Yes';
-                            print(_vacciVal);
-                          });
-                        },
-                      ),
-                      const Text("Yes"),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Radio(
-                        value: 2,
-                        groupValue: _vacciSelected,
-                        activeColor: Colors.blue,
-                        onChanged: (value) {
-                          setState(() {
-                            _vacciSelected = value as int;
-                            _vacciVal = 'No';
-                            print(_vacciVal);
-                          });
-                        },
-                      ),
-                      const Text("No"),
-                    ],
-                  ),
-                ],
-              ) ,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          children: [
+                            Radio(
+                              value: 1,
+                              groupValue: _vacciSelected,
+                              activeColor: Colors.blue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _vacciSelected = value as int;
+                                  _vacciVal = 'Yes';
+                                  print(_vacciVal);
+                                });
+                              },
+                            ),
+                            const Text("Yes"),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Radio(
+                              value: 2,
+                              groupValue: _vacciSelected,
+                              activeColor: Colors.blue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _vacciSelected = value as int;
+                                  _vacciVal = 'No';
+                                  print(_vacciVal);
+                                });
+                              },
+                            ),
+                            const Text("No"),
+                          ],
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
-              SizedBox(height: 10,),
-              ElevatedButton(onPressed: (){
-                if(namecontroller.text.isEmpty){
-                   Fluttertoast.showToast(
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    if (namecontroller.text.isEmpty) {
+                      Fluttertoast.showToast(
                           msg: 'Please Fill Your Name',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
@@ -748,9 +819,8 @@ class _PatientsState extends State<Patients> {
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
                           fontSize: 15.0);
-                }
-                else if(mobilecontroller.text.isEmpty){
-                   Fluttertoast.showToast(
+                    } else if (mobilecontroller.text.isEmpty) {
+                      Fluttertoast.showToast(
                           msg: 'Enter Mobile Number',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
@@ -758,9 +828,8 @@ class _PatientsState extends State<Patients> {
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
                           fontSize: 15.0);
-                }
-                else if(mobilecontroller.text.length<10){
-                   Fluttertoast.showToast(
+                    } else if (mobilecontroller.text.length < 10) {
+                      Fluttertoast.showToast(
                           msg: 'Enter Valid Mobile Number',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
@@ -768,9 +837,8 @@ class _PatientsState extends State<Patients> {
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
                           fontSize: 15.0);
-                }
-                else if(agecontroller.text.isEmpty){
-                   Fluttertoast.showToast(
+                    } else if (agecontroller.text.isEmpty) {
+                      Fluttertoast.showToast(
                           msg: 'Enter Your Age',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
@@ -778,13 +846,89 @@ class _PatientsState extends State<Patients> {
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
                           fontSize: 15.0);
-                }
+                    } else {
+                      var patient_details = {
+                        "patient_type":Helper().isvalidElement(_typeSelected)&& _typeSelected == 1 ?"IN":"OUT",
+                        "patientName": namecontroller.text,
+                        "title": titleDropdownvalue.toString(),
+                        "alt_phone": alternatemobilecontroller.text,
+                        "pincode": pincodecontroller.text,
+                        "emailId": emailcontroller.text,
+                        "mobileNo": mobilecontroller.text,
+                        "gender":Helper().isvalidElement(_radioSelected)&& _radioSelected == 1 ?"male": _radioSelected==2 ? "female":"other",
+                        "area": areacontroller.text,
+                        "city": citycontroller.text,
+                        "age": agecontroller.text,
+                        "sugar": sugarcontroller.text,
+                        "bp": bpcontroller.text,
+                        "pulse": pulsecontroller.text,
+                        "temp": temmpcontroller.text,
+                        "temp_type": tempunitDropdownvalue.toString(),
+                        "bmi": bmicontroller.text,
+                        "spo": spO2controller.text,
+                        "weight": weightcontroller.text,
+                        "weight_type": weightunittDropdownvalue.toString(),
+                        "height": heightcontroller.text,
+                        "height_type": heightunitDropdownvalue.toString(),
+                         "typical":"",
+                        "vaccine": Helper().isvalidElement(_vacciSelected)&& _vacciSelected == 1 ?"Yes":"No",
+                         "vaccine_info":"",
+                           "Reason": reasoncontroller.text,
+                        "consulting_fees": consultcontroller.text,
+                       "father_name":"",
+                         "mother_name":"",
+                        "general_fees": feescontroller.text,
+                        "blood_grp": bloodgroupcontroller.text,
+                        "dob": dobcontroller.text,
+                        "doctor_id": "359",
+                        "admit_date":"",
+                      };
 
-              }, child: Text('Register'))
+                      // add_patient(patient_details);
+                    }
+                  },
+                  child: Text('Register'))
             ],
           ),
         ),
       ),
     );
   }
+
+  // add_patient(patient_details)async{
+  //   this.setState(() {
+  //     loading = true;
+  //   });
+  //       // var result = await PatientApi().add_patient(accesstoken, patient_details);
+
+  //        if (Helper().isvalidElement(result) &&
+  //       Helper().isvalidElement(result['status']) &&
+  //       result['status'] == 'Token is Expired') {
+  //     Helper().appLogoutCall(context, 'Session expeired');
+  //   } else {
+  //     if (Helper().isvalidElement(result) &&
+  //         Helper().isvalidElement(result['message']) &&
+  //         result['message'] == 'Successfully') {
+  //       Fluttertoast.showToast(
+  //           msg: 'patient Registered successfully',
+  //           toastLength: Toast.LENGTH_SHORT,
+  //           gravity: ToastGravity.CENTER,
+  //           timeInSecForIosWeb: 2,
+  //           backgroundColor: Colors.green,
+  //           textColor: Colors.white,
+  //           fontSize: 15.0);
+
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => const Dash()),
+  //       );
+  //     }
+  //     this.setState(() {
+  //       // appointment_list = result['appointment_list'];
+  //     });
+  //   }
+  //   this.setState(() {
+  //     loading = false;
+  //   });
+  // }
 }

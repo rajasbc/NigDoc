@@ -31,4 +31,26 @@ class Helper {
         textColor: Colors.white,
         fontSize: 16.0);
   }
+
+  ContainerShowdow(width, color) {
+    return BoxDecoration(
+      color: color == 'yes' ? Colors.blue : Colors.white,
+      border: width != 0 ?
+      Border.all(width: 2, color:Colors.blue )
+      : Border(),
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 4,
+          blurRadius: 4,
+          offset: Offset(0, 1), // changes position of shadow
+        ),
+      ],
+    );
+  }
 }

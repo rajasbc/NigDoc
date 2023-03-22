@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+// import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/veiw/DoctorList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Patients.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Prescription.dart';
@@ -104,7 +105,7 @@ class _NigdocmenubarState extends State<Nigdocmenubar> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Dashboardpage(),
+                                  builder: (context) => Dash(),
                                 ));
                           },
                         ),

@@ -1,6 +1,7 @@
 import 'package:enhance_stepper/enhance_stepper.dart';
 import 'package:flutter/material.dart';
-import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+// import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
 class Prescription extends StatefulWidget {
@@ -137,7 +138,7 @@ class _PrescriptionState extends State<Prescription> {
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Dashboardpage()),
+          MaterialPageRoute(builder: (context) => Dash()),
         );
         return true;
       },

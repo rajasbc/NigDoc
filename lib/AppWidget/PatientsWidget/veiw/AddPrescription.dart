@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+// import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
 class AddPrescription extends StatefulWidget {
@@ -59,7 +60,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
         onWillPop: () async {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Dashboardpage()),
+            MaterialPageRoute(builder: (context) => Dash()),
           );
           // if (Platform.isAndroid) {
           //   exit(0);
@@ -79,7 +80,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Dashboardpage()),
+                    MaterialPageRoute(builder: (context) => Dash()),
                   );
                 },
                 icon: Icon(Icons.arrow_back),

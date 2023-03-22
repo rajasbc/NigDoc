@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+// import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
@@ -48,17 +48,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
  var TreatmentList;
  var treatmentname;
  var click_button;
- var MediAndLabNameList;
-var SelectedLab;
-var SelectedPharmacy;
-bool  labshowAutoComplete = true;
-bool testshowAutoComplete =true;
-bool  pharmacyshowAutoComplete=true;
-bool  medicineshowAutoComplete=true;
-var TestList;
-var SelectedTest;
-var MedicineList;
-var Selectedmedicine;
 
 
   var treatment = ['Select Treatment', 'Ferver', 'Head Ache'];
@@ -108,7 +97,7 @@ var Selectedmedicine;
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Dashboardpage()),
+          MaterialPageRoute(builder: (context) => Dash()),
         );
         return true;
       },
@@ -387,12 +376,8 @@ var Selectedmedicine;
                             )),
                           ),
                           onTap: () {
-                            getMedicineList();
                             this.setState(() {
                               select_button = "medicine";
-                              click_button='pharmacy';
-                              getMediAndLabNameList();
-                              // getMedicineList();
                               // billList();
                             });
                           },
@@ -628,16 +613,8 @@ var Selectedmedicine;
                                           // width: 100,
                                           child: TextButton(
                                               onPressed: () async {
-                                               if(treatmentname.isEmpty){
-                                                 Fluttertoast.showToast(
-                                        msg: 'pls select treatment',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 15.0);}
-                                        else{
+                                                if(treatmentDropdownvalue.isNotEmpty&&fees.text.isNotEmpty)
+                                                {
                                                   var data = {
                                                   "treatment":
                                                       treatmentname
@@ -671,15 +648,13 @@ var Selectedmedicine;
 
                                                 }
                                                 print(treatmentList);
-                                                gettreatmentlist();
                                                 setState(() {
                                                   fees.clear();
                                                   
-                                                  
-                                                      
+                                                      ;
                                                 });
 
-                                              
+                                                }else{
 
                                                 }
                                                 
@@ -797,12 +772,11 @@ var Selectedmedicine;
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(5.0),
                                 child: Container(
                                   width: screenWidth,
                                   child: Column(
                                     children: [
-                                      click_button =='lab'&&labshowAutoComplete?renderLablistAutoComplete(screenWidth, screenHeight):
                                       SizedBox(
                                         // width: 180,
                                         child: TextFormField(
@@ -812,22 +786,12 @@ var Selectedmedicine;
                                             // icon: Icon(Icons.numbers),
                                           ),
                                           controller: labnameController,
-                                          onChanged: (text){
-                                            setState(() {
-                                              labnameController.text.isEmpty?labshowAutoComplete=true:labshowAutoComplete=false;
-                                              labnameController.text.isEmpty? SelectedLab='':labshowAutoComplete=false;
-                                              TestList=null;
-                                              // getLabtestNameList();
-                                            });
-                                            
-                                          },
                                           // keyboardType: TextInputType.numberWithOptions(decimal: true),
                                         ),
                                       ),
                                       SizedBox(
                                         height: 10,
                                       ),
-                                      testshowAutoComplete?rendertestlistAutoComplete(screenWidth, screenHeight):
                                       SizedBox(
                                         // width: 180,
                                         child: TextFormField(
@@ -837,35 +801,16 @@ var Selectedmedicine;
                                             // icon: Icon(Icons.numbers),
                                           ),
                                           controller: testnameController,
-                                          onChanged: (text){
-                                            setState(() {
-                                               testnameController.text.isEmpty?testshowAutoComplete=true:testshowAutoComplete=false;
-                                            });
-                                            
-                                            // getLabtestNameList();
-                                          },
-
-
                                           // keyboardType: TextInputType.numberWithOptions(decimal: true),
                                         ),
                                       ),
                                       SizedBox(
-                                        width: 6,
+                                        width: 4,
                                       ),
                                       SizedBox(
-                                        width: screenWidth,
+                                        width: 100,
                                         child: TextButton(
                                             onPressed: () async {
-                                              if(testnameController.text.isEmpty){
-                                                 Fluttertoast.showToast(
-                                        msg: 'pls select testlist',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 15.0);}
-                                        else{
                                               var test = {
                                                 "lab_name": labnameController
                                                     .text
@@ -888,12 +833,10 @@ var Selectedmedicine;
                                               }
                                               print(testList);
                                               setState(() {
-                                                labshowAutoComplete=true;
-                                                testshowAutoComplete=true;
                                                 labnameController.clear();
                                                 testnameController.clear();
                                               });
-                                            }},
+                                            },
                                             child: Text(
                                               "ADD TEST",
                                               style: TextStyle(
@@ -1006,7 +949,7 @@ var Selectedmedicine;
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
                                     child: Column(
-                                  children: [pharmacyshowAutoComplete?renderpharmacylistAutoComplete(screenWidth, screenHeight):
+                                  children: [
                                                 SizedBox(
                                       width: screenWidth,
                                       child: TextFormField(
@@ -1016,18 +959,10 @@ var Selectedmedicine;
                                           // icon: Icon(Icons.numbers),
                                         ),
                                         controller: pharmacyController,
-                                        onChanged: (text) {
-                                          setState(() {
-                                            pharmacyController.text.isEmpty?pharmacyshowAutoComplete=true:pharmacyshowAutoComplete=false;
-                                          });
-                                           
-                                          
-                                        },
                                         // keyboardType: TextInputType.numberWithOptions(decimal: true),
                                       ),
                                     ),
                                     SizedBox(height: 5),
-                                    medicineshowAutoComplete?rendermedicinelistAutoComplete(screenWidth, screenHeight):
                                     SizedBox(
                                       width: screenWidth,
                                       child: TextFormField(
@@ -1037,13 +972,6 @@ var Selectedmedicine;
                                           // icon: Icon(Icons.numbers),
                                         ),
                                         controller: medicineController,
-                                         onChanged: (text) {
-                                          setState(() {
-                                            medicineController.text.isEmpty?medicineshowAutoComplete=true:medicineshowAutoComplete=false;
-                                          });
-                                           
-                                          
-                                        },
                                         // keyboardType: TextInputType.numberWithOptions(decimal: true),
                                       ),
                                     ),
@@ -1281,71 +1209,6 @@ var Selectedmedicine;
                                           width: 180,
                                           child: TextButton(
                                               onPressed: () async {
-                                               if(pharmacyController.text.isEmpty){
-                                                 Fluttertoast.showToast(
-                                        msg: 'pls selecte pharmacy',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 15.0);}
-                                        else
-                                         if(medicineController.text.isEmpty){
-                                                 Fluttertoast.showToast(
-                                        msg: 'pls select medicine',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 15.0);}
-                                        else
-                                         if(priceController.text.isEmpty){
-                                                 Fluttertoast.showToast(
-                                        msg: 'pls select price',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 15.0);}
-                                        else
-                                         if(dayController.text.isEmpty){
-                                                 Fluttertoast.showToast(
-                                        msg: 'pls select days',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 15.0);}
-                                        else
-                                         if(patternDropdownvalue.isEmpty){
-                                                 Fluttertoast.showToast(
-                                        msg: 'pls select pattern',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 15.0);}
-                                        else
-                                         if(prescriptionDropdownvalue.isEmpty){
-                                                 Fluttertoast.showToast(
-                                        msg: 'pls select prescription',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER,
-                                        timeInSecForIosWeb: 2,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 15.0);
-
-
-
-
-
-                                               }else{
                                                 tableCalCulation();
                                                 // total = 0.0;
                                                 // var price = double.parse(
@@ -1424,7 +1287,7 @@ var Selectedmedicine;
                                                   prescriptionDropdownvalue =
                                                       'Prescription';
                                                 });
-                                              }},
+                                              },
                                               child: Text(
                                                 "Add",
                                                 style: TextStyle(
@@ -1478,8 +1341,7 @@ var Selectedmedicine;
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
-                                                      children: [SizedBox(width:screenWidth*0.6,
-                                                        child:
+                                                      children: [
                                                         Row(
                                                           children: [
                                                             Text(
@@ -1491,12 +1353,12 @@ var Selectedmedicine;
                                                                   fontSize: 13),
                                                             ),
                                                             Text(
-                                                              "${data['medicine'].toString().trim().substring(0,20)}",
+                                                              "${data['medicine'].toString()}",
                                                               style: TextStyle(
                                                                   fontSize: 15),
                                                             )
                                                           ],
-                                                        ),),
+                                                        ),
                                                         Row(
                                                           children: [
                                                             Text(
@@ -1988,54 +1850,8 @@ var Selectedmedicine;
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
       setState(() {
-         MediAndLabNameList = List['list'];
+        var MediAndLabNameList = List['list'];
         var values=MediAndLabNameList;
-      });
-      // TreatmentList = List['list'];
-      //  storage.setItem('diagnosisList', diagnosisList);
-     
-    }
-  }
-
-   getLabtestNameList()async{  
-    var data={
-      "shop_id":SelectedLab['shop_id'].toString(),
-
-    } ;
-
-   var List = await PatientApi().getLabtestList(accesstoken,data);
-    if (Helper().isvalidElement(List) &&
-        Helper().isvalidElement(List['status']) &&
-        List['status'] == 'Token is Expired') {
-      Helper().appLogoutCall(context, 'Session expeired');
-    } else {
-      setState(() {
-        //  MediAndLabNameList = List['list'];
-       TestList=List['list'];
-      });
-      // TreatmentList = List['list'];
-      //  storage.setItem('diagnosisList', diagnosisList);
-     
-    }
-  }
-
-  getMedicineList()async{  
-    var data={
-      "shop_id":Helper().isvalidElement(SelectedPharmacy['shop_id'])
-                                ? SelectedPharmacy['shop_id'].toString()
-                                : '',
-
-    } ;
-
-   var List = await PatientApi().getmedicineList(accesstoken,data);
-    if (Helper().isvalidElement(List) &&
-        Helper().isvalidElement(List['status']) &&
-        List['status'] == 'Token is Expired') {
-      Helper().appLogoutCall(context, 'Session expeired');
-    } else {
-      setState(() {
-        //  MediAndLabNameList = List['list'];
-       MedicineList=List['list'];
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
@@ -2058,7 +1874,7 @@ var Selectedmedicine;
                 .contains(textEditingValue.text.toLowerCase());
           });
           this.setState(() {
-           
+            showAutoComplete = true;
           });
           return [matches];
         }
@@ -2086,7 +1902,7 @@ var Selectedmedicine;
           child: Material(
             child: Container(
               width: screenWidth * 0.9,
-              height: screenHeight * 0.8,
+              // height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
                 padding: EdgeInsets.all(5.0),
@@ -2104,7 +1920,66 @@ var Selectedmedicine;
                           });
 
                     },
-                   
+                    // onTap: () {
+                    //   storage.setItem(
+                    //       'selectedPatient', options.toList()[0][index]);
+                    //   this.setState(() {
+                    //     selectedPatient = options.toList()[0][index];
+                    //     nameController.text = Helper().isvalidElement(
+                    //             selectedPatient['customer_name'])
+                    //         ? selectedPatient['customer_name']
+                    //         : '';
+                    //     mobileController.text =
+                    //         Helper().isvalidElement(selectedPatient['phone'])
+                    //             ? selectedPatient['phone']
+                    //             : '';
+                    //     mailidController.text =
+                    //         Helper().isvalidElement(selectedPatient['email'])
+                    //             ? selectedPatient['email']
+                    //             : '';
+                    //     companyController.text = Helper()
+                    //             .isvalidElement(selectedPatient['company_name'])
+                    //         ? selectedPatient['company_name']
+                    //         : '';
+                    //     manualidController.text = Helper()
+                    //             .isvalidElement(selectedPatient['manual_id'])
+                    //         ? selectedPatient['manual_id']
+                    //         : '';
+                    //     registernoController.text = Helper()
+                    //             .isvalidElement(selectedPatient['registration'])
+                    //         ? selectedPatient['registration']
+                    //         : '';
+                    //     gstController.text = Helper()
+                    //             .isvalidElement(selectedPatient['customer_gst'])
+                    //         ? selectedPatient['customer_gst']
+                    //         : '';
+                    //     dlnoController.text = Helper().isvalidElement(
+                    //             selectedPatient['customer_dlno'])
+                    //         ? selectedPatient['customer_dlno']
+                    //         : '';
+                    //     address1Controller.text = Helper().isvalidElement(
+                    //             selectedPatient['address_line_1'])
+                    //         ? selectedPatient['address_line_1']
+                    //         : '';
+                    //     address2Controller.text = Helper().isvalidElement(
+                    //             selectedPatient['address_line_2'])
+                    //         ? selectedPatient['address_line_2']
+                    //         : '';
+                    //     cityController.text =
+                    //         Helper().isvalidElement(selectedPatient['city'])
+                    //             ? selectedPatient['city']
+                    //             : '';
+                    //     stateController.text =
+                    //         Helper().isvalidElement(selectedPatient['state'])
+                    //             ? selectedPatient['state']
+                    //             : '';
+                    //     pincodeController.text =
+                    //         Helper().isvalidElement(selectedPatient['pincode'])
+                    //             ? selectedPatient['pincode']
+                    //             : '';
+                    //     showAutoComplete = false;
+                    //   });
+                    // },
                     child: Card(
                       color: Colors.grey,
                       // color: custom_color.app_color,
@@ -2132,395 +2007,4 @@ var Selectedmedicine;
       },
     );
   }
-
-  renderLablistAutoComplete(screenWidth, screenHeight) {
-    return Autocomplete<List>(
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const Iterable<List>.empty();
-        } else {
-          var matches = [];
-          matches.addAll(MediAndLabNameList);
-          matches.retainWhere((s) {
-            return s['pharmacy_name']
-                .toString()
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase());
-          });
-          this.setState(() {
-           
-          });
-          return [matches];
-        }
-      },
-      fieldViewBuilder: (BuildContext context,
-          TextEditingController textEditingController,
-          FocusNode focusNode,
-          VoidCallback onFieldSubmitted) {
-        return TextFormField(
-            controller: textEditingController,
-            focusNode: focusNode,
-            decoration: InputDecoration(
-                 border: OutlineInputBorder(),
-                // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
-                hintText: ' Search Lab Name'),
-            onFieldSubmitted: (String value) {
-              onFieldSubmitted();
-            });
-      },
-      optionsViewBuilder: (BuildContext context,
-          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Material(
-            child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.4,
-              color: Colors.white,
-              child: ListView.builder(
-                padding: EdgeInsets.all(5.0),
-                itemCount: options.toList()[0].length,
-                itemBuilder: (BuildContext context, int index) {
-                  final option = options.toList()[0].elementAt(index);
-
-                  return GestureDetector(
-                    onTap: (){
-                      //  storage.setItem(
-                      //     'selectedPatient', options.toList()[0][index]);
-                          setState(() {
-                            labshowAutoComplete=false;
-                            SelectedLab = options.toList()[0][index];
-                            labnameController.text =
-                            Helper().isvalidElement(SelectedLab['pharmacy_name'])
-                                ? SelectedLab['pharmacy_name']
-                                : '';
-                                getLabtestNameList();
-                          });
-
-                    },
-                    
-                    child: Card(
-                      color: Colors.grey,
-                      // color: custom_color.app_color,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                '${options.toList()[0][index]['pharmacy_name'].toString()} ',
-                                style: const TextStyle(color: Colors.black)),
-                          ),
-                          // Divider(
-                          //   thickness: 1,
-                          // )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-
-  rendertestlistAutoComplete(screenWidth, screenHeight) {
-    return Autocomplete<List>(
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const Iterable<List>.empty();
-        } else {
-         
-          //  getLabtestNameList();
-          //  setState(() {
-             
-          //  });
-          var matches = [];
-          matches.addAll(TestList);
-          matches.retainWhere((s) {
-            return s['test_name']
-                .toString()
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase());
-          });
-          this.setState(() {
-            
-          });
-          return [matches];
-        }
-      },
-      fieldViewBuilder: (BuildContext context,
-          TextEditingController textEditingController,
-          FocusNode focusNode,
-          VoidCallback onFieldSubmitted) {
-        return TextFormField(
-            controller: textEditingController,
-            focusNode: focusNode,
-            decoration: InputDecoration(
-                 border: OutlineInputBorder(),
-                // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
-                hintText: ' Search Test Name'),
-            onFieldSubmitted: (String value) {
-              onFieldSubmitted();
-            });
-      },
-      optionsViewBuilder: (BuildContext context,
-          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Material(
-            child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight *0.5,
-              color: Colors.white,
-              child: ListView.builder(
-                physics: AlwaysScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding: EdgeInsets.all(5.0),
-                itemCount: options.toList()[0].length,
-                itemBuilder: (BuildContext context, int index) {
-                  final option = options.toList()[0].elementAt(index);
-
-                  return GestureDetector(
-                    onTap: (){
-                      //  storage.setItem(
-                      //     'selectedPatient', options.toList()[0][index]);
-                          setState(() {
-                           testshowAutoComplete=false;
-                            SelectedTest = options.toList()[0][index];
-                            testnameController.text =
-                            Helper().isvalidElement(SelectedTest['test_name'])
-                                ? SelectedTest['test_name']
-                                : '';
-                          });
-
-                    },
-                   
-                    child: Card(
-                      color: Colors.grey,
-                      // color: custom_color.app_color,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                '${options.toList()[0][index]['test_name'].toString()} ',
-                                style: const TextStyle(color: Colors.black)),
-                          ),
-                          // Divider(
-                          //   thickness: 1,
-                          // )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-  renderpharmacylistAutoComplete(screenWidth, screenHeight) {
-    return Autocomplete<List>(
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const Iterable<List>.empty();
-        } else {
-          var matches = [];
-          matches.addAll(MediAndLabNameList);
-          matches.retainWhere((s) {
-            return s['pharmacy_name']
-                .toString()
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase());
-          });
-          this.setState(() {
-           
-          });
-          return [matches];
-        }
-      },
-      fieldViewBuilder: (BuildContext context,
-          TextEditingController textEditingController,
-          FocusNode focusNode,
-          VoidCallback onFieldSubmitted) {
-        return TextFormField(
-            controller: textEditingController,
-            focusNode: focusNode,
-            decoration: InputDecoration(
-                 border: OutlineInputBorder(),
-                // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
-                hintText: ' Search pharmacy Name'),
-            onFieldSubmitted: (String value) {
-              onFieldSubmitted();
-            });
-      },
-      optionsViewBuilder: (BuildContext context,
-          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Material(
-            child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.4,
-              color: Colors.white,
-              child: ListView.builder(
-                padding: EdgeInsets.all(5.0),
-                itemCount: options.toList()[0].length,
-                itemBuilder: (BuildContext context, int index) {
-                  final option = options.toList()[0].elementAt(index);
-
-                  return GestureDetector(
-                    onTap: (){
-                      //  storage.setItem(
-                      //     'selectedPatient', options.toList()[0][index]);
-                          setState(() {
-                            pharmacyshowAutoComplete=false;
-                            SelectedPharmacy = options.toList()[0][index];
-                            getMedicineList();
-                            pharmacyController.text =
-                            Helper().isvalidElement(SelectedPharmacy['pharmacy_name'])
-                                ? SelectedPharmacy['pharmacy_name']
-                                : '';
-                                // getLabtestNameList();
-                          });
-
-                    },
-                    
-                    child: Card(
-                      color: Colors.grey,
-                      // color: custom_color.app_color,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                '${options.toList()[0][index]['pharmacy_name'].toString()} ',
-                                style: const TextStyle(color: Colors.black)),
-                          ),
-                          // Divider(
-                          //   thickness: 1,
-                          // )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-   rendermedicinelistAutoComplete(screenWidth, screenHeight) {
-    return Autocomplete<List>(
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const Iterable<List>.empty();
-        } else {
-          var matches = [];
-          matches.addAll(MedicineList);
-          matches.retainWhere((s) {
-            return s['name']
-                .toString()
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase());
-          });
-          this.setState(() {
-           
-          });
-          return [matches];
-        }
-      },
-      fieldViewBuilder: (BuildContext context,
-          TextEditingController textEditingController,
-          FocusNode focusNode,
-          VoidCallback onFieldSubmitted) {
-        return TextFormField(
-            controller: textEditingController,
-            focusNode: focusNode,
-            decoration: InputDecoration(
-                 border: OutlineInputBorder(),
-                // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
-                hintText: ' Search medicine Name'),
-            onFieldSubmitted: (String value) {
-              onFieldSubmitted();
-            });
-      },
-      optionsViewBuilder: (BuildContext context,
-          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Material(
-            child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.4,
-              color: Colors.white,
-              child: ListView.builder(
-                padding: EdgeInsets.all(5.0),
-                itemCount: options.toList()[0].length,
-                itemBuilder: (BuildContext context, int index) {
-                  final option = options.toList()[0].elementAt(index);
-
-                  return GestureDetector(
-                    onTap: (){
-                     
-                          setState(() {
-                            medicineshowAutoComplete=false;
-                            Selectedmedicine = options.toList()[0][index];
-                            // getMedicineList();
-                            medicineController.text =
-                            Helper().isvalidElement(Selectedmedicine['name'])
-                                ? Selectedmedicine['name'].toString()
-                                : '';
-                                priceController.text= Helper().isvalidElement(Selectedmedicine['mrp'])
-                                ? Selectedmedicine['mrp'].toString()
-                                : '';
-                                // getLabtestNameList();
-                          });
-
-                    },
-                    
-                    child: Card(
-                      color: Colors.grey,
-                      // color: custom_color.app_color,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                '${options.toList()[0][index]['name'].toString()} ',
-                                style: const TextStyle(color: Colors.black)),
-                          ),
-                          // Divider(
-                          //   thickness: 1,
-                          // )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
 }
