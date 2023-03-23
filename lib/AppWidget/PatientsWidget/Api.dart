@@ -59,5 +59,30 @@ add_patient(access_token,patient_details) async {
       return json.decode(response.body);
     }
   }
+   getLabtestList(access_token,data) async {
+    String getlabtestlisturl = requestpath.base_url + requestpath.getlabtestListEndpoint;
+   var response = await http.post(
+      Uri.parse(getlabtestlisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+
+   getmedicineList(access_token,data) async {
+    String getmedicinelisturl = requestpath.base_url + requestpath.getmedicineListEndpoint;
+   var response = await http.post(
+      Uri.parse(getmedicinelisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
    
 }

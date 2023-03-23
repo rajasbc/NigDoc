@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
-// import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
 class PrescriptionPage extends StatefulWidget {
   const PrescriptionPage({super.key});
-
   @override
   State<PrescriptionPage> createState() => _PrescriptionPageState();
 }
@@ -27,7 +27,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   TextEditingController balanceController = TextEditingController();
   TextEditingController changeController = TextEditingController();
   TextEditingController pharmacyController = TextEditingController();
-
   var searchList;
   var PatientList;
   String treatmentDropdownvalue = 'Select Treatment';
@@ -42,51 +41,58 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   var night;
   var cal;
   double grand_total = 0.0;
-  double balance=0;
- bool  showAutoComplete = true;
- var selectedPatient;
- var TreatmentList;
- var treatmentname;
- var click_button;
-
+  double balance = 0;
+  bool showAutoComplete = true;
+  var selectedPatient;
+  var TreatmentList;
+  var treatmentname;
+  var click_button;
+  var MediAndLabNameList;
+  var SelectedLab;
+  var SelectedPharmacy;
+  bool labshowAutoComplete = true;
+  bool testshowAutoComplete = false;
+  bool pharmacyshowAutoComplete = true;
+  bool medicineshowAutoComplete = true;
+  var TestList;
+  var SelectedTest;
+  var MedicineList;
+  var Selectedmedicine;
 
   var treatment = ['Select Treatment', 'Ferver', 'Head Ache'];
   // var pattern = ['pattern', '0-0-0', '1-1-1', '1-0-1'];
   var demo = {
-    {"name": "pattern", "value": "0","mor":"0","noon":"0","night":"0"},
-    {"name": "0-0-1", "value": "1","mor":"0","noon":"0","night":"1"},
-    {"name": "0-1-0", "value": "1","mor":"0","noon":"1","night":"0"},
-    {"name": "0-1-1", "value": "2","mor":"0","noon":"1","night":"1"},
-    {"name": "1-0-0", "value": "1","mor":"1","noon":"0","night":"0"},
-    {"name": "1-0-1", "value": "2","mor":"1","noon":"0","night":"1"},
-    {"name": "1-1-0", "value": "2","mor":"1","noon":"1","night":"0"},
-    {"name": "1-1-1", "value": "3","mor":"1","noon":"1","night":"1"},
-    {"name": "0-0-2", "value": "2","mor":"0","noon":"0","night":"2"},
-    {"name": "0-2-0", "value": "2","mor":"0","noon":"2","night":"0"},
-    {"name": "2-0-0", "value": "2","mor":"2","noon":"0","night":"0"},
-    {"name": "2-2-0", "value": "4","mor":"2","noon":"2","night":"0"},
-    {"name": "0-2-2", "value": "4","mor":"0","noon":"2","night":"2"},
-    {"name": "2-0-2", "value": "4","mor":"2","noon":"0","night":"2"},
-    {"name": "2-2-2", "value": "6","mor":"2","noon":"2","night":"2"},
+    {"name": "pattern", "value": "0", "mor": "0", "noon": "0", "night": "0"},
+    {"name": "0-0-1", "value": "1", "mor": "0", "noon": "0", "night": "1"},
+    {"name": "0-1-0", "value": "1", "mor": "0", "noon": "1", "night": "0"},
+    {"name": "0-1-1", "value": "2", "mor": "0", "noon": "1", "night": "1"},
+    {"name": "1-0-0", "value": "1", "mor": "1", "noon": "0", "night": "0"},
+    {"name": "1-0-1", "value": "2", "mor": "1", "noon": "0", "night": "1"},
+    {"name": "1-1-0", "value": "2", "mor": "1", "noon": "1", "night": "0"},
+    {"name": "1-1-1", "value": "3", "mor": "1", "noon": "1", "night": "1"},
+    {"name": "0-0-2", "value": "2", "mor": "0", "noon": "0", "night": "2"},
+    {"name": "0-2-0", "value": "2", "mor": "0", "noon": "2", "night": "0"},
+    {"name": "2-0-0", "value": "2", "mor": "2", "noon": "0", "night": "0"},
+    {"name": "2-2-0", "value": "4", "mor": "2", "noon": "2", "night": "0"},
+    {"name": "0-2-2", "value": "4", "mor": "0", "noon": "2", "night": "2"},
+    {"name": "2-0-2", "value": "4", "mor": "2", "noon": "0", "night": "2"},
+    {"name": "2-2-2", "value": "6", "mor": "2", "noon": "2", "night": "2"},
   };
   var Prescription = ['Prescription', 'BF', 'AF'];
   List treatmentList = [];
   List testList = [];
   List medicineList = [];
   List table_list = [];
-   double  fees_total=0;
-   var accesstoken;
-   bool isloading = false;
-
-
-
+  double fees_total = 0;
+  var accesstoken;
+  bool isloading = false;
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     accesstoken = storage.getItem('userResponse')['access_token'];
     getpatientlist();
     gettreatmentlist();
-    grandtotalController.text=grand_total.toString();
+    grandtotalController.text = grand_total.toString();
   }
 
   @override
@@ -105,7 +111,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
         resizeToAvoidBottomInset: false,
         // resizeToAvoidBottomInset: false,
         // resizeToAvoidBottomInset: false,
-
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: AppBar(
@@ -137,120 +142,122 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
             height: screenHeight,
             width: screenWidth,
             child: Column(
-              children: [showAutoComplete?
-                
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                      child: renderAutoComplete(screenWidth, screenHeight)
-                  //     Container(
-                  //   height: screenHeight * 0.08,
-                  //   width: screenWidth,
-                  //   // color:Colors.amber,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(
-                  //         top: 5, bottom: 5, left: 5, right: 5),
-                  //     child: Container(
-                  //       // height: screenHeight * 0.06,
-                  //       width: screenWidth,
-                  //       decoration: BoxDecoration(
-                  //           color: Colors.white,
-                  //           border: Border.all(
-                  //               color: Color.fromARGB(255, 8, 122, 135)),
-                  //           borderRadius: BorderRadius.all(Radius.circular(1))),
-                  //       child: Row(
-                  //         children: [
-                  //           Container(
-                  //               width: screenWidth * 0.1,
-                  //               height: screenHeight,
-                  //               child: Icon(Icons.search,
-                  //                   color: Color.fromARGB(255, 8, 122, 135))),
-                  //           Container(
-                  //             width: screenWidth * 0.7,
-                  //             child: TextField(
-                  //               controller: searchText,
-                  //               onChanged: (text) {
-                  //                 renderAutoComplete(screenWidth, screenHeight);
-                  //                 print(text);
-                
-                  //                 this.setState(() {});
-                
-                  //                 // searchList = StaffList.where((element) {
-                  //                 //   var List =
-                  //                 //       element['name'].toString().toLowerCase();
-                  //                 //   return List.contains(text.toLowerCase());
-                  //                 //   // return true;
-                  //                 // }).toList();
-                  //                 // this.setState(() {});
-                  //               },
-                  //               decoration: new InputDecoration(
-                  //                 filled: true,
-                  //                 border: InputBorder.none,
-                  //                 fillColor: Colors.white,
-                  //                 hintText: 'Search Patient list...',
-                  //               ),
-                  //             ),
-                  //           ),
-                  //           searchText.text.isNotEmpty
-                  //               ? Container(
-                  //                   width: screenWidth * 0.1,
-                  //                   height: screenHeight,
-                  //                   child: IconButton(
-                  //                     icon: Icon(
-                  //                       Icons.close,
-                  //                       color: Colors.red,
-                  //                     ),
-                  //                     onPressed: () {
-                  //                       setState(() {
-                  //                         searchText.text = '';
-                  //                         searchList = '';
-                  //                       });
-                  //                     },
-                  //                   ))
-                  //               : Container(),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )
-                  ),
-                ):Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      child: Column(
-                    children: [
-                      Card(
-                        child: ListTile(
-                          title: Row(
-                            children: [
-                              Icon(Icons.people,
-                                  color: Color.fromARGB(255, 8, 122, 135)),
-                              Text(
-                                '     ${selectedPatient['customer_name'].toString()}',
-                              ),
-                            ],
-                          ),
-                          subtitle: Text('             ${selectedPatient['phone'].toString()}'),
-                          trailing: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                selectedPatient=null;
-                                showAutoComplete=true;
-                              });
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
+              children: [
+                showAutoComplete
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                            child: renderAutoComplete(screenWidth, screenHeight)
+                            //     Container(
+                            //   height: screenHeight * 0.08,
+                            //   width: screenWidth,
+                            //   // color:Colors.amber,
+                            //   child: Padding(
+                            //     padding: const EdgeInsets.only(
+                            //         top: 5, bottom: 5, left: 5, right: 5),
+                            //     child: Container(
+                            //       // height: screenHeight * 0.06,
+                            //       width: screenWidth,
+                            //       decoration: BoxDecoration(
+                            //           color: Colors.white,
+                            //           border: Border.all(
+                            //               color: Color.fromARGB(255, 8, 122, 135)),
+                            //           borderRadius: BorderRadius.all(Radius.circular(1))),
+                            //       child: Row(
+                            //         children: [
+                            //           Container(
+                            //               width: screenWidth * 0.1,
+                            //               height: screenHeight,
+                            //               child: Icon(Icons.search,
+                            //                   color: Color.fromARGB(255, 8, 122, 135))),
+                            //           Container(
+                            //             width: screenWidth * 0.7,
+                            //             child: TextField(
+                            //               controller: searchText,
+                            //               onChanged: (text) {
+                            //                 renderAutoComplete(screenWidth, screenHeight);
+                            //                 print(text);
+
+                            //                 this.setState(() {});
+
+                            //                 // searchList = StaffList.where((element) {
+                            //                 //   var List =
+                            //                 //       element['name'].toString().toLowerCase();
+                            //                 //   return List.contains(text.toLowerCase());
+                            //                 //   // return true;
+                            //                 // }).toList();
+                            //                 // this.setState(() {});
+                            //               },
+                            //               decoration: new InputDecoration(
+                            //                 filled: true,
+                            //                 border: InputBorder.none,
+                            //                 fillColor: Colors.white,
+                            //                 hintText: 'Search Patient list...',
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           searchText.text.isNotEmpty
+                            //               ? Container(
+                            //                   width: screenWidth * 0.1,
+                            //                   height: screenHeight,
+                            //                   child: IconButton(
+                            //                     icon: Icon(
+                            //                       Icons.close,
+                            //                       color: Colors.red,
+                            //                     ),
+                            //                     onPressed: () {
+                            //                       setState(() {
+                            //                         searchText.text = '';
+                            //                         searchList = '';
+                            //                       });
+                            //                     },
+                            //                   ))
+                            //               : Container(),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //   ),
+                            // )
                             ),
-                          ),
-                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            child: Column(
+                          children: [
+                            Card(
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.people,
+                                        color:
+                                            Color.fromARGB(255, 8, 122, 135)),
+                                    Text(
+                                      '     ${selectedPatient['customer_name'].toString()}',
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Text(
+                                    '             ${selectedPatient['phone'].toString()}'),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedPatient = null;
+                                      showAutoComplete = true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // ListTile(title: Text('Test name'),
+                            // trailing: IconButton(onPressed: (){} ,icon: Icon(Icons.add)),),
+                          ],
+                        )),
                       ),
-                      // ListTile(title: Text('Test name'),
-                      // trailing: IconButton(onPressed: (){} ,icon: Icon(Icons.add)),),
-                    ],
-                  )),
-                ),
-                
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Container(
@@ -335,7 +342,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                           onTap: () {
                             this.setState(() {
                               select_button = "test";
-                              click_button= "lab";
+                              click_button = "lab";
                               getMediAndLabNameList();
                               // billList();
                             });
@@ -376,8 +383,12 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                             )),
                           ),
                           onTap: () {
+                            getMedicineList();
                             this.setState(() {
                               select_button = "medicine";
+                              click_button = 'pharmacy';
+                              getMediAndLabNameList();
+                              // getMedicineList();
                               // billList();
                             });
                           },
@@ -468,70 +479,77 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(0.0),
-                                                child:Helper().isvalidElement(TreatmentList)&&TreatmentList.length>0? 
-                                                DropdownButtonFormField(
-                                            // validator: (value) => validateDrops(value),
-                                            // decoration: InputDecoration(
-                                            //     enabledBorder: InputBorder.none,
-                                            //     border: UnderlineInputBorder(
-                                            //         borderSide: BorderSide(
-                                            //             color: Colors.white))),
-                                            // decoration:
-                                            //     InputDecoration.collapsed(
-                                            //         hintText: ''),
-                                                    decoration: const InputDecoration(
-                                              labelText: 'Treatment',
-                                              border: OutlineInputBorder(),
-                                              //icon: Icon(Icons.numbers),
-                                            ),
-
-                                            isExpanded: true,
-                                            hint: Text(
-                                              'Select Treatment',
-                                            ),
-                                            // value:patternDropdownvalue,
-                                            onChanged: (item) async {
-                                              treatmentDropdownvalue =
-                                                  item.toString();
-                                              var data = item.toString().split('&*');
-                                              fees.text=data[0];
-                                              treatmentname=data[1];
-
-                                              
-                                            },
-                                            items: TreatmentList
-                                                .map<DropdownMenuItem<String>>(
-                                                    (item) {
-                                              return DropdownMenuItem(
-                                                child: Text(
-                                                  item['treatment_name'].toString(),
-                                                ),
-                                                value:
-                                                    item['fees'].toString() +
-                                                        '&*' +
-                                                        item['treatment_name'].toString(),
-                                              );
-                                            }).toList(),
-                                          )
-                                               
-                                                
-                                                
-                                                : DropdownButtonFormField(
-                                        // validator: (value) => validateDrops(value),
-                                        // isExpanded: true,
-                                        hint: Text('Select Treatment'),
-                                        // value:' _selectedState[i]',
-                                        onChanged: (Pharmacy) {
-                                          setState(() {});
-                                        },
-                                        items: [].map<DropdownMenuItem<String>>(
-                                            (item) {
-                                          return new DropdownMenuItem(
-                                            child: new Text(''),
-                                            value: '',
-                                          );
-                                        }).toList(),
-                                      ),
+                                                child: Helper().isvalidElement(
+                                                            TreatmentList) &&
+                                                        TreatmentList.length > 0
+                                                    ? DropdownButtonFormField(
+                                                        // validator: (value) => validateDrops(value),
+                                                        // decoration: InputDecoration(
+                                                        //     enabledBorder: InputBorder.none,
+                                                        //     border: UnderlineInputBorder(
+                                                        //         borderSide: BorderSide(
+                                                        //             color: Colors.white))),
+                                                        // decoration:
+                                                        //     InputDecoration.collapsed(
+                                                        //         hintText: ''),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          labelText:
+                                                              'Treatment',
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          //icon: Icon(Icons.numbers),
+                                                        ),
+                                                        isExpanded: true,
+                                                        hint: Text(
+                                                          'Select Treatment',
+                                                        ),
+                                                        // value:patternDropdownvalue,
+                                                        onChanged:
+                                                            (item) async {
+                                                          treatmentDropdownvalue =
+                                                              item.toString();
+                                                          var data = item
+                                                              .toString()
+                                                              .split('&*');
+                                                          fees.text = data[0];
+                                                          treatmentname =
+                                                              data[1];
+                                                        },
+                                                        items: TreatmentList.map<
+                                                            DropdownMenuItem<
+                                                                String>>((item) {
+                                                          return DropdownMenuItem(
+                                                            child: Text(
+                                                              item['treatment_name']
+                                                                  .toString(),
+                                                            ),
+                                                            value: item['fees']
+                                                                    .toString() +
+                                                                '&*' +
+                                                                item['treatment_name']
+                                                                    .toString(),
+                                                          );
+                                                        }).toList(),
+                                                      )
+                                                    : DropdownButtonFormField(
+                                                        // validator: (value) => validateDrops(value),
+                                                        // isExpanded: true,
+                                                        hint: Text(
+                                                            'Select Treatment'),
+                                                        // value:' _selectedState[i]',
+                                                        onChanged: (Pharmacy) {
+                                                          setState(() {});
+                                                        },
+                                                        items: [].map<
+                                                            DropdownMenuItem<
+                                                                String>>((item) {
+                                                          return new DropdownMenuItem(
+                                                            child: new Text(''),
+                                                            value: '',
+                                                          );
+                                                        }).toList(),
+                                                      ),
                                               ),
                                             ),
                                             Container(
@@ -548,7 +566,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     //   searchText.text = '';
                                                     //   searchList = '';
                                                     // });
-
                                                     // child:
                                                     // showModalBottomSheet(
                                                     //     context: context,
@@ -612,52 +629,67 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                         SizedBox(
                                           // width: 100,
                                           child: TextButton(
-                                              onPressed: () async {
-                                                if(treatmentDropdownvalue.isNotEmpty&&fees.text.isNotEmpty)
-                                                {
-                                                  var data = {
-                                                  "treatment":
-                                                      treatmentname
-                                                          .toString(),
-                                                  "fees": fees.text.toString(),
-                                                };
-
-                                                print(data);
-
-                                                print(data);
-                                                print(treatmentList);
-                                                print(treatmentList
-                                                    .contains(data));
-                                                if (treatmentList
-                                                    .contains(data)) {
-                                                  treatmentList.remove(data);
+                                              onPressed: () {
+                                                if (treatmentname.isEmpty) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'pls select treatment',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
                                                 } else {
-                                                  treatmentList.add(data);
-                                                   totalCalcution();
-                                                  // fees_total=0;
+                                                  var data = {
+                                                    "treatment": treatmentname
+                                                        .toString(),
+                                                    "fees":
+                                                        fees.text.toString(),
+                                                  };
+                                                  // print(data);
+                                                  print(data);
+                                                  print(treatmentList);
 
-                                               
-                                                  // for (var value
-                                                  //     in treatmentList) {
-                                                  //   fees_total = fees_total +
-                                                  //       double.parse(
-                                                  //           value['fees']);
-                                                             
+//                                                 print(treatmentList
+//                                                     .contains(data));
+//                                                     if(treatmentList.every((data) => data != null)){
+//                                                       print(data);
+//                                                   treatmentList.add(data);
 
-                                                  // }
+//                                                     }else{
+// print('data');
+//                                                     }
+                                                  if (treatmentList
+                                                      .contains(data)) {
+                                                    treatmentList.remove(data);
+                                                  } else {
+                                                    treatmentList.add(data);
+                                                    totalCalcution();
+                                                    // fees_total=0;
 
+                                                    // for (var value
+                                                    //     in treatmentList) {
+                                                    //   fees_total = fees_total +
+                                                    //       double.parse(
+                                                    //           value['fees']);
+
+                                                    // }
+                                                  }
+                                                  print(treatmentList);
+                                                  gettreatmentlist();
+
+                                                  setState(() {
+                                                    TreatmentList = null;
+                                                    fees.clear();
+                                                  });
+                                                  setState(() {
+                                                    gettreatmentlist();
+                                                  });
                                                 }
-                                                print(treatmentList);
-                                                setState(() {
-                                                  fees.clear();
-                                                  
-                                                      ;
-                                                });
-
-                                                }else{
-
-                                                }
-                                                
                                               },
                                               child: Text(
                                                 "ADD TREATMENT",
@@ -679,16 +711,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                           borderRadius:
                                                               BorderRadius.circular(4.0),
                                                           side: BorderSide(color: Colors.blue))))),
-
                                           // TextFormField(
                                           //   decoration: const InputDecoration(
                                           //     labelText: 'Clinic Notes',
                                           //     border: OutlineInputBorder(),
                                           //     //icon: Icon(Icons.numbers),
                                           //   ),
-
                                           //   // controller: addressController,
-
                                           // ),
                                         ),
                                       ],
@@ -739,7 +768,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                           setState(() {
                                                             treatmentList
                                                                 .remove(data);
-                                                                totalCalcution();
+                                                            totalCalcution();
                                                           });
                                                         },
                                                         icon: Icon(
@@ -772,70 +801,132 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding: const EdgeInsets.all(10.0),
                                 child: Container(
                                   width: screenWidth,
                                   child: Column(
                                     children: [
-                                      SizedBox(
-                                        // width: 180,
-                                        child: TextFormField(
-                                          decoration: const InputDecoration(
-                                            labelText: 'Lab Name',
-                                            border: OutlineInputBorder(),
-                                            // icon: Icon(Icons.numbers),
-                                          ),
-                                          controller: labnameController,
-                                          // keyboardType: TextInputType.numberWithOptions(decimal: true),
-                                        ),
-                                      ),
+                                      click_button == 'lab' &&
+                                              labshowAutoComplete
+                                          ? renderLablistAutoComplete(
+                                              screenWidth, screenHeight)
+                                          : SizedBox(
+                                              // width: 180,
+                                              child: TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: 'Lab Name',
+                                                  border: OutlineInputBorder(),
+                                                  // icon: Icon(Icons.numbers),
+                                                ),
+                                                controller: labnameController,
+                                                onChanged: (text) {
+                                                  setState(() {
+                                                    labnameController
+                                                            .text.isEmpty
+                                                        ? labshowAutoComplete =
+                                                            true
+                                                        : labshowAutoComplete =
+                                                            false;
+                                                    testshowAutoComplete =
+                                                        false;
+                                                    // labnameController.text.isEmpty? SelectedLab='':labshowAutoComplete=false;
+                                                    // TestList=null;
+                                                    // getLabtestNameList();
+                                                  });
+                                                },
+                                                // keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                              ),
+                                            ),
                                       SizedBox(
                                         height: 10,
                                       ),
+                                      testshowAutoComplete
+                                          ? rendertestlistAutoComplete(
+                                              screenWidth, screenHeight)
+                                          : SizedBox(
+                                              // width: 180,
+                                              child: TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: 'Test Name',
+                                                  border: OutlineInputBorder(),
+                                                  // icon: Icon(Icons.numbers),
+                                                ),
+                                                controller: testnameController,
+                                                onChanged: (text) {
+                                                  setState(() {
+                                                    testnameController
+                                                            .text.isEmpty
+                                                        ? testshowAutoComplete =
+                                                            true
+                                                        : testshowAutoComplete =
+                                                            false;
+                                                  });
+
+                                                  // getLabtestNameList();
+                                                },
+
+                                                // keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                              ),
+                                            ),
                                       SizedBox(
-                                        // width: 180,
-                                        child: TextFormField(
-                                          decoration: const InputDecoration(
-                                            labelText: 'Test Name',
-                                            border: OutlineInputBorder(),
-                                            // icon: Icon(Icons.numbers),
-                                          ),
-                                          controller: testnameController,
-                                          // keyboardType: TextInputType.numberWithOptions(decimal: true),
-                                        ),
+                                        width: 6,
                                       ),
                                       SizedBox(
-                                        width: 4,
-                                      ),
-                                      SizedBox(
-                                        width: 100,
+                                        width: screenWidth,
                                         child: TextButton(
                                             onPressed: () async {
-                                              var test = {
-                                                "lab_name": labnameController
-                                                    .text
-                                                    .toString(),
-                                                "test_name": testnameController
-                                                    .text
-                                                    .toString(),
-                                              };
-
-                                              print(test);
-
-                                              print(test);
-                                              print(testList);
-                                              print(testList.contains(test));
-                                              if (testList.contains(test)) {
-                                                testList.remove(test);
+                                              if (labnameController
+                                                  .text.isEmpty) {
+                                                Fluttertoast.showToast(
+                                                    msg: 'pls select Lab',
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    timeInSecForIosWeb: 2,
+                                                    backgroundColor: Colors.red,
+                                                    textColor: Colors.white,
+                                                    fontSize: 15.0);
+                                              } else if (testnameController
+                                                  .text.isEmpty) {
+                                                Fluttertoast.showToast(
+                                                    msg: 'pls select testlist',
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    timeInSecForIosWeb: 2,
+                                                    backgroundColor: Colors.red,
+                                                    textColor: Colors.white,
+                                                    fontSize: 15.0);
                                               } else {
-                                                testList.add(test);
-                                              
+                                                var test = {
+                                                  "lab_name": labnameController
+                                                      .text
+                                                      .toString(),
+                                                  "test_name":
+                                                      testnameController.text
+                                                          .toString(),
+                                                };
+                                                print(test);
+                                                print(test);
+                                                print(testList);
+                                                print(testList.contains(test));
+                                                if (testList.contains(test)) {
+                                                  testList.remove(test);
+                                                } else {
+                                                  testList.add(test);
+                                                }
+                                                print(testList);
+                                                setState(() {
+                                                  labshowAutoComplete = true;
+                                                  testshowAutoComplete = false;
+                                                  labnameController.clear();
+                                                  testnameController.clear();
+                                                });
                                               }
-                                              print(testList);
-                                              setState(() {
-                                                labnameController.clear();
-                                                testnameController.clear();
-                                              });
                                             },
                                             child: Text(
                                               "ADD TEST",
@@ -856,16 +947,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                             BorderRadius.circular(
                                                                 4.0),
                                                         side: BorderSide(color: Colors.blue))))),
-
                                         // TextFormField(
                                         //   decoration: const InputDecoration(
                                         //     labelText: 'Clinic Notes',
                                         //     border: OutlineInputBorder(),
                                         //     //icon: Icon(Icons.numbers),
                                         //   ),
-
                                         //   // controller: addressController,
-
                                         // ),
                                       ),
                                     ],
@@ -924,9 +1012,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                 ),
                                                 // ListTile(title: Text('Test name'),
                                                 // trailing: IconButton(onPressed: (){} ,icon: Icon(Icons.add)),),
-                                                Divider(
-                                                  height: 0.1,
-                                                )
+                                                // Divider(
+                                                //   height: 0.1,
+                                                // )
                                               ],
                                             ));
                                           })
@@ -938,11 +1026,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                     : Container(),
                 select_button == "medicine"
                     ? Container(
-                        height: screenHeight * 0.7,
+                        height: screenHeight * 0.75,
                         child: SingleChildScrollView(
                           physics: ClampingScrollPhysics(),
                           //  reverse: true,
-
                           child: Column(
                             children: [
                               Padding(
@@ -950,31 +1037,57 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                 child: Container(
                                     child: Column(
                                   children: [
-                                                SizedBox(
-                                      width: screenWidth,
-                                      child: TextFormField(
-                                        decoration: const InputDecoration(
-                                          labelText: 'Pharmacy Name',
-                                          border: OutlineInputBorder(),
-                                          // icon: Icon(Icons.numbers),
-                                        ),
-                                        controller: pharmacyController,
-                                        // keyboardType: TextInputType.numberWithOptions(decimal: true),
-                                      ),
-                                    ),
+                                    pharmacyshowAutoComplete
+                                        ? renderpharmacylistAutoComplete(
+                                            screenWidth, screenHeight)
+                                        : SizedBox(
+                                            width: screenWidth,
+                                            child: TextFormField(
+                                              decoration: const InputDecoration(
+                                                labelText: 'Pharmacy Name',
+                                                border: OutlineInputBorder(),
+                                                // icon: Icon(Icons.numbers),
+                                              ),
+                                              controller: pharmacyController,
+                                              onChanged: (text) {
+                                                setState(() {
+                                                  pharmacyController
+                                                          .text.isEmpty
+                                                      ? pharmacyshowAutoComplete =
+                                                          true
+                                                      : pharmacyshowAutoComplete =
+                                                          false;
+                                                });
+                                              },
+                                              // keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                            ),
+                                          ),
                                     SizedBox(height: 5),
-                                    SizedBox(
-                                      width: screenWidth,
-                                      child: TextFormField(
-                                        decoration: const InputDecoration(
-                                          labelText: 'Medicine Name',
-                                          border: OutlineInputBorder(),
-                                          // icon: Icon(Icons.numbers),
-                                        ),
-                                        controller: medicineController,
-                                        // keyboardType: TextInputType.numberWithOptions(decimal: true),
-                                      ),
-                                    ),
+                                    medicineshowAutoComplete
+                                        ? rendermedicinelistAutoComplete(
+                                            screenWidth, screenHeight)
+                                        : SizedBox(
+                                            width: screenWidth,
+                                            child: TextFormField(
+                                              decoration: const InputDecoration(
+                                                labelText: 'Medicine Name',
+                                                border: OutlineInputBorder(),
+                                                // icon: Icon(Icons.numbers),
+                                              ),
+                                              controller: medicineController,
+                                              onChanged: (text) {
+                                                setState(() {
+                                                  medicineController
+                                                          .text.isEmpty
+                                                      ? medicineshowAutoComplete =
+                                                          true
+                                                      : medicineshowAutoComplete =
+                                                          false;
+                                                });
+                                              },
+                                              // keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                            ),
+                                          ),
                                     SizedBox(height: 5),
                                     Row(
                                       mainAxisAlignment:
@@ -1027,12 +1140,11 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                             // decoration:
                                             //     InputDecoration.collapsed(
                                             //         hintText: ''),
-                                                    decoration: const InputDecoration(
+                                            decoration: const InputDecoration(
                                               labelText: 'Pattern',
                                               border: OutlineInputBorder(),
                                               //icon: Icon(Icons.numbers),
                                             ),
-
                                             isExpanded: true,
                                             hint: Text(
                                               'Select Pattern',
@@ -1044,11 +1156,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                               var data =
                                                   item.toString().split('&*');
                                               count = data[0];
-                                              mor= data[2];
-                                              noon= data[3];
-                                              night= data[4];
-
-
+                                              mor = data[2];
+                                              noon = data[3];
+                                              night = data[4];
                                               // selectedPharmacyDetails =
                                               //     item.toString().split('&*');
                                               // data = {
@@ -1081,11 +1191,17 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                 child: Text(
                                                   item['name'].toString(),
                                                 ),
-                                                value:
-                                                    item['value'].toString() +
-                                                        '&*' +
-                                                        item['name'].toString()+'&*'+item['mor'].toString()+'&*'+
-                                                        item['noon'].toString()+'&*'+item['night'].toString()+'&*',
+                                                value: item['value']
+                                                        .toString() +
+                                                    '&*' +
+                                                    item['name'].toString() +
+                                                    '&*' +
+                                                    item['mor'].toString() +
+                                                    '&*' +
+                                                    item['noon'].toString() +
+                                                    '&*' +
+                                                    item['night'].toString() +
+                                                    '&*',
                                               );
                                             }).toList(),
                                           ),
@@ -1167,9 +1283,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                 //   "treatment": titleDropdownvalue.toString(),
                                                 //   "fees": fees.text.toString(),
                                                 // };
-
                                                 // print(data);
-
                                                 // print(data);
                                                 // print(treatmentList);
                                                 // print(treatmentList.contains(data));
@@ -1209,84 +1323,169 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           width: 180,
                                           child: TextButton(
                                               onPressed: () async {
-                                                tableCalCulation();
-                                                // total = 0.0;
-                                                // var price = double.parse(
-                                                //     priceController.text);
-                                                // var day = double.parse(
-                                                //     dayController.text);
-                                                // var number =
-                                                //     double.parse(count);
-                                                // setState(() {
-                                                //   total =
-                                                //       (number * price) * day;
-                                                //   // cal={
-                                                //   //   "total":total.toString(),
-
-                                                //   // };
-                                                // });
-
-                                                var data = {
-                                                  "medicine": medicineController
-                                                      .text
-                                                      .toString(),
-                                                  "price": priceController.text
-                                                      .toString(),
-                                                  "day": dayController.text
-                                                      .toString(),
-                                                  "pattern":
-                                                      patternDropdownvalue
-                                                          .toString(),
-                                                          "mor":mor.toString(),
-                                                          "noon":noon.toString(),
-                                                          "night":night.toString(),
-
-                                                  "total_qty": count.toString(),
-                                                  "prescription":
-                                                      prescriptionDropdownvalue
-                                                          .toString(),
-                                                  "total": total.toString(),
-                                                  // "Test":testList,
-                                                  // "Treatment":treatmentList,
-                                                  // "List":Map.from(treatmentList as Map),
-                                                };
-
-                                                print(data);
-                                                print(medicineList);
-                                                print(medicineList
-                                                    .contains(data));
-                                                if (table_list.contains(data)) {
-                                                  table_list.remove(data);
+                                                if (pharmacyController
+                                                    .text.isEmpty) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'pls select pharmacy',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
+                                                } else if (medicineController
+                                                    .text.isEmpty) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'pls select medicine',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
+                                                } else if (priceController
+                                                    .text.isEmpty) {
+                                                  Fluttertoast.showToast(
+                                                      msg: 'pls select price',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
+                                                } else if (dayController
+                                                    .text.isEmpty) {
+                                                  Fluttertoast.showToast(
+                                                      msg: 'pls select days',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
+                                                } else if (patternDropdownvalue
+                                                        .isEmpty ||
+                                                    patternDropdownvalue ==
+                                                        'pattern') {
+                                                  Fluttertoast.showToast(
+                                                      msg: 'pls select pattern',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
+                                                } else if (prescriptionDropdownvalue
+                                                    .isEmpty) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'pls select prescription',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
                                                 } else {
-                                                  table_list.add(data);
-                                                   totalCalcution();
-                                                  // grand_total=0;
+                                                  tableCalCulation();
+                                                  // total = 0.0;
+                                                  // var price = double.parse(
+                                                  //     priceController.text);
+                                                  // var day = double.parse(
+                                                  //     dayController.text);
+                                                  // var number =
+                                                  //     double.parse(count);
+                                                  // setState(() {
+                                                  //   total =
+                                                  //       (number * price) * day;
+                                                  //   // cal={
+                                                  //   //   "total":total.toString(),
+                                                  //   // };
+                                                  // });
+                                                  var data = {
+                                                    "medicine":
+                                                        medicineController.text
+                                                            .toString(),
+                                                    "price": priceController
+                                                        .text
+                                                        .toString(),
+                                                    "day": dayController.text
+                                                        .toString(),
+                                                    "pattern":
+                                                        patternDropdownvalue
+                                                            .toString(),
+                                                    "mor": mor.toString(),
+                                                    "noon": noon.toString(),
+                                                    "night": night.toString(),
+                                                    "total_qty":
+                                                        count.toString(),
+                                                    "prescription":
+                                                        prescriptionDropdownvalue
+                                                            .toString(),
+                                                    "total": total.toString(),
+                                                    // "Test":testList,
+                                                    // "Treatment":treatmentList,
+                                                    // "List":Map.from(treatmentList as Map),
+                                                  };
+                                                  print(data);
+                                                  print(medicineList);
+                                                  print(medicineList
+                                                      .contains(data));
+                                                  if (table_list
+                                                      .contains(data)) {
+                                                    table_list.remove(data);
+                                                  } else {
+                                                    table_list.add(data);
+                                                    totalCalcution();
+                                                    // grand_total=0;
 
-                                                
-                                                  // for (var value
-                                                  //     in table_list) {
-                                                  //   grand_total = grand_total +fees_total+
-                                                  //       double.parse(
-                                                  //           value['total']);
-                                                  // }
-                                                  // // return grand_total;
-                                                  // grandtotalController.text=grand_total.toString();
+                                                    // for (var value
+                                                    //     in table_list) {
+                                                    //   grand_total = grand_total +fees_total+
+                                                    //       double.parse(
+                                                    //           value['total']);
+                                                    // }
+                                                    // // return grand_total;
+                                                    // grandtotalController.text=grand_total.toString();
+                                                    //  medicineList.addAll(cal);
+                                                    // tableCalCulation();
+                                                    //  medicineList.addAll(treatmentList);
+                                                    // //  medicineList.asMap()
+                                                  }
+                                                  print(table_list);
+                                                  setState(() {
+                                                    medicineshowAutoComplete =
+                                                        true;
 
-                                                  //  medicineList.addAll(cal);
-                                                  // tableCalCulation();
-
-                                                  //  medicineList.addAll(treatmentList);
-                                                  // //  medicineList.asMap()
+                                                    medicineController.clear();
+                                                    priceController.clear();
+                                                    dayController.clear();
+                                                    patternDropdownvalue =
+                                                        'null';
+                                                    prescriptionDropdownvalue =
+                                                        'Prescription';
+                                                  });
                                                 }
-                                                print(table_list);
-                                                setState(() {
-                                                  medicineController.clear();
-                                                  priceController.clear();
-                                                  dayController.clear();
-                                                  patternDropdownvalue = 'null';
-                                                  prescriptionDropdownvalue =
-                                                      'Prescription';
-                                                });
                                               },
                                               child: Text(
                                                 "Add",
@@ -1342,22 +1541,28 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              'Medicine :',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 13),
-                                                            ),
-                                                            Text(
-                                                              "${data['medicine'].toString()}",
-                                                              style: TextStyle(
-                                                                  fontSize: 15),
-                                                            )
-                                                          ],
+                                                        SizedBox(
+                                                          width:
+                                                              screenWidth * 0.6,
+                                                          child: Row(
+                                                            children: [
+                                                              Text(
+                                                                'Medicine :',
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        13),
+                                                              ),
+                                                              Text(
+                                                                "${data['medicine'].toString().length < 20 ? data['medicine'].toString() : data['medicine'].toString().substring(0, 19)}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
                                                         Row(
                                                           children: [
@@ -1511,7 +1716,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         ),
                                                       ],
                                                     ),
-
                                                     // Card(
                                                     //   child: ListTile(
                                                     //     title: Text(
@@ -1542,7 +1746,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     )
                                   : Container(),
                               //  Container(height: screenHeight*0.5,),
-
                               SizedBox(height: 5),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -1571,8 +1774,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           // // balanceController.text=grand_total.toString();
                                           // balance=grand_total-finaldiscountvalue;
                                           //  balanceController.text=balance.toString();
-                                         
-
                                         },
                                         // autofocus: true,
                                         keyboardType:
@@ -1619,7 +1820,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                               ),
                                               controller: receivedController,
                                               onChanged: (text) {
-                                          totalCalcution();
+                                                totalCalcution();
                                               },
                                               // autofocus: true,
                                               keyboardType: TextInputType
@@ -1669,7 +1870,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           //   width:  screenWidth*0.455,
                                           //   child: TextFormField(
                                           //     decoration: const InputDecoration(
-
                                           //       labelText: 'Day',
                                           //       border: OutlineInputBorder(),
                                           //       // icon: Icon(Icons.numbers),
@@ -1693,9 +1893,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                 //   "treatment": titleDropdownvalue.toString(),
                                                 //   "fees": fees.text.toString(),
                                                 // };
-
                                                 // print(data);
-
                                                 // print(data);
                                                 // print(treatmentList);
                                                 // print(treatmentList.contains(data));
@@ -1758,14 +1956,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       total = (number * price) * day;
       // cal={
       //   "total":total.toString(),
-
       // };
     });
   }
-  totalCalcution(){
+
+  totalCalcution() {
     //treatment
     fees_total = 0;
-
     for (var value in treatmentList) {
       fees_total = fees_total + double.parse(value['fees']);
     }
@@ -1773,40 +1970,39 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     double finaldiscountvalue = discountController.text.isNotEmpty
         ? double.parse(discountController.text)
         : 0.0;
-        //recieved
-         double recieved = receivedController.text.isNotEmpty
+    //recieved
+    double recieved = receivedController.text.isNotEmpty
         ? double.parse(receivedController.text)
         : 0.0;
-        //change
-         double change =  changeController.text.isNotEmpty
-        ? double.parse( changeController.text)
+    //change
+    double change = changeController.text.isNotEmpty
+        ? double.parse(changeController.text)
         : 0.0;
     // var finaldiscountvalue = double.parse(
     // discountController.text);
     // balanceController.text=grand_total.toString();
-   
+
     //grand total
     grand_total = 0;
-    if(table_list.length>0){
-
-    for (var value in table_list) {
-      grand_total = grand_total + fees_total + double.parse(value['total']);
-    }}else{
+    if (table_list.length > 0) {
+      for (var value in table_list) {
+        grand_total = grand_total + fees_total + double.parse(value['total']);
+      }
+    } else {
       grand_total = grand_total + fees_total;
     }
     // return grand_total;
     grandtotalController.text = grand_total.toString();
-
     //balance
-     balance = grand_total - finaldiscountvalue;
+    balance = grand_total - finaldiscountvalue;
     balanceController.text = balance.toString();
   }
-   getpatientlist()async{
-     this.setState(() {
+
+  getpatientlist() async {
+    this.setState(() {
       isloading = true;
     });
-
-   var list = await PatientApi().getpatientlist(accesstoken);
+    var list = await PatientApi().getpatientlist(accesstoken);
     if (Helper().isvalidElement(list) &&
         Helper().isvalidElement(list['status']) &&
         list['status'] == 'Token is Expired') {
@@ -1820,46 +2016,83 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     }
   }
 
-   gettreatmentlist()async{   
-
-   var List = await PatientApi().gettreatmentlist(accesstoken);
+  gettreatmentlist() async {
+    var List = await PatientApi().gettreatmentlist(accesstoken);
     if (Helper().isvalidElement(List) &&
         Helper().isvalidElement(List['status']) &&
         List['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
       setState(() {
-         TreatmentList = List['list'];
+        TreatmentList = List['list'];
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
-     
     }
   }
 
-  getMediAndLabNameList()async{  
-    var data={
-      "type":click_button.toString(),
-
-    } ;
-
-   var List = await PatientApi().getMediAndLabNameList(accesstoken,data);
+  getMediAndLabNameList() async {
+    var data = {
+      "type": click_button.toString(),
+    };
+    var List = await PatientApi().getMediAndLabNameList(accesstoken, data);
     if (Helper().isvalidElement(List) &&
         Helper().isvalidElement(List['status']) &&
         List['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
       setState(() {
-        var MediAndLabNameList = List['list'];
-        var values=MediAndLabNameList;
+        MediAndLabNameList = List['list'];
+        var values = MediAndLabNameList;
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
-     
     }
   }
 
-   renderAutoComplete(screenWidth, screenHeight) {
+  getLabtestNameList() async {
+    var data = {
+      "shop_id": SelectedLab['shop_id'].toString(),
+    };
+
+    var List = await PatientApi().getLabtestList(accesstoken, data);
+    if (Helper().isvalidElement(List) &&
+        Helper().isvalidElement(List['status']) &&
+        List['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      setState(() {
+        //  MediAndLabNameList = List['list'];
+        TestList = List['list'];
+      });
+      // TreatmentList = List['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+    }
+  }
+
+  getMedicineList() async {
+    var data = {
+      "shop_id": Helper().isvalidElement(SelectedPharmacy['shop_id'])
+          ? SelectedPharmacy['shop_id'].toString()
+          : '',
+    };
+
+    var List = await PatientApi().getmedicineList(accesstoken, data);
+    if (Helper().isvalidElement(List) &&
+        Helper().isvalidElement(List['status']) &&
+        List['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      setState(() {
+        //  MediAndLabNameList = List['list'];
+        MedicineList = List['list'];
+      });
+      // TreatmentList = List['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+    }
+  }
+
+  renderAutoComplete(screenWidth, screenHeight) {
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
@@ -1873,9 +2106,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                 .toLowerCase()
                 .contains(textEditingValue.text.toLowerCase());
           });
-          this.setState(() {
-            showAutoComplete = true;
-          });
+          this.setState(() {});
           return [matches];
         }
       },
@@ -1887,7 +2118,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
             controller: textEditingController,
             focusNode: focusNode,
             decoration: InputDecoration(
-                 border: OutlineInputBorder(),
+                border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
                 hintText: ' Search Patient Name'),
@@ -1902,84 +2133,22 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
           child: Material(
             child: Container(
               width: screenWidth * 0.9,
-              // height: screenHeight * 0.4,
+              height: screenHeight * 0.8,
               color: Colors.white,
               child: ListView.builder(
                 padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
-
                   return GestureDetector(
-                    onTap: (){
-                       storage.setItem(
+                    onTap: () {
+                      storage.setItem(
                           'selectedPatient', options.toList()[0][index]);
-                          setState(() {
-                            showAutoComplete=false;
-                            selectedPatient = options.toList()[0][index];
-                          });
-
+                      setState(() {
+                        showAutoComplete = false;
+                        selectedPatient = options.toList()[0][index];
+                      });
                     },
-                    // onTap: () {
-                    //   storage.setItem(
-                    //       'selectedPatient', options.toList()[0][index]);
-                    //   this.setState(() {
-                    //     selectedPatient = options.toList()[0][index];
-                    //     nameController.text = Helper().isvalidElement(
-                    //             selectedPatient['customer_name'])
-                    //         ? selectedPatient['customer_name']
-                    //         : '';
-                    //     mobileController.text =
-                    //         Helper().isvalidElement(selectedPatient['phone'])
-                    //             ? selectedPatient['phone']
-                    //             : '';
-                    //     mailidController.text =
-                    //         Helper().isvalidElement(selectedPatient['email'])
-                    //             ? selectedPatient['email']
-                    //             : '';
-                    //     companyController.text = Helper()
-                    //             .isvalidElement(selectedPatient['company_name'])
-                    //         ? selectedPatient['company_name']
-                    //         : '';
-                    //     manualidController.text = Helper()
-                    //             .isvalidElement(selectedPatient['manual_id'])
-                    //         ? selectedPatient['manual_id']
-                    //         : '';
-                    //     registernoController.text = Helper()
-                    //             .isvalidElement(selectedPatient['registration'])
-                    //         ? selectedPatient['registration']
-                    //         : '';
-                    //     gstController.text = Helper()
-                    //             .isvalidElement(selectedPatient['customer_gst'])
-                    //         ? selectedPatient['customer_gst']
-                    //         : '';
-                    //     dlnoController.text = Helper().isvalidElement(
-                    //             selectedPatient['customer_dlno'])
-                    //         ? selectedPatient['customer_dlno']
-                    //         : '';
-                    //     address1Controller.text = Helper().isvalidElement(
-                    //             selectedPatient['address_line_1'])
-                    //         ? selectedPatient['address_line_1']
-                    //         : '';
-                    //     address2Controller.text = Helper().isvalidElement(
-                    //             selectedPatient['address_line_2'])
-                    //         ? selectedPatient['address_line_2']
-                    //         : '';
-                    //     cityController.text =
-                    //         Helper().isvalidElement(selectedPatient['city'])
-                    //             ? selectedPatient['city']
-                    //             : '';
-                    //     stateController.text =
-                    //         Helper().isvalidElement(selectedPatient['state'])
-                    //             ? selectedPatient['state']
-                    //             : '';
-                    //     pincodeController.text =
-                    //         Helper().isvalidElement(selectedPatient['pincode'])
-                    //             ? selectedPatient['pincode']
-                    //             : '';
-                    //     showAutoComplete = false;
-                    //   });
-                    // },
                     child: Card(
                       color: Colors.grey,
                       // color: custom_color.app_color,
@@ -1990,6 +2159,382 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+                                style: const TextStyle(color: Colors.black)),
+                          ),
+                          // Divider(
+                          //   thickness: 1,
+                          // )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  renderLablistAutoComplete(screenWidth, screenHeight) {
+    return Autocomplete<List>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<List>.empty();
+        } else {
+          var matches = [];
+          matches.addAll(MediAndLabNameList);
+          matches.retainWhere((s) {
+            return s['pharmacy_name']
+                .toString()
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          });
+          this.setState(() {});
+          return [matches];
+        }
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextFormField(
+            controller: textEditingController,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                // prefix: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
+                hintText: ' Search Lab Name'),
+            onFieldSubmitted: (String value) {
+              onFieldSubmitted();
+            });
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            child: Container(
+              width: screenWidth * 0.9,
+              height: screenHeight * 0.4,
+              color: Colors.white,
+              child: ListView.builder(
+                padding: EdgeInsets.all(5.0),
+                itemCount: options.toList()[0].length,
+                itemBuilder: (BuildContext context, int index) {
+                  final option = options.toList()[0].elementAt(index);
+
+                  return GestureDetector(
+                    onTap: () {
+                      //  storage.setItem(
+                      //     'selectedPatient', options.toList()[0][index]);
+                      setState(() {
+                        labshowAutoComplete = false;
+                        testshowAutoComplete = true;
+                        SelectedLab = options.toList()[0][index];
+                        labnameController.text = Helper()
+                                .isvalidElement(SelectedLab['pharmacy_name'])
+                            ? SelectedLab['pharmacy_name']
+                            : '';
+                        getLabtestNameList();
+                        // getLabtestNameList();
+                      });
+                    },
+                    child: Card(
+                      color: Colors.grey,
+                      // color: custom_color.app_color,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                '${options.toList()[0][index]['pharmacy_name'].toString()} ',
+                                style: const TextStyle(color: Colors.black)),
+                          ),
+                          // Divider(
+                          //   thickness: 1,
+                          // )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  rendertestlistAutoComplete(screenWidth, screenHeight) {
+    return Autocomplete<List>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<List>.empty();
+        } else {
+          //  getLabtestNameList();
+          //  setState(() {
+
+          //  });
+          var matches = [];
+          matches.addAll(TestList);
+          matches.retainWhere((s) {
+            return s['test_name']
+                .toString()
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          });
+          this.setState(() {});
+          return [matches];
+        }
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextFormField(
+            controller: textEditingController,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                // prefix: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
+                hintText: ' Search Test Name'),
+            onFieldSubmitted: (String value) {
+              onFieldSubmitted();
+            });
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            child: Container(
+              width: screenWidth * 0.9,
+              height: screenHeight * 0.5,
+              color: Colors.white,
+              child: ListView.builder(
+                physics: AlwaysScrollableScrollPhysics(),
+                shrinkWrap: true,
+                padding: EdgeInsets.all(5.0),
+                itemCount: options.toList()[0].length,
+                itemBuilder: (BuildContext context, int index) {
+                  final option = options.toList()[0].elementAt(index);
+
+                  return GestureDetector(
+                    onTap: () {
+                      //  storage.setItem(
+                      //     'selectedPatient', options.toList()[0][index]);
+                      setState(() {
+                        testshowAutoComplete = false;
+                        SelectedTest = options.toList()[0][index];
+                        testnameController.text =
+                            Helper().isvalidElement(SelectedTest['test_name'])
+                                ? SelectedTest['test_name']
+                                : '';
+                      });
+                    },
+                    child: Card(
+                      color: Colors.grey,
+                      // color: custom_color.app_color,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                '${options.toList()[0][index]['test_name'].toString()} ',
+                                style: const TextStyle(color: Colors.black)),
+                          ),
+                          // Divider(
+                          //   thickness: 1,
+                          // )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  renderpharmacylistAutoComplete(screenWidth, screenHeight) {
+    return Autocomplete<List>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<List>.empty();
+        } else {
+          var matches = [];
+          matches.addAll(MediAndLabNameList);
+          matches.retainWhere((s) {
+            return s['pharmacy_name']
+                .toString()
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          });
+          this.setState(() {});
+          return [matches];
+        }
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextFormField(
+            controller: textEditingController,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                // prefix: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
+                hintText: ' Search pharmacy Name'),
+            onFieldSubmitted: (String value) {
+              onFieldSubmitted();
+            });
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            child: Container(
+              width: screenWidth * 0.9,
+              height: screenHeight * 0.4,
+              color: Colors.white,
+              child: ListView.builder(
+                padding: EdgeInsets.all(5.0),
+                itemCount: options.toList()[0].length,
+                itemBuilder: (BuildContext context, int index) {
+                  final option = options.toList()[0].elementAt(index);
+
+                  return GestureDetector(
+                    onTap: () {
+                      //  storage.setItem(
+                      //     'selectedPatient', options.toList()[0][index]);
+                      setState(() {
+                        pharmacyshowAutoComplete = false;
+                        testshowAutoComplete = true;
+                        SelectedPharmacy = options.toList()[0][index];
+                        getMedicineList();
+                        pharmacyController.text = Helper().isvalidElement(
+                                SelectedPharmacy['pharmacy_name'])
+                            ? SelectedPharmacy['pharmacy_name']
+                            : '';
+                        // getLabtestNameList();
+                      });
+                    },
+                    child: Card(
+                      color: Colors.grey,
+                      // color: custom_color.app_color,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                '${options.toList()[0][index]['pharmacy_name'].toString()} ',
+                                style: const TextStyle(color: Colors.black)),
+                          ),
+                          // Divider(
+                          //   thickness: 1,
+                          // )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  rendermedicinelistAutoComplete(screenWidth, screenHeight) {
+    return Autocomplete<List>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<List>.empty();
+        } else {
+          var matches = [];
+          matches.addAll(MedicineList);
+          matches.retainWhere((s) {
+            return s['name']
+                .toString()
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          });
+          this.setState(() {});
+          return [matches];
+        }
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextFormField(
+            controller: textEditingController,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                // prefix: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
+                hintText: ' Search medicine Name'),
+            onFieldSubmitted: (String value) {
+              onFieldSubmitted();
+            });
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            child: Container(
+              width: screenWidth * 0.9,
+              height: screenHeight * 0.4,
+              color: Colors.white,
+              child: ListView.builder(
+                padding: EdgeInsets.all(5.0),
+                itemCount: options.toList()[0].length,
+                itemBuilder: (BuildContext context, int index) {
+                  final option = options.toList()[0].elementAt(index);
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        medicineshowAutoComplete = false;
+                        Selectedmedicine = options.toList()[0][index];
+                        // getMedicineList();
+                        medicineController.text =
+                            Helper().isvalidElement(Selectedmedicine['name'])
+                                ? Selectedmedicine['name'].toString()
+                                : '';
+                        priceController.text =
+                            Helper().isvalidElement(Selectedmedicine['mrp'])
+                                ? Selectedmedicine['mrp'].toString()
+                                : '';
+                        // getLabtestNameList();
+                      });
+                    },
+                    child: Card(
+                      color: Colors.grey,
+                      // color: custom_color.app_color,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                '${options.toList()[0][index]['name'].toString()} ',
                                 style: const TextStyle(color: Colors.black)),
                           ),
                           // Divider(
