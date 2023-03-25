@@ -9,11 +9,13 @@ import 'package:nigdoc/AppWidget/BillingWidget/View/Pendingbilllist.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 // import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/veiw/DoctorList.dart';
+import 'package:nigdoc/AppWidget/LabLink/LabList.dart';
 import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Patients.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Prescription.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/PharmacyLink/PharmacyList.dart';
+import 'package:nigdoc/AppWidget/Shop/View/ClinicConfiguration.dart';
 import 'package:nigdoc/AppWidget/Shop/View/ClinicProfile.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/veiw/StaffList.dart';
 // import 'package:nigdoc/AppWidget/StaffWidget/StaffList.dart';
@@ -315,9 +317,7 @@ class _NigdocmenubarState extends State<Nigdocmenubar> {
                               title: Text('Pharmacy Link'),
                               leading: Icon(Icons.local_pharmacy),
                               onTap: () {
-                                Navigator.push(context,MaterialPageRoute(builder: (context)=>PharmacyList())
-
-                                );
+                                Navigator.push(context,MaterialPageRoute(builder: (context)=>PharmacyList()));
 
 
                               },
@@ -325,7 +325,9 @@ class _NigdocmenubarState extends State<Nigdocmenubar> {
                             ListTile(
                               title: Text('Lab Link'),
                               leading: Icon(Icons.medical_information_sharp),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(context,MaterialPageRoute(builder: (context)=>LabList()));
+                              },
                             ),
                             ListTile(
                               title: Text('Clinic Profile'),
@@ -341,7 +343,9 @@ class _NigdocmenubarState extends State<Nigdocmenubar> {
                             ListTile(
                               title: Text('Clinic Configuration'),
                               leading: Icon(Icons.confirmation_number_sharp),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(context,MaterialPageRoute(builder: (context)=>ClinicConfig()));
+                              },
                             ),
                             // ListTile(
                             //   title: Text('Report Configuration'),

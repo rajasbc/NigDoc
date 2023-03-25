@@ -85,7 +85,7 @@ class _MedicineListState extends State<MedicineList> {
               children: [
                 SizedBox(height: 20,),
                  Container(
-                                              width: screenWidth *0.9,
+                                              width: screenWidth *0.95,
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(0.0),
@@ -187,7 +187,7 @@ class _MedicineListState extends State<MedicineList> {
                     Center(child: 
                     Container(
                       height: screenHeight * 0.06,
-                      width: screenWidth*0.9,
+                      width: screenWidth*0.95,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border:
@@ -258,7 +258,7 @@ class _MedicineListState extends State<MedicineList> {
                           padding:EdgeInsets.all(5),
                           child: 
                           ListView.builder(
-                            // shrinkWrap: true,
+                            shrinkWrap: true,
                             itemCount: medicine_List.length,
                             itemBuilder: (BuildContext context, int index){
                               list=index+1;
@@ -273,6 +273,7 @@ class _MedicineListState extends State<MedicineList> {
                                                     : Colors.white,
                                       child: ListTile(
                                         title: SizedBox(child: Text('${data['name']}')),
+                                        subtitle: Text('₹  ${data['mrp']}'),
                                         leading: Padding(
                                           padding: const EdgeInsets.only(top:3.0),
                                           child: Text('$list'),

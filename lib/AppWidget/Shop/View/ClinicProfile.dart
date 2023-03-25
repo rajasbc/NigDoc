@@ -35,6 +35,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
   String shopDropdownvalue = '';
   bool isLoading =true;
+  bool isSwitched = false;
   var userResponse;
 
   var shop = [
@@ -64,7 +65,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
   //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
-
+    
     setState(() {
       image = img;
     });
@@ -736,6 +737,18 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),
+                                // Switch(
+                                //         value: isSwitched,
+                                //         onChanged: (value) {
+                                //           setState(() {
+                                //             isSwitched = value;
+                                //             print(isSwitched);
+                                //           });
+                                //         },
+                                //         activeTrackColor:
+                                //             Colors.lightGreenAccent,
+                                //         activeColor: Colors.green,
+                                //       ),
                                 Container(
                                   // color: Colors.blue,
                                   width: screenWidth * 0.33,
@@ -877,7 +890,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         SizedBox(
                           height: 20,
                         ),
-                        // Container(
+                                                // Container(
                         //   height: screenHeight * 0.06,
                         //   width: screenWidth * 0.7,
                         //   // color:Colors.blueAccent,
@@ -951,6 +964,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
       shoptypeController.text =  Helper().isvalidElement(list['clinic_type'])? list['clinic_type'].toString():'';
       clinicRegnumberController.text =  Helper().isvalidElement(list['register_id'])? list['register_id'].toString():'';
       isLoading=true;
+      // isSwitched=Helper().isvalidElement(list['barcode'])&&list['barcode'].toString().toLowerCase()=='no'?false:true ;
     });
   }
 }

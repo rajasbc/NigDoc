@@ -5,18 +5,18 @@ import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
-class PharmacyList extends StatefulWidget {
-  const PharmacyList({super.key});
+class LabList extends StatefulWidget {
+  const LabList({super.key});
 
   @override
-  State<PharmacyList> createState() => _PharmacyListState();
+  State<LabList> createState() => _LabListState();
 }
 
-class _PharmacyListState extends State<PharmacyList> {
+class _LabListState extends State<LabList> {
   final LocalStorage storage = new LocalStorage('doctor_store');
   var list;
   var accesstoken;
-  var Pharmacylist;
+  var lablist;
   bool isloading=false;
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _PharmacyListState extends State<PharmacyList> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              'Pharmacy List',
+              'Lab List',
               style: TextStyle(color: Colors.white),
             ),
             // backgroundColor: ,
@@ -65,16 +65,16 @@ class _PharmacyListState extends State<PharmacyList> {
           body:isloading? Container(
             height: screenHeight,
             width: screenWidth,
-            child:Helper().isvalidElement(Pharmacylist)&&Pharmacylist.length>0? Container(
+            child:Helper().isvalidElement(lablist)&&lablist.length>0? Container(
                 height: screenHeight * 0.75,
                 width: screenWidth,
                 padding: EdgeInsets.all(5),
                 child: ListView.builder(
                     // shrinkWrap: true,
-                    itemCount: Pharmacylist.length,
+                    itemCount: lablist.length,
                     itemBuilder: (BuildContext context, int index) {
                       list = index + 1;
-                      var data=Pharmacylist[index];
+                      var data=lablist[index];
                       return Container(
                         child: Column(
                           children: [
@@ -190,7 +190,7 @@ class _PharmacyListState extends State<PharmacyList> {
   }
   getMediAndLabNameList() async {
     var data = {
-      "type":'pharmacy',
+      "type":'lab',
     };
     var List = await PatientApi().getMediAndLabNameList(accesstoken, data);
     if (Helper().isvalidElement(List) &&
@@ -200,7 +200,7 @@ class _PharmacyListState extends State<PharmacyList> {
     } else {
       setState(() {
         isloading=true;
-        Pharmacylist = List['list'];
+        lablist = List['list'];
         // var values = MediAndLabNameList;
       });
       // TreatmentList = List['list'];
