@@ -4,6 +4,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
 class PrescriptionPage extends StatefulWidget {
@@ -32,6 +33,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   String treatmentDropdownvalue = 'Select Treatment';
   String patternDropdownvalue = 'pattern';
   String prescriptionDropdownvalue = 'Prescription';
+  String? finaldiscount = 'amount';
   var select_button = 'treatment';
   var Medicine = 'Medicine';
   var total;
@@ -50,6 +52,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   var MediAndLabNameList;
   var SelectedLab;
   var SelectedPharmacy;
+  // bool isLoading=false;
   bool labshowAutoComplete = true;
   bool testshowAutoComplete = false;
   bool pharmacyshowAutoComplete = true;
@@ -136,7 +139,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
             // ],
           ),
         ),
-        body: Padding(
+        body: isloading? Padding(
           padding: const EdgeInsets.all(0.0),
           child: Container(
             height: screenHeight,
@@ -383,11 +386,12 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                             )),
                           ),
                           onTap: () {
-                            getMedicineList();
+                            // getMedicineList();
                             this.setState(() {
                               select_button = "medicine";
                               click_button = 'pharmacy';
                               getMediAndLabNameList();
+                              getMedicineList();
                               // getMedicineList();
                               // billList();
                             });
@@ -442,7 +446,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          height: screenHeight * 0.65,
+                          height: screenHeight * 0.75,
                           child: SingleChildScrollView(
                             physics: ScrollPhysics(),
                             child: Column(
@@ -630,10 +634,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           // width: 100,
                                           child: TextButton(
                                               onPressed: () {
-                                                if (treatmentname.isEmpty) {
+                                                if (treatmentDropdownvalue=='null'||treatmentDropdownvalue=='Select Treatment') {
                                                   Fluttertoast.showToast(
                                                       msg:
-                                                          'pls select treatment',
+                                                          'Please select treatment',
                                                       toastLength:
                                                           Toast.LENGTH_SHORT,
                                                       gravity:
@@ -643,7 +647,20 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                           Colors.red,
                                                       textColor: Colors.white,
                                                       fontSize: 15.0);
-                                                } else {
+                                                } else if (fees.text.isEmpty) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Please enter Fees',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
+                                                } else{
                                                   var data = {
                                                     "treatment": treatmentname
                                                         .toString(),
@@ -684,6 +701,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
 
                                                   setState(() {
                                                     TreatmentList = null;
+                                                    treatmentDropdownvalue='null';
                                                     fees.clear();
                                                   });
                                                   setState(() {
@@ -880,7 +898,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                               if (labnameController
                                                   .text.isEmpty) {
                                                 Fluttertoast.showToast(
-                                                    msg: 'pls select Lab',
+                                                    msg: 'Please select Lab',
                                                     toastLength:
                                                         Toast.LENGTH_SHORT,
                                                     gravity:
@@ -892,7 +910,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                               } else if (testnameController
                                                   .text.isEmpty) {
                                                 Fluttertoast.showToast(
-                                                    msg: 'pls select testlist',
+                                                    msg: 'Please select testlist',
                                                     toastLength:
                                                         Toast.LENGTH_SHORT,
                                                     gravity:
@@ -910,10 +928,11 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                       testnameController.text
                                                           .toString(),
                                                 };
-                                                print(test);
+                                                // print(test);
                                                 print(test);
                                                 print(testList);
                                                 print(testList.contains(test));
+                                                
                                                 if (testList.contains(test)) {
                                                   testList.remove(test);
                                                 } else {
@@ -1026,9 +1045,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                     : Container(),
                 select_button == "medicine"
                     ? Container(
-                        height: screenHeight * 0.75,
+                        height: screenHeight * 0.76,
                         child: SingleChildScrollView(
-                          physics: ClampingScrollPhysics(),
+                          physics: ScrollPhysics(),
+                          
                           //  reverse: true,
                           child: Column(
                             children: [
@@ -1051,6 +1071,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                               controller: pharmacyController,
                                               onChanged: (text) {
                                                 setState(() {
+                                                  SelectedPharmacy=null;
+                                                  getMedicineList();
                                                   pharmacyController
                                                           .text.isEmpty
                                                       ? pharmacyshowAutoComplete =
@@ -1147,7 +1169,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                             ),
                                             isExpanded: true,
                                             hint: Text(
-                                              'Select Pattern',
+                                              'Select Pattern'
                                             ),
                                             // value:patternDropdownvalue,
                                             onChanged: (item) async {
@@ -1240,14 +1262,14 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                             value: prescriptionDropdownvalue,
                                             autovalidateMode:
                                                 AutovalidateMode.always,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty ||
-                                                  value == "Title") {
-                                                return 'please select Title';
-                                              }
-                                              return null;
-                                            },
+                                            // validator: (value) {
+                                            //   if (value == null ||
+                                            //       value.isEmpty ||
+                                            //       value == "Title") {
+                                            //     return 'please select Title';
+                                            //   }
+                                            //   return null;
+                                            // },
                                             decoration: const InputDecoration(
                                               labelText: 'Prescription',
                                               border: OutlineInputBorder(),
@@ -1275,59 +1297,59 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
+                                        // SizedBox(
+                                        //   width: 180,
+                                        //   child: TextButton(
+                                        //       onPressed: () async {
+                                        //         // var data = {
+                                        //         //   "treatment": titleDropdownvalue.toString(),
+                                        //         //   "fees": fees.text.toString(),
+                                        //         // };
+                                        //         // print(data);
+                                        //         // print(data);
+                                        //         // print(treatmentList);
+                                        //         // print(treatmentList.contains(data));
+                                        //         // if (treatmentList.contains(data)) {
+                                        //         //   treatmentList.remove(data);
+                                        //         // } else {
+                                        //         //   treatmentList.add(data);
+                                        //         // }
+                                        //         // print(treatmentList);
+                                        //         // setState(() {
+                                        //         //   fees.clear();
+                                        //         //   titleDropdownvalue = 'Select Treatment';
+                                        //         // });
+                                        //       },
+                                        //       child: Text(
+                                        //         "Add Command",
+                                        //         style: TextStyle(
+                                        //             color: Colors.white,
+                                        //             fontSize: 12,
+                                        //             fontWeight:
+                                        //                 FontWeight.bold),
+                                        //       ),
+                                        //       style: ButtonStyle(
+                                        //           backgroundColor:
+                                        //               MaterialStateProperty.all<
+                                        //                       Color>(
+                                        //                   Color.fromARGB(
+                                        //                       255, 10, 132, 87)),
+                                        //           shape: MaterialStateProperty.all<
+                                        //                   RoundedRectangleBorder>(
+                                        //               RoundedRectangleBorder(
+                                        //                   borderRadius:
+                                        //                       BorderRadius.circular(4.0),
+                                        //                   side: BorderSide(color: Colors.blue))))),
+                                        // ),
                                         SizedBox(
-                                          width: 180,
-                                          child: TextButton(
-                                              onPressed: () async {
-                                                // var data = {
-                                                //   "treatment": titleDropdownvalue.toString(),
-                                                //   "fees": fees.text.toString(),
-                                                // };
-                                                // print(data);
-                                                // print(data);
-                                                // print(treatmentList);
-                                                // print(treatmentList.contains(data));
-                                                // if (treatmentList.contains(data)) {
-                                                //   treatmentList.remove(data);
-                                                // } else {
-                                                //   treatmentList.add(data);
-                                                // }
-                                                // print(treatmentList);
-                                                // setState(() {
-                                                //   fees.clear();
-                                                //   titleDropdownvalue = 'Select Treatment';
-                                                // });
-                                              },
-                                              child: Text(
-                                                "Add Command",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<
-                                                              Color>(
-                                                          Color.fromARGB(
-                                                              255, 10, 132, 87)),
-                                                  shape: MaterialStateProperty.all<
-                                                          RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(4.0),
-                                                          side: BorderSide(color: Colors.blue))))),
-                                        ),
-                                        SizedBox(
-                                          width: 180,
+                                          width: screenWidth*0.955,
                                           child: TextButton(
                                               onPressed: () async {
                                                 if (pharmacyController
                                                     .text.isEmpty) {
                                                   Fluttertoast.showToast(
                                                       msg:
-                                                          'pls select pharmacy',
+                                                          'Please select pharmacy',
                                                       toastLength:
                                                           Toast.LENGTH_SHORT,
                                                       gravity:
@@ -1341,7 +1363,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     .text.isEmpty) {
                                                   Fluttertoast.showToast(
                                                       msg:
-                                                          'pls select medicine',
+                                                          'Please select medicine',
                                                       toastLength:
                                                           Toast.LENGTH_SHORT,
                                                       gravity:
@@ -1354,7 +1376,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                 } else if (priceController
                                                     .text.isEmpty) {
                                                   Fluttertoast.showToast(
-                                                      msg: 'pls select price',
+                                                      msg: 'Please select price',
                                                       toastLength:
                                                           Toast.LENGTH_SHORT,
                                                       gravity:
@@ -1367,7 +1389,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                 } else if (dayController
                                                     .text.isEmpty) {
                                                   Fluttertoast.showToast(
-                                                      msg: 'pls select days',
+                                                      msg: 'Please enter the days',
                                                       toastLength:
                                                           Toast.LENGTH_SHORT,
                                                       gravity:
@@ -1382,7 +1404,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     patternDropdownvalue ==
                                                         'pattern') {
                                                   Fluttertoast.showToast(
-                                                      msg: 'pls select pattern',
+                                                      msg: 'Please select pattern',
                                                       toastLength:
                                                           Toast.LENGTH_SHORT,
                                                       gravity:
@@ -1393,10 +1415,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                       textColor: Colors.white,
                                                       fontSize: 15.0);
                                                 } else if (prescriptionDropdownvalue
-                                                    .isEmpty) {
+                                                    .isEmpty||prescriptionDropdownvalue=='Prescription') {
                                                   Fluttertoast.showToast(
                                                       msg:
-                                                          'pls select prescription',
+                                                          'Please select prescription',
                                                       toastLength:
                                                           Toast.LENGTH_SHORT,
                                                       gravity:
@@ -1481,17 +1503,17 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     priceController.clear();
                                                     dayController.clear();
                                                     patternDropdownvalue =
-                                                        'null';
+                                                        'pattern';
                                                     prescriptionDropdownvalue =
                                                         'Prescription';
                                                   });
                                                 }
                                               },
                                               child: Text(
-                                                "Add",
+                                                "Add Medicine",
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 12,
+                                                    fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -1513,9 +1535,22 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     SizedBox(height: 10),
                                   ],
                                 )),
-                              ),
+                              ), Helper().isvalidElement(table_list) &&
+                                      select_button == 'medicine' &&
+                                      table_list.length > 0
+                                  ? Container(
+                                      width: screenWidth,
+                                      child: Text(
+                                        '  Medicine List :',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
+                                    )
+                                  : Container(),
                               Helper().isvalidElement(table_list) &&
                                       table_list.length > 0
+                                      
                                   ? Container(
                                       padding: const EdgeInsets.all(5),
                                       // height: screenHeight * 0.6,
@@ -1531,6 +1566,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                             final data = table_list[index];
                                             return Container(
                                               child: Card(
+                                                color: index % 2 == 0
+                                                    ? Color.fromARGB(
+                                                        255, 218, 235, 238)
+                                                    : Colors.white,
                                                   child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
@@ -1600,6 +1639,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         ),
                                                       ],
                                                     ),
+                                                     SizedBox(height:10),
                                                     Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -1656,13 +1696,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                             )
                                                           ],
                                                         ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
                                                         Row(
                                                           children: [
                                                             Text(
@@ -1680,6 +1713,31 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                             )
                                                           ],
                                                         ),
+                                                      ],
+                                                    ),
+                                                    // SizedBox(height:8),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        // Row(
+                                                        //   children: [
+                                                        //     Text(
+                                                        //       'Total Qty: ',
+                                                        //       style: TextStyle(
+                                                        //           fontWeight:
+                                                        //               FontWeight
+                                                        //                   .bold,
+                                                        //           fontSize: 13),
+                                                        //     ),
+                                                        //     Text(
+                                                        //       "${data['total_qty'].toString()}",
+                                                        //       style: TextStyle(
+                                                        //           fontSize: 15),
+                                                        //     )
+                                                        //   ],
+                                                        // ),
                                                         Row(
                                                           children: [
                                                             Text(
@@ -1691,7 +1749,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                                   fontSize: 13),
                                                             ),
                                                             Text(
-                                                              "${data['price'].toString()} ",
+                                                              "₹ ${data['price'].toString()} ",
                                                               style: TextStyle(
                                                                   fontSize: 15),
                                                             )
@@ -1708,12 +1766,29 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                                   fontSize: 13),
                                                             ),
                                                             Text(
-                                                              "${data['total'].toString()} ",
+                                                              "₹ ${data['total'].toString()} ",
                                                               style: TextStyle(
                                                                   fontSize: 15),
                                                             )
                                                           ],
                                                         ),
+                                                        SizedBox(
+                                                          child: TextButton(
+                                                                      child: Text(
+                                                                        "Remove",
+                                                                        style: TextStyle(fontSize: 15,color: Colors.red),
+                                                                      ),
+                                                                      onPressed: () async {
+                                                                        setState(() {
+                                                                          //  table_List.remove(data);
+                                                                           table_list.remove(data);
+                                                                            // tableCalCulation();
+                                                                            totalCalcution();
+                                                                        });
+                                                                        
+                                                                      },
+                                                                    ),
+                                                        )
                                                       ],
                                                     ),
                                                     // Card(
@@ -1745,6 +1820,50 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           }),
                                     )
                                   : Container(),
+                                    Container(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Final Discount",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      Divider(),
+                                      
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: screenWidth*0.5,
+                                            child: RadioListTile(
+                                              title: Text("Amount ₹"),
+                                              value: "amount",
+                                              groupValue: finaldiscount,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  finaldiscount = value.toString();
+                                                });
+                                              },
+                                            ),
+                                          ),
+
+                                           Container(
+                                        width: screenWidth*0.5,
+                                        child: RadioListTile(
+                                          title: Text("percentage %"),
+                                          value: "percentage",
+                                          groupValue: finaldiscount,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              finaldiscount = value.toString();
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                        ],
+                                      ),
+                                     
+                                    ],
+                                  ),
+                                ),
                               //  Container(height: screenHeight*0.5,),
                               SizedBox(height: 5),
                               Padding(
@@ -1763,6 +1882,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                         ),
                                         controller: discountController,
                                         onChanged: (text) {
+                                          if(finaldiscount=='amount'){
+                                            
+                                          }
                                           totalCalcution();
                                           // double finaldiscountvalue =
                                           //     discountController.text.isNotEmpty
@@ -1942,7 +2064,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
               ],
             ),
           ),
-        ),
+        ):SpinLoader(),
       ),
     );
   }
@@ -1999,19 +2121,20 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   }
 
   getpatientlist() async {
-    this.setState(() {
-      isloading = true;
-    });
+    // this.setState(() {
+    //   isloading = true;
+    // });
     var list = await PatientApi().getpatientlist(accesstoken);
     if (Helper().isvalidElement(list) &&
         Helper().isvalidElement(list['status']) &&
         list['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
-      PatientList = list['Customer_list'];
+      
       //  storage.setItem('diagnosisList', diagnosisList);
-      this.setState(() {
-        isloading = false;
+      setState(() {
+        PatientList = list['Customer_list'];
+        isloading = true;
       });
     }
   }
@@ -2072,9 +2195,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
 
   getMedicineList() async {
     var data = {
-      "shop_id": Helper().isvalidElement(SelectedPharmacy['shop_id'])
+      "shop_id": Helper().isvalidElement(SelectedPharmacy)
           ? SelectedPharmacy['shop_id'].toString()
-          : '',
+          : ' ',
     };
 
     var List = await PatientApi().getmedicineList(accesstoken, data);
