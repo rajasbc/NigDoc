@@ -8,3 +8,5 @@ String getMediAndLabNameListEndpoint ="auth/getMediAndLabNameList";
 String getlabtestListEndpoint ="auth/linkLabList";
 String getmedicineListEndpoint ="auth/linkMedicineList";
 String apppatientEndpoint ="auth/addPatient";
+String getclinicconfigEndpoint = "auth/getClinicConfig";
+String getinjectionEndpoint = "auth/getInjectionList";

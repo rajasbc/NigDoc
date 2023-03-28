@@ -28,12 +28,14 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   TextEditingController balanceController = TextEditingController();
   TextEditingController changeController = TextEditingController();
   TextEditingController pharmacyController = TextEditingController();
+  TextEditingController injectionnameController=TextEditingController();
+  TextEditingController doseController=TextEditingController();
   var searchList;
   var PatientList;
   String treatmentDropdownvalue = 'Select Treatment';
   String patternDropdownvalue = 'pattern';
   String prescriptionDropdownvalue = 'Prescription';
-  String? finaldiscount = 'amount';
+  String? finaldiscount = 'percentage';
   var select_button = 'treatment';
   var Medicine = 'Medicine';
   var total;
@@ -42,6 +44,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   var noon;
   var night;
   var cal;
+  var Pattern_type;
   double grand_total = 0.0;
   double balance = 0;
   bool showAutoComplete = true;
@@ -52,15 +55,19 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   var MediAndLabNameList;
   var SelectedLab;
   var SelectedPharmacy;
+  var SelectedInjection;
   // bool isLoading=false;
   bool labshowAutoComplete = true;
   bool testshowAutoComplete = false;
   bool pharmacyshowAutoComplete = true;
   bool medicineshowAutoComplete = true;
+  bool injectionshowautoComplete=true;
   var TestList;
   var SelectedTest;
   var MedicineList;
   var Selectedmedicine;
+  var InjectionList;
+  double final_grand_total=0.0;
 
   var treatment = ['Select Treatment', 'Ferver', 'Head Ache'];
   // var pattern = ['pattern', '0-0-0', '1-1-1', '1-0-1'];
@@ -86,7 +93,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   List testList = [];
   List medicineList = [];
   List table_list = [];
-  double fees_total = 0;
+  List injectionlist=[];
+  double fees_total =0.0;
   var accesstoken;
   bool isloading = false;
   @override
@@ -95,7 +103,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     accesstoken = storage.getItem('userResponse')['access_token'];
     getpatientlist();
     gettreatmentlist();
-    grandtotalController.text = grand_total.toString();
+    // grandtotalController.text = grand_total.toString();
+    getInjectionList();
   }
 
   @override
@@ -357,6 +366,47 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                             height: screenHeight * 0.05,
                             decoration: BoxDecoration(
                               border: Border.all(width: 2, color: Colors.white),
+                              color: select_button == "injection"
+                                  ? Colors.blue
+                                  : Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 3,
+                                  blurRadius: 3,
+                                  offset: Offset(
+                                      0, 1), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                                child: Text(
+                              "Injection",
+                              style: TextStyle(
+                                  color: select_button == "injection"
+                                      ? Colors.white
+                                      : Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                          ),
+                          onTap: () {
+                            this.setState(() {
+                              select_button = "injection";
+                              // billList();
+                            });
+                          },
+                        ),
+                        InkWell(
+                          child: Container(
+                            width: screenWidth * 0.2,
+                            height: screenHeight * 0.05,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 2, color: Colors.white),
                               color: select_button == "medicine"
                                   ? Colors.blue
                                   : Colors.white,
@@ -397,47 +447,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                             });
                           },
                         ),
-                        InkWell(
-                          child: Container(
-                            width: screenWidth * 0.2,
-                            height: screenHeight * 0.05,
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 2, color: Colors.white),
-                              color: select_button == "injection"
-                                  ? Colors.blue
-                                  : Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 3,
-                                  blurRadius: 3,
-                                  offset: Offset(
-                                      0, 1), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                                child: Text(
-                              "Injection",
-                              style: TextStyle(
-                                  color: select_button == "injection"
-                                      ? Colors.white
-                                      : Colors.blue,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                          ),
-                          onTap: () {
-                            this.setState(() {
-                              select_button = "injection";
-                              // billList();
-                            });
-                          },
-                        ),
+                        
                       ],
                     ),
                   ),
@@ -664,8 +674,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   var data = {
                                                     "treatment": treatmentname
                                                         .toString(),
-                                                    "fees":
+                                                    "consult_fees":
                                                         fees.text.toString(),
+                                                        "description":""
                                                   };
                                                   // print(data);
                                                   print(data);
@@ -685,7 +696,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     treatmentList.remove(data);
                                                   } else {
                                                     treatmentList.add(data);
-                                                    totalCalcution();
+                                                    // totalCalcution();
                                                     // fees_total=0;
 
                                                     // for (var value
@@ -696,6 +707,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
 
                                                     // }
                                                   }
+                                                  totalCalcution();
                                                   print(treatmentList);
                                                   gettreatmentlist();
 
@@ -780,7 +792,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         '${data['treatment'].toString()}',
                                                       ),
                                                       subtitle: Text(
-                                                          '${"₹ " + data['fees'].toString()}'),
+                                                          '${"₹ " + data['consult_fees'].toString()}'),
                                                       trailing: IconButton(
                                                         onPressed: () {
                                                           setState(() {
@@ -805,6 +817,11 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                               ));
                                             })
                                         : Container()),
+                                        Card(child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Text('Total Treatment Amount = ${fees_total}',style: TextStyle(fontSize: 20),),
+                                        )
+                                          ,)
                               ],
                             ),
                           ),
@@ -927,6 +944,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   "test_name":
                                                       testnameController.text
                                                           .toString(),
+                                                          "test_id":SelectedTest['test_id']
+                                                      ,
+
                                                 };
                                                 // print(test);
                                                 print(test);
@@ -1043,6 +1063,211 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                         ),
                       )
                     : Container(),
+                    select_button == "injection"
+                    ? Container(
+                        height: screenHeight * 0.7,
+                        child: SingleChildScrollView(
+                          physics: ScrollPhysics(),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  width: screenWidth,
+                                  child: Column(
+                                    children: [
+                                      injectionshowautoComplete?renderinjectionlistAutoComplete(screenWidth, screenHeight):
+                                       SizedBox(
+                                              // width: 180,
+                                              child: TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: 'Injection Name',
+                                                  border: OutlineInputBorder(),
+                                                  // icon: Icon(Icons.numbers),
+                                                ),
+                                                controller: injectionnameController,
+                                                onChanged: (text) {
+                                                  setState(() {
+                                                    injectionnameController.text.isEmpty?injectionshowautoComplete=true:injectionshowautoComplete=false;
+                                                    
+
+                                                  
+                                                  });
+                                                },
+                                               
+                                              ),
+                                            ),
+                                            SizedBox(height:10),
+                                             SizedBox(
+                                              // width: 180,
+                                              child: TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: 'Dose',
+                                                  border: OutlineInputBorder(),
+                                                  // icon: Icon(Icons.numbers),
+                                                ),
+                                                controller: doseController,
+                                                onChanged: (text) {
+                                                  setState(() {
+                                                  
+                                                  });
+                                                },
+                                               
+                                              ),
+                                            ),
+                                            SizedBox(height:10),
+                                              SizedBox(
+                                        width: screenWidth,
+                                        child: TextButton(
+                                            onPressed: () async {
+                                              if (injectionnameController
+                                                  .text.isEmpty) {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Please select Injection',
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    timeInSecForIosWeb: 2,
+                                                    backgroundColor: Colors.red,
+                                                    textColor: Colors.white,
+                                                    fontSize: 15.0);
+                                              } else if (doseController
+                                                  .text.isEmpty) {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Please enter Dose',
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    timeInSecForIosWeb: 2,
+                                                    backgroundColor: Colors.red,
+                                                    textColor: Colors.white,
+                                                    fontSize: 15.0);
+                                              } else {
+                                                var injection = {
+                                                  "injectionname": injectionnameController
+                                                      .text
+                                                      .toString(),
+                                                  "dose":
+                                                      doseController.text
+                                                          .toString(),
+                                                };
+                                                // print(test);
+                                                print(injection);
+                                                print(injectionlist);
+                                                print(injectionlist.contains(injection));
+                                                
+                                                if (injectionlist.contains(injection)) {
+                                                  injectionlist.remove(injection);
+                                                } else {
+                                                  injectionlist.add(injection);
+                                                }
+                                                print(injectionlist);
+                                                setState(() {
+                                                  injectionshowautoComplete=true;
+                                                  // labshowAutoComplete = true;
+                                                  // testshowAutoComplete = false;
+                                                  injectionnameController.clear();
+                                                  doseController.clear();
+                                                });
+                                              }
+                                            },
+                                            child: Text(
+                                              "ADD INJECTION",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<Color>(
+                                                        Color.fromARGB(
+                                                            255, 10, 132, 87)),
+                                                shape: MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                4.0),
+                                                        side: BorderSide(color: Colors.blue))))),
+                                      
+                                      ),
+                                      
+
+                                     
+                                    ],
+                                  ),
+                                ),
+                              ),
+                               Helper().isvalidElement(injectionlist) &&
+                                      select_button == 'injection' &&
+                                      injectionlist.length > 0
+                                  ? Container(
+                                      width: screenWidth,
+                                      child: Text(
+                                        ' Injection List :',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
+                                    )
+                                  : Container(),
+                              Container(
+                                  padding: const EdgeInsets.all(5),
+                                  // height: screenHeight * 0.6,
+                                  width: screenWidth,
+                                  child: Helper().isvalidElement(injectionlist) &&
+                                          select_button == 'injection'
+                                      ? ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: injectionlist.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final data = injectionlist[index];
+                                            return Container(
+                                                child: Column(
+                                              children: [
+                                                Card(
+                                                  child: ListTile(
+                                                    title: Text(
+                                                      'Injection Name: ${data['injectionname'].toString()}',
+                                                    ),
+                                                    subtitle: Text(
+                                                        'Dose: ${data['dose'].toString()}'),
+                                                    trailing: IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                         injectionlist.remove(data);
+                                                        });
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.close,
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                // ListTile(title: Text('Test name'),
+                                                // trailing: IconButton(onPressed: (){} ,icon: Icon(Icons.add)),),
+                                                // Divider(
+                                                //   height: 0.1,
+                                                // )
+                                              ],
+                                            ));
+                                          })
+                                      : Container()),
+                             
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container(),
                 select_button == "medicine"
                     ? Container(
                         height: screenHeight * 0.76,
@@ -1115,22 +1340,22 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
+                                        // SizedBox(
+                                        //   width: screenWidth * 0.455,
+                                        //   child: TextFormField(
+                                        //     decoration: const InputDecoration(
+                                        //       labelText: 'Price',
+                                        //       border: OutlineInputBorder(),
+                                        //       // icon: Icon(Icons.numbers),
+                                        //     ),
+                                        //     controller: priceController,
+                                        //     keyboardType:
+                                        //         TextInputType.numberWithOptions(
+                                        //             decimal: true),
+                                        //   ),
+                                        // ),
                                         SizedBox(
-                                          width: screenWidth * 0.455,
-                                          child: TextFormField(
-                                            decoration: const InputDecoration(
-                                              labelText: 'Price',
-                                              border: OutlineInputBorder(),
-                                              // icon: Icon(Icons.numbers),
-                                            ),
-                                            controller: priceController,
-                                            keyboardType:
-                                                TextInputType.numberWithOptions(
-                                                    decimal: true),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth * 0.455,
+                                          width: screenWidth *0.95,
                                           child: TextFormField(
                                             decoration: const InputDecoration(
                                               labelText: 'Day',
@@ -1177,6 +1402,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   item.toString();
                                               var data =
                                                   item.toString().split('&*');
+                                                  Pattern_type=data[1];
                                               count = data[0];
                                               mor = data[2];
                                               noon = data[3];
@@ -1345,21 +1571,22 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           width: screenWidth*0.955,
                                           child: TextButton(
                                               onPressed: () async {
-                                                if (pharmacyController
-                                                    .text.isEmpty) {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          'Please select pharmacy',
-                                                      toastLength:
-                                                          Toast.LENGTH_SHORT,
-                                                      gravity:
-                                                          ToastGravity.CENTER,
-                                                      timeInSecForIosWeb: 2,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.white,
-                                                      fontSize: 15.0);
-                                                } else if (medicineController
+                                                // if (pharmacyController
+                                                //     .text.isNotEmpty) {
+                                                //   Fluttertoast.showToast(
+                                                //       msg:
+                                                //           'Please select pharmacy',
+                                                //       toastLength:
+                                                //           Toast.LENGTH_SHORT,
+                                                //       gravity:
+                                                //           ToastGravity.CENTER,
+                                                //       timeInSecForIosWeb: 2,
+                                                //       backgroundColor:
+                                                //           Colors.red,
+                                                //       textColor: Colors.white,
+                                                //       fontSize: 15.0);
+                                                // } else 
+                                                if (medicineController
                                                     .text.isEmpty) {
                                                   Fluttertoast.showToast(
                                                       msg:
@@ -1429,7 +1656,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                       textColor: Colors.white,
                                                       fontSize: 15.0);
                                                 } else {
-                                                  tableCalCulation();
+                                                  // tableCalCulation();/////////final
                                                   // total = 0.0;
                                                   // var price = double.parse(
                                                   //     priceController.text);
@@ -1445,29 +1672,30 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   //   // };
                                                   // });
                                                   var data = {
+                                                    "itemno":Selectedmedicine['id'].toString(),
                                                     "medicine":
                                                         medicineController.text
                                                             .toString(),
-                                                    "price": priceController
-                                                        .text
+                                                    // "price": priceController
+                                                    //     .text
+                                                    //     .toString(),
+                                                    "days": dayController.text
                                                         .toString(),
-                                                    "day": dayController.text
-                                                        .toString(),
-                                                    "pattern":
-                                                        patternDropdownvalue
+                                                    "patterntype":
+                                                        Pattern_type
                                                             .toString(),
                                                     "mor": mor.toString(),
                                                     "noon": noon.toString(),
+                                                    "eveg":'',
                                                     "night": night.toString(),
                                                     "total_qty":
                                                         count.toString(),
-                                                    "prescription":
+                                                    "BA_food_select":
                                                         prescriptionDropdownvalue
                                                             .toString(),
-                                                    "total": total.toString(),
-                                                    // "Test":testList,
-                                                    // "Treatment":treatmentList,
-                                                    // "List":Map.from(treatmentList as Map),
+                                                    // "total": total.toString(),
+                                                    "comment":'',
+                                                   
                                                   };
                                                   print(data);
                                                   print(medicineList);
@@ -1614,29 +1842,29 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                                   fontSize: 13),
                                                             ),
                                                             Text(
-                                                              "${data['day'].toString()}",
+                                                              "${data['days'].toString()}",
                                                               style: TextStyle(
                                                                   fontSize: 15),
                                                             )
                                                           ],
                                                         ),
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              'BF/AF: ',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 13),
-                                                            ),
-                                                            Text(
-                                                              "${data['prescription'].toString()}",
-                                                              style: TextStyle(
-                                                                  fontSize: 15),
-                                                            )
-                                                          ],
-                                                        ),
+                                                        // Row(
+                                                        //   children: [
+                                                        //     Text(
+                                                        //       'BF/AF: ',
+                                                        //       style: TextStyle(
+                                                        //           fontWeight:
+                                                        //               FontWeight
+                                                        //                   .bold,
+                                                        //           fontSize: 13),
+                                                        //     ),
+                                                        //     Text(
+                                                        //       "${data['BA_food_select'].toString()}",
+                                                        //       style: TextStyle(
+                                                        //           fontSize: 15),
+                                                        //     )
+                                                        //   ],
+                                                        // ),
                                                       ],
                                                     ),
                                                      SizedBox(height:10),
@@ -1741,7 +1969,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         Row(
                                                           children: [
                                                             Text(
-                                                              'Price: ',
+                                                              'BF / AF : ',
                                                               style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
@@ -1749,29 +1977,29 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                                   fontSize: 13),
                                                             ),
                                                             Text(
-                                                              "₹ ${data['price'].toString()} ",
+                                                              "${data['BA_food_select'].toString()}",
                                                               style: TextStyle(
                                                                   fontSize: 15),
                                                             )
                                                           ],
                                                         ),
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              'Total: ',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 13),
-                                                            ),
-                                                            Text(
-                                                              "₹ ${data['total'].toString()} ",
-                                                              style: TextStyle(
-                                                                  fontSize: 15),
-                                                            )
-                                                          ],
-                                                        ),
+                                                        // Row(
+                                                        //   children: [
+                                                        //     Text(
+                                                        //       'Total: ',
+                                                        //       style: TextStyle(
+                                                        //           fontWeight:
+                                                        //               FontWeight
+                                                        //                   .bold,
+                                                        //           fontSize: 13),
+                                                        //     ),
+                                                        //     Text(
+                                                        //       "₹ ${data['total'].toString()} ",
+                                                        //       style: TextStyle(
+                                                        //           fontSize: 15),
+                                                        //     )
+                                                        //   ],
+                                                        // ),
                                                         SizedBox(
                                                           child: TextButton(
                                                                       child: Text(
@@ -1783,8 +2011,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                                           //  table_List.remove(data);
                                                                            table_list.remove(data);
                                                                             // tableCalCulation();
-                                                                            totalCalcution();
+                                                                          
+                                                                             
+                                                                            
+                                                                            
                                                                         });
+                                                                          // tableCalCulation();
+                                                                              totalCalcution();
                                                                         
                                                                       },
                                                                     ),
@@ -2011,6 +2244,60 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: TextButton(
                                               onPressed: () async {
+                                                if(selectedPatient==null||selectedPatient==''){
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Please select Patient',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
+
+                                                }else {
+                                                  var data = {
+                                                          "doctor_id": selectedPatient['doctor_id'].toString(),
+                                                          
+                                                          "patient_name":
+                                                              selectedPatient['customer_name'].toString(),
+                                                          ":patient_mobile":
+                                                              selectedPatient['phone'].toString(),
+                                                          "patient_id": selectedPatient['customer_id'].toString(),
+                                                          "pharmeasyid": "",
+                                                          "labid": "",
+                                                          "date": "2023-03-27",
+                                                          "prescription_comment":
+                                                              "",
+                                                          "sugar": selectedPatient['sugar'].toString(),
+                                                          "pulse":selectedPatient['pulse'].toString(),
+                                                          "bp": selectedPatient['bp'].toString(),
+                                                          "temp": selectedPatient['temp'].toString(),
+                                                          "advance": '',
+                                                          "discount_type":
+                                                              "Percentage",
+                                                          "discount": discountController.text.toString(),
+                                                          "balance": balanceController.text.toString(),
+                                                          "change": "",
+                                                          "grand_total":
+                                                              grandtotalController.text.toString(),
+                                                          "height":selectedPatient['height'].toString(),
+                                                          "weight":selectedPatient['weight'].toString(),
+                                                          "treatment_item": treatmentList,
+                                                          "medicine_item": table_list,
+                                                          "test_item": testList,
+                                                          "injection_item": injectionlist,
+                                                        };
+                                                        var list=data;
+
+
+
+
+
+                                                }
                                                 // var data = {
                                                 //   "treatment": titleDropdownvalue.toString(),
                                                 //   "fees": fees.text.toString(),
@@ -2069,24 +2356,24 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     );
   }
 
-  tableCalCulation() {
-    total = 0.0;
-    var price = double.parse(priceController.text);
-    var day = double.parse(dayController.text);
-    var number = double.parse(count);
-    setState(() {
-      total = (number * price) * day;
-      // cal={
-      //   "total":total.toString(),
-      // };
-    });
-  }
+  // tableCalCulation() {
+  //   total = 0.0;
+  //   var price = double.parse(priceController.text);
+  //   var day = double.parse(dayController.text);
+  //   var number = double.parse(count);
+  //   setState(() {
+  //     total = (number * price) * day;
+  //     // cal={
+  //     //   "total":total.toString(),
+  //     // };
+  //   });
+  // }
 
   totalCalcution() {
     //treatment
-    fees_total = 0;
+    fees_total = 0.0;
     for (var value in treatmentList) {
-      fees_total = fees_total + double.parse(value['fees']);
+      fees_total = fees_total + double.parse(value['consult_fees']);
     }
     //discount
     double finaldiscountvalue = discountController.text.isNotEmpty
@@ -2105,19 +2392,49 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     // balanceController.text=grand_total.toString();
 
     //grand total
-    grand_total = 0;
-    if (table_list.length > 0) {
-      for (var value in table_list) {
-        grand_total = grand_total + fees_total + double.parse(value['total']);
-      }
-    } else {
-      grand_total = grand_total + fees_total;
-    }
+    grand_total = 0.0;
+//     if (table_list.length > 0) {
+//       for (var value in table_list) {
+        
+//         grand_total = grand_total + double.parse(value['total']);
+//       }
+//  final_grand_total=grand_total+fees_total;
+//     } else {
+//       final_grand_total = grand_total + fees_total;
+//     }
+    final_grand_total = grand_total + fees_total;
     // return grand_total;
-    grandtotalController.text = grand_total.toString();
+    setState(() {
+      
+  
+    grandtotalController.text = final_grand_total.toString();
     //balance
-    balance = grand_total - finaldiscountvalue;
+    if(final_grand_total>=finaldiscountvalue){
+    balance = final_grand_total - finaldiscountvalue;
+    }else{
+       Fluttertoast.showToast(
+                                                      msg:
+                                                          'Discount Amount is greater then Grand total',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 15.0);
+                                                      setState(() {
+                                                         finaldiscountvalue=0.0;
+                                                      totalCalcution();
+                                                      });
+                                                     
+
+
+    }
+
     balanceController.text = balance.toString();
+      });
   }
 
   getpatientlist() async {
@@ -2153,6 +2470,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       //  storage.setItem('diagnosisList', diagnosisList);
     }
   }
+
+  
 
   getMediAndLabNameList() async {
     var data = {
@@ -2209,6 +2528,20 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       setState(() {
         //  MediAndLabNameList = List['list'];
         MedicineList = List['list'];
+      });
+      // TreatmentList = List['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+    }
+  }
+  getInjectionList() async {
+    var List = await PatientApi().getinjectionList(accesstoken);
+    if (Helper().isvalidElement(List) &&
+        Helper().isvalidElement(List['status']) &&
+        List['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      setState(() {
+        InjectionList = List['list'];
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
@@ -2658,6 +2991,104 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['name'].toString()} ',
+                                style: const TextStyle(color: Colors.black)),
+                          ),
+                          // Divider(
+                          //   thickness: 1,
+                          // )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+   renderinjectionlistAutoComplete(screenWidth, screenHeight) {
+    return Autocomplete<List>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<List>.empty();
+        } else {
+          var matches = [];
+          matches.addAll(InjectionList);
+          matches.retainWhere((s) {
+            return s['injections_name']
+                .toString()
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          });
+          this.setState(() {});
+          return [matches];
+        }
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextFormField(
+            controller: textEditingController,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                // prefix: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
+                hintText: ' Search Injection Name'),
+            onFieldSubmitted: (String value) {
+              onFieldSubmitted();
+            });
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            child: Container(
+              width: screenWidth * 0.9,
+              height: screenHeight * 0.4,
+              color: Colors.white,
+              child: ListView.builder(
+                padding: EdgeInsets.all(5.0),
+                itemCount: options.toList()[0].length,
+                itemBuilder: (BuildContext context, int index) {
+                  final option = options.toList()[0].elementAt(index);
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        injectionshowautoComplete=false;
+                        SelectedInjection=options.toList()[0].elementAt(index);
+                        injectionnameController.text=Helper().isvalidElement(SelectedInjection['injections_name'])?SelectedInjection['injections_name'].toString():'';
+
+                        // medicineshowAutoComplete = false;
+                        // Selectedmedicine = options.toList()[0][index];
+                        // // getMedicineList();
+                        // medicineController.text =
+                        //     Helper().isvalidElement(Selectedmedicine['name'])
+                        //         ? Selectedmedicine['name'].toString()
+                        //         : '';
+                        // priceController.text =
+                        //     Helper().isvalidElement(Selectedmedicine['mrp'])
+                        //         ? Selectedmedicine['mrp'].toString()
+                        //         : '';
+                        // // getLabtestNameList();
+                      });
+                    },
+                    child: Card(
+                      color: Colors.grey,
+                      // color: custom_color.app_color,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                '${options.toList()[0][index]['injections_name'].toString()} ',
                                 style: const TextStyle(color: Colors.black)),
                           ),
                           // Divider(

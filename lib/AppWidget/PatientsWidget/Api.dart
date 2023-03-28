@@ -84,5 +84,18 @@ add_patient(access_token,patient_details) async {
       return json.decode(response.body);
     }
   }
+
+  getinjectionList(access_token) async {
+    String getinjectionlisturl = requestpath.base_url + requestpath.getinjectionEndpoint;
+   var response = await http.get(
+      Uri.parse(getinjectionlisturl),      
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  
    
 }
