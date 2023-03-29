@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,5 +53,19 @@ class Helper {
         ),
       ],
     );
+  }
+  getCurrentDate() {
+    final today_date = new DateTime.now();
+    return formateDate(today_date);
+  }
+   formateDate(date) {
+    // var today = new DateTime.now();
+    // DateTime date = date;
+    
+    // var formatter = new DateFormat('yyyy-MM-dd');
+        var formatter = new DateFormat('dd-MM-yyyy');
+
+    String formatted_date = formatter.format(date);
+    return formatted_date;
   }
 }
