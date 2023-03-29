@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
+
 
 class Paidbill extends StatefulWidget {
   const Paidbill({super.key});
@@ -10,18 +12,60 @@ class Paidbill extends StatefulWidget {
 }
 
 class _PaidbillState extends State<Paidbill> {
-  late DateTime date;
 
-  DateTimeRange paiddateRange = DateTimeRange(
-    start: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day - 7),
-    end:
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-  );
+   final DateFormate = "dd-MM-yyyy";
+  TextEditingController fromdateInputController = TextEditingController();
+  TextEditingController todateInputController = TextEditingController();
+
+
+ DateTime currentDate = DateTime.now();
+  Future<void> selectDate(BuildContext context, data) async {
+    var checkfield = data;
+    // print(data);
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Colors.blue,
+                onPrimary: Colors.white, // <-- SEE HERE
+                onSurface: Colors.blue, // <-- SEE HERE
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  primary: Colors.blue, // button text color
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+        initialDate: currentDate,
+        firstDate: DateTime(1950),
+        lastDate: DateTime(2025));
+
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+      });
+    if (checkfield == "from") {
+      // var formatter = new DateFormat('dd-MM-yyyy');
+      fromdateInputController.text =
+          DateFormat(DateFormate).format(pickedDate!);
+
+      // fromdateInputController.text = pickedDate.toString().split(' ')[0];
+      // getbendingbilllist();
+    } else {
+      todateInputController.text = DateFormat(DateFormate).format(pickedDate!);
+      // todateInputController.text = pickedDate.toString().split(' ')[0];
+      // getbendingbilllist();
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    final paidstart = paiddateRange.start;
-    final paidend = paiddateRange.end;
+    // final paidstart = paiddateRange.start;
+    // final paidend = paiddateRange.end;
     var screenHeight = MediaQuery.of(context).size.height;
     var screenwidht = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -34,63 +78,55 @@ class _PaidbillState extends State<Paidbill> {
             SizedBox(
               height: 10,
             ),
-            Container(
-              height: screenHeight * 0.07,
-              width: screenwidht * 0.9,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: screenwidht * 0.45,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: screenwidht * 0.10,
-                          child: Text('From:'),
-                        ),
-                        Container(
-                            width: screenwidht * 0.30,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.blue)),
-                              onPressed: () {
-                                pendingpickDateRange();
-                              },
-                              child: Text(
-                                '${paidstart.year}/${paidstart.month}/${paidstart.day}',
-                              ),
-                            ))
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: screenwidht * 0.45,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: screenwidht * 0.07,
-                          child: Text('To:'),
-                        ),
-                        Container(
-                          width: screenwidht * 0.30,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.blue)),
-                            onPressed: () {
-                              pendingpickDateRange();
-                            },
-                            child: Text(
-                                '${paidend.year}/${paidend.month}/${paidend.day}'),
+             Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: screenwidht,
+                height: screenHeight * 0.06,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: screenwidht * 0.45,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'From',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          labelText: 'From',
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            color: Colors.blue,
                           ),
-                        )
-                      ],
+                        ),
+                        controller: fromdateInputController,
+                        readOnly: true,
+                        onTap: () async {
+                          selectDate(context, 'from');
+                        },
+                      ),
                     ),
-                  )
-                ],
+                    Container(
+                      width: screenwidht * 0.45,
+                      child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: 'To',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            labelText: 'To',
+                            suffixIcon: Icon(
+                              Icons.date_range,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          controller: todateInputController,
+                          readOnly: true,
+                          onTap: () async {
+                            selectDate(context, 'to');
+                          }),
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
@@ -384,37 +420,37 @@ class _PaidbillState extends State<Paidbill> {
     );
   }
 
-  Future pendingpickDateRange() async {
-    DateTimeRange? newDateRange = await showDateRangePicker(
-      context: context,
-      initialDateRange: paiddateRange,
-      firstDate: DateTime(2019),
-      lastDate: DateTime(2024),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.blue, // <-- SEE HERE
-              onPrimary: Colors.white, // <-- SEE HERE
-              onSurface: Colors.blue, // <-- SEE HERE
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                primary: Colors.red, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    setState(() {
-      paiddateRange = newDateRange ?? paiddateRange;
+  // Future pendingpickDateRange() async {
+  //   DateTimeRange? newDateRange = await showDateRangePicker(
+  //     context: context,
+  //     initialDateRange: paiddateRange,
+  //     firstDate: DateTime(2019),
+  //     lastDate: DateTime(2024),
+  //     builder: (context, child) {
+  //       return Theme(
+  //         data: Theme.of(context).copyWith(
+  //           colorScheme: ColorScheme.light(
+  //             primary: Colors.blue, // <-- SEE HERE
+  //             onPrimary: Colors.white, // <-- SEE HERE
+  //             onSurface: Colors.blue, // <-- SEE HERE
+  //           ),
+  //           textButtonTheme: TextButtonThemeData(
+  //             style: TextButton.styleFrom(
+  //               primary: Colors.red, // button text color
+  //             ),
+  //           ),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //   );
+  //   setState(() {
+  //     paiddateRange = newDateRange ?? paiddateRange;
 
-      // if (newDateRange == null) return;
-      // setState(() => dateRange = newDateRange);
-    });
-    // getPatientRegisterReportList();
-    // this.setState(() {});
-  }
+  //     // if (newDateRange == null) return;
+  //     // setState(() => dateRange = newDateRange);
+  //   });
+  //   // getPatientRegisterReportList();
+  //   // this.setState(() {});
+  // }
 }

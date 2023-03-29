@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 
 class Cancelledbill extends StatefulWidget {
   const Cancelledbill({super.key});
@@ -10,18 +11,60 @@ class Cancelledbill extends StatefulWidget {
 }
 
 class _CancelledbillState extends State<Cancelledbill> {
-   late DateTime date;
 
-  DateTimeRange canceldateRange = DateTimeRange(
-    start: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day - 7),
-    end:
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-  );
+   final DateFormate = "dd-MM-yyyy";
+  TextEditingController fromdateInputController = TextEditingController();
+  TextEditingController todateInputController = TextEditingController();
+
+
+   DateTime currentDate = DateTime.now();
+  Future<void> selectDate(BuildContext context, data) async {
+    var checkfield = data;
+    // print(data);
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Colors.blue,
+                onPrimary: Colors.white, // <-- SEE HERE
+                onSurface: Colors.blue, // <-- SEE HERE
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  primary: Colors.blue, // button text color
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+        initialDate: currentDate,
+        firstDate: DateTime(1950),
+        lastDate: DateTime(2025));
+
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+      });
+    if (checkfield == "from") {
+      // var formatter = new DateFormat('dd-MM-yyyy');
+      fromdateInputController.text =
+          DateFormat(DateFormate).format(pickedDate!);
+
+      // fromdateInputController.text = pickedDate.toString().split(' ')[0];
+      // getbendingbilllist();
+    } else {
+      todateInputController.text = DateFormat(DateFormate).format(pickedDate!);
+      // todateInputController.text = pickedDate.toString().split(' ')[0];
+      // getbendingbilllist();
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    final cancelstart = canceldateRange.start;
-    final cancelend = canceldateRange.end;
+    // final cancelstart = canceldateRange.start;
+    // final cancelend = canceldateRange.end;
      var screenHeight = MediaQuery.of(context).size.height;
     var screenwidht = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -31,66 +74,57 @@ class _CancelledbillState extends State<Cancelledbill> {
                 Column(
                   children: [
                     SizedBox(height: 10,),
+                      Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: screenwidht,
+                height: screenHeight * 0.06,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Container(
-                      height: screenHeight * 0.07,
-                      width: screenwidht * 0.9,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            width: screenwidht * 0.45,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: screenwidht * 0.10,
-                                  child: Text('From:'),
-                                ),
-                                Container(
-                                    width: screenwidht * 0.30,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                 Colors.blue)),
-                                      onPressed: () {
-                                        pendingpickDateRange();
-                                       
-                                      },
-                                      child: Text(
-                                        '${cancelstart.year}/${cancelstart.month}/${cancelstart.day}',
-                                      ),
-                                    ))
-                              ],
-                            ),
+                      width: screenwidht * 0.45,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'From',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          labelText: 'From',
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            color: Colors.blue,
                           ),
-                          Container(
-                            width: screenwidht * 0.45,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: screenwidht * 0.07,
-                                  child: Text('To:'),
-                                ),
-                                Container(
-                                  width: screenwidht * 0.30,
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                               Colors.blue)),
-                                    onPressed: () {
-                                      pendingpickDateRange();
-                                    },
-                                    child:
-                                        Text('${cancelend.year}/${cancelend.month}/${cancelend.day}'),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
+                        ),
+                        controller: fromdateInputController,
+                        readOnly: true,
+                        onTap: () async {
+                          selectDate(context, 'from');
+                        },
                       ),
                     ),
+                    Container(
+                      width: screenwidht * 0.45,
+                      child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: 'To',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            labelText: 'To',
+                            suffixIcon: Icon(
+                              Icons.date_range,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          controller: todateInputController,
+                          readOnly: true,
+                          onTap: () async {
+                            selectDate(context, 'to');
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+            ),
                     Container(
                       height: screenHeight*0.78,
                       child: 
@@ -326,37 +360,37 @@ class _CancelledbillState extends State<Cancelledbill> {
       ),
     );
   }
-   Future pendingpickDateRange() async {
-    DateTimeRange? newDateRange = await showDateRangePicker(
-      context: context,
-      initialDateRange: canceldateRange,
-      firstDate: DateTime(2019),
-      lastDate: DateTime(2024),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.blue, // <-- SEE HERE
-              onPrimary: Colors.white, // <-- SEE HERE
-              onSurface: Colors.blue, // <-- SEE HERE
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                primary: Colors.red, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    setState(() {
-      canceldateRange = newDateRange ?? canceldateRange;
+  //  Future pendingpickDateRange() async {
+  //   DateTimeRange? newDateRange = await showDateRangePicker(
+  //     context: context,
+  //     initialDateRange: canceldateRange,
+  //     firstDate: DateTime(2019),
+  //     lastDate: DateTime(2024),
+  //     builder: (context, child) {
+  //       return Theme(
+  //         data: Theme.of(context).copyWith(
+  //           colorScheme: ColorScheme.light(
+  //             primary: Colors.blue, // <-- SEE HERE
+  //             onPrimary: Colors.white, // <-- SEE HERE
+  //             onSurface: Colors.blue, // <-- SEE HERE
+  //           ),
+  //           textButtonTheme: TextButtonThemeData(
+  //             style: TextButton.styleFrom(
+  //               primary: Colors.red, // button text color
+  //             ),
+  //           ),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //   );
+  //   setState(() {
+  //     canceldateRange = newDateRange ?? canceldateRange;
 
-      // if (newDateRange == null) return;
-      // setState(() => dateRange = newDateRange);
-    });
-    // getPatientRegisterReportList();
-    // this.setState(() {});
-  }
+  //     // if (newDateRange == null) return;
+  //     // setState(() => dateRange = newDateRange);
+  //   });
+  //   // getPatientRegisterReportList();
+  //   // this.setState(() {});
+  // }
 }

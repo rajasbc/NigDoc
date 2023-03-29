@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
+import 'package:nigdoc/AppWidget/common/utils.dart';
 
 class Pendingbilllist extends StatefulWidget {
   const Pendingbilllist({super.key});
@@ -10,99 +12,147 @@ class Pendingbilllist extends StatefulWidget {
 }
 
 class _PendingbilllistState extends State<Pendingbilllist> {
-  late DateTime date;
+  final LocalStorage storage = new LocalStorage('doctor_store');
+  final DateFormate = "dd-MM-yyyy";
+  TextEditingController fromdateInputController = TextEditingController();
+  TextEditingController todateInputController = TextEditingController();
 
-  DateTimeRange pendingdateRange = DateTimeRange(
-    start: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day - 7),
-    end:
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-  );
+  DateTime currentDate = DateTime.now();
+  Future<void> selectDate(BuildContext context, data) async {
+    var checkfield = data;
+    // print(data);
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Colors.blue,
+                onPrimary: Colors.white, // <-- SEE HERE
+                onSurface: Colors.blue, // <-- SEE HERE
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  primary: Colors.blue, // button text color
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+        initialDate: currentDate,
+        firstDate: DateTime(1950),
+        lastDate: DateTime(2025));
+
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+      });
+    if (checkfield == "from") {
+      // var formatter = new DateFormat('dd-MM-yyyy');
+      fromdateInputController.text =
+          DateFormat(DateFormate).format(pickedDate!);
+
+      // fromdateInputController.text = pickedDate.toString().split(' ')[0];
+      getbendingbilllist();
+    } else {
+      todateInputController.text = DateFormat(DateFormate).format(pickedDate!);
+      // todateInputController.text = pickedDate.toString().split(' ')[0];
+      getbendingbilllist();
+    }
+  }
+
+  var accesstoken;
+  bool isLoading = false;
+  var pendingbill;
+
+  void initState() {
+    super.initState();
+    accesstoken = storage.getItem('userResponse')['access_token'];
+    fromdateInputController.text = Helper().getCurrentDate()  ;
+    todateInputController.text = Helper().getCurrentDate();
+    getbendingbilllist();
+    
+    // print('ddd');
+  }
+
   @override
   Widget build(BuildContext context) {
-    final pendingstart = pendingdateRange.start;
-    final pendingend = pendingdateRange.end;
-     var screenHeight = MediaQuery.of(context).size.height;
+    // final pendingstart = pendingdateRange.start;
+    // final pendingend = pendingdateRange.end;
+    var screenHeight = MediaQuery.of(context).size.height;
     var screenwidht = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(title: Text('Pending Bill List'),),
+      appBar: AppBar(
+        title: Text('Pending Bill List'),
+      ),
       body: Container(
-         child:
-                Column(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: screenwidht,
+                height: screenHeight * 0.06,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: 10,),
                     Container(
-                      height: screenHeight * 0.07,
-                      width: screenwidht * 0.9,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            width: screenwidht * 0.45,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: screenwidht * 0.10,
-                                  child: Text('From:'),
-                                ),
-                                Container(
-                                    width: screenwidht * 0.30,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                 Colors.blue)),
-                                      onPressed: () {
-                                        pendingpickDateRange();
-                                       
-                                      },
-                                      child: Text(
-                                        '${pendingstart.year}/${pendingstart.month}/${pendingstart.day}',
-                                      ),
-                                    ))
-                              ],
-                            ),
+                      width: screenwidht * 0.45,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'From',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          labelText: 'From',
+                          suffixIcon: Icon(
+                            Icons.date_range,
+                            color: Colors.blue,
                           ),
-                          Container(
-                            width: screenwidht * 0.45,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: screenwidht * 0.07,
-                                  child: Text('To:'),
-                                ),
-                                Container(
-                                  width: screenwidht * 0.30,
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                               Colors.blue)),
-                                    onPressed: () {
-                                      pendingpickDateRange();
-                                    },
-                                    child:
-                                        Text('${pendingend.year}/${pendingend.month}/${pendingend.day}'),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
+                        ),
+                        controller: fromdateInputController,
+                        readOnly: true,
+                        onTap: () async {
+                          selectDate(context, 'from');
+                        },
                       ),
                     ),
                     Container(
-                      height: screenHeight*0.78,
-                      child: 
-                      
-                      // Helper().isvalidElement(Stafflist) &&
-                      //                   Stafflist.length > 0? 
-
-                                      
-                                        ListView.builder(
-                        itemCount: 8,
+                      width: screenwidht * 0.45,
+                      child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: 'To',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            labelText: 'To',
+                            suffixIcon: Icon(
+                              Icons.date_range,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          controller: todateInputController,
+                          readOnly: true,
+                          onTap: () async {
+                            selectDate(context, 'to');
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+                height: screenHeight * 0.78,
+                child: Helper().isvalidElement(pendingbill) &&
+                        pendingbill.length > 0
+                    ? ListView.builder(
+                        itemCount: pendingbill.length,
                         itemBuilder: (BuildContext context, int index) {
-                          // var data = Stafflist[index];
+                          var data = pendingbill[index];
+
+                          // var paid = data['grand_total'] - data['balance'];
                           return Center(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -130,24 +180,18 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                                                 width: screenwidht * 0.47,
                                                 child: Row(
                                                   children: [
-                                                    Text(
-                                                      'Name:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text("khan")
+                                                   Icon(Icons.person),
+                                                Helper().isvalidElement(data['customer_name'])  ? Text(
+                                                        '${data['customer_name'].toString()}')  : Text(''),
                                                   ],
                                                 ),
                                               ),
                                               Container(
                                                 child: Row(
                                                   children: [
+                                                    Icon(Icons.phone),
                                                     Text(
-                                                      'Phone:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('87654323456')
+                                                        '${data['cus_phone'].toString()}')
                                                   ],
                                                 ),
                                               ),
@@ -160,83 +204,87 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                                             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: screenwidht * 0.47,
+                                                 width: screenwidht * 0.47,
                                                 child: Row(
                                                   children: [
+                                                    Icon(Icons.calendar_month),
                                                     Text(
-                                                      'Prescription Id:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('45')
+                                                        '${data['date'].toString().substring(0, 10)}')
                                                   ],
                                                 ),
                                               ),
                                               Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Date:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('4-02-23023')
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                         Padding(
-                                          padding: const EdgeInsets.only(left: 1,top: 1,bottom: 1,right: 28),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Container(
-                                                // width: screenwidht * 0.55,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'PatientId:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('45')
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
+                                                // width: screenwidht * 0.47,
                                                 child: Row(
                                                   children: [
                                                     Text(
                                                       'Fess(₹):',
                                                       style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
-                                                    Text('23443')
+                                                    Text(
+                                                        '${data['grand_total'].toString()}')
                                                   ],
                                                 ),
                                               ),
+                                              
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 1,
+                                              top: 1,
+                                              bottom: 1,
+                                              right: 28),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              // Container(
+                                              //   // width: screenwidht * 0.55,
+                                              //   child: Row(
+                                              //     children: [
+                                              //       Text(
+                                              //         'PatientId:',
+                                              //         style: TextStyle(
+                                              //             fontWeight:
+                                              //                 FontWeight.bold),
+                                              //       ),
+                                              //       Text('${data['patient_id'].toString()}')
+                                              //     ],
+                                              //   ),
+                                              // ),
+
+                                             
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 1,
+                                              top: 1,
+                                              bottom: 1,
+                                              right: 28),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
                                                Container(
                                                 child: Row(
                                                   children: [
                                                     Text(
                                                       'Discount(₹):',
                                                       style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
-                                                    Text('23442')
+                                                    Text(
+                                                        '${data['discount'].toString()}')
                                                   ],
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 1,top: 1,bottom: 1,right: 28),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
+                                              ),
                                               Container(
                                                 // width: screenwidht * 0.55,
                                                 child: Row(
@@ -244,33 +292,38 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                                                     Text(
                                                       'Paid(₹):',
                                                       style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
-                                                    Text('0.50')
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
                                                     Text(
-                                                      'Recieved(₹):',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('0.50')
+                                                        '${data['grand_total'] - data['balance']}')
                                                   ],
                                                 ),
                                               ),
-                                               Container(
+                                              // Container(
+                                              //   child: Row(
+                                              //     children: [
+                                              //       Text(
+                                              //         'Recieved(₹):',
+                                              //         style: TextStyle(
+                                              //             fontWeight:
+                                              //                 FontWeight.bold),
+                                              //       ),
+                                              //       Text('0.50')
+                                              //     ],
+                                              //   ),
+                                              // ),
+                                              Container(
                                                 child: Row(
                                                   children: [
                                                     Text(
                                                       'Balance(₹):',
                                                       style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
-                                                    Text('0.50')
+                                                    Text(
+                                                        '${data['balance'].toString()}')
                                                   ],
                                                 ),
                                               )
@@ -285,45 +338,74 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                             ),
                           );
                         })
-                        // :
-                        // Text('Nodata'),
-                    )
-                  ],
-                ),
+                    : Container(
+                        child: Text('wait.......'),
+                      )
+                // :
+                // Text('Nodata'),
+                )
+          ],
+        ),
       ),
     );
   }
-   Future pendingpickDateRange() async {
-    DateTimeRange? newDateRange = await showDateRangePicker(
-      context: context,
-      initialDateRange: pendingdateRange,
-      firstDate: DateTime(2019),
-      lastDate: DateTime(2024),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.blue, // <-- SEE HERE
-              onPrimary: Colors.white, // <-- SEE HERE
-              onSurface: Colors.blue, // <-- SEE HERE
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                primary: Colors.red, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    setState(() {
-      pendingdateRange = newDateRange ?? pendingdateRange;
 
-      // if (newDateRange == null) return;
-      // setState(() => dateRange = newDateRange);
-    });
-    // getPatientRegisterReportList();
-    // this.setState(() {});
+  // Future pendingpickDateRange() async {
+  //   DateTimeRange? newDateRange = await showDateRangePicker(
+  //     context: context,
+  //     initialDateRange: pendingdateRange,
+  //     firstDate: DateTime(2019),
+  //     lastDate: DateTime(2024),
+  //     builder: (context, child) {
+  //       return Theme(
+  //         data: Theme.of(context).copyWith(
+  //           colorScheme: ColorScheme.light(
+  //             primary: Colors.blue, // <-- SEE HERE
+  //             onPrimary: Colors.white, // <-- SEE HERE
+  //             onSurface: Colors.blue, // <-- SEE HERE
+  //           ),
+  //           textButtonTheme: TextButtonThemeData(
+  //             style: TextButton.styleFrom(
+  //               primary: Colors.red, // button text color
+  //             ),
+  //           ),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //   );
+  //   setState(() {
+  //     pendingdateRange = newDateRange ?? pendingdateRange;
+
+  //     // if (newDateRange == null) return;
+  //     // setState(() => dateRange = newDateRange);
+  //   });
+  //   // getPatientRegisterReportList();
+  //   // this.setState(() {});
+  // }
+
+  getbendingbilllist() async {
+    // var formatter = new DateFormat('yyyy-mm-dd');
+    var formatter = new DateFormat('yyyy-MM-dd');
+    var data = {
+      "from_date": fromdateInputController.text.toString(),
+      "to_date": todateInputController.text.toString(),
+      "status_type": "Pending",
+    };
+    // this.setState(() {
+    //   isLoading = true;
+    // });
+    pendingbill = await billingapi().getpendinglist(accesstoken, data);
+    if (Helper().isvalidElement(pendingbill) &&
+        Helper().isvalidElement(pendingbill['status']) &&
+        pendingbill['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      pendingbill = pendingbill['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+      this.setState(() {
+        isLoading = false;
+      });
+    }
   }
 }
