@@ -96,6 +96,16 @@ add_patient(access_token,patient_details) async {
       return json.decode(response.body);
     }
   }
+  add_prescription(accesstoken, Prescription_data) async {
+    String addprescriptionurl = requestpath.base_url + requestpath.postprescriptionEndpoint;
+    var response = await http.post(Uri.parse(addprescriptionurl),
+        body: jsonEncode(Prescription_data), headers: _setHeaders(accesstoken));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
   
    
 }

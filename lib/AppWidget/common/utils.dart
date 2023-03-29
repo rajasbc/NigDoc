@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 final LocalStorage storage = new LocalStorage('doctor_store');
  late SharedPreferences pref;
 class Helper {
@@ -65,6 +66,13 @@ class Helper {
     // var formatter = new DateFormat('yyyy-MM-dd');
         var formatter = new DateFormat('dd-MM-yyyy');
 
+    String formatted_date = formatter.format(date);
+    return formatted_date;
+  }
+  formateDate1(date) {
+    // var today = new DateTime.now();
+    // DateTime date = date;
+    var formatter = new DateFormat('yyyy-MM-dd');
     String formatted_date = formatter.format(date);
     return formatted_date;
   }
