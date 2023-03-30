@@ -7,6 +7,8 @@ import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
+import '../../DoctorWidget/Api.dart';
+
 class Patients extends StatefulWidget {
   const Patients({super.key});
 
@@ -52,11 +54,13 @@ class _PatientsState extends State<Patients> {
   TextEditingController reasoncontroller = TextEditingController();
   TextEditingController feescontroller = TextEditingController();
   bool loading = false;
+  bool isloading= false;
 
   String titleDropdownvalue = 'Mr';
   String heightunitDropdownvalue = 'Ft';
   String weightunittDropdownvalue = 'Pounds';
   String tempunitDropdownvalue = '°F';
+   String DoctorDropdownvalue = 'Doctor';
   var accesstoken;
   var title = [
     'Mr',
@@ -75,8 +79,10 @@ class _PatientsState extends State<Patients> {
   var weightunit = ['Pounds', 'Kg'];
   var temp = ['°F', '°C', '°K'];
   var doctors = ['Saveetha', 'Sathish'];
+  var DoctorList;
 
   DateTime currentDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -99,6 +105,7 @@ class _PatientsState extends State<Patients> {
   @override
   void initState() {
     accesstoken = storage.getItem('userResponse')['access_token'];
+    getdoctorlist();
 
     // getdoctorlist();
     // TODO: implement initState
@@ -686,36 +693,60 @@ class _PatientsState extends State<Patients> {
                       BoxDecoration(border: Border.all(color: Colors.grey)
                           // border: OutlineInputBorder()
                           ),
-                  child: DropdownButtonFormField(
-                    // validator: (value) => validateDrops(value),
-                    // isExpanded: true,
-                    decoration: InputDecoration.collapsed(hintText: ''),
-                    isExpanded: true,
-                    hint: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8.0, left: 8, right: 8),
-                      child: Text(
-                        'Select Doctor',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 112, 107, 107)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:Helper().isvalidElement(DoctorList)&&DoctorList.length>0? DropdownButtonFormField(
+                      // validator: (value) => validateDrops(value),
+                      // isExpanded: true,
+                      decoration: InputDecoration.collapsed(hintText: ''),
+                      isExpanded: true,
+                      hint: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 0.0, left: 8, right: 8),
+                        child: Text(
+                          'Select Doctor',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 112, 107, 107)),
+                        ),
                       ),
-                    ),
-                    // value:' _selectedState[i]',
-                    onChanged: (selecteddoctor) {
-                      setState(() {
-                        // selectedDoctor = selectedDoctor;
-                        // print("Stae value");
-                        // print(newValue);
-                        // _selectedState[i]= newValue;
-                        // getMyDistricts(newValue, i);
-                      });
-                    },
-                    items: doctors.map<DropdownMenuItem<String>>((item) {
-                      return new DropdownMenuItem(
-                        child: new Text(item),
-                        value: item.toString(),
-                      );
-                    }).toList(),
+                      // value:' _selectedState[i]',
+                      onChanged: (selecteddoctor) {
+                        setState(() {
+                          DoctorDropdownvalue=selecteddoctor.toString();
+                          // selectedDoctor = selectedDoctor;
+                          // print("Stae value");
+                          // print(newValue);
+                          // _selectedState[i]= newValue;
+                          // getMyDistricts(newValue, i);
+                        });
+                      },
+                      items: DoctorList.map<DropdownMenuItem<String>>((item) {
+                        return new DropdownMenuItem(
+                          child: new Text(item['name'].toString()),
+                          value: item['id'].toString(),
+                        );
+                      }).toList(),
+                    ):DropdownButtonFormField(
+                                                              // validator: (value) => validateDrops(value),
+                                                              // isExpanded: true,
+                                                              hint: Text(
+                                                                  'No Doctor List'),
+                                                              // value:' _selectedState[i]',
+                                                              onChanged:
+                                                                  (Pharmacy) {
+                                                                setState(() {});
+                                                              },
+                                                              items: [].map<
+                                                                  DropdownMenuItem<
+                                                                      String>>((item) {
+                                                                return new DropdownMenuItem(
+                                                                  child:
+                                                                      new Text(
+                                                                          ''),
+                                                                  value: '',
+                                                                );
+                                                              }).toList(),
+                                                            ),
                   ),
                 ),
               ),
@@ -846,7 +877,16 @@ class _PatientsState extends State<Patients> {
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
                           fontSize: 15.0);
-                    } else {
+                    } else if (DoctorDropdownvalue=='Doctor'||DoctorDropdownvalue.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: 'Please Select Doctor',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 15.0);
+                    }else {
                       var patient_details = {
                         "patient_type":Helper().isvalidElement(_typeSelected)&& _typeSelected == 1 ?"IN":"OUT",
                         "patientName": namecontroller.text,
@@ -880,9 +920,11 @@ class _PatientsState extends State<Patients> {
                         "general_fees": feescontroller.text,
                         "blood_grp": bloodgroupcontroller.text,
                         "dob": dobcontroller.text,
-                        "doctor_id": "359",
-                        "admit_date":"",
+                        "doctor_id": DoctorDropdownvalue.toString(),
+                        "admit_date":"${(Helper().formateDate1(selectedDate))}",
                       };
+                      add_patient(patient_details);
+                      var list=patient_details;
 
                       // add_patient(patient_details);
                     }
@@ -895,40 +937,66 @@ class _PatientsState extends State<Patients> {
     );
   }
 
-  // add_patient(patient_details)async{
-  //   this.setState(() {
-  //     loading = true;
-  //   });
-  //       // var result = await PatientApi().add_patient(accesstoken, patient_details);
+  add_patient(patient_details)async{
+    this.setState(() {
+      loading = true;
+    });
+        var result = await PatientApi().add_patient(accesstoken, patient_details);
 
-  //        if (Helper().isvalidElement(result) &&
-  //       Helper().isvalidElement(result['status']) &&
-  //       result['status'] == 'Token is Expired') {
-  //     Helper().appLogoutCall(context, 'Session expeired');
-  //   } else {
-  //     if (Helper().isvalidElement(result) &&
-  //         Helper().isvalidElement(result['message']) &&
-  //         result['message'] == 'Successfully') {
-  //       Fluttertoast.showToast(
-  //           msg: 'patient Registered successfully',
-  //           toastLength: Toast.LENGTH_SHORT,
-  //           gravity: ToastGravity.CENTER,
-  //           timeInSecForIosWeb: 2,
-  //           backgroundColor: Colors.green,
-  //           textColor: Colors.white,
-  //           fontSize: 15.0);
+         if (Helper().isvalidElement(result) &&
+        Helper().isvalidElement(result['status']) &&
+        result['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      if (Helper().isvalidElement(result) &&
+          Helper().isvalidElement(result['message']) &&
+          result['message'] == 'Successfully') {
+        Fluttertoast.showToast(
+            msg: 'Patient Registered successfully',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 15.0);
 
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const Dash()),
-  //       );
-  //     }
-  //     this.setState(() {
-  //       // appointment_list = result['appointment_list'];
-  //     });
-  //   }
-  //   this.setState(() {
-  //     loading = false;
-  //   });
-  // }
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Dash()),
+        );
+      }else
+      {
+         Fluttertoast.showToast(
+            msg: 'Please Try Again Later',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 15.0);
+      }
+      this.setState(() {
+        // appointment_list = result['appointment_list'];
+      });
+    }
+    this.setState(() {
+      loading = false;
+    });
+  }
+
+   getdoctorlist() async {
+   
+   var doctorlist = await api().getdoctorlist(accesstoken);
+    if (Helper().isvalidElement(doctorlist) &&
+        Helper().isvalidElement(doctorlist['status']) &&
+        doctorlist['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      DoctorList = doctorlist['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+      this.setState(() {
+        isloading = true;
+      });
+    }
+  }
 }

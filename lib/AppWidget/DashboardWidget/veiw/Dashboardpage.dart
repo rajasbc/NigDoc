@@ -5,6 +5,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Nigdocmenubar.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../common/Colors.dart' as custom_colors;
 
 class Dashboardpage extends StatefulWidget {
   const Dashboardpage({super.key});
@@ -42,7 +43,9 @@ late SharedPreferences pref;
         child: Nigdocmenubar(),
       )),
       appBar: AppBar(
+
         title: Text('Dashboard'),
+        // backgroundColor: Colors.amber,
         actions: [
           IconButton(
               onPressed: () {

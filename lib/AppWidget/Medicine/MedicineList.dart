@@ -39,6 +39,7 @@ class _MedicineListState extends State<MedicineList> {
     userResponse = storage.getItem('userResponse');
     accesstoken=userResponse['access_token'];
     getMediAndLabNameList();
+    getMedicineList();
 
     // gettreatmentlist();
     // TODO: implement initState
@@ -83,89 +84,90 @@ class _MedicineListState extends State<MedicineList> {
             height: screenHeight,
             child: Column(
               children: [
-                SizedBox(height: 20,),
-                 Container(
-                                              width: screenWidth *0.95,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(0.0),
-                                                child: Helper().isvalidElement(
-                                                            MediNameList) &&
-                                                        MediNameList.length > 0
-                                                    ? DropdownButtonFormField(
-                                                        // validator: (value) => validateDrops(value),
-                                                        // decoration: InputDecoration(
-                                                        //     enabledBorder: InputBorder.none,
-                                                        //     border: UnderlineInputBorder(
-                                                        //         borderSide: BorderSide(
-                                                        //             color: Colors.white))),
-                                                        // decoration:
-                                                        //     InputDecoration.collapsed(
-                                                        //         hintText: ''),
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          labelText:
-                                                              'Pharmacy',
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          //icon: Icon(Icons.numbers),
-                                                        ),
-                                                        isExpanded: true,
-                                                        hint: Text(
-                                                          'Select Pharmacy',
-                                                        ),
-                                                        // value:patternDropdownvalue,
-                                                        onChanged:
-                                                            (item) async {
-                                                          // medicineDropdownvalue =
-                                                          //     item.toString();
-                                                          var data = item
-                                                              .toString()
-                                                              .split('&*');
-                                                              setState(() {
-                                                                 SelectedPharmacy=data[0];
-                                                                 getMedicineList();
-                                                                 valid=true;
+                // SizedBox(height: 20,),
+                //  Container(
+                //                               width: screenWidth *0.95,
+                //                               child: Padding(
+                //                                 padding:
+                //                                     const EdgeInsets.all(0.0),
+                //                                 child: Helper().isvalidElement(
+                //                                             MediNameList) &&
+                //                                         MediNameList.length > 0
+                //                                     ? DropdownButtonFormField(
+                //                                         // validator: (value) => validateDrops(value),
+                //                                         // decoration: InputDecoration(
+                //                                         //     enabledBorder: InputBorder.none,
+                //                                         //     border: UnderlineInputBorder(
+                //                                         //         borderSide: BorderSide(
+                //                                         //             color: Colors.white))),
+                //                                         // decoration:
+                //                                         //     InputDecoration.collapsed(
+                //                                         //         hintText: ''),
+                //                                         decoration:
+                //                                             const InputDecoration(
+                //                                           labelText:
+                //                                               'Pharmacy',
+                //                                           border:
+                //                                               OutlineInputBorder(),
+                //                                           //icon: Icon(Icons.numbers),
+                //                                         ),
+                //                                         isExpanded: true,
+                //                                         hint: Text(
+                //                                           'Select Pharmacy',
+                //                                         ),
+                //                                         // value:patternDropdownvalue,
+                //                                         onChanged:
+                //                                             (item) async {
+                //                                           // medicineDropdownvalue =
+                //                                           //     item.toString();
+                //                                           var data = item
+                //                                               .toString()
+                //                                               .split('&*');
+                //                                               setState(() {
+                //                                                  SelectedPharmacy=data[0];
+                //                                                  getMedicineList();
+                //                                                  valid=true;
+                //                                                  MedicineLoader=false;
           
-                                                              });
+                //                                               });
                                                         
-                                                        },
-                                                        items: MediNameList.map<
-                                                            DropdownMenuItem<
-                                                                String>>((item) {
-                                                          return DropdownMenuItem(
-                                                            child: Text(
-                                                              item['pharmacy_name']
-                                                                  .toString(),
-                                                            ),
-                                                            value: item['shop_id']
-                                                                    .toString() +
-                                                                '&*' + item['pharmacy_name']
-                                                                    .toString()
+                //                                         },
+                //                                         items: MediNameList.map<
+                //                                             DropdownMenuItem<
+                //                                                 String>>((item) {
+                //                                           return DropdownMenuItem(
+                //                                             child: Text(
+                //                                               item['pharmacy_name']
+                //                                                   .toString(),
+                //                                             ),
+                //                                             value: item['shop_id']
+                //                                                     .toString() +
+                //                                                 '&*' + item['pharmacy_name']
+                //                                                     .toString()
                                                                 
-                                                          );
-                                                        }).toList(),
-                                                      )
-                                                    : DropdownButtonFormField(
-                                                        // validator: (value) => validateDrops(value),
-                                                        // isExpanded: true,
-                                                        hint: Text(
-                                                            'NO Pharmacy List'),
-                                                        // value:' _selectedState[i]',
-                                                        onChanged: (Pharmacy) {
-                                                          setState(() {});
-                                                        },
-                                                        items: [].map<
-                                                            DropdownMenuItem<
-                                                                String>>((item) {
-                                                          return new DropdownMenuItem(
-                                                            child: new Text(''),
-                                                            value: '',
-                                                          );
-                                                        }).toList(),
-                                                      ),
-                                              ),
-                                            ),
+                //                                           );
+                //                                         }).toList(),
+                //                                       )
+                //                                     : DropdownButtonFormField(
+                //                                         // validator: (value) => validateDrops(value),
+                //                                         // isExpanded: true,
+                //                                         hint: Text(
+                //                                             'NO Pharmacy List'),
+                //                                         // value:' _selectedState[i]',
+                //                                         onChanged: (Pharmacy) {
+                //                                           setState(() {});
+                //                                         },
+                //                                         items: [].map<
+                //                                             DropdownMenuItem<
+                //                                                 String>>((item) {
+                //                                           return new DropdownMenuItem(
+                //                                             child: new Text(''),
+                //                                             value: '',
+                //                                           );
+                //                                         }).toList(),
+                //                                       ),
+                //                               ),
+                //                             ),
                 // Container(
                 //   width: screenWidth*0.9,
                 //   child: TextFormField(decoration: 
@@ -181,7 +183,7 @@ class _MedicineListState extends State<MedicineList> {
                 //     ),
                  SizedBox(
                   height: 10,
-                ),valid?
+                ),
                 Column(
                   children: [
                     Center(child: 
@@ -251,7 +253,7 @@ class _MedicineListState extends State<MedicineList> {
           
                         Helper().isvalidElement(medicine_List) && medicine_List.length > 0 ?
                          Container(
-                          height:screenHeight * 0.75,
+                          height:screenHeight * 0.85,
                           
           
                          width: screenWidth,
@@ -371,7 +373,7 @@ class _MedicineListState extends State<MedicineList> {
           ),
                              SizedBox(height: 10,),
                   ],
-                ):Center(child:Text('Pls select Pharmacy')),
+                ),
                      ],
             ),
           ):Center(
@@ -380,7 +382,7 @@ class _MedicineListState extends State<MedicineList> {
   }
   getMedicineList() async {
     var data = {
-      "shop_id": SelectedPharmacy.toString(),
+      "shop_id": Helper().isvalidElement(SelectedPharmacy)?  SelectedPharmacy.toString():'',
     };
 
     var List = await PatientApi().getmedicineList(accesstoken, data);
@@ -393,6 +395,7 @@ class _MedicineListState extends State<MedicineList> {
         //  MediAndLabNameList = List['list'];
         medicineList = List['list'];
         MedicineLoader=true;
+        valid=true;
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);

@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Nigdocmenubar.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../AppWidget/common/Colors.dart' as custom_color;
+
 
 class Dash extends StatefulWidget {
   const Dash({super.key});
