@@ -2,6 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:nigdoc/AppWidget/BillingWidget/View/Cancelledbill.dart';
+import 'package:nigdoc/AppWidget/BillingWidget/View/Paidbill.dart';
+import 'package:nigdoc/AppWidget/BillingWidget/View/Pendingbilllist.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Nigdocmenubar.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
@@ -342,7 +345,8 @@ class _DashState extends State<Dash> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
-                              letterSpacing: 0.8,color: custom_color.appcolor),
+                              letterSpacing: 0.8,
+                              color: custom_color.appcolor),
                         ),
                       ],
                     ),
@@ -354,229 +358,241 @@ class _DashState extends State<Dash> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          height: screenHeight * 0.15,
-                          width: screenWidth * 0.25,
-                          child: Column(
-                            children: [
-                              
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                            color: custom_color.appcolor,
-                            // border: width != 0 ?
-                            // Border.all(width: 2, color:custom_color.app_color1 )
-                            // : Border(),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 4,
-                                blurRadius: 4,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                          ),
+                        InkWell(
+                          child: Container(
+                            height: screenHeight * 0.1567,
+                            width: screenWidth * 0.25,
+                            child: Column(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: custom_color.appcolor,
+                                        // border: width != 0 ?
+                                        // Border.all(width: 2, color:custom_color.app_color1 )
+                                        // : Border(),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            spreadRadius: 4,
+                                            blurRadius: 4,
+                                            offset: Offset(0,
+                                                1), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Pending',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    )),
+                                Container(
+                                  // color: Colors.amber,
+                                  height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text('Pending',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                    child: Image.asset('assets/pending.png'),
                                   ),
-                                ),
-                              )
-
-                          ),
-                          Container(
-                            // color: Colors.amber,
-                            height: screenHeight*0.1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset('assets/pending.png'),
+                                )
+                              ],
                             ),
-                           
-
-                          )
-                          
-                          
-                          
-                          
-                          ],
+                            decoration: BoxDecoration(
+                              color: custom_color.lightcolor,
+                              // border: width != 0 ?
+                              // Border.all(width: 2, color:custom_color.app_color1 )
+                              // : Border(),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 4,
+                                  blurRadius: 4,
+                                  offset: Offset(
+                                      0, 1), // changes position of shadow
+                                ),
+                              ],
+                            ),
                           ),
-                          decoration: BoxDecoration(
-                            color: custom_color.lightcolor,
-                            // border: width != 0 ?
-                            // Border.all(width: 2, color:custom_color.app_color1 )
-                            // : Border(),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 4,
-                                blurRadius: 4,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Pendingbilllist(),
+                                ));
+                          },
                         ),
-                       Container(
-                          height: screenHeight * 0.15,
-                          width: screenWidth * 0.25,
-                          child: Column(
-                            children: [
-                              
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                            color: custom_color.appcolor,
-                            // border: width != 0 ?
-                            // Border.all(width: 2, color:custom_color.app_color1 )
-                            // : Border(),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 4,
-                                blurRadius: 4,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                          ),
+                        InkWell(
+                          child: Container(
+                            height: screenHeight * 0.1567,
+                            width: screenWidth * 0.25,
+                            child: Column(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: custom_color.appcolor,
+                                        // border: width != 0 ?
+                                        // Border.all(width: 2, color:custom_color.app_color1 )
+                                        // : Border(),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            spreadRadius: 4,
+                                            blurRadius: 4,
+                                            offset: Offset(0,
+                                                1), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          '  Paid  ',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    )),
+                                Container(
+                                  // color: Colors.amber,
+                                  height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text('  Paid  ',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                    child: Image.asset('assets/paid.png'),
                                   ),
-                                ),
-                              )
-
-                          ),
-                          Container(
-                            // color: Colors.amber,
-                            height: screenHeight*0.1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset('assets/paid.png'),
+                                )
+                              ],
                             ),
-                           
-
-                          )
-                          
-                          
-                          
-                          
-                          ],
+                            decoration: BoxDecoration(
+                              color: custom_color.lightcolor,
+                              // border: width != 0 ?
+                              // Border.all(width: 2, color:custom_color.app_color1 )
+                              // : Border(),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 4,
+                                  blurRadius: 4,
+                                  offset:
+                                      Offset(0, 1), // changes position of shadow
+                                ),
+                              ],
+                            ),
                           ),
-                          decoration: BoxDecoration(
-                            color: custom_color.lightcolor,
-                            // border: width != 0 ?
-                            // Border.all(width: 2, color:custom_color.app_color1 )
-                            // : Border(),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 4,
-                                blurRadius: 4,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                          ),
+                            onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => paidbilllist(),
+                                ));
+                          },
                         ),
-                        Container(
-                          height: screenHeight * 0.15,
-                          width: screenWidth * 0.25,
-                          child: Column(
-                            children: [
-                              
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                            color: custom_color.appcolor,
-                            // border: width != 0 ?
-                            // Border.all(width: 2, color:custom_color.app_color1 )
-                            // : Border(),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 4,
-                                blurRadius: 4,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                          ),
+                        InkWell(
+                          child: Container(
+                            height: screenHeight * 0.1567,
+                            width: screenWidth * 0.25,
+                            child: Column(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: custom_color.appcolor,
+                                        // border: width != 0 ?
+                                        // Border.all(width: 2, color:custom_color.app_color1 )
+                                        // : Border(),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            spreadRadius: 4,
+                                            blurRadius: 4,
+                                            offset: Offset(0,
+                                                1), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    )),
+                                Container(
+                                  // color: Colors.amber,
+                                  height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text('Cancel',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                    child: Image.asset('assets/cancel.png'),
                                   ),
-                                ),
-                              )
-
-                          ),
-                          Container(
-                            // color: Colors.amber,
-                            height: screenHeight*0.1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset('assets/cancel.png'),
+                                )
+                              ],
                             ),
-                           
-
-                          )
-                          
-                          
-                          
-                          
-                          ],
+                            decoration: BoxDecoration(
+                              color: custom_color.lightcolor,
+                              // border: width != 0 ?
+                              // Border.all(width: 2, color:custom_color.app_color1 )
+                              // : Border(),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 4,
+                                  blurRadius: 4,
+                                  offset:
+                                      Offset(0, 1), // changes position of shadow
+                                ),
+                              ],
+                            ),
                           ),
-                          decoration: BoxDecoration(
-                            color: custom_color.lightcolor,
-                            // border: width != 0 ?
-                            // Border.all(width: 2, color:custom_color.app_color1 )
-                            // : Border(),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 4,
-                                blurRadius: 4,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                          ),
+                            onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Cancelledbill(),
+                                ));
+                          },
                         ),
-                        
+
                         // Text(
                         //   "Collection",
                         //   style: TextStyle(
@@ -596,7 +612,8 @@ class _DashState extends State<Dash> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
-                              letterSpacing: 0.8,color: custom_color.appcolor),
+                              letterSpacing: 0.8,
+                              color: custom_color.appcolor),
                         ),
                       ],
                     ),

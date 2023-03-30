@@ -230,7 +230,7 @@ class _NigdocmenubarState extends State<Nigdocmenubar> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              Paidbill(),
+                                              paidbilllist(),
                                         ));
                                   },
                                 ),
