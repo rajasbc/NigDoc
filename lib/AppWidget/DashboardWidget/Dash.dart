@@ -2,11 +2,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/View/Cancelledbill.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/View/Paidbill.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/View/Pendingbilllist.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/DashboardApi.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Nigdocmenubar.dart';
+import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
+import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
@@ -18,12 +22,27 @@ class Dash extends StatefulWidget {
 }
 
 class _DashState extends State<Dash> {
+  final LocalStorage storage = new LocalStorage('doctor_store');
   var bottomNav = 'home';
   final List<String> images = [
     // 'assets/banner1.jpeg',
     // 'assets/banner2.jpeg',
     'assets/banner4.png',
   ];
+
+  var userResponse;
+  var accesstoken;
+  var DashboardList;
+  // @override
+  // void initState() {
+  //   userResponse = storage.getItem('userResponse');
+  //   accesstoken= userResponse['access_token'];
+  //   getDashBoardList();
+
+  //   // TODO: implement initState
+  //   super.initState();
+  // } 
+  
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height - 50;
@@ -122,17 +141,34 @@ class _DashState extends State<Dash> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
+                  SizedBox(height: 5,),
+                  Container(
+                    child: Row(
+                      children: [ 
                   Container(
                     child: Row(
                       children: [
                         Text(
                           "Monthly Report",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              letterSpacing: 0.8,
+                              color: custom_color.appcolor),
                         ),
                       ],
                     ),
                   ),
+                 
+                        // Text(
+                        //   "Monthly Report",
+                        //   style: TextStyle(
+                        //       fontWeight: FontWeight.bold, fontSize: 16),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 5,),
                   Container(
                     height: screenHeight * 0.18,
                     child: ListView(
@@ -156,7 +192,7 @@ class _DashState extends State<Dash> {
                                     child: Text(
                                       'Patient Count',
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 18,
                                           color: Colors.blue,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -167,13 +203,14 @@ class _DashState extends State<Dash> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          // Text(
-                                          //   '₹',
-                                          //   style: TextStyle(
-                                          //       color: Colors.amber,
-                                          //       fontSize: 22,
-                                          //       fontWeight: FontWeight.bold),
-                                          // ),
+                                          Helper().isvalidElement(DashboardList)&&
+                                         Helper().isvalidElement(DashboardList['Patient_count'])? Text(
+                                            '  ${DashboardList['Patient_count'].toString()}',
+                                            style: TextStyle(
+                                                color: Colors.amber,
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
+                                          ):
                                           Text('0',
                                               textAlign: TextAlign.end,
                                               style: TextStyle(
@@ -204,7 +241,7 @@ class _DashState extends State<Dash> {
                                     child: Text(
                                       'Prescription Count',
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 18,
                                           color: Colors.blue,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -215,13 +252,14 @@ class _DashState extends State<Dash> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          // Text(
-                                          //   '₹',
-                                          //   style: TextStyle(
-                                          //       color: Colors.amber,
-                                          //       fontSize: 22,
-                                          //       fontWeight: FontWeight.bold),
-                                          // ),
+                                          Helper().isvalidElement(DashboardList)&&
+                                           Helper().isvalidElement(DashboardList['prescription_count'])? Text(
+                                            '  ${DashboardList['prescription_count'].toString()}',
+                                            style: TextStyle(
+                                                color: Colors.amber,
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
+                                          ):
                                           Text('0',
                                               textAlign: TextAlign.end,
                                               style: TextStyle(
@@ -252,7 +290,7 @@ class _DashState extends State<Dash> {
                                     child: Text(
                                       'Appointment Count',
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 18,
                                           color: Colors.blue,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -263,13 +301,14 @@ class _DashState extends State<Dash> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          // Text(
-                                          //   '₹',
-                                          //   style: TextStyle(
-                                          //       color: Colors.amber,
-                                          //       fontSize: 22,
-                                          //       fontWeight: FontWeight.bold),
-                                          // ),
+                                          Helper().isvalidElement(DashboardList)&&
+                                          Helper().isvalidElement(DashboardList['appointment_list'])? Text(
+                                            '  ${DashboardList['appointment_list'].toString()}',
+                                            style: TextStyle(
+                                                color: Colors.amber,
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
+                                          ):
                                           Text('0',
                                               textAlign: TextAlign.end,
                                               style: TextStyle(
@@ -301,7 +340,7 @@ class _DashState extends State<Dash> {
                                     child: Text(
                                       'Pending Appointment Count',
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 18,
                                           color: Colors.blue,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -312,13 +351,14 @@ class _DashState extends State<Dash> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          // Text(
-                                          //   '₹',
-                                          //   style: TextStyle(
-                                          //       color: Colors.amber,
-                                          //       fontSize: 22,
-                                          //       fontWeight: FontWeight.bold),
-                                          // ),
+                                          Helper().isvalidElement(DashboardList)&&
+                                          Helper().isvalidElement(DashboardList['pending_appoint'])? Text(
+                                            '  ${DashboardList['pending_appoint'].toString()}',
+                                            style: TextStyle(
+                                                color: Colors.amber,
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
+                                          ):
                                           Text('0',
                                               textAlign: TextAlign.end,
                                               style: TextStyle(
@@ -717,15 +757,15 @@ class _DashState extends State<Dash> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(3.0),
-                        child: Icon(Icons.production_quantity_limits_rounded,
-                            color: bottomNav == 'product'
+                        child: Icon(Icons.medical_information_outlined,
+                            color: bottomNav == 'medicine'
                                 ? Colors.blue
                                 : Colors.black),
                       ),
                       Text(
-                        'Product',
+                        'Medicine',
                         style: TextStyle(
-                            color: bottomNav == 'product'
+                            color: bottomNav == 'medicine'
                                 ? Colors.blue
                                 : Colors.black,
                             fontWeight: FontWeight.bold),
@@ -733,28 +773,28 @@ class _DashState extends State<Dash> {
                     ],
                   ),
                   onTap: () {
-                    // this.setState(() {
-                    //   bottomNav = 'product';
-                    // });
-                    // Navigator.push(
-                    //         context,
+                    this.setState(() {
+                      bottomNav = 'product';
+                    });
+                    Navigator.push(
+                            context,
 
-                    //         MaterialPageRoute(
-                    //             builder: (context) => const Productlist()),
-                    //       );
+                            MaterialPageRoute(
+                                builder: (context) => const MedicineList()),
+                          );
                   },
                 ),
                 InkWell(
                   onTap: () {
-                    // this.setState(() {
-                    //   bottomNav = 'setting';
-                    // });
-                    //  Navigator.push(
-                    //         context,
+                    this.setState(() {
+                      bottomNav = 'setting';
+                    });
+                     Navigator.push(
+                            context,
 
-                    //         MaterialPageRoute(
-                    //             builder: (context) => const SettingView()),
-                    //       );
+                            MaterialPageRoute(
+                                builder: (context) => const Setting()),
+                          );
                   },
                   child: Column(
                     children: [
@@ -782,5 +822,23 @@ class _DashState extends State<Dash> {
             ),
           )),
     );
+  }
+   getDashBoardList() async {
+    
+
+    var List = await DashboardApi().getdeshboardList(accesstoken);
+    if (Helper().isvalidElement(List) &&
+        Helper().isvalidElement(List['status']) &&
+        List['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      setState(() {
+       
+       DashboardList = List['list'];
+        // MedicineLoader=true;
+        // valid=true;
+      });
+    
+    }
   }
 }

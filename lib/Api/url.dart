@@ -12,3 +12,4 @@ String getclinicconfigEndpoint = "auth/getClinicConfig";
 String getinjectionEndpoint = "auth/getInjectionList";
 String pendingbilllistEndpoint = "auth/docBillList";
 String postprescriptionEndpoint="auth/postPrescription";
+String dashboardDetailsEndpoint="auth/docDashboardDetails";
