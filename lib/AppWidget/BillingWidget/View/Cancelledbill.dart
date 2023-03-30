@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
+import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../Common/colors.dart' as Customcolor;
 
 class Cancelledbill extends StatefulWidget {
   const Cancelledbill({super.key});
@@ -11,13 +13,18 @@ class Cancelledbill extends StatefulWidget {
 }
 
 class _CancelledbillState extends State<Cancelledbill> {
-
-   final DateFormate = "dd-MM-yyyy";
+  final LocalStorage storage = new LocalStorage('doctor_store');
+  final DateFormate = "dd-MM-yyyy";
   TextEditingController fromdateInputController = TextEditingController();
   TextEditingController todateInputController = TextEditingController();
 
 
-   DateTime currentDate = DateTime.now();
+var accesstoken;
+  bool isLoading = false;
+  var cancellbill;
+
+
+  DateTime currentDate = DateTime.now();
   Future<void> selectDate(BuildContext context, data) async {
     var checkfield = data;
     // print(data);
@@ -27,13 +34,13 @@ class _CancelledbillState extends State<Cancelledbill> {
           return Theme(
             data: Theme.of(context).copyWith(
               colorScheme: ColorScheme.light(
-                primary: Colors.blue,
+                primary: Customcolor.appcolor,
                 onPrimary: Colors.white, // <-- SEE HERE
-                onSurface: Colors.blue, // <-- SEE HERE
+                onSurface: Customcolor.appcolor, // <-- SEE HERE
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: Colors.blue, // button text color
+                  primary: Customcolor.appcolor, // button text color
                 ),
               ),
             ),
@@ -54,12 +61,24 @@ class _CancelledbillState extends State<Cancelledbill> {
           DateFormat(DateFormate).format(pickedDate!);
 
       // fromdateInputController.text = pickedDate.toString().split(' ')[0];
-      // getbendingbilllist();
+      getcancelledlist();
     } else {
       todateInputController.text = DateFormat(DateFormate).format(pickedDate!);
       // todateInputController.text = pickedDate.toString().split(' ')[0];
-      // getbendingbilllist();
+    getcancelledlist();
     }
+  }
+
+ 
+
+  void initState() {
+    super.initState();
+    accesstoken = storage.getItem('userResponse')['access_token'];
+    fromdateInputController.text = Helper().getCurrentDate()  ;
+    todateInputController.text = Helper().getCurrentDate();
+    getcancelledlist();
+    
+    // print('ddd');
   }
   @override
   Widget build(BuildContext context) {
@@ -68,7 +87,9 @@ class _CancelledbillState extends State<Cancelledbill> {
      var screenHeight = MediaQuery.of(context).size.height;
     var screenwidht = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(title: Text('Cancelled Bill List'),),
+      appBar: AppBar(title: Text('Cancelled Bill List'),
+      backgroundColor: Customcolor.appcolor,
+      ),
       body: Container(
          child:
                 Column(
@@ -92,7 +113,7 @@ class _CancelledbillState extends State<Cancelledbill> {
                           labelText: 'From',
                           suffixIcon: Icon(
                             Icons.date_range,
-                            color: Colors.blue,
+                            color: Customcolor.appcolor,
                           ),
                         ),
                         controller: fromdateInputController,
@@ -112,7 +133,7 @@ class _CancelledbillState extends State<Cancelledbill> {
                             labelText: 'To',
                             suffixIcon: Icon(
                               Icons.date_range,
-                              color: Colors.blue,
+                              color: Customcolor.appcolor,
                             ),
                           ),
                           controller: todateInputController,
@@ -125,235 +146,145 @@ class _CancelledbillState extends State<Cancelledbill> {
                 ),
               ),
             ),
-                    Container(
-                      height: screenHeight*0.78,
-                      child: 
-                      
-                      // Helper().isvalidElement(Stafflist) &&
-                      //                   Stafflist.length > 0? 
-
-                                      
-                                        ListView.builder(
-                        itemCount: 8,
-                        itemBuilder: (BuildContext context, int index) {
-                          // var data = Stafflist[index];
-                          return Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  color: index % 2 == 0
-                                      ? Color.fromARGB(255, 190, 196, 199)
-                                      : Colors.white,
-                                  width: screenwidht,
-                                  // height: screenHeight * 0.20,
-                                  // width: screenWidth * 0.90,
-                                  // decoration:
-                                  //     BoxDecoration(border: Border.all(color: Colors.grey)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: screenwidht * 0.47,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Name:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text("khan")
-                                                  ],
-                                                ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                  height: screenHeight * 0.7596,
+                        child: 
+                        
+                        Helper().isvalidElement(cancellbill) &&
+                                          cancellbill.length > 0? 
+                    
+                                        
+                                          ListView.builder(
+                          itemCount: cancellbill.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var data = cancellbill[index];
+                            return Center(
+                              child: Container(
+                                color: index % 2 == 0
+                                    ? Color.fromARGB(255, 238, 242, 250)
+                                    : Colors.white,
+                                width: screenwidht,
+                                // height: screenHeight * 0.20,
+                                // width: screenWidth * 0.90,
+                                // decoration:
+                                //     BoxDecoration(border: Border.all(color: Colors.grey)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              // width: screenwidht * 0.47,
+                                              child: Row(
+                                                children: [
+                                                 Icon(Icons.person,color:Color.fromARGB(255, 98, 96, 96),),
+                                                    Helper().isvalidElement(data['customer_name'])  ? Text(
+                                                      '${data['customer_name'].toString()}')  : Text(''),
+                                                ],
                                               ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Phone:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('87654323456')
-                                                  ],
-                                                ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                 Icon(Icons.phone,color:Color.fromARGB(255, 98, 96, 96),),
+                                                  Text('${data['cus_phone'].toString()}')
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: screenwidht * 0.47,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Prescription Id:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('45')
-                                                  ],
-                                                ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                           
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.calendar_month,color:Color.fromARGB(255, 98, 96, 96),),
+                                                  Text('${data['date'].toString().substring(0,10)}')
+                                                ],
                                               ),
+                                            ),
                                               Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Date:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('4-02-23023')
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Discount :',
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight.bold),
+                                                  ),
+                                                  Text('${data['discount'].toString()}')
+                                                ],
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                          Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: screenwidht * 0.47,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Patient Id:',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('435')
-                                                  ],
-                                                ),
+                                      ),
+                                       
+                                     
+                                      Padding(
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              // width: screenwidht * 0.55,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Fess :',
+                                                    // style: TextStyle(
+                                                    //     fontWeight: FontWeight.bold),
+                                                  ),
+                                                  Text('${data['grand_total'].toString()}')
+                                                ],
                                               ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Discount(₹):',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('300')
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Paid :',
+                                                    // style: TextStyle(
+                                                    //     fontWeight: FontWeight.bold),
+                                                  ),
+                                                  Text('${data['grand_total'] - data['balance']}')
+                                                ],
+                                              ),
+                                            ),
+                                             Container(
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Status :',
+                                                    // style: TextStyle(
+                                                    //     fontWeight: FontWeight.bold),
+                                                  ),
+                                                  Text('${data['pay_status'].toString()}')
+                                                ],
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        //  Padding(
-                                        //   padding: const EdgeInsets.all(1.0),
-                                        //   child: Row(
-                                        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        //     children: [
-                                        //       Container(
-                                        //         // width: screenwidht * 0.55,
-                                        //         child: Row(
-                                        //           children: [
-                                        //             Text(
-                                        //               'PatientId:',
-                                        //               style: TextStyle(
-                                        //                   fontWeight: FontWeight.bold),
-                                        //             ),
-                                        //             Text('45')
-                                        //           ],
-                                        //         ),
-                                        //       ),
-                                        //       Container(
-                                        //         child: Row(
-                                        //           children: [
-                                        //             Text(
-                                        //               'Fess(₹):',
-                                        //               style: TextStyle(
-                                        //                   fontWeight: FontWeight.bold),
-                                        //             ),
-                                        //             Text('23443')
-                                        //           ],
-                                        //         ),
-                                        //       ),
-                                        //        Container(
-                                        //         child: Row(
-                                        //           children: [
-                                        //             Text(
-                                        //               'Discount(₹):',
-                                        //               style: TextStyle(
-                                        //                   fontWeight: FontWeight.bold),
-                                        //             ),
-                                        //             Text('23442')
-                                        //           ],
-                                        //         ),
-                                        //       )
-                                        //     ],
-                                        //   ),
-                                        // ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                // width: screenwidht * 0.55,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Fess(₹):',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('0.50')
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Paid(₹):',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('0.50')
-                                                  ],
-                                                ),
-                                              ),
-                                               Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Status :',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('Paid')
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        })
-                        // :
-                        // Text('Nodata'),
+                            );
+                          }):Container()
+                          // :
+                          // Text('Nodata'),
+                      ),
                     )
                   ],
                 ),
@@ -393,4 +324,27 @@ class _CancelledbillState extends State<Cancelledbill> {
   //   // getPatientRegisterReportList();
   //   // this.setState(() {});
   // }
+  getcancelledlist()async{
+ var formatter = new DateFormat('yyyy-MM-dd');
+    var data = {
+      "from_date": fromdateInputController.text.toString(),
+      "to_date": todateInputController.text.toString(),
+      "status_type": "Cancelled",
+    };
+    // this.setState(() {
+    //   isLoading = true;
+    // });
+    cancellbill = await billingapi().getpendinglist(accesstoken, data);
+    if (Helper().isvalidElement(cancellbill) &&
+        Helper().isvalidElement(cancellbill['status']) &&
+        cancellbill['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      cancellbill = cancellbill['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+      this.setState(() {
+        isLoading = false;
+      });
+    }
+  }
 }

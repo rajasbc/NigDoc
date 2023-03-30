@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../Common/colors.dart' as Customcolor;
 
 class Pendingbilllist extends StatefulWidget {
   const Pendingbilllist({super.key});
@@ -27,13 +28,13 @@ class _PendingbilllistState extends State<Pendingbilllist> {
           return Theme(
             data: Theme.of(context).copyWith(
               colorScheme: ColorScheme.light(
-                primary: Colors.blue,
+                primary: Customcolor.appcolor,
                 onPrimary: Colors.white, // <-- SEE HERE
-                onSurface: Colors.blue, // <-- SEE HERE
+                onSurface: Customcolor.appcolor, // <-- SEE HERE
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: Colors.blue, // button text color
+                  primary: Customcolor.appcolor, // button text color
                 ),
               ),
             ),
@@ -69,10 +70,10 @@ class _PendingbilllistState extends State<Pendingbilllist> {
   void initState() {
     super.initState();
     accesstoken = storage.getItem('userResponse')['access_token'];
-    fromdateInputController.text = Helper().getCurrentDate()  ;
+    fromdateInputController.text = Helper().getCurrentDate();
     todateInputController.text = Helper().getCurrentDate();
     getbendingbilllist();
-    
+
     // print('ddd');
   }
 
@@ -85,6 +86,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pending Bill List'),
+        backgroundColor: Customcolor.appcolor,
       ),
       body: Container(
         child: Column(
@@ -110,7 +112,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                           labelText: 'From',
                           suffixIcon: Icon(
                             Icons.date_range,
-                            color: Colors.blue,
+                            color: Customcolor.appcolor,
                           ),
                         ),
                         controller: fromdateInputController,
@@ -130,7 +132,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                             labelText: 'To',
                             suffixIcon: Icon(
                               Icons.date_range,
-                              color: Colors.blue,
+                              color: Customcolor.appcolor,
                             ),
                           ),
                           controller: todateInputController,
@@ -143,207 +145,173 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                 ),
               ),
             ),
-            Container(
-                height: screenHeight * 0.78,
-                child: Helper().isvalidElement(pendingbill) &&
-                        pendingbill.length > 0
-                    ? ListView.builder(
-                        itemCount: pendingbill.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          var data = pendingbill[index];
-
-                          // var paid = data['grand_total'] - data['balance'];
-                          return Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  color: index % 2 == 0
-                                      ? Color.fromARGB(255, 190, 196, 199)
-                                      : Colors.white,
-                                  width: screenwidht,
-                                  // height: screenHeight * 0.20,
-                                  // width: screenWidth * 0.90,
-                                  // decoration:
-                                  //     BoxDecoration(border: Border.all(color: Colors.grey)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: screenwidht * 0.47,
-                                                child: Row(
-                                                  children: [
-                                                   Icon(Icons.person),
-                                                Helper().isvalidElement(data['customer_name'])  ? Text(
-                                                        '${data['customer_name'].toString()}')  : Text(''),
-                                                  ],
-                                                ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                  // color: Colors.white,
+                  height: screenHeight * 0.7596,
+                  child: Helper().isvalidElement(pendingbill) &&
+                          pendingbill.length > 0
+                      ? ListView.builder(
+                          itemCount: pendingbill.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var data = pendingbill[index];
+              
+                            // var paid = data['grand_total'] - data['balance'];
+                            return Center(
+                              child: Container(
+                                color: index % 2 == 0
+                                    ? Color.fromARGB(255, 238, 242, 250)
+                                    : Colors.white,
+                                width: screenwidht,
+                                // height: screenHeight * 0.20,
+                                // width: screenWidth * 0.90,
+                                // decoration:
+                                //     BoxDecoration(border: Border.all(color: Colors.grey)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              // width: screenwidht * 0.47,
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.person,
+                                                    color: Color.fromARGB(
+                                                        255, 98, 96, 96),
+                                                  ),
+                                                  Helper().isvalidElement(
+                                                          data['customer_name'])
+                                                      ? Text(
+                                                          '${data['customer_name'].toString()}')
+                                                      : Text(''),
+                                                ],
                                               ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.phone),
-                                                    Text(
-                                                        '${data['cus_phone'].toString()}')
-                                                  ],
-                                                ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.phone,
+                                                    color: Color.fromARGB(
+                                                        255, 98, 96, 96),
+                                                  ),
+                                                  Text(
+                                                      '${data['cus_phone'].toString()}')
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                 width: screenwidht * 0.47,
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.calendar_month),
-                                                    Text(
-                                                        '${data['date'].toString().substring(0, 10)}')
-                                                  ],
-                                                ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              //  width: screenwidht * 0.47,
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.calendar_month,
+                                                    color: Color.fromARGB(
+                                                        255, 98, 96, 96),
+                                                  ),
+                                                  Text(
+                                                      '${data['date'].toString().substring(0, 10)}')
+                                                ],
                                               ),
-                                              Container(
-                                                // width: screenwidht * 0.47,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Fess(₹):',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                        '${data['grand_total'].toString()}')
-                                                  ],
-                                                ),
+                                            ),
+                                            Container(
+                                              // width: screenwidht * 0.47,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Fess :',
+                                                    // style: TextStyle(
+                                                    //     fontWeight:
+                                                    //         FontWeight.bold,color: Color.fromARGB(255, 54, 50, 50)),
+                                                  ),
+                                                  Text(
+                                                      '${data['grand_total'].toString()}')
+                                                ],
                                               ),
-                                              
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 1,
-                                              top: 1,
-                                              bottom: 1,
-                                              right: 28),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              // Container(
-                                              //   // width: screenwidht * 0.55,
-                                              //   child: Row(
-                                              //     children: [
-                                              //       Text(
-                                              //         'PatientId:',
-                                              //         style: TextStyle(
-                                              //             fontWeight:
-                                              //                 FontWeight.bold),
-                                              //       ),
-                                              //       Text('${data['patient_id'].toString()}')
-                                              //     ],
-                                              //   ),
-                                              // ),
-
-                                             
-                                            ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Discount :',
+                                                  // style: TextStyle(
+                                                  //     // fontWeight:
+                                                  //     //     FontWeight.bold
+                                                  //         color: Color.fromARGB(255, 54, 50, 50)),
+                                                ),
+                                                Text(
+                                                    '${data['discount'].toString()}')
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 1,
-                                              top: 1,
-                                              bottom: 1,
-                                              right: 28),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                               Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Discount(₹):',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                        '${data['discount'].toString()}')
-                                                  ],
+                                          Container(
+                                            // width: screenwidht * 0.55,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Paid :',
+                                                  // style: TextStyle(
+                                                  //     // fontWeight:
+                                                  //     //     FontWeight.bold
+                                                  //         color: Color.fromARGB(255, 54, 50, 50)),
                                                 ),
-                                              ),
-                                              Container(
-                                                // width: screenwidht * 0.55,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Paid(₹):',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                        '${data['grand_total'] - data['balance']}')
-                                                  ],
-                                                ),
-                                              ),
-                                              // Container(
-                                              //   child: Row(
-                                              //     children: [
-                                              //       Text(
-                                              //         'Recieved(₹):',
-                                              //         style: TextStyle(
-                                              //             fontWeight:
-                                              //                 FontWeight.bold),
-                                              //       ),
-                                              //       Text('0.50')
-                                              //     ],
-                                              //   ),
-                                              // ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Balance(₹):',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                        '${data['balance'].toString()}')
-                                                  ],
-                                                ),
-                                              )
-                                            ],
+                                                Text(
+                                                    '${data['grand_total'] - data['balance']}')
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Balance :',
+                                                  // style: TextStyle(
+                                                  //     // fontWeight:
+                                                  //     //     FontWeight.bold,
+                                                  //         color: Color.fromARGB(255, 54, 50, 50)),
+                                                ),
+                                                Text(
+                                                    '${data['balance'].toString()}')
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        })
-                    : Container(
-                        child: Text('wait.......'),
-                      )
-                // :
-                // Text('Nodata'),
-                )
+                            );
+                          })
+                      : Container()
+                  // :
+                  // Text('Nodata'),
+                  ),
+            )
           ],
         ),
       ),
