@@ -3,8 +3,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 // import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/Api.dart';
+import 'package:nigdoc/AppWidget/LoginWidget/veiw/Splashscreen.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,16 +27,20 @@ class _LoginpageState extends State<Loginpage> {
 
   @override
   void initState() {
-   
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => Splashscreen(),
+    //     ));
 // initPreferences();
     // FlutterNativeSplash.remove();
-  // }
-initPreferencess();
+    // }
+    initPreferencess();
   }
-  initPreferencess() async{
-pref = await SharedPreferences.getInstance();
 
-}
+  initPreferencess() async {
+    pref = await SharedPreferences.getInstance();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,13 +152,13 @@ pref = await SharedPreferences.getInstance();
 // );
 
                                       // SharedPreferences SharedPreference = await SharedPreferences.getInstance();
-                                     await pref.setString('access_token',
-                                         await logindata['access_token']);
+                                      await pref.setString('access_token',
+                                          await logindata['access_token']);
                                       pref.setBool('isLogin', true);
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                docWrapper()),
+                                                Dash()),
                                       );
 
                                       // Navigator.push(
