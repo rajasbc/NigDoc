@@ -810,7 +810,7 @@ class _SettingState extends State<Setting> {
                     height: screenHeight*0.4,
                     width: screenWidth,
                     // color: Color.fromARGB(255, 48, 112, 134),
-                    child: Image.asset('assets/doctor.gif',fit: BoxFit.fill,),
+                    // child: Image.asset('assets/doctor.gif',fit: BoxFit.fill,),
                   )
                 
               ],

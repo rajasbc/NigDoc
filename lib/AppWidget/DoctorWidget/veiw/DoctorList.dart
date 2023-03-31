@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/Api.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/veiw/AddDoctor.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
@@ -34,184 +35,192 @@ class _DoctorListState extends State<DoctorList> {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Doctor List'),
-        backgroundColor:custom_color.appcolor ,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.all(8.0),
-        //     child: TextButton(
-        //         onPressed: () {
-        //           Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                 builder: (context) => AddDoctor(),
-        //               ));
-        //         },
-        //         child: Text(
-        //           "Add Doctor",
-        //           style: TextStyle(
-        //               color: Colors.white,
-        //               fontSize: 12,
-        //               fontWeight: FontWeight.bold),
-        //         ),
-        //         style: ButtonStyle(
-        //             backgroundColor:
-        //                 MaterialStateProperty.all<Color>(Colors.green),
-        //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-        //                 RoundedRectangleBorder(
-        //                     borderRadius: BorderRadius.circular(18.0),
-        //                     side: BorderSide(color: Colors.green))))),
-        //   ),
-        // ],
-      ),
-      body:isloading? Container(
-          child: Helper().isvalidElement(doctorlist) && doctorlist.length > 0
-              ? ListView.builder(
-                  itemCount: doctorlist.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var data = doctorlist[index];
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: index % 2 == 0
-                              ? custom_color.lightcolor
-                              : Colors.white,
-                          width: screenWidth,
-                          // height: screenHeight * 0.20,
-                          // width: screenWidth * 0.90,
-                          // decoration:
-                          //     BoxDecoration(border: Border.all(color: Colors.grey)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: Row(
-                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        width: screenWidth * 0.55,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Name :',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text('${data['name'].toString()}')
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Phone :',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text('${data['contact_no'].toString()}')
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: Row(
-                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        width: screenWidth * 0.55,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Address :',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text('${data['address'].toString()}')
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'userlevel :',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text('${data['user_type'].toString()}')
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: Row(
-                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
+    return WillPopScope(onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Dash()),
+        );
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Doctor List'),
+          backgroundColor:custom_color.appcolor ,
+          // actions: [
+          //   Padding(
+          //     padding: const EdgeInsets.all(8.0),
+          //     child: TextButton(
+          //         onPressed: () {
+          //           Navigator.push(
+          //               context,
+          //               MaterialPageRoute(
+          //                 builder: (context) => AddDoctor(),
+          //               ));
+          //         },
+          //         child: Text(
+          //           "Add Doctor",
+          //           style: TextStyle(
+          //               color: Colors.white,
+          //               fontSize: 12,
+          //               fontWeight: FontWeight.bold),
+          //         ),
+          //         style: ButtonStyle(
+          //             backgroundColor:
+          //                 MaterialStateProperty.all<Color>(Colors.green),
+          //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          //                 RoundedRectangleBorder(
+          //                     borderRadius: BorderRadius.circular(18.0),
+          //                     side: BorderSide(color: Colors.green))))),
+          //   ),
+          // ],
+        ),
+        body:isloading? Container(
+            child: Helper().isvalidElement(doctorlist) && doctorlist.length > 0
+                ? ListView.builder(
+                    itemCount: doctorlist.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var data = doctorlist[index];
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            color: index % 2 == 0
+                                ? custom_color.lightcolor
+                                : Colors.white,
+                            width: screenWidth,
+                            // height: screenHeight * 0.20,
+                            // width: screenWidth * 0.90,
+                            // decoration:
+                            //     BoxDecoration(border: Border.all(color: Colors.grey)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Row(
+                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
                                           width: screenWidth * 0.55,
                                           child: Row(
                                             children: [
                                               Text(
-                                                'Organisation :',
+                                                'Name :',
                                                 style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                    fontWeight: FontWeight.bold),
                                               ),
-                                              Text('${data[''].toString()}')
+                                              Text('${data['name'].toString()}')
                                             ],
-                                          )),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'City :',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
                                           ),
-                                          Text('${data[''].toString()}')
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Email :',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                        ),
+                                        Container(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'Phone :',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              Text('${data['contact_no'].toString()}')
+                                            ],
                                           ),
-                                          Text('${data['email'].toString()}')
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Row(
+                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          width: screenWidth * 0.55,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'Address :',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              Text('${data['address'].toString()}')
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'userlevel :',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              Text('${data['user_type'].toString()}')
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Row(
+                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                            width: screenWidth * 0.55,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Organisation :',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text('${data[''].toString()}')
+                                              ],
+                                            )),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'City :',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text('${data[''].toString()}')
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Email :',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text('${data['email'].toString()}')
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  })
-              : Center(child: Text('No Data Found'))):Center(child: SpinLoader(),),
+                      );
+                    })
+                : Center(child: Text('No Data Found'))):Center(child: SpinLoader(),),
+      ),
     );
   }
 

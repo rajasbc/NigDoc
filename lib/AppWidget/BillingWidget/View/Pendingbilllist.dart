@@ -145,6 +145,9 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                 ),
               ),
             ),
+            Divider(
+              thickness: 3,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(

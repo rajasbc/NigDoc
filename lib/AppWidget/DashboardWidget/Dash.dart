@@ -26,9 +26,9 @@ class _DashState extends State<Dash> {
   final LocalStorage storage = new LocalStorage('doctor_store');
   var bottomNav = 'home';
   final List<String> images = [
-    // 'assets/banner1.jpeg',
-    // 'assets/banner2.jpeg',
-    'assets/banner4.png',
+    'assets/banner1.png',
+    'assets/banner2.png',
+    'assets/banner3.png',
   ];
 
   var userResponse;
@@ -119,8 +119,9 @@ class _DashState extends State<Dash> {
         child: Column(
           children: [
             Container(
+              
               width: screenWidth,
-              color: Colors.blueAccent,
+              color: custom_color.lightcolor,
               child: Container(
                 height: screenHeight * 0.25,
                 decoration: BoxDecoration(),
@@ -667,8 +668,46 @@ class _DashState extends State<Dash> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
+                  Container(
+                   
+                    width: screenWidth,
+                    height: screenHeight*0.12,
+                    child:Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      // children: [
+                      //   Icon(Icons.account_balance_wallet_outlined,size: 60,color: custom_color.appcolor,),
+                      //   Icon(Icons.add_alert_outlined,size: 60,color: custom_color.appcolor),
+                      //   Icon(Icons.person_outline_sharp,size: 60,color: custom_color.appcolor),
+                      //   Icon(Icons.emoji_events,size: 60,color: custom_color.appcolor),
+                      //   Icon(Icons.noise_aware_outlined,size: 60,color: custom_color.appcolor),
+                      // ],
+
+                    ),
+                     decoration: BoxDecoration(
+                              color:custom_color.listcolor,
+                              // border: width != 0 ?
+                              // Border.all(width: 2, color:custom_color.app_color1 )
+                              // : Border(),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 4,
+                                  blurRadius: 4,
+                                  offset:
+                                      Offset(0, 1), // changes position of shadow
+                                ),
+                              ],
+                            ),
+
+                  )
+                  
+
                 ],
               ),
             )

@@ -145,6 +145,9 @@ class _paidbilllistState extends State<paidbilllist> {
                 ),
               ),
             ),
+             Divider(
+              thickness: 3,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
