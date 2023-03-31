@@ -202,70 +202,87 @@ class _NigdocmenubarState extends State<Nigdocmenubar> {
                         //     ),
                         //   ],
                         // ),
-                        ExpansionTile(
-                          title: Text('Billing'),
-                          leading: Icon(Icons.blinds_closed),
-                          children: [
-                            ExpansionTile(
-                              title: Text('Collections'),
-                              leading: Icon(Icons.blinds_closed),
-                              children: [
-                                ListTile(
-                                  title: Text('Pending Bill List'),
-                                  leading: Icon(Icons.pending),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              Pendingbilllist(),
-                                        ));
-                                  },
-                                ),
-                                ListTile(
-                                  title: Text('Paid Bill List'),
-                                  leading: Icon(Icons.paid),
-                                  onTap: () {
-                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              paidbilllist(),
-                                        ));
-                                  },
-                                ),
-                                ListTile(
-                                  title: Text('Cancelled Bill List'),
-                                  leading: Icon(Icons.cancel_outlined),
-                                  onTap: () {
-                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              Cancelledbill(),
-                                        ));
-                                  },
-                                ),
-                              ],
-                            ),
-                            // ListTile(
-                            //   title: Text('Collections'),
-                            //   leading: Icon(Icons.collections),
-                            //   onTap: () {
-                            //     Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) => Collections(),
-                            //         ));
-                            //   },
-                            // ),
-                            ListTile(
-                              title: Text('Register Report'),
-                              leading: Icon(Icons.report),
-                              onTap: () {},
-                            ),
-                          ],
-                        ),
+
+
+
+
+
+
+
+
+
+
+                        // ExpansionTile(
+                        //   title: Text('Billing'),
+                        //   leading: Icon(Icons.blinds_closed),
+                        //   children: [
+                        //     ExpansionTile(
+                        //       title: Text('Collections'),
+                        //       leading: Icon(Icons.blinds_closed),
+                        //       children: [
+                        //         ListTile(
+                        //           title: Text('Pending Bill List'),
+                        //           leading: Icon(Icons.pending),
+                        //           onTap: () {
+                        //             Navigator.push(
+                        //                 context,
+                        //                 MaterialPageRoute(
+                        //                   builder: (context) =>
+                        //                       Pendingbilllist(),
+                        //                 ));
+                        //           },
+                        //         ),
+                        //         ListTile(
+                        //           title: Text('Paid Bill List'),
+                        //           leading: Icon(Icons.paid),
+                        //           onTap: () {
+                        //              Navigator.push(
+                        //                 context,
+                        //                 MaterialPageRoute(
+                        //                   builder: (context) =>
+                        //                       paidbilllist(),
+                        //                 ));
+                        //           },
+                        //         ),
+                        //         ListTile(
+                        //           title: Text('Cancelled Bill List'),
+                        //           leading: Icon(Icons.cancel_outlined),
+                        //           onTap: () {
+                        //              Navigator.push(
+                        //                 context,
+                        //                 MaterialPageRoute(
+                        //                   builder: (context) =>
+                        //                       Cancelledbill(),
+                        //                 ));
+                        //           },
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     // ListTile(
+                        //     //   title: Text('Collections'),
+                        //     //   leading: Icon(Icons.collections),
+                        //     //   onTap: () {
+                        //     //     Navigator.push(
+                        //     //         context,
+                        //     //         MaterialPageRoute(
+                        //     //           builder: (context) => Collections(),
+                        //     //         ));
+                        //     //   },
+                        //     // ),
+                        //     ListTile(
+                        //       title: Text('Register Report'),
+                        //       leading: Icon(Icons.report),
+                        //       onTap: () {},
+                        //     ),
+                        //   ],
+                        // ),
+
+
+
+
+
+
+                        
                         ListTile(
                           title: Text('Treatment'),
                           leading: Icon(Icons.local_hospital_outlined),

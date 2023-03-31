@@ -7,6 +7,7 @@ import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 // import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/Api.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Splashscreen.dart';
+// import 'package:nigdoc/AppWidget/LoginWidget/veiw/onBoard.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -217,7 +218,8 @@ class _LoginpageState extends State<Loginpage> {
                                 });
                               },
                               child: Text('Login')),
-                        )
+                        ),
+                        
                       ],
                     ),
                   ),
