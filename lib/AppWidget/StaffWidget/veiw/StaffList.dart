@@ -4,7 +4,9 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/Api.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/veiw/AddUser.dart';
+import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../../AppWidget/common/Colors.dart'as custom_color;
 
 class StaffList extends StatefulWidget {
   const StaffList({super.key});
@@ -33,35 +35,36 @@ class _StaffListState extends State<StaffList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('User List'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddUser(),
-                      ));
-                },
-                child: Text(
-                  "Add User",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.green),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.green))))),
-          ),
-        ],
+        backgroundColor: custom_color.appcolor,
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.all(8.0),
+        //     child: TextButton(
+        //         onPressed: () {
+        //           Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                 builder: (context) => AddUser(),
+        //               ));
+        //         },
+        //         child: Text(
+        //           "Add User",
+        //           style: TextStyle(
+        //               color: Colors.white,
+        //               fontSize: 12,
+        //               fontWeight: FontWeight.bold),
+        //         ),
+        //         style: ButtonStyle(
+        //             backgroundColor:
+        //                 MaterialStateProperty.all<Color>(Colors.green),
+        //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //                 RoundedRectangleBorder(
+        //                     borderRadius: BorderRadius.circular(18.0),
+        //                     side: BorderSide(color: Colors.green))))),
+        //   ),
+        // ],
       ),
-      body: Container(
+      body:isloading? Container(
         
         
           child: Helper().isvalidElement(Stafflist) &&
@@ -75,7 +78,7 @@ class _StaffListState extends State<StaffList> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     color: index % 2 == 0
-                        ? Color.fromARGB(255, 210, 225, 231)
+                        ? custom_color.lightcolor
                         : Colors.white,
                     width: screenWidth,
                     // height: screenHeight * 0.20,
@@ -158,15 +161,13 @@ class _StaffListState extends State<StaffList> {
                   ),
                 ),
               );
-            }):Text('Nodata'),
-      ),
+            }):Center(child: Text('No Data Found')),
+      ):Center(child: SpinLoader(),),
     );
   }
 
   getStafflist()async{
-     this.setState(() {
-      isloading = true;
-    });
+    
 
     Stafflist = await api().getstafflist(accesstoken);
     if (Helper().isvalidElement(Stafflist) &&
@@ -177,7 +178,7 @@ class _StaffListState extends State<StaffList> {
       Stafflist = Stafflist['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
       this.setState(() {
-        isloading = false;
+        isloading = true;
       });
     }
   }

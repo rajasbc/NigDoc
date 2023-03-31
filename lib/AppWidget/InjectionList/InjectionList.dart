@@ -6,14 +6,14 @@ import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
-class TreatmentList extends StatefulWidget {
-  const TreatmentList({super.key});
+class InjectionList extends StatefulWidget {
+  const InjectionList({super.key});
 
   @override
-  State<TreatmentList> createState() => _TreatmentListState();
+  State<InjectionList> createState() => _InjectionListState();
 }
 
-class _TreatmentListState extends State<TreatmentList> {
+class _InjectionListState extends State<InjectionList> {
   final LocalStorage storage = new LocalStorage('doctor_store');
    TextEditingController searchText = TextEditingController();
 
@@ -26,21 +26,22 @@ class _TreatmentListState extends State<TreatmentList> {
   
   var searchList;
   var treatmentList;
-  var Treatment_List;
+  var Injection_List;
+  var injectionList;
 
    @override
   void initState() {
     userResponse = storage.getItem('userResponse');
     accesstoken=userResponse['access_token'];
 
-    gettreatmentlist();
+    getInjectionList();
     // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    Treatment_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: treatmentList;
+    Injection_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: injectionList;
     double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
       return new WillPopScope(
@@ -51,7 +52,7 @@ class _TreatmentListState extends State<TreatmentList> {
          return true;
         },
         child:Scaffold(
-          appBar: AppBar(title: Text('Treatment List',
+          appBar: AppBar(title: Text('Injection List',
           style: TextStyle(color: Colors.white),),
           backgroundColor: custom_color.appcolor ,
           leading: IconButton(onPressed: (){
@@ -75,19 +76,7 @@ class _TreatmentListState extends State<TreatmentList> {
             child: Padding(padding: const EdgeInsets.all(0.0),
             child: Column(
               children: [
-                // Container(
-                //   width: screenWidth*0.9,
-                //   child: TextFormField(decoration: 
-                //   InputDecoration(border: OutlineInputBorder(
-                //     borderRadius: BorderRadius.circular(8),
-                //   ),hintText: 'Search',
-                //   prefixIcon: Container(
-                //     padding: EdgeInsets.all(10),
-                //     child: Icon(Icons.search),
-                //   ),
-                //   ),
-                //   ),
-                //     ),
+               
                  SizedBox(
                   height: 10,
                 ),
@@ -99,7 +88,7 @@ class _TreatmentListState extends State<TreatmentList> {
                       color: Colors.white,
                       border:
                           Border.all(color:custom_color.appcolor),
-                      borderRadius: BorderRadius.all(Radius.circular(0))),
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
                   child: Row(
                     children: [
                       Container(
@@ -127,7 +116,7 @@ class _TreatmentListState extends State<TreatmentList> {
                             filled: true,
                             border: InputBorder.none,
                             fillColor: Colors.white,
-                            hintText: 'Search Treatment List Here...',
+                            hintText: 'Search Injection List Here...',
                           ),
                         ),
                       ),
@@ -155,7 +144,7 @@ class _TreatmentListState extends State<TreatmentList> {
 
                     // SizedBox(height: screenHeight*0.01),
 
-                    Helper().isvalidElement(Treatment_List) && Treatment_List.length > 0 ?
+                    Helper().isvalidElement(Injection_List) && Injection_List.length > 0 ?
                      Container(
                       height:screenHeight * 0.86,
                       
@@ -165,10 +154,10 @@ class _TreatmentListState extends State<TreatmentList> {
                       child: 
                       ListView.builder(
                         // shrinkWrap: true,
-                        itemCount: Treatment_List.length,
+                        itemCount: Injection_List.length,
                         itemBuilder: (BuildContext context, int index){
                           list=index+1;
-                          var data=Treatment_List[index];
+                          var data=Injection_List[index];
                           return Container(
                             child: Column(
                               children: [
@@ -177,7 +166,7 @@ class _TreatmentListState extends State<TreatmentList> {
                                                 ? custom_color.lightcolor
                                                 : Colors.white,
                                   child: ListTile(
-                                    title: SizedBox(child: Text('${data['treatment_name']}')),
+                                    title: SizedBox(child: Text('${data['injections_name']}')),
                                     leading: Text('$list'),
                      
                                   ),
@@ -196,8 +185,8 @@ class _TreatmentListState extends State<TreatmentList> {
             child: Container(child:SpinLoader()
           ))));
   }
-   gettreatmentlist() async {
-    var List = await PatientApi().gettreatmentlist(accesstoken);
+    getInjectionList() async {
+    var List = await PatientApi().getinjectionList(accesstoken);
     if (Helper().isvalidElement(List) &&
         Helper().isvalidElement(List['status']) &&
         List['status'] == 'Token is Expired') {
@@ -205,10 +194,9 @@ class _TreatmentListState extends State<TreatmentList> {
     } else {
       setState(() {
         isLoading=true;
-        treatmentList = List['list'];
+        injectionList = List['list'];
       });
-      // TreatmentList = List['list'];
-      //  storage.setItem('diagnosisList', diagnosisList);
+     
     }
   }
 }

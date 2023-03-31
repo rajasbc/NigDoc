@@ -4,6 +4,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../../AppWidget/common/Colors.dart'as custom_color;
 
 class ClinicProfile extends StatefulWidget {
   const ClinicProfile({super.key});
@@ -133,7 +134,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: AppBar(
-            // backgroundColor:Color,
+            backgroundColor:custom_color.appcolor,
             title: const Text(
               'Clinic Profile',
               style: TextStyle(color: Colors.white),

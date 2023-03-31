@@ -4,6 +4,7 @@ import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../AppWidget/common/Colors.dart' as custom_color;
 
 class MedicineList extends StatefulWidget {
   const MedicineList({super.key});
@@ -62,7 +63,7 @@ class _MedicineListState extends State<MedicineList> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(title: Text('Medicine List',
           style: TextStyle(color: Colors.white),),
-          // backgroundColor: ,
+          backgroundColor:custom_color.appcolor,
           leading: IconButton(onPressed: (){
             Navigator.push(
           context, MaterialPageRoute(builder: (context)=> Dash(),)
@@ -193,15 +194,15 @@ class _MedicineListState extends State<MedicineList> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border:
-                              Border.all(color: Color.fromARGB(255, 8, 122, 135)),
-                          borderRadius: BorderRadius.all(Radius.circular(0))),
+                              Border.all(color: custom_color.appcolor,),
+                          borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Row(
                         children: [
                           Container(
                               width: screenWidth * 0.1,
                               height: screenHeight,
                               child: Icon(Icons.search,
-                                  color: Color.fromARGB(255, 8, 122, 135))),
+                                  color: custom_color.appcolor,)),
                           Container(
                             width: screenWidth * 0.65,
                             child: TextField(
@@ -270,8 +271,7 @@ class _MedicineListState extends State<MedicineList> {
                                   children: [
                                     Card(
                                       color: index % 2 == 0
-                                                    ? Color.fromARGB(
-                                                        255, 218, 235, 238)
+                                                    ?custom_color.lightcolor
                                                     : Colors.white,
                                       child: ListTile(
                                         title: SizedBox(child: Text('${data['name']}')),

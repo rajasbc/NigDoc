@@ -4,6 +4,7 @@ import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../AppWidget/common/Colors.dart'as custom_color;
 
 class PharmacyList extends StatefulWidget {
   const PharmacyList({super.key});
@@ -47,7 +48,7 @@ class _PharmacyListState extends State<PharmacyList> {
               'Pharmacy List',
               style: TextStyle(color: Colors.white),
             ),
-            // backgroundColor: ,
+            backgroundColor:custom_color.appcolor ,
             leading: IconButton(
               onPressed: () {
                 Navigator.push(
@@ -80,7 +81,7 @@ class _PharmacyListState extends State<PharmacyList> {
                           children: [
                             Card(
                                 color: index % 2 == 0
-                                    ? Color.fromARGB(255, 218, 235, 238)
+                                    ? custom_color.lightcolor
                                     : Colors.white,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),

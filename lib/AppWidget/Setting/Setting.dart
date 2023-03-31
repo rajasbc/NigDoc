@@ -4,6 +4,7 @@ import 'package:nigdoc/AppWidget/BillingWidget/View/Paidbill.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/View/Pendingbilllist.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/veiw/DoctorList.dart';
+import 'package:nigdoc/AppWidget/InjectionList/InjectionList.dart';
 import 'package:nigdoc/AppWidget/LabLink/LabList.dart';
 import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
 import 'package:nigdoc/AppWidget/PharmacyLink/PharmacyList.dart';
@@ -669,7 +670,7 @@ class _SettingState extends State<Setting> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          'Medicine',
+                                          'Injection',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
@@ -711,7 +712,7 @@ class _SettingState extends State<Setting> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MedicineList(),
+                                  builder: (context) => InjectionList(),
                                 ));
                           },
                         ),
@@ -809,7 +810,7 @@ class _SettingState extends State<Setting> {
                     height: screenHeight*0.4,
                     width: screenWidth,
                     // color: Color.fromARGB(255, 48, 112, 134),
-                    // child: Image.asset('assets/1.gif',fit: BoxFit.fill,),
+                    child: Image.asset('assets/doctor.gif',fit: BoxFit.fill,),
                   )
                 
               ],

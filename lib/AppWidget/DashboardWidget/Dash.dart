@@ -11,6 +11,7 @@ import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Nigdocmenubar.dart';
 import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
+import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
@@ -33,15 +34,22 @@ class _DashState extends State<Dash> {
   var userResponse;
   var accesstoken;
   var DashboardList;
-  // @override
-  // void initState() {
-  //   userResponse = storage.getItem('userResponse');
-  //   accesstoken= userResponse['access_token'];
-  //   getDashBoardList();
+  @override
+  void initState() {
+     getvalue();
+    // userResponse = storage.getItem('userResponse');
+    // accesstoken= userResponse['access_token'];
+    
 
-  //   // TODO: implement initState
-  //   super.initState();
-  // } 
+    // TODO: implement initState
+    super.initState();
+  } 
+  getvalue() async {
+    userResponse = storage.getItem('userResponse');
+    accesstoken= await userResponse['access_token'];
+    getDashBoardList();
+
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -210,12 +218,12 @@ class _DashState extends State<Dash> {
                                                 color: Colors.amber,
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold),
-                                          ):
-                                          Text('0',
-                                              textAlign: TextAlign.end,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
+                                          ):SpinLoader()
+                                          // Text('0',
+                                          //     textAlign: TextAlign.end,
+                                          //     style: TextStyle(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.bold)),
                                         ],
                                       ))
                                 ],
@@ -259,12 +267,12 @@ class _DashState extends State<Dash> {
                                                 color: Colors.amber,
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold),
-                                          ):
-                                          Text('0',
-                                              textAlign: TextAlign.end,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
+                                          ):SpinLoader()
+                                          // Text('0',
+                                          //     textAlign: TextAlign.end,
+                                          //     style: TextStyle(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.bold)),
                                         ],
                                       ))
                                 ],
@@ -308,12 +316,12 @@ class _DashState extends State<Dash> {
                                                 color: Colors.amber,
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold),
-                                          ):
-                                          Text('0',
-                                              textAlign: TextAlign.end,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
+                                          ):SpinLoader()
+                                          // Text('0',
+                                          //     textAlign: TextAlign.end,
+                                          //     style: TextStyle(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.bold)),
                                         ],
                                       ))
                                 ],
@@ -358,12 +366,12 @@ class _DashState extends State<Dash> {
                                                 color: Colors.amber,
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold),
-                                          ):
-                                          Text('0',
-                                              textAlign: TextAlign.end,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
+                                          ):SpinLoader()
+                                          // Text('0',
+                                          //     textAlign: TextAlign.end,
+                                          //     style: TextStyle(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.bold)),
                                         ],
                                       ))
                                 ],

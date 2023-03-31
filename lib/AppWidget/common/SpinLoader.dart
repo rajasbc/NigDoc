@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../../AppWidget/common/Colors.dart'as custom_color;
 
 class SpinLoader extends StatefulWidget {
   const SpinLoader({super.key});
@@ -12,7 +13,7 @@ class _SpinLoaderState extends State<SpinLoader> {
   @override
   Widget build(BuildContext context) {
     return SpinKitDualRing(
-      color: Colors.blueAccent,
+      color: custom_color.appcolor,
       size: 20,
     );
   }

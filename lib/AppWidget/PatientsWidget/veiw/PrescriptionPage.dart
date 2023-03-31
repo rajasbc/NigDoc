@@ -7,7 +7,7 @@ import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:intl/intl.dart';
-
+import '../../../AppWidget/common/Colors.dart'as custom_color;
 
 class PrescriptionPage extends StatefulWidget {
   const PrescriptionPage({super.key});
@@ -144,7 +144,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: AppBar(
-            backgroundColor: Color.fromARGB(255, 8, 122, 135),
+            backgroundColor: custom_color.appcolor,
             title: const Text(
               'Prescription',
               style: TextStyle(color: Colors.white),
@@ -262,8 +262,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                       title: Row(
                                         children: [
                                           Icon(Icons.people,
-                                              color: Color.fromARGB(
-                                                  255, 8, 122, 135)),
+                                              color: custom_color.appcolor),
                                           Text(
                                             '     ${selectedPatient['customer_name'].toString()}',
                                           ),
@@ -788,17 +787,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     style: ButtonStyle(
                                                         backgroundColor:
                                                             MaterialStateProperty.all<Color>(
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    10,
-                                                                    132,
-                                                                    87)),
+                                                                custom_color.appcolor),
                                                         shape: MaterialStateProperty.all<
                                                                 RoundedRectangleBorder>(
                                                             RoundedRectangleBorder(
                                                                 borderRadius:
                                                                     BorderRadius.circular(4.0),
-                                                                side: BorderSide(color: Colors.blue))))),
+                                                               )))),
                                                 // TextFormField(
                                                 //   decoration: const InputDecoration(
                                                 //     labelText: 'Clinic Notes',
@@ -978,7 +973,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     ),
                                                   ),
                                             SizedBox(
-                                              width: 6,
+                                              height: 6,
                                             ),
                                             SizedBox(
                                               width: screenWidth,
@@ -1063,17 +1058,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   style: ButtonStyle(
                                                       backgroundColor:
                                                           MaterialStateProperty.all<Color>(
-                                                              Color.fromARGB(
-                                                                  255,
-                                                                  10,
-                                                                  132,
-                                                                  87)),
+                                                             custom_color.appcolor),
                                                       shape: MaterialStateProperty.all<
                                                               RoundedRectangleBorder>(
                                                           RoundedRectangleBorder(
                                                               borderRadius:
                                                                   BorderRadius.circular(4.0),
-                                                              side: BorderSide(color: Colors.blue))))),
+                                                             )))),
                                               // TextFormField(
                                               //   decoration: const InputDecoration(
                                               //     labelText: 'Clinic Notes',
@@ -1294,17 +1285,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   style: ButtonStyle(
                                                       backgroundColor:
                                                           MaterialStateProperty.all<Color>(
-                                                              Color.fromARGB(
-                                                                  255,
-                                                                  10,
-                                                                  132,
-                                                                  87)),
+                                                              custom_color.appcolor),
                                                       shape: MaterialStateProperty.all<
                                                               RoundedRectangleBorder>(
                                                           RoundedRectangleBorder(
                                                               borderRadius:
                                                                   BorderRadius.circular(4.0),
-                                                              side: BorderSide(color: Colors.blue))))),
+                                                             )))),
                                             ),
                                           ],
                                         ),
@@ -1908,17 +1895,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     style: ButtonStyle(
                                                         backgroundColor:
                                                             MaterialStateProperty.all<Color>(
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    10,
-                                                                    132,
-                                                                    87)),
+                                                               custom_color.appcolor),
                                                         shape: MaterialStateProperty.all<
                                                                 RoundedRectangleBorder>(
                                                             RoundedRectangleBorder(
                                                                 borderRadius:
                                                                     BorderRadius.circular(4.0),
-                                                                side: BorderSide(color: Colors.blue))))),
+                                                                )))),
                                               ),
                                             ],
                                           ),
@@ -2564,17 +2547,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     style: ButtonStyle(
                                                         backgroundColor:
                                                             MaterialStateProperty.all<Color>(
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    10,
-                                                                    132,
-                                                                    87)),
+                                                               custom_color.appcolor),
                                                         shape: MaterialStateProperty.all<
                                                                 RoundedRectangleBorder>(
                                                             RoundedRectangleBorder(
                                                                 borderRadius:
                                                                     BorderRadius.circular(4.0),
-                                                                side: BorderSide(color: Colors.blue))))),
+                                                                )))),
                                               ),
                                             )
                                           ],

@@ -87,102 +87,8 @@ class _TestListState extends State<TestList> {
             child: Column(
               children: [
                 SizedBox(height: 20,),
-                //  Container(
-                //                               width: screenWidth *0.9,
-                //                               child: Padding(
-                //                                 padding:
-                //                                     const EdgeInsets.all(0.0),
-                //                                 child: Helper().isvalidElement(
-                //                                             MediNameList) &&
-                //                                         MediNameList.length > 0
-                //                                     ? DropdownButtonFormField(
-                //                                         // validator: (value) => validateDrops(value),
-                //                                         // decoration: InputDecoration(
-                //                                         //     enabledBorder: InputBorder.none,
-                //                                         //     border: UnderlineInputBorder(
-                //                                         //         borderSide: BorderSide(
-                //                                         //             color: Colors.white))),
-                //                                         // decoration:
-                //                                         //     InputDecoration.collapsed(
-                //                                         //         hintText: ''),
-                //                                         decoration:
-                //                                             const InputDecoration(
-                //                                           labelText:
-                //                                               'Lab Name',
-                //                                           border:
-                //                                               OutlineInputBorder(),
-                //                                           //icon: Icon(Icons.numbers),
-                //                                         ),
-                //                                         isExpanded: true,
-                //                                         hint: Text(
-                //                                           'Select Lab',
-                //                                         ),
-                //                                         // value:patternDropdownvalue,
-                //                                         onChanged:
-                //                                             (item) async {
-                //                                           // medicineDropdownvalue =
-                //                                           //     item.toString();
-                //                                           var data = item
-                //                                               .toString()
-                //                                               .split('&*');
-                //                                               setState(() {
-                //                                                  SelectedPharmacy=data[0];
-                //                                                  gettestList();
-                //                                                  valid=true;
-          
-                //                                               });
-                                                        
-                //                                         },
-                //                                         items: MediNameList.map<
-                //                                             DropdownMenuItem<
-                //                                                 String>>((item) {
-                //                                           return DropdownMenuItem(
-                //                                             child: Text(
-                //                                               item['pharmacy_name']
-                //                                                   .toString(),
-                //                                             ),
-                //                                             value: item['shop_id']
-                //                                                     .toString() +
-                //                                                 '&*' + item['pharmacy_name']
-                //                                                     .toString()
-                                                                
-                //                                           );
-                //                                         }).toList(),
-                //                                       )
-                //                                     : DropdownButtonFormField(
-                //                                         // validator: (value) => validateDrops(value),
-                //                                         // isExpanded: true,
-                //                                         hint: Text(
-                //                                             'NO Pharmacy List'),
-                //                                         // value:' _selectedState[i]',
-                //                                         onChanged: (Pharmacy) {
-                //                                           setState(() {});
-                //                                         },
-                //                                         items: [].map<
-                //                                             DropdownMenuItem<
-                //                                                 String>>((item) {
-                //                                           return new DropdownMenuItem(
-                //                                             child: new Text(''),
-                //                                             value: '',
-                //                                           );
-                //                                         }).toList(),
-                //                                       ),
-                //                               ),
-                //                             ),
-                // Container(
-                //   width: screenWidth*0.9,
-                //   child: TextFormField(decoration: 
-                //   InputDecoration(border: OutlineInputBorder(
-                //     borderRadius: BorderRadius.circular(8),
-                //   ),hintText: 'Search',
-                //   prefixIcon: Container(
-                //     padding: EdgeInsets.all(10),
-                //     child: Icon(Icons.search),
-                //   ),
-                //   ),
-                //   ),
-                //     ),
-                valid?
+               
+              
                 Column(
                   children: [
                     Center(child: 
@@ -193,14 +99,14 @@ class _TestListState extends State<TestList> {
                           color: Colors.white,
                           border:
                               Border.all(color: custom_color.appcolor),
-                          borderRadius: BorderRadius.all(Radius.circular(0))),
+                          borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Row(
                         children: [
                           Container(
                               width: screenWidth * 0.1,
                               height: screenHeight,
                               child: Icon(Icons.search,
-                                  color: Color.fromARGB(255, 8, 122, 135))),
+                                  color: custom_color.appcolor)),
                           Container(
                             width: screenWidth * 0.65,
                             child: TextField(
@@ -371,7 +277,7 @@ class _TestListState extends State<TestList> {
           ),
                              SizedBox(height: 10,),
                   ],
-                ):Center(child:Text('Pls select Lab')),
+                ),
                      ],
             ),
           ):Center(

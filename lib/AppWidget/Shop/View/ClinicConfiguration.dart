@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/Api.dart';
 import 'package:nigdoc/AppWidget/Shop/Api.dart';
+import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../../AppWidget/common/Colors.dart'as custom_color;
 
 class ClinicConfig extends StatefulWidget {
   const ClinicConfig({super.key});
@@ -95,7 +97,7 @@ class _ClinicConfigState extends State<ClinicConfig> {
               'Pharmacy List',
               style: TextStyle(color: Colors.white),
             ),
-            // backgroundColor: ,
+            backgroundColor:custom_color.appcolor,
             leading: IconButton(
               onPressed: () {
                 Navigator.push(
@@ -110,7 +112,7 @@ class _ClinicConfigState extends State<ClinicConfig> {
               ),
             ),
           ),
-          body: Container(
+          body:isLoading? Container(
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -1208,52 +1210,53 @@ class _ClinicConfigState extends State<ClinicConfig> {
                           BoxDecoration(border: Border.all(color: Colors.grey)
                               // border: OutlineInputBorder()
                               ),
-                      child: DropdownButtonFormField(
-                        // validator: (value) => validateDrops(value),
-                        // isExpanded: true,
-                        decoration: InputDecoration.collapsed(hintText: ''),
-                        isExpanded: true,
-                        hint: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 6.5, left: 8, right: 8),
-                          child: Text(
-                            'Prescription Page Config',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 112, 107, 107)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButtonFormField(
+                          // validator: (value) => validateDrops(value),
+                          // isExpanded: true,
+                          decoration: InputDecoration.collapsed(hintText: ''),
+                          isExpanded: true,
+                          hint: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 0, left: 8, right: 8),
+                            child: Text(
+                              'Prescription Page Config',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 112, 107, 107)),
+                            ),
                           ),
+                          // value:' _selectedState[i]',
+                          onChanged: (selecteddoctor) {
+                            setState(() {
+                              // selectedDoctor = selectedDoctor;
+                              // print("Stae value");
+                              // print(newValue);
+                              // _selectedState[i]= newValue;
+                              // getMyDistricts(newValue, i);
+                            });
+                          },
+                          items: prespageconfig
+                              .map<DropdownMenuItem<String>>((item) {
+                            return new DropdownMenuItem(
+                              child: new Text(item),
+                              value: item.toString(),
+                            );
+                          }).toList(),
                         ),
-                        // value:' _selectedState[i]',
-                        onChanged: (selecteddoctor) {
-                          setState(() {
-                            // selectedDoctor = selectedDoctor;
-                            // print("Stae value");
-                            // print(newValue);
-                            // _selectedState[i]= newValue;
-                            // getMyDistricts(newValue, i);
-                          });
-                        },
-                        items: prespageconfig
-                            .map<DropdownMenuItem<String>>((item) {
-                          return new DropdownMenuItem(
-                            child: new Text(item),
-                            value: item.toString(),
-                          );
-                        }).toList(),
                       ),
                     ),
                   ),
-                  ElevatedButton(onPressed: () {}, child: Text('Update'))
+                  // ElevatedButton(onPressed: () {}, child: Text('Update'))
                 ],
               ),
             ),
-          )),
+          ):Center(child: SpinLoader(),)),
     );
   }
 
   getclinicconfig() async {
-    this.setState(() {
-      isLoading = true;
-    });
+   
 
     clinicconfig = await ShopApi().getclinicconfig(accesstoken);
     if (Helper().isvalidElement(clinicconfig) &&
@@ -1340,7 +1343,7 @@ class _ClinicConfigState extends State<ClinicConfig> {
 
       feesController.text = data[0]['fees'].toString();
       this.setState(() {
-        isLoading = false;
+        isLoading = true;
       });
     }
   }
