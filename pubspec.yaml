@@ -51,6 +51,8 @@ dependencies:
   intl: ^0.17.0
   hexcolor: ^3.0.1  
   flutter_onboarding_slider: ^1.0.9
+  font_awesome_flutter: ^10.4.0
+  fluttericon: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -90,6 +92,7 @@ flutter:
     - assets/1.png
     - assets/2.png
     - assets/3.png
+    - assets/login.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

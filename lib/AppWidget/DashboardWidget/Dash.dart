@@ -179,7 +179,7 @@ class _DashState extends State<Dash> {
                   ),
                   SizedBox(height: 5,),
                   Container(
-                    height: screenHeight * 0.18,
+                    height: screenHeight * 0.192,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
