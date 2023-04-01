@@ -39,7 +39,7 @@ class _MedicineListState extends State<MedicineList> {
   void initState() {
     userResponse = storage.getItem('userResponse');
     accesstoken=userResponse['access_token'];
-    getMediAndLabNameList();
+    // getMediAndLabNameList();
     getMedicineList();
 
     // gettreatmentlist();
@@ -250,7 +250,7 @@ class _MedicineListState extends State<MedicineList> {
           
           
                         // SizedBox(height: screenHeight*0.01),
-                        MedicineLoader?
+                       
           
                         Helper().isvalidElement(medicine_List) && medicine_List.length > 0 ?
                          Container(
@@ -368,10 +368,8 @@ class _MedicineListState extends State<MedicineList> {
                           })
                            ):Container(child:
             Text('No Data Found')
-            ):Container(height: screenHeight*0.7,
-              child:SpinLoader()
-          ),
-                             SizedBox(height: 10,),
+            )
+                            
                   ],
                 ),
                      ],
@@ -396,6 +394,7 @@ class _MedicineListState extends State<MedicineList> {
         medicineList = List['list'];
         MedicineLoader=true;
         valid=true;
+        isLoading=true;
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);

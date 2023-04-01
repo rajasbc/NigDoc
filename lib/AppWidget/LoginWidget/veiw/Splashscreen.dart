@@ -39,13 +39,25 @@ class _SplashscreenState extends State<Splashscreen> {
 
   void initPreferences() async {
     pref = await SharedPreferences.getInstance();
-    setState(() async {
+ 
       isLoggedIn = pref.getBool('isLogin');
       initScreen = await pref.getInt("initScreen");
       await pref.setInt("initScreen", 1);
       print('initScreen ${initScreen}');
-    });
+
+      
+    
   }
+
+  //  void initPreferences() async {
+  //   pref = await SharedPreferences.getInstance();
+  //   setState(() async {
+  //     isLoggedIn = pref.getBool('isLogin');
+  //     initScreen = await pref.getInt("initScreen");
+  //     await pref.setInt("initScreen", 1);
+  //     print('initScreen ${initScreen}');
+  //   });
+  // }
 
   //  @override void initState() {
   //   super.initState();

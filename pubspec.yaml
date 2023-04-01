@@ -53,6 +53,7 @@ dependencies:
   flutter_onboarding_slider: ^1.0.9
   font_awesome_flutter: ^10.4.0
   fluttericon: ^2.0.0
+  rflutter_alert: ^2.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -83,7 +84,7 @@ flutter:
     # - assets/login.jpg
     - assets/banner4.png
     - assets/banner1.png
-    - assets/banner2.png
+    - assets/banner2.jpg
     - assets/banner3.png
     - assets/pending.png
     - assets/paid.png

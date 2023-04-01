@@ -13,7 +13,7 @@ var storeBox;
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  final LocalStorage c = new LocalStorage('doctor_store');
+  final LocalStorage storage = new LocalStorage('doctor_store');
   runApp(MyApp());
 }
 

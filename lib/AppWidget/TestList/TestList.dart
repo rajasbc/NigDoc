@@ -39,7 +39,7 @@ class _TestListState extends State<TestList> {
   void initState() {
     userResponse = storage.getItem('userResponse');
     accesstoken=userResponse['access_token'];
-    getMediAndLabNameList();
+    // getMediAndLabNameList();
     gettestList();
 
     // gettreatmentlist();
@@ -154,7 +154,7 @@ class _TestListState extends State<TestList> {
           
           
                         // SizedBox(height: screenHeight*0.01),
-                        MedicineLoader?
+                       
           
                         Helper().isvalidElement(test_List) && test_List.length > 0 ?
                          Container(
@@ -272,10 +272,8 @@ class _TestListState extends State<TestList> {
                           })
                            ):Container(child:
             Text('No Data Found')
-            ):Container(height: screenHeight*0.7,
-              child:SpinLoader()
-          ),
-                             SizedBox(height: 10,),
+            )
+                            
                   ],
                 ),
                      ],
@@ -298,6 +296,7 @@ class _TestListState extends State<TestList> {
       setState(() {
         //  MediAndLabNameList = List['list'];
         testList = List['list'];
+        isLoading=true;
         MedicineLoader=true;
         valid=true;
       });

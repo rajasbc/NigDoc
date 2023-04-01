@@ -111,7 +111,7 @@ class _PharmacyListState extends State<PharmacyList> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Text("9876543210"),
+                                                // Text("9876543210"),
                                               ],
                                             ),
                                           ],
@@ -131,7 +131,7 @@ class _PharmacyListState extends State<PharmacyList> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Text("Saveetha@gmail.com"),
+                                                // Text("Saveetha@gmail.com"),
                                               ],
                                             ),
                                             Row(
@@ -142,7 +142,7 @@ class _PharmacyListState extends State<PharmacyList> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Text("Dharmapuri"),
+                                                // Text("Dharmapuri"),
                                               ],
                                             ),
                                           ],
@@ -162,7 +162,7 @@ class _PharmacyListState extends State<PharmacyList> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Text("qwertyui8o9pdfg"),
+                                                // Text("qwertyui8o9pdfg"),
                                               ],
                                             ),
                                             Row(

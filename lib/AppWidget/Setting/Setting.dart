@@ -27,7 +27,7 @@ class _SettingState extends State<Setting> {
   Widget build(BuildContext context) {
      double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
-    return WillPopScope( onWillPop: () async {
+    return new WillPopScope( onWillPop: () async {
          Navigator.push(
           context, MaterialPageRoute(builder: (context)=> Dash(),)
          );
