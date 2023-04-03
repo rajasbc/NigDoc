@@ -94,7 +94,7 @@ class _ClinicConfigState extends State<ClinicConfig> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              'Pharmacy List',
+              'Clinic Configuration',
               style: TextStyle(color: Colors.white),
             ),
             backgroundColor:custom_color.appcolor,
@@ -1201,52 +1201,53 @@ class _ClinicConfigState extends State<ClinicConfig> {
                           border: OutlineInputBorder(), labelText: 'Fees'),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: screenHeight * 0.06,
-                      width: screenWidth * 0.95,
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)
-                              // border: OutlineInputBorder()
-                              ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownButtonFormField(
-                          // validator: (value) => validateDrops(value),
-                          // isExpanded: true,
-                          decoration: InputDecoration.collapsed(hintText: ''),
-                          isExpanded: true,
-                          hint: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 0, left: 8, right: 8),
-                            child: Text(
-                              'Prescription Page Config',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 112, 107, 107)),
-                            ),
-                          ),
-                          // value:' _selectedState[i]',
-                          onChanged: (selecteddoctor) {
-                            setState(() {
-                              // selectedDoctor = selectedDoctor;
-                              // print("Stae value");
-                              // print(newValue);
-                              // _selectedState[i]= newValue;
-                              // getMyDistricts(newValue, i);
-                            });
-                          },
-                          items: prespageconfig
-                              .map<DropdownMenuItem<String>>((item) {
-                            return new DropdownMenuItem(
-                              child: new Text(item),
-                              value: item.toString(),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 20,)
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Container(
+                  //     height: screenHeight * 0.06,
+                  //     width: screenWidth * 0.95,
+                  //     decoration:
+                  //         BoxDecoration(border: Border.all(color: Colors.grey)
+                  //             // border: OutlineInputBorder()
+                  //             ),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(8.0),
+                  //       child: DropdownButtonFormField(
+                  //         // validator: (value) => validateDrops(value),
+                  //         // isExpanded: true,
+                  //         decoration: InputDecoration.collapsed(hintText: ''),
+                  //         isExpanded: true,
+                  //         hint: Padding(
+                  //           padding: const EdgeInsets.only(
+                  //               top: 0, left: 8, right: 8),
+                  //           child: Text(
+                  //             'Prescription Page Config',
+                  //             style: TextStyle(
+                  //                 color: Color.fromARGB(255, 112, 107, 107)),
+                  //           ),
+                  //         ),
+                  //         // value:' _selectedState[i]',
+                  //         onChanged: (selecteddoctor) {
+                  //           setState(() {
+                  //             // selectedDoctor = selectedDoctor;
+                  //             // print("Stae value");
+                  //             // print(newValue);
+                  //             // _selectedState[i]= newValue;
+                  //             // getMyDistricts(newValue, i);
+                  //           });
+                  //         },
+                  //         items: prespageconfig
+                  //             .map<DropdownMenuItem<String>>((item) {
+                  //           return new DropdownMenuItem(
+                  //             child: new Text(item),
+                  //             value: item.toString(),
+                  //           );
+                  //         }).toList(),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   // ElevatedButton(onPressed: () {}, child: Text('Update'))
                 ],
               ),

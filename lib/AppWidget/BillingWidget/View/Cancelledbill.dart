@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../Common/colors.dart' as Customcolor;
 
@@ -97,7 +98,7 @@ var accesstoken;
         appBar: AppBar(title: Text('Cancelled Bill List'),
         backgroundColor: Customcolor.appcolor,
         ),
-        body: Container(
+        body:isLoading? Container(
            child:
                   Column(
                     children: [
@@ -291,14 +292,14 @@ var accesstoken;
                                   ),
                                 ),
                               );
-                            }):Container()
+                            }):Center(child: Text('No Data Found'),)
                             // :
                             // Text('Nodata'),
                         ),
                       )
                     ],
                   ),
-        ),
+        ):SpinLoader(),
       ),
     );
   }
@@ -354,7 +355,7 @@ var accesstoken;
       cancellbill = cancellbill['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
       this.setState(() {
-        isLoading = false;
+        isLoading = true;
       });
     }
   }

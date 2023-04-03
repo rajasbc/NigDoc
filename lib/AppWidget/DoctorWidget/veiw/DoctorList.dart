@@ -162,37 +162,37 @@ class _DoctorListState extends State<DoctorList> {
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(1.0),
-                                    child: Row(
-                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            width: screenWidth * 0.55,
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  'Organisation :',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text('${data[''].toString()}')
-                                              ],
-                                            )),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'City :',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text('${data[''].toString()}')
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.all(1.0),
+                                  //   child: Row(
+                                  //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //     children: [
+                                  //       Container(
+                                  //           width: screenWidth * 0.55,
+                                  //           child: Row(
+                                  //             children: [
+                                  //               Text(
+                                  //                 'Organisation :',
+                                  //                 style: TextStyle(
+                                  //                     fontWeight:
+                                  //                         FontWeight.bold),
+                                  //               ),
+                                  //               Text('${data[''].toString()}')
+                                  //             ],
+                                  //           )),
+                                  //       Row(
+                                  //         children: [
+                                  //           Text(
+                                  //             'City :',
+                                  //             style: TextStyle(
+                                  //                 fontWeight: FontWeight.bold),
+                                  //           ),
+                                  //           Text('${data[''].toString()}')
+                                  //         ],
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                   Padding(
                                     padding: const EdgeInsets.all(1.0),
                                     child: Row(

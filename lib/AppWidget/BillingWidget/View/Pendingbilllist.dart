@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../Common/colors.dart' as Customcolor;
 
@@ -96,7 +97,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
           title: Text('Pending Bill List'),
           backgroundColor: Customcolor.appcolor,
         ),
-        body: Container(
+        body:isLoading? Container(
           child: Column(
             children: [
               SizedBox(
@@ -318,14 +319,14 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                                 ),
                               );
                             })
-                        : Container()
+                        :Center(child: Text('No Data Found'),)
                     // :
                     // Text('Nodata'),
                     ),
               )
             ],
           ),
-        ),
+        ):SpinLoader(),
       ),
     );
   }
@@ -384,7 +385,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
       pendingbill = pendingbill['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
       this.setState(() {
-        isLoading = false;
+        isLoading = true;
       });
     }
   }

@@ -11,6 +11,7 @@ import 'package:nigdoc/AppWidget/BillingWidget/View/Pendingbilllist.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/DashboardApi.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Nigdocmenubar.dart';
 import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PatientList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
@@ -63,13 +64,13 @@ class _DashState extends State<Dash> {
         exit(0);
        },
       child: Scaffold(
-        drawer: SafeArea(
-            child: Drawer(
-          elevation: 50,
-          child: Nigdocmenubar(),
-        )),
+        // drawer: SafeArea(
+        //     child: Drawer(
+        //   elevation: 50,
+        //   child: Nigdocmenubar(),
+        // )),
         appBar: AppBar(
-          //  automaticallyImplyLeading: false,
+           automaticallyImplyLeading: false,
           //  elevation: 0,
           // backgroundColor: Color.fromARGB(255, 8, 122, 135),
           // backgroundColor: HexColor('#C2DED1'),
@@ -78,8 +79,20 @@ class _DashState extends State<Dash> {
             'NigDoctor',
             style: TextStyle(color: Colors.white),
           ),
-          // iconTheme: IconThemeData(color: custom_color.app_color1),
+          // iconTheme: IconThemeData(color: custom_color.app),
           backgroundColor: custom_color.appcolor,
+              //  leading: IconButton(
+              //   onPressed: () {
+              //     // Navigator.push(
+              //     //     context,
+              //     //     MaterialPageRoute(
+              //     //       builder: (context) => VistedLab(),
+              //     //     ));
+              //   },
+              //   icon: Icon(
+              //     Icons.arrow_back_ios_new_outlined,
+              //     color: custom_color.appcolor,
+              //   )),
           actions: [
             IconButton(
                 // onPressed: () {
@@ -709,23 +722,25 @@ class _DashState extends State<Dash> {
                     ),
                     Container(
                      
-                      width: screenWidth,
-                      height: screenHeight*0.12,
-                      child:Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        // children: [
-                        //   Icon(Icons.account_balance_wallet_outlined,size: 60,color: custom_color.appcolor,),
-                        //   Icon(Icons.add_alert_outlined,size: 60,color: custom_color.appcolor),
-                        //   Icon(Icons.person_outline_sharp,size: 60,color: custom_color.appcolor),
-                        //   Icon(Icons.emoji_events,size: 60,color: custom_color.appcolor),
-                        //   Icon(Icons.noise_aware_outlined,size: 60,color: custom_color.appcolor),
-                        // ],
+                      width: screenWidth*0.95,
+                      height: screenHeight*0.075,
+                      
+                      
+
+                      child:Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // SizedBox(width: 0.2,),
+                          // Text('  Add New Prescription',style: TextStyle(color:custom_color.appcolor,fontWeight: FontWeight.bold,fontSize:22, ),),
+                          // Icon(Icons.add,size: 50,color: Colors.white,),
+                          
+                        ],
     
                       ),
                        decoration: BoxDecoration(
-                                color:custom_color.listcolor,
-                                // border: width != 0 ?
-                                // Border.all(width: 2, color:custom_color.app_color1 )
-                                // : Border(),
+                                color:custom_color.lightcolor,
+                                border: 
+                                Border.all(width: 3, color:custom_color.appcolor ),
+                               
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(10),
                                     topRight: Radius.circular(10),
@@ -811,7 +826,7 @@ class _DashState extends State<Dash> {
                                   : Colors.black),
                         ),
                         Text(
-                          'Customer',
+                          'Patient',
                           style: TextStyle(
                               color: bottomNav == 'customer'
                                   ? Colors.blue
@@ -821,15 +836,15 @@ class _DashState extends State<Dash> {
                       ],
                     ),
                     onTap: () {
-                      // this.setState(() {
-                      //   bottomNav = 'customer';
-                      // });
-                      // Navigator.push(
-                      //         context,
+                      this.setState(() {
+                        bottomNav = 'customer';
+                      });
+                      Navigator.push(
+                              context,
     
-                      //         MaterialPageRoute(
-                      //             builder: (context) => const CustomerList()),
-                      //       );
+                              MaterialPageRoute(
+                                  builder: (context) => const PatientList()),
+                            );
                     },
                   ),
                   SizedBox(

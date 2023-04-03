@@ -7,7 +7,7 @@ import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:intl/intl.dart';
-import '../../../AppWidget/common/Colors.dart'as custom_color;
+import '../../../AppWidget/common/Colors.dart' as custom_color;
 
 class PrescriptionPage extends StatefulWidget {
   const PrescriptionPage({super.key});
@@ -110,7 +110,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     // grandtotalController.text = grand_total.toString();
     getInjectionList();
   }
-   DateTime selectedDate = DateTime.now();
+
+  DateTime selectedDate = DateTime.now();
   // Future<void> _selectDate(BuildContext context) async {
   //   final DateTime? picked = await showDatePicker(
   //       context: context,
@@ -303,7 +304,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     border: Border.all(
                                         width: 2, color: Colors.white),
                                     color: select_button == "treatment"
-                                        ? Colors.blue
+                                        ? Color.fromARGB(255, 77, 93, 184)
                                         : Colors.white,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
@@ -326,7 +327,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     style: TextStyle(
                                         color: select_button == "treatment"
                                             ? Colors.white
-                                            : Colors.blue,
+                                            : Color.fromARGB(255, 77, 93, 184),
                                         fontWeight: FontWeight.bold),
                                   )),
                                 ),
@@ -345,7 +346,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     border: Border.all(
                                         width: 2, color: Colors.white),
                                     color: select_button == "test"
-                                        ? Colors.blue
+                                        ? Color.fromARGB(255, 77, 93, 184)
                                         : Colors.white,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
@@ -368,7 +369,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     style: TextStyle(
                                         color: select_button == "test"
                                             ? Colors.white
-                                            : Colors.blue,
+                                            : Color.fromARGB(255, 77, 93, 184),
                                         fontWeight: FontWeight.bold),
                                   )),
                                 ),
@@ -389,7 +390,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     border: Border.all(
                                         width: 2, color: Colors.white),
                                     color: select_button == "injection"
-                                        ? Colors.blue
+                                        ? Color.fromARGB(255, 77, 93, 184)
                                         : Colors.white,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
@@ -412,7 +413,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     style: TextStyle(
                                         color: select_button == "injection"
                                             ? Colors.white
-                                            : Colors.blue,
+                                            : Color.fromARGB(255, 77, 93, 184),
                                         fontWeight: FontWeight.bold),
                                   )),
                                 ),
@@ -431,7 +432,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     border: Border.all(
                                         width: 2, color: Colors.white),
                                     color: select_button == "medicine"
-                                        ? Colors.blue
+                                        ? Color.fromARGB(255, 77, 93, 184)
                                         : Colors.white,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
@@ -454,7 +455,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                     style: TextStyle(
                                         color: select_button == "medicine"
                                             ? Colors.white
-                                            : Colors.blue,
+                                            : Color.fromARGB(255, 77, 93, 184),
                                         fontWeight: FontWeight.bold),
                                   )),
                                 ),
@@ -519,7 +520,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     width: screenWidth * 0.92,
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets.only(bottom:0.0),
+                                                          const EdgeInsets.only(
+                                                              bottom: 0.0),
                                                       child: Helper().isvalidElement(
                                                                   TreatmentList) &&
                                                               TreatmentList
@@ -560,7 +562,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                                     data[0];
                                                                 treatmentname =
                                                                     data[1];
-                                                                    treatmentid=data[2];
+                                                                treatmentid =
+                                                                    data[2];
                                                               },
                                                               items: TreatmentList.map<
                                                                   DropdownMenuItem<
@@ -570,13 +573,16 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                                     item['treatment_name']
                                                                         .toString(),
                                                                   ),
-                                                                  value: item['fees']
+                                                                  value: item[
+                                                                              'fees']
                                                                           .toString() +
                                                                       '&*' +
                                                                       item['treatment_name']
-                                                                          .toString()+'&*'+
-                                                                           item['id']
-                                                                          .toString()+'&*',
+                                                                          .toString() +
+                                                                      '&*' +
+                                                                      item['id']
+                                                                          .toString() +
+                                                                      '&*',
                                                                 );
                                                               }).toList(),
                                                             )
@@ -681,9 +687,30 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                               ),
                                               SizedBox(
                                                 // width: 100,
-                                                child: TextButton(
-                                                    onPressed: () {
-                                                      if (treatmentDropdownvalue ==
+                                                child: ElevatedButton(
+                                                child: Text(
+                                                    "ADD TREATMENT",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all<
+                                                                      Color>(
+                                                                  custom_color
+                                                                      .appcolor),
+                                                      shape: MaterialStateProperty.all<
+                                                              RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4.0),
+                                                      ))),onPressed: (){
+                                                     if (treatmentDropdownvalue ==
                                                               'null' ||
                                                           treatmentDropdownvalue ==
                                                               'Select Treatment') {
@@ -721,7 +748,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                             fontSize: 15.0);
                                                       } else {
                                                         var data = {
-                                                          "treatmentname":treatmentid.toString(),
+                                                          "treatmentname":
+                                                              treatmentid
+                                                                  .toString(),
                                                           "treatment":
                                                               treatmentname
                                                                   .toString(),
@@ -733,16 +762,32 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         // print(data);
                                                         print(data);
                                                         print(treatmentList);
+                                                        // for(var i=0;i<treatmentList.length;i++)
+                                                        // {
+                                                        //   if(treatmentList[i]==data){
+                                                        //     print('already added');
+                                                        //     totalCalcution();
+                                                        //     return;
 
-//                                                 print(treatmentList
-//                                                     .contains(data));
-//                                                     if(treatmentList.every((data) => data != null)){
-//                                                       print(data);
-//                                                   treatmentList.add(data);
+                                                        //   }
+                                                        //   else{
+                                                        //      print('pls  add');
+                                                        //      treatmentList
+                                                        //       .add(data);
+                                                        //       totalCalcution();
+                                                        //       return;
+                                                        //   }
 
-//                                                     }else{
-// print('data');
-//                                                     }
+
+                                                        // }
+                                                        // treatmentList
+                                                        //       .add(data);
+                                                        //       totalCalcution();
+
+                                               
+                                                   
+                                                      
+
                                                         if (treatmentList
                                                             .contains(data)) {
                                                           treatmentList
@@ -750,17 +795,11 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         } else {
                                                           treatmentList
                                                               .add(data);
-                                                          // totalCalcution();
-                                                          // fees_total=0;
-
-                                                          // for (var value
-                                                          //     in treatmentList) {
-                                                          //   fees_total = fees_total +
-                                                          //       double.parse(
-                                                          //           value['fees']);
-
-                                                          // }
+                                                            
                                                         }
+
+
+
                                                         totalCalcution();
                                                         print(treatmentList);
                                                         gettreatmentlist();
@@ -775,25 +814,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                           gettreatmentlist();
                                                         });
                                                       }
-                                                    },
-                                                    child: Text(
-                                                      "ADD TREATMENT",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty.all<Color>(
-                                                                custom_color.appcolor),
-                                                        shape: MaterialStateProperty.all<
-                                                                RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(4.0),
-                                                               )))),
+                                                  },
+                                                )
+                                            
+                                              
                                                 // TextFormField(
                                                 //   decoration: const InputDecoration(
                                                 //     labelText: 'Clinic Notes',
@@ -876,12 +900,15 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     ));
                                                   })
                                               : Container()),
-                                      Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: Text(
-                                            'Total Treatment Amount = ${fees_total}',
-                                            style: TextStyle(fontSize: 20),
+                                      Container(width: screenWidth,
+                                      
+                                        child: Card(color:Color.fromARGB(255, 103, 118, 207),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(15.0),
+                                            child: Text(
+                                              'Total Treatment Amount : ₹ ${fees_total}',
+                                              style: TextStyle(fontSize: 20),
+                                            ),
                                           ),
                                         ),
                                       )
@@ -1057,14 +1084,18 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   ),
                                                   style: ButtonStyle(
                                                       backgroundColor:
-                                                          MaterialStateProperty.all<Color>(
-                                                             custom_color.appcolor),
+                                                          MaterialStateProperty
+                                                              .all<
+                                                                      Color>(
+                                                                  custom_color
+                                                                      .appcolor),
                                                       shape: MaterialStateProperty.all<
                                                               RoundedRectangleBorder>(
                                                           RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(4.0),
-                                                             )))),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4.0),
+                                                      )))),
                                               // TextFormField(
                                               //   decoration: const InputDecoration(
                                               //     labelText: 'Clinic Notes',
@@ -1284,14 +1315,18 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   ),
                                                   style: ButtonStyle(
                                                       backgroundColor:
-                                                          MaterialStateProperty.all<Color>(
-                                                              custom_color.appcolor),
+                                                          MaterialStateProperty
+                                                              .all<
+                                                                      Color>(
+                                                                  custom_color
+                                                                      .appcolor),
                                                       shape: MaterialStateProperty.all<
                                                               RoundedRectangleBorder>(
                                                           RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(4.0),
-                                                             )))),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4.0),
+                                                      )))),
                                             ),
                                           ],
                                         ),
@@ -1368,10 +1403,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                           : Container(),
                       select_button == "medicine"
                           ? Container(
-                              height: screenHeight * 0.76-keyboardHeight,
+                              height: screenHeight * 0.76 - keyboardHeight,
                               child: SingleChildScrollView(
                                 physics: ClampingScrollPhysics(),
-                                
 
                                 //  reverse: true,
                                 child: Column(
@@ -1837,7 +1871,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                               count.toString(),
                                                           "BA_food_select":
                                                               prescriptionDropdownvalue
-                                                                  .toString().toLowerCase(),
+                                                                  .toString()
+                                                                  .toLowerCase(),
                                                           // "total": total.toString(),
                                                           "comment": '',
                                                         };
@@ -1894,14 +1929,18 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     ),
                                                     style: ButtonStyle(
                                                         backgroundColor:
-                                                            MaterialStateProperty.all<Color>(
-                                                               custom_color.appcolor),
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                                    custom_color
+                                                                        .appcolor),
                                                         shape: MaterialStateProperty.all<
                                                                 RoundedRectangleBorder>(
                                                             RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(4.0),
-                                                                )))),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                        )))),
                                               ),
                                             ],
                                           ),
@@ -2292,8 +2331,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           SizedBox(
                                             width: screenWidth * 0.455,
                                             child: TextFormField(
+                                              readOnly: true,
                                               decoration: const InputDecoration(
                                                 labelText: 'Grant Total',
+
                                                 border: OutlineInputBorder(),
                                                 // icon: Icon(Icons.numbers),
                                               ),
@@ -2343,6 +2384,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                 SizedBox(
                                                   width: screenWidth * 0.455,
                                                   child: TextFormField(
+                                                    readOnly: true,
                                                     decoration:
                                                         const InputDecoration(
                                                       labelText: 'Balance',
@@ -2371,6 +2413,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                 SizedBox(
                                                   width: screenWidth * 0.455,
                                                   child: TextFormField(
+                                                    readOnly: true,
                                                     decoration:
                                                         const InputDecoration(
                                                       labelText: 'Change',
@@ -2428,7 +2471,12 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                             textColor:
                                                                 Colors.white,
                                                             fontSize: 15.0);
-                                                      } else if (Helper().isvalidElement(treatmentList)  &&treatmentList.length==0) {
+                                                      } else if (Helper()
+                                                              .isvalidElement(
+                                                                  treatmentList) &&
+                                                          treatmentList
+                                                                  .length ==
+                                                              0) {
                                                         Fluttertoast.showToast(
                                                             msg:
                                                                 'Please select Treatment',
@@ -2464,7 +2512,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                                   .toString(),
                                                           "pharmeasyid": "",
                                                           "labid": "",
-                                                          "date": "${(Helper().formateDate1(selectedDate))}",
+                                                          "date":
+                                                              "${(Helper().formateDate1(selectedDate))}",
                                                           "prescription_comment":
                                                               "",
                                                           "sugar":
@@ -2482,8 +2531,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                               selectedPatient[
                                                                       'temp']
                                                                   .toString(),
-                                                          "advance": receivedController.text.toString(),
-                                                          "discount_type":finaldiscount.toString()  ,
+                                                          "advance":
+                                                              receivedController
+                                                                  .text
+                                                                  .toString(),
+                                                          "discount_type":
+                                                              finaldiscount
+                                                                  .toString(),
                                                           "discount":
                                                               discountController
                                                                   .text
@@ -2492,7 +2546,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                               balanceController
                                                                   .text
                                                                   .toString(),
-                                                          "change":changeController.text.toString(),
+                                                          "change":
+                                                              changeController
+                                                                  .text
+                                                                  .toString(),
                                                           "grand_total":
                                                               grandtotalController
                                                                   .text
@@ -2515,7 +2572,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         };
                                                         postPrescription();
                                                         toClear();
-                                                        
                                                       }
                                                       // var data = {
                                                       //   "treatment": titleDropdownvalue.toString(),
@@ -2546,14 +2602,18 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     ),
                                                     style: ButtonStyle(
                                                         backgroundColor:
-                                                            MaterialStateProperty.all<Color>(
-                                                               custom_color.appcolor),
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                                    custom_color
+                                                                        .appcolor),
                                                         shape: MaterialStateProperty.all<
                                                                 RoundedRectangleBorder>(
                                                             RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(4.0),
-                                                                )))),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
+                                                        )))),
                                               ),
                                             )
                                           ],
@@ -2651,15 +2711,12 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
           totalCalcution();
         });
       }
-      if(recieved<=balance){
-        balance=balance-recieved;
-        change=0;
-      }
-      else if(recieved>balance)
-      {
-        change=recieved-balance;
-        balance=0;
-
+      if (recieved <= balance) {
+        balance = balance - recieved;
+        change = 0;
+      } else if (recieved > balance) {
+        change = recieved - balance;
+        balance = 0;
       }
       // if(recieved==balance){
       //   setState(() {
@@ -2684,29 +2741,25 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       // }
 
       balanceController.text = balance.toString();
-      changeController.text=change.toString();
+      changeController.text = change.toString();
     });
   }
 
-  toClear()
-{
-  treatmentList.clear();
-  testList.clear();
-  injectionlist.clear();
-  medicineList.clear();
-  table_list.clear();
-  discountController.clear();
-  receivedController.clear();
-  changeController.clear();
-  grandtotalController.clear();
-  balanceController.clear();
-  fees_total=0.0;
-  table_list.clear();
-  
-  
+  toClear() {
+    treatmentList.clear();
+    testList.clear();
+    injectionlist.clear();
+    medicineList.clear();
+    table_list.clear();
+    discountController.clear();
+    receivedController.clear();
+    changeController.clear();
+    grandtotalController.clear();
+    balanceController.clear();
+    fees_total = 0.0;
+    table_list.clear();
+  }
 
-
-}
   getpatientlist() async {
     // this.setState(() {
     //   isloading = true;
@@ -2815,32 +2868,32 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       //  storage.setItem('diagnosisList', diagnosisList);
     }
   }
+
   postPrescription() async {
     // var data = data;
-   var result = await PatientApi().add_prescription(accesstoken, Prescription_data);
+    var result =
+        await PatientApi().add_prescription(accesstoken, Prescription_data);
     if (Helper().isvalidElement(result) &&
         Helper().isvalidElement(result['status']) &&
         result['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
-    } else if (Helper().isvalidElement(result) &&Helper().isvalidElement(result['message'])&&result['message']=='Successfully') {
+    } else if (Helper().isvalidElement(result) &&
+        Helper().isvalidElement(result['message']) &&
+        result['message'] == 'Successfully') {
       print(result['message']);
-        Fluttertoast.showToast(
-            msg: 'New Prescription Added Successfully',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 2,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 15.0);
-             Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Dash()),
-        );
-
-
-      }
-
-    
+      Fluttertoast.showToast(
+          msg: 'New Prescription Added Successfully',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 15.0);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Dash()),
+      );
+    }
   }
 
   renderAutoComplete(screenWidth, screenHeight) {
@@ -3411,15 +3464,15 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   //                     firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
   //                     lastDate: DateTime(2101)
   //                 );
-                  
+
   //                 if(pickedDate != null ){
   //                     print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
-  //                     String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); 
+  //                     String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
   //                     print(formattedDate); //formatted date output using intl package =>  2021-03-16
   //                       //you can implement different kind of Date Format here according to your requirement
 
   //                     setState(() {
-  //                        dateinput.text = formattedDate; //set output date to TextField value. 
+  //                        dateinput.text = formattedDate; //set output date to TextField value.
   //                     });
   //                 }else{
   //                     print("Date is not selected");
