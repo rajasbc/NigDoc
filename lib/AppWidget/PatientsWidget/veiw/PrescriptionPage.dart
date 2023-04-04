@@ -1981,11 +1981,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   return Container(
                                                     child: Card(
                                                         color: index % 2 == 0
-                                                            ? Color.fromARGB(
-                                                                255,
-                                                                218,
-                                                                235,
-                                                                238)
+                                                            ? custom_color.lightcolor
                                                             : Colors.white,
                                                         child: Padding(
                                                           padding:

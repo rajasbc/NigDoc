@@ -102,7 +102,7 @@ class _SettingState extends State<Setting> {
                                   height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/pending.png'),
+                                    child: Image.asset('assets/profile.png'),
                                   ),
                                 )
                               ],
@@ -180,7 +180,7 @@ class _SettingState extends State<Setting> {
                                   height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/paid.png'),
+                                    child: Image.asset('assets/configuration.png'),
                                   ),
                                 )
                               ],
@@ -246,7 +246,7 @@ class _SettingState extends State<Setting> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          'Pharmacy',
+                                          'Treatment',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
@@ -258,7 +258,7 @@ class _SettingState extends State<Setting> {
                                   height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/cancel.png'),
+                                    child: Image.asset('assets/treatment.png'),
                                   ),
                                 )
                               ],
@@ -288,7 +288,7 @@ class _SettingState extends State<Setting> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => PharmacyList(),
+                                  builder: (context) => TreatmentList(),
                                 ));
                           },
                         ),
@@ -343,7 +343,7 @@ class _SettingState extends State<Setting> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          'Lab link',
+                                          'Injection',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),
@@ -355,7 +355,7 @@ class _SettingState extends State<Setting> {
                                   height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/pending.png'),
+                                    child: Image.asset('assets/injection.png'),
                                   ),
                                 )
                               ],
@@ -433,7 +433,7 @@ class _SettingState extends State<Setting> {
                                   height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/paid.png'),
+                                    child: Image.asset('assets/staff.png'),
                                   ),
                                 )
                               ],
@@ -511,7 +511,7 @@ class _SettingState extends State<Setting> {
                                   height: screenHeight * 0.1,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/cancel.png'),
+                                    child: Image.asset('assets/doctor.png'),
                                   ),
                                 )
                               ],
@@ -556,253 +556,253 @@ class _SettingState extends State<Setting> {
                    SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        InkWell(
-                          child: Container(
-                            height: screenHeight * 0.1567,
-                            width: screenWidth * 0.25,
-                            child: Column(
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: custom_color.appcolor,
-                                        // border: width != 0 ?
-                                        // Border.all(width: 2, color:custom_color.app_color1 )
-                                        // : Border(),
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10),
-                                            bottomLeft: Radius.circular(10),
-                                            bottomRight: Radius.circular(10)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            spreadRadius: 4,
-                                            blurRadius: 4,
-                                            offset: Offset(0,
-                                                1), // changes position of shadow
-                                          ),
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Test Report',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                  // color: Colors.amber,
-                                  height: screenHeight * 0.1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/pending.png'),
-                                  ),
-                                )
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: custom_color.lightcolor,
-                              // border: width != 0 ?
-                              // Border.all(width: 2, color:custom_color.app_color1 )
-                              // : Border(),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 4,
-                                  blurRadius: 4,
-                                  offset: Offset(
-                                      0, 1), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TestList(),
-                                ));
-                          },
-                        ),
-                        InkWell(
-                          child: Container(
-                            height: screenHeight * 0.1567,
-                            width: screenWidth * 0.25,
-                            child: Column(
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: custom_color.appcolor,
-                                        // border: width != 0 ?
-                                        // Border.all(width: 2, color:custom_color.app_color1 )
-                                        // : Border(),
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10),
-                                            bottomLeft: Radius.circular(10),
-                                            bottomRight: Radius.circular(10)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            spreadRadius: 4,
-                                            blurRadius: 4,
-                                            offset: Offset(0,
-                                                1), // changes position of shadow
-                                          ),
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Injection',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                  // color: Colors.amber,
-                                  height: screenHeight * 0.1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/paid.png'),
-                                  ),
-                                )
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: custom_color.lightcolor,
-                              // border: width != 0 ?
-                              // Border.all(width: 2, color:custom_color.app_color1 )
-                              // : Border(),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 4,
-                                  blurRadius: 4,
-                                  offset:
-                                      Offset(0, 1), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                          ),
-                            onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => InjectionList(),
-                                ));
-                          },
-                        ),
-                        InkWell(
-                          child: Container(
-                            height: screenHeight * 0.1567,
-                            width: screenWidth * 0.25,
-                            child: Column(
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: custom_color.appcolor,
-                                        // border: width != 0 ?
-                                        // Border.all(width: 2, color:custom_color.app_color1 )
-                                        // : Border(),
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10),
-                                            bottomLeft: Radius.circular(10),
-                                            bottomRight: Radius.circular(10)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            spreadRadius: 4,
-                                            blurRadius: 4,
-                                            offset: Offset(0,
-                                                1), // changes position of shadow
-                                          ),
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Treatment',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                  // color: Colors.amber,
-                                  height: screenHeight * 0.1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset('assets/cancel.png'),
-                                  ),
-                                )
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: custom_color.lightcolor,
-                              // border: width != 0 ?
-                              // Border.all(width: 2, color:custom_color.app_color1 )
-                              // : Border(),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 4,
-                                  blurRadius: 4,
-                                  offset:
-                                      Offset(0, 1), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                          ),
-                            onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TreatmentList(),
-                                ));
-                          },
-                        ),
+                  // Container(
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //     children: [
+                  //       InkWell(
+                  //         child: Container(
+                  //           height: screenHeight * 0.1567,
+                  //           width: screenWidth * 0.25,
+                  //           child: Column(
+                  //             children: [
+                  //               Padding(
+                  //                   padding: const EdgeInsets.only(top: 8),
+                  //                   child: Container(
+                  //                     decoration: BoxDecoration(
+                  //                       color: custom_color.appcolor,
+                  //                       // border: width != 0 ?
+                  //                       // Border.all(width: 2, color:custom_color.app_color1 )
+                  //                       // : Border(),
+                  //                       borderRadius: BorderRadius.only(
+                  //                           topLeft: Radius.circular(10),
+                  //                           topRight: Radius.circular(10),
+                  //                           bottomLeft: Radius.circular(10),
+                  //                           bottomRight: Radius.circular(10)),
+                  //                       boxShadow: [
+                  //                         BoxShadow(
+                  //                           color: Colors.grey.withOpacity(0.2),
+                  //                           spreadRadius: 4,
+                  //                           blurRadius: 4,
+                  //                           offset: Offset(0,
+                  //                               1), // changes position of shadow
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                     child: Padding(
+                  //                       padding: const EdgeInsets.all(8.0),
+                  //                       child: Text(
+                  //                         'Test Report',
+                  //                         style: TextStyle(
+                  //                             color: Colors.white,
+                  //                             fontWeight: FontWeight.bold),
+                  //                       ),
+                  //                     ),
+                  //                   )),
+                  //               Container(
+                  //                 // color: Colors.amber,
+                  //                 height: screenHeight * 0.1,
+                  //                 child: Padding(
+                  //                   padding: const EdgeInsets.all(8.0),
+                  //                   child: Image.asset('assets/test report.png'),
+                  //                 ),
+                  //               )
+                  //             ],
+                  //           ),
+                  //           decoration: BoxDecoration(
+                  //             color: custom_color.lightcolor,
+                  //             // border: width != 0 ?
+                  //             // Border.all(width: 2, color:custom_color.app_color1 )
+                  //             // : Border(),
+                  //             borderRadius: BorderRadius.only(
+                  //                 topLeft: Radius.circular(10),
+                  //                 topRight: Radius.circular(10),
+                  //                 bottomLeft: Radius.circular(10),
+                  //                 bottomRight: Radius.circular(10)),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.2),
+                  //                 spreadRadius: 4,
+                  //                 blurRadius: 4,
+                  //                 offset: Offset(
+                  //                     0, 1), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //         onTap: () {
+                  //           Navigator.push(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                 builder: (context) => TestList(),
+                  //               ));
+                  //         },
+                  //       ),
+                  //       InkWell(
+                  //         child: Container(
+                  //           height: screenHeight * 0.1567,
+                  //           width: screenWidth * 0.25,
+                  //           child: Column(
+                  //             children: [
+                  //               Padding(
+                  //                   padding: const EdgeInsets.only(top: 8),
+                  //                   child: Container(
+                  //                     decoration: BoxDecoration(
+                  //                       color: custom_color.appcolor,
+                  //                       // border: width != 0 ?
+                  //                       // Border.all(width: 2, color:custom_color.app_color1 )
+                  //                       // : Border(),
+                  //                       borderRadius: BorderRadius.only(
+                  //                           topLeft: Radius.circular(10),
+                  //                           topRight: Radius.circular(10),
+                  //                           bottomLeft: Radius.circular(10),
+                  //                           bottomRight: Radius.circular(10)),
+                  //                       boxShadow: [
+                  //                         BoxShadow(
+                  //                           color: Colors.grey.withOpacity(0.2),
+                  //                           spreadRadius: 4,
+                  //                           blurRadius: 4,
+                  //                           offset: Offset(0,
+                  //                               1), // changes position of shadow
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                     child: Padding(
+                  //                       padding: const EdgeInsets.all(8.0),
+                  //                       child: Text(
+                  //                         'Injection',
+                  //                         style: TextStyle(
+                  //                             color: Colors.white,
+                  //                             fontWeight: FontWeight.bold),
+                  //                       ),
+                  //                     ),
+                  //                   )),
+                  //               Container(
+                  //                 // color: Colors.amber,
+                  //                 height: screenHeight * 0.1,
+                  //                 child: Padding(
+                  //                   padding: const EdgeInsets.all(8.0),
+                  //                   child: Image.asset('assets/injection.png'),
+                  //                 ),
+                  //               )
+                  //             ],
+                  //           ),
+                  //           decoration: BoxDecoration(
+                  //             color: custom_color.lightcolor,
+                  //             // border: width != 0 ?
+                  //             // Border.all(width: 2, color:custom_color.app_color1 )
+                  //             // : Border(),
+                  //             borderRadius: BorderRadius.only(
+                  //                 topLeft: Radius.circular(10),
+                  //                 topRight: Radius.circular(10),
+                  //                 bottomLeft: Radius.circular(10),
+                  //                 bottomRight: Radius.circular(10)),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.2),
+                  //                 spreadRadius: 4,
+                  //                 blurRadius: 4,
+                  //                 offset:
+                  //                     Offset(0, 1), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //           onTap: () {
+                  //           Navigator.push(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                 builder: (context) => InjectionList(),
+                  //               ));
+                  //         },
+                  //       ),
+                  //       InkWell(
+                  //         child: Container(
+                  //           height: screenHeight * 0.1567,
+                  //           width: screenWidth * 0.25,
+                  //           child: Column(
+                  //             children: [
+                  //               Padding(
+                  //                   padding: const EdgeInsets.only(top: 8),
+                  //                   child: Container(
+                  //                     decoration: BoxDecoration(
+                  //                       color: custom_color.appcolor,
+                  //                       // border: width != 0 ?
+                  //                       // Border.all(width: 2, color:custom_color.app_color1 )
+                  //                       // : Border(),
+                  //                       borderRadius: BorderRadius.only(
+                  //                           topLeft: Radius.circular(10),
+                  //                           topRight: Radius.circular(10),
+                  //                           bottomLeft: Radius.circular(10),
+                  //                           bottomRight: Radius.circular(10)),
+                  //                       boxShadow: [
+                  //                         BoxShadow(
+                  //                           color: Colors.grey.withOpacity(0.2),
+                  //                           spreadRadius: 4,
+                  //                           blurRadius: 4,
+                  //                           offset: Offset(0,
+                  //                               1), // changes position of shadow
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                     child: Padding(
+                  //                       padding: const EdgeInsets.all(8.0),
+                  //                       child: Text(
+                  //                         'Treatment',
+                  //                         style: TextStyle(
+                  //                             color: Colors.white,
+                  //                             fontWeight: FontWeight.bold),
+                  //                       ),
+                  //                     ),
+                  //                   )),
+                  //               Container(
+                  //                 // color: Colors.amber,
+                  //                 height: screenHeight * 0.1,
+                  //                 child: Padding(
+                  //                   padding: const EdgeInsets.all(8.0),
+                  //                   child: Image.asset('assets/treatment.png'),
+                  //                 ),
+                  //               )
+                  //             ],
+                  //           ),
+                  //           decoration: BoxDecoration(
+                  //             color: custom_color.lightcolor,
+                  //             // border: width != 0 ?
+                  //             // Border.all(width: 2, color:custom_color.app_color1 )
+                  //             // : Border(),
+                  //             borderRadius: BorderRadius.only(
+                  //                 topLeft: Radius.circular(10),
+                  //                 topRight: Radius.circular(10),
+                  //                 bottomLeft: Radius.circular(10),
+                  //                 bottomRight: Radius.circular(10)),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.2),
+                  //                 spreadRadius: 4,
+                  //                 blurRadius: 4,
+                  //                 offset:
+                  //                     Offset(0, 1), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //           onTap: () {
+                  //           Navigator.push(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                 builder: (context) => TreatmentList(),
+                  //               ));
+                  //         },
+                  //       ),
 
-                        // Text(
-                        //   "Collection",
-                        //   style: TextStyle(
-                        //       fontWeight: FontWeight.bold, fontSize: 17,letterSpacing: 0.8),
-                        // ),
-                      ],
-                    ),
-                  ),
+                  //       // Text(
+                  //       //   "Collection",
+                  //       //   style: TextStyle(
+                  //       //       fontWeight: FontWeight.bold, fontSize: 17,letterSpacing: 0.8),
+                  //       // ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 15,
                   ),

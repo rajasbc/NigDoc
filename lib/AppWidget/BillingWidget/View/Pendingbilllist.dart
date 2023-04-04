@@ -275,6 +275,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                                                     //     //     FontWeight.bold
                                                     //         color: Color.fromARGB(255, 54, 50, 50)),
                                                   ),
+                                                 
                                                   Text(
                                                       '${data['discount'].toString()}')
                                                 ],
