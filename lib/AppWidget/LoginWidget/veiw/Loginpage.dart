@@ -7,6 +7,7 @@ import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 // import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/Api.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Splashscreen.dart';
+import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 // import 'package:nigdoc/AppWidget/LoginWidget/veiw/onBoard.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/main.dart';
@@ -15,6 +16,7 @@ import '../../Common/colors.dart' as Customcolor;
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import '../../../AppWidget/common/Colors.dart'as custom_color;
 
 
 class Loginpage extends StatefulWidget {
@@ -284,8 +286,10 @@ class _LoginpageState extends State<Loginpage> {
                 ),
               ),
               SizedBox(height: 10,),
+             
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  
                       children: [
                         Container(),
                         // Padding(
@@ -297,7 +301,7 @@ class _LoginpageState extends State<Loginpage> {
                         //    child: Text('Forget Password ?',style: TextStyle(fontSize: 16,color:Customcolor.appcolor ),)),
                         // ),
                         Padding(
-                          padding: const EdgeInsets.only(top:8.0,bottom: 8,left: 8,right: 25),
+                          padding: const EdgeInsets.only(top:8.0,bottom: 8,left: 8,right: 0),
                           child: TextButton(
                               onPressed: () async {
                                 this.setState(() {
@@ -311,6 +315,7 @@ class _LoginpageState extends State<Loginpage> {
                                     !passwordcontroller.text.isEmpty) {
                                   var logindata =
                                       await api().loginresponse(data);
+                                      isloading = false;
                                   storage.setItem('userResponse', logindata);
                                   if (Helper().isvalidElement(logindata) &&
                                       Helper()
@@ -366,6 +371,7 @@ class _LoginpageState extends State<Loginpage> {
                                       //                               );
                                       Fluttertoast.showToast(
                                           msg: "login successfully",
+                                          // ${logindata['clinic_profile']['name']}
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.CENTER,
                                           timeInSecForIosWeb: 1,
@@ -415,8 +421,9 @@ class _LoginpageState extends State<Loginpage> {
                                 });
                               },
                           
-                           child: Text('LOGIN',style: TextStyle(fontSize: 28,color: Customcolor.appcolor),)),
-                        )
+                           child: isloading?SpinLoader(): Text('LOGIN',style: TextStyle(fontSize: 28,color: Customcolor.appcolor),)),
+                        ),
+                         Icon(Icons.arrow_forward,size: 30,color: custom_color.appcolor),
                       ],
                     )
 

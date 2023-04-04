@@ -180,7 +180,7 @@ class _PatientListState extends State<PatientList> {
                                                     ?custom_color.lightcolor
                                                     : Colors.white,
                                       child: ListTile(
-                                        title: SizedBox(child: Text('${data['customer_name'].toString() }(${data['cid']})')),
+                                        title: SizedBox(child: Text('${data['customer_name'].toString() }(${data['customer_id']})')),
                                         subtitle: Text('${data['phone']}'),
                                         leading: Padding(
                                           padding: const EdgeInsets.only(top:3.0),
