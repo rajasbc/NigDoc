@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 // import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
 import '../../DoctorWidget/Api.dart';
@@ -18,6 +20,7 @@ class Patients extends StatefulWidget {
 }
 
 class _PatientsState extends State<Patients> {
+  final LocalStorage storage = new LocalStorage('doctor_store');
   int? _radioSelected = 1;
   String _radioVal = "";
 
@@ -81,6 +84,9 @@ class _PatientsState extends State<Patients> {
   var temp = ['°F', '°C', '°K'];
   var doctors = ['Saveetha', 'Sathish'];
   var DoctorList;
+  var selectedPatient;
+  var PatientList;
+  bool name=false;
 
   DateTime currentDate = DateTime.now();
   DateTime selectedDate = DateTime.now();
@@ -107,6 +113,7 @@ class _PatientsState extends State<Patients> {
   void initState() {
     accesstoken = storage.getItem('userResponse')['access_token'];
     getdoctorlist();
+    getpatientlist();
 
     // getdoctorlist();
     // TODO: implement initState
@@ -184,7 +191,7 @@ class _PatientsState extends State<Patients> {
                     children: [
                       Container(
                         // color: Colors.red,
-                        width: screenWidth * 0.26,
+                        width: screenWidth * 0.95,
                         height: screenHeight * 0.07,
                         decoration:
                             BoxDecoration(border: Border.all(color: Colors.grey)
@@ -227,22 +234,118 @@ class _PatientsState extends State<Patients> {
                           ),
                         ),
                       ),
-                      Container(
-                        width: screenWidth * 0.65,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            controller: namecontroller,
+                      // name?renderAutoComplete(screenWidth, screenHeight):
+                      // Container(
+                      //   width: screenWidth * 0.65,
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: TextField(
+                      //       controller: namecontroller,
     
-                            // keyboardType: TextInputType.none,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Full Name *'),
-                          ),
-                        ),
-                      ),
+                      //       // keyboardType: TextInputType.none,
+                      //       decoration: InputDecoration(
+                      //           border: OutlineInputBorder(),
+                      //           labelText: 'Full Name *'),
+                      //     ),
+                      //   ),
+                      // ),
+                      
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Autocomplete<List>(
+                      optionsBuilder: (TextEditingValue textEditingValue) {
+                        if (textEditingValue.text == '') {
+                          return  Iterable<List>.empty();
+                        } else {
+                          var matches = [];
+                          matches.addAll(PatientList);
+                          matches.retainWhere((s) {
+                            return s['customer_name']
+                  .toString()
+                  .toLowerCase()
+                  .contains(textEditingValue.text.toLowerCase());
+                          });
+                          this.setState(() {});
+                          return [matches];
+                        }
+                      },
+                      fieldViewBuilder: (BuildContext context,
+                          TextEditingController textEditingController,
+                          FocusNode focusNode,
+                          VoidCallback onFieldSubmitted) {
+                        return TextFormField(
+                            controller: textEditingController,
+                            focusNode: focusNode,
+                            decoration:  InputDecoration(
+                  border: OutlineInputBorder(),
+                  // prefix: Icon(Icons.search),
+                  prefixIcon: Icon(Icons.search),
+                  hintText: ' Search Patient Name'),
+                            onFieldSubmitted: (String value) {
+                              onFieldSubmitted();
+                            });
+                      },
+                      optionsViewBuilder: (BuildContext context,
+                          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+                        return Align(
+                          alignment: Alignment.topLeft,
+                          child: Material(
+                            child: Container(
+                              width: screenWidth * 0.9,
+                              height: screenHeight * 0.8,
+                              color: Colors.white,
+                              child: ListView.builder(
+                  padding:  EdgeInsets.all(5.0),
+                  itemCount: options.toList()[0].length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final option = options.toList()[0].elementAt(index);
+                    return GestureDetector(
+                      onTap: () {
+                        storage.setItem(
+                            'selectedcustomer', options.toList()[0][index]);
+                             Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PrescriptionPage()),
+        );
+                        setState(() {
+                          // showAutoComplete = false;
+                          selectedPatient = options.toList()[0][index];
+                        });
+                       
+                      },
+                      child: Card(
+                        color: Colors.grey,
+                        // color: custom_color.app_color,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:  EdgeInsets.all(8.0),
+                              child: Text(
+                                  '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+                                  style:  TextStyle(color: Colors.black)),
+                            ),
+                            // Divider(
+                            //   thickness: 1,
+                            // )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                 ),
                 SizedBox(
                   height: 10,
@@ -980,7 +1083,7 @@ class _PatientsState extends State<Patients> {
 
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Dash()),
+          MaterialPageRoute(builder: (context) => PrescriptionPage()),
         );
       }else
       {
@@ -1016,5 +1119,108 @@ class _PatientsState extends State<Patients> {
         isloading = true;
       });
     }
+  }
+   getpatientlist() async {
+    // this.setState(() {
+    //   isloading = true;
+    // });
+    var list = await PatientApi().getpatientlist(accesstoken);
+    if (Helper().isvalidElement(list) &&
+        Helper().isvalidElement(list['status']) &&
+        list['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      //  storage.setItem('diagnosisList', diagnosisList);
+      setState(() {
+        name=true;
+        PatientList = list['Customer_list'];
+        isloading = true;
+      });
+    }
+  }
+
+   renderAutoComplete(screenWidth, screenHeight) {
+    return Autocomplete<List>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return  Iterable<List>.empty();
+        } else {
+          var matches = [];
+          matches.addAll(PatientList);
+          matches.retainWhere((s) {
+            return s['customer_name']
+                .toString()
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          });
+          this.setState(() {});
+          return [matches];
+        }
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextFormField(
+            controller: textEditingController,
+            focusNode: focusNode,
+            decoration:  InputDecoration(
+                border: OutlineInputBorder(),
+                // prefix: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
+                hintText: ' Search Patient Name'),
+            onFieldSubmitted: (String value) {
+              onFieldSubmitted();
+            });
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            child: Container(
+              width: screenWidth * 0.9,
+              height: screenHeight * 0.8,
+              color: Colors.white,
+              child: ListView.builder(
+                padding:  EdgeInsets.all(5.0),
+                itemCount: options.toList()[0].length,
+                itemBuilder: (BuildContext context, int index) {
+                  final option = options.toList()[0].elementAt(index);
+                  return GestureDetector(
+                    onTap: () {
+                      storage.setItem(
+                          'selectedPatient', options.toList()[0][index]);
+                      setState(() {
+                        // showAutoComplete = false;
+                        selectedPatient = options.toList()[0][index];
+                      });
+                    },
+                    child: Card(
+                      color: Colors.grey,
+                      // color: custom_color.app_color,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:  EdgeInsets.all(8.0),
+                            child: Text(
+                                '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+                                style:  TextStyle(color: Colors.black)),
+                          ),
+                          // Divider(
+                          //   thickness: 1,
+                          // )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
