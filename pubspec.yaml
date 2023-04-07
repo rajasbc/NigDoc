@@ -54,6 +54,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   fluttericon: ^2.0.0
   rflutter_alert: ^2.0.4
+  audioplayers: ^3.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -106,6 +107,7 @@ flutter:
     - assets/log.png
     - assets/login.jpg
     - assets/nigdoc.png
+    - assets/medimessage.mp3
 
 
 

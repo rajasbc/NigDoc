@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstorage/localstorage.dart';
@@ -826,24 +827,39 @@ method(){
                                                         // treatmentList
                                                         //       .add(data);
                                                         //       totalCalcution();
+                                                        if (treatmentList.length > 0) {
+                                   int i = 0;
+                                  for (var checkitem in treatmentList) {
+          
+                                    if (checkitem['treatmentname'] ==
+                                        data['treatmentname']) {
+                                          Fluttertoast.showToast(
+                                                            msg:
+                                                                'This Treatment Already Added',
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            timeInSecForIosWeb:
+                                                                2,
+                                                            backgroundColor:
+                                                                Colors.red,
+                                                            textColor:
+                                                                Colors.white,
+                                                            fontSize: 15.0);
+                                     
+                                         print('already added');
+                                      return;
+                                    } else {
+                                      i++;
 
-                                               
-                                                   
-                                                      
-
-                                                        if (treatmentList
-                                                            .contains(data)) {
-                                                          treatmentList
-                                                              .remove(data);
-                                                        } else {
-                                                          treatmentList
-                                                              .add(data);
-                                                            
-                                                        }
-
-
-
-                                                        totalCalcution();
+                                      if (treatmentList.length == i) {
+                                        this.setState(() {
+                                          treatmentList.add(data); 
+                                          print(treatmentList);
+                                        });
+                                         totalCalcution();
                                                         print(treatmentList);
                                                         gettreatmentlist();
 
@@ -856,6 +872,62 @@ method(){
                                                         setState(() {
                                                           gettreatmentlist();
                                                         });
+                                        return;
+                                      }
+
+                                    }
+                                  }
+                                } else {
+                                 setState(() {
+                                    treatmentList.add(data);
+                                    
+                                    print(treatmentList);
+                                  });
+                                   totalCalcution();
+                                                        print(treatmentList);
+                                                        gettreatmentlist();
+
+                                                        setState(() {
+                                                          TreatmentList = null;
+                                                          treatmentDropdownvalue =
+                                                              'null';
+                                                          fees.clear();
+                                                        });
+                                                        setState(() {
+                                                          gettreatmentlist();
+                                                        });
+                                  return;
+                                }
+
+                                               
+                                                   
+                                                      
+
+                                                        // if (treatmentList
+                                                        //     .contains(data)) {
+                                                        //   treatmentList
+                                                        //       .remove(data);
+                                                        // } else {
+                                                        //   treatmentList
+                                                        //       .add(data);
+                                                            
+                                                        // }
+
+
+
+                                                        // totalCalcution();
+                                                        // print(treatmentList);
+                                                        // gettreatmentlist();
+
+                                                        // setState(() {
+                                                        //   TreatmentList = null;
+                                                        //   treatmentDropdownvalue =
+                                                        //       'null';
+                                                        //   fees.clear();
+                                                        // });
+                                                        // setState(() {
+                                                        //   gettreatmentlist();
+                                                        // });
                                                       }
                                                   },
                                                 )
@@ -1102,13 +1174,56 @@ method(){
                                                       print(testList
                                                           .contains(test));
 
-                                                      if (testList
-                                                          .contains(test)) {
-                                                        testList.remove(test);
-                                                      } else {
-                                                        testList.add(test);
-                                                      }
-                                                      print(testList);
+                                                           if (testList.length > 0) {
+                                   int i = 0;
+                                  for (var checkitem in testList) {
+          
+                                    if (checkitem['test_id'] ==
+                                        test['test_id']) {
+                                          Fluttertoast.showToast(
+                                                            msg:
+                                                                'This Test Already Added',
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            timeInSecForIosWeb:
+                                                                2,
+                                                            backgroundColor:
+                                                                Colors.red,
+                                                            textColor:
+                                                                Colors.white,
+                                                            fontSize: 15.0);
+                                     
+                                         print('already added');
+                                      return;
+                                    } else {
+                                      i++;
+
+                                      if (testList.length == i) {
+                                         print(testList);
+                                                      setState(() {
+                                                         testList.add(test);
+                                                        // labshowAutoComplete =
+                                                        //     true;
+                                                        testshowAutoComplete =
+                                                            true;
+                                                        // labnameController
+                                                        //     .clear();
+                                                        testnameController
+                                                            .clear();
+                                                      });
+                                         
+                                        return;
+                                      }
+
+                                    }
+                                  }
+                                } else {
+                                 setState(() {
+                                    testList.add(test);
+                                     print(testList);
                                                       setState(() {
                                                         // labshowAutoComplete =
                                                         //     true;
@@ -1119,6 +1234,47 @@ method(){
                                                         testnameController
                                                             .clear();
                                                       });
+                                    
+                                    print(testList);
+                                  });
+                                   
+                                  return;
+                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                      // if (testList
+                                                      //     .contains(test)) {
+                                                      //   testList.remove(test);
+                                                      // } else {
+                                                      //   testList.add(test);
+                                                      // }
+                                                      // print(testList);
+                                                      // setState(() {
+                                                      //   // labshowAutoComplete =
+                                                      //   //     true;
+                                                      //   testshowAutoComplete =
+                                                      //       true;
+                                                      //   // labnameController
+                                                      //   //     .clear();
+                                                      //   testnameController
+                                                      //       .clear();
+                                                      // });
                                                     }
                                                   },
                                                   child:  Text(
@@ -1957,37 +2113,51 @@ method(){
                                                         };
                                                         print(data);
                                                         print(medicineList);
-                                                        print(medicineList
-                                                            .contains(data));
-                                                        if (table_list
-                                                            .contains(data)) {
-                                                          table_list
-                                                              .remove(data);
-                                                        } else {
-                                                          table_list.add(data);
-                                                          
-                                                          setState(() {
-                                                            prescriptionDD=false;
-                                                          });
-                                                          totalCalcution();
-                                                          // grand_total=0;
+                                                       
 
-                                                          // for (var value
-                                                          //     in table_list) {
-                                                          //   grand_total = grand_total +fees_total+
-                                                          //       double.parse(
-                                                          //           value['total']);
-                                                          // }
-                                                          // // return grand_total;
-                                                          // grandtotalController.text=grand_total.toString();
-                                                          //  medicineList.addAll(cal);
-                                                          // tableCalCulation();
-                                                          //  medicineList.addAll(treatmentList);
-                                                          // //  medicineList.asMap()
-                                                        }
-                                                        print(table_list);
-                                                        setState(() {
-                                                          // prescriptionDD=false;
+                                                             if (table_list.length > 0) {
+                                   int i = 0;
+                                  for (var checkitem in table_list) {
+          
+                                    if (checkitem['itemno'] ==
+                                        data['itemno']) {
+                                          Fluttertoast.showToast(
+                                                            msg:
+                                                                'This Test Already Added',
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            timeInSecForIosWeb:
+                                                                2,
+                                                            backgroundColor:
+                                                                Colors.red,
+                                                            textColor:
+                                                                Colors.white,
+                                                            fontSize: 15.0);
+                                     
+                                         print('already added');
+                                      return;
+                                    } else {
+                                      i++;
+
+                                      if (table_list.length == i) {
+                                         print(testList);
+                                                      setState(() {
+                                                         totalCalcution();
+                                                         table_list.add(data);
+                                                        // labshowAutoComplete =
+                                                        //     true;
+                                                        testshowAutoComplete =
+                                                            true;
+                                                        // labnameController
+                                                        //     .clear();
+                                                        testnameController
+                                                            .clear();
+                                                      });
+                                                       setState(() {
+                                                          prescriptionDD=false;
                                                           medicineshowAutoComplete =
                                                               true;
 
@@ -2002,6 +2172,121 @@ method(){
                                                               'Select Prescription';
                                                               prescriptionDD=true;
                                                         });
+                                         
+                                        return;
+                                      }
+
+                                    }
+                                  }
+                                } else {
+                                 setState(() {
+                                    table_list.add(data);
+                                     print(table_list);
+                                                      setState(() {
+                                                         totalCalcution();
+                                                        // labshowAutoComplete =
+                                                        //     true;
+                                                        testshowAutoComplete =
+                                                            true;
+                                                        // labnameController
+                                                        //     .clear();
+                                                        testnameController
+                                                            .clear();
+                                                      });
+                                                       setState(() {
+                                                          prescriptionDD=false;
+                                                          medicineshowAutoComplete =
+                                                              true;
+
+                                                          medicineController
+                                                              .clear();
+                                                          priceController
+                                                              .clear();
+                                                          dayController.clear();
+                                                          patternDropdownvalue =
+                                                              'pattern';
+                                                          prescriptionDropdownvalue =
+                                                              'Select Prescription';
+                                                              prescriptionDD=true;
+                                                        });
+                                    
+                                    print(testList);
+                                  });
+                                   
+                                  return;
+                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                        // if (table_list
+                                                        //     .contains(data)) {
+                                                        //   table_list
+                                                        //       .remove(data);
+                                                        // } else {
+                                                        //   table_list.add(data);
+                                                          
+                                                        //   setState(() {
+                                                        //     prescriptionDD=false;
+                                                        //   });
+                                                        //   totalCalcution();
+                                                        //   // grand_total=0;
+
+                                                        //   // for (var value
+                                                        //   //     in table_list) {
+                                                        //   //   grand_total = grand_total +fees_total+
+                                                        //   //       double.parse(
+                                                        //   //           value['total']);
+                                                        //   // }
+                                                        //   // // return grand_total;
+                                                        //   // grandtotalController.text=grand_total.toString();
+                                                        //   //  medicineList.addAll(cal);
+                                                        //   // tableCalCulation();
+                                                        //   //  medicineList.addAll(treatmentList);
+                                                        //   // //  medicineList.asMap()
+                                                        // }
+                                                        // print(table_list);
+                                                        // setState(() {
+                                                        //   // prescriptionDD=false;
+                                                        //   medicineshowAutoComplete =
+                                                        //       true;
+
+                                                        //   medicineController
+                                                        //       .clear();
+                                                        //   priceController
+                                                        //       .clear();
+                                                        //   dayController.clear();
+                                                        //   patternDropdownvalue =
+                                                        //       'pattern';
+                                                        //   prescriptionDropdownvalue =
+                                                        //       'Select Prescription';
+                                                        //       prescriptionDD=true;
+                                                        // });
                                                       }
                                                     },
                                                     child:  Text(
@@ -3123,6 +3408,7 @@ method(){
     } else if (Helper().isvalidElement(result) &&
         Helper().isvalidElement(result['message']) &&
         result['message'] == 'Successfully') {
+          AudioPlayer().play(AssetSource('medimessage.mp3'));
            toClear();
            storage.deleteItem('selectedcustomer');
       print(result['message']);
