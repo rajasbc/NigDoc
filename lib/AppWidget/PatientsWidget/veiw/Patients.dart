@@ -86,7 +86,7 @@ class _PatientsState extends State<Patients> {
   var DoctorList;
   var selectedPatient;
   var PatientList;
-  bool name=false;
+  bool name=true;
 
   DateTime currentDate = DateTime.now();
   DateTime selectedDate = DateTime.now();
@@ -256,6 +256,7 @@ class _PatientsState extends State<Patients> {
                 SizedBox(
                   height: 10,
                 ),
+                name?
 
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -301,52 +302,87 @@ class _PatientsState extends State<Patients> {
                               width: screenWidth * 0.9,
                               height: screenHeight * 0.8,
                               color: Colors.white,
-                              child: ListView.builder(
-                  padding:  EdgeInsets.all(5.0),
-                  itemCount: options.toList()[0].length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final option = options.toList()[0].elementAt(index);
-                    return GestureDetector(
-                      onTap: () {
-                        storage.setItem(
-                            'selectedcustomer', options.toList()[0][index]);
-                             Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PrescriptionPage()),
-        );
-                        setState(() {
-                          // showAutoComplete = false;
-                          selectedPatient = options.toList()[0][index];
-                        });
-                       
-                      },
-                      child: Card(
-                        color: Colors.grey,
-                        // color: custom_color.app_color,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:  EdgeInsets.all(8.0),
-                              child: Text(
-                                  '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
-                                  style:  TextStyle(color: Colors.black)),
-                            ),
-                            // Divider(
-                            //   thickness: 1,
-                            // )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 5,),
+                                  InkWell(
+                                    child: Card(color: custom_color.lightcolor,
+                                    child:Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Text("Click to Enter a New Customer",style: TextStyle(color: Colors.red),),
+                                    )),
+                                    onTap: (){
+                                      setState(() {
+                                        name=false;
+                                      });
+                                    },
+                                  ),
+                                  Container(
+                                    width: screenWidth * 0.9,
+                              height: screenHeight * 0.65,
+                                    child: ListView.builder(
+                                                    padding:  EdgeInsets.all(5.0),
+                                                    itemCount: options.toList()[0].length,
+                                                    itemBuilder: (BuildContext context, int index) {
+                                                      final option = options.toList()[0].elementAt(index);
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          storage.setItem(
+                                                              'selectedcustomer', options.toList()[0][index]);
+                                                               Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => PrescriptionPage()),
+                                          );
+                                                          setState(() {
+                                                            // showAutoComplete = false;
+                                                            selectedPatient = options.toList()[0][index];
+                                                          });
+                                                         
+                                                        },
+                                                        child: Card(
+                                                          color: Colors.grey,
+                                                          // color: custom_color.app_color,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Padding(
+                                    padding:  EdgeInsets.all(8.0),
+                                    child: Text(
+                                        '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+                                        style:  TextStyle(color: Colors.black)),
+                                                              ),
+                                                              // Divider(
+                                                              //   thickness: 1,
+                                                              // )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         );
                       },
                     ),
-                ),
+                ):
+                 Container(
+                        width: screenWidth * 0.98,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            controller: namecontroller,
+    
+                            // keyboardType: TextInputType.none,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Full Name *'),
+                          ),
+                        ),
+                      ),
                 SizedBox(
                   height: 10,
                 ),
@@ -1132,7 +1168,7 @@ class _PatientsState extends State<Patients> {
     } else {
       //  storage.setItem('diagnosisList', diagnosisList);
       setState(() {
-        name=true;
+        // name=true;
         PatientList = list['Customer_list'];
         isloading = true;
       });

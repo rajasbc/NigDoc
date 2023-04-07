@@ -122,7 +122,7 @@ class _DashState extends State<Dash> {
         ),
         DialogButton(
           child: Text(
-            " No ",
+            " NO ",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () => Navigator.pop(context),

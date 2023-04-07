@@ -103,6 +103,10 @@ flutter:
     - assets/testreport.png
     - assets/injection.png
     - assets/treatment.png
+    - assets/log.png
+    - assets/login.jpg
+    - assets/nigdoc.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
