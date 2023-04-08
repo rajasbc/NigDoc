@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
 
 class PrescriptionPage extends StatefulWidget {
-   PrescriptionPage({super.key});
+  PrescriptionPage({super.key});
   @override
   State<PrescriptionPage> createState() => _PrescriptionPageState();
 }
@@ -66,7 +66,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   bool pharmacyshowAutoComplete = true;
   bool medicineshowAutoComplete = false;
   bool injectionshowautoComplete = true;
-  bool prescriptionDD=true;
+  bool prescriptionDD = true;
   var TestList;
   var SelectedTest;
   var MedicineList;
@@ -94,6 +94,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     {"name": "2-0-2", "value": "4", "mor": "2", "noon": "0", "night": "2"},
     {"name": "2-2-2", "value": "6", "mor": "2", "noon": "2", "night": "2"},
   };
+  final GlobalKey<FormFieldState> _patternkey = GlobalKey<FormFieldState>();
+
+  // final GlobalObjectKey<FormFieldState<String>> emailKey =
+  //     GlobalKey<FormFieldState<String>>();
   var Prescription = ['Select Prescription', 'BF', 'AF'];
   List treatmentList = [];
   List testList = [];
@@ -103,14 +107,14 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   double fees_total = 0.0;
   var accesstoken;
   bool isloading = false;
-  bool medicineAdded =false;
+  bool medicineAdded = false;
   @override
   void initState() {
     super.initState();
     accesstoken = storage.getItem('userResponse')['access_token'];
-    selectedPatient=storage.getItem('selectedcustomer');
+    selectedPatient = storage.getItem('selectedcustomer');
     method();
-    
+
     getpatientlist();
     gettreatmentlist();
     // grandtotalController.text = grand_total.toString();
@@ -118,10 +122,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     medicineAdded = false;
   }
 
-method(){
-  showAutoComplete=Helper().isvalidElement(selectedPatient)?false:true;
-
-}
+  method() {
+    showAutoComplete = Helper().isvalidElement(selectedPatient) ? false : true;
+  }
 
   DateTime selectedDate = DateTime.now();
   // Future<void> _selectDate(BuildContext context) async {
@@ -146,11 +149,10 @@ method(){
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  Dash()),
-          
+          MaterialPageRoute(builder: (context) => Dash()),
         );
         storage.deleteItem('selectedcustomer');
-         selectedPatient = null;
+        selectedPatient = null;
         showAutoComplete = true;
         return true;
       },
@@ -159,23 +161,27 @@ method(){
         // resizeToAvoidBottomInset: false,
         // resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
-          preferredSize:  Size.fromHeight(50),
+          preferredSize: Size.fromHeight(50),
           child: AppBar(
             backgroundColor: custom_color.appcolor,
-            title:  Text(
+            title: Text(
               'Prescription',
               style: TextStyle(color: Colors.white),
             ),
-            iconTheme:  IconThemeData(color: Colors.white),
-            leading: IconButton(onPressed: (){
-            Navigator.push(
-          context, MaterialPageRoute(builder: (context)=> Dash())
-         );
-           storage.deleteItem('selectedcustomer');
-            selectedPatient = null;
-           showAutoComplete = true;
-          }, icon: Icon(Icons.arrow_back,
-          color: Colors.white,),),
+            iconTheme: IconThemeData(color: Colors.white),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Dash()));
+                storage.deleteItem('selectedcustomer');
+                selectedPatient = null;
+                showAutoComplete = true;
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+            ),
             // actions: [
             //   IconButton(
             //       onPressed: () {
@@ -194,7 +200,7 @@ method(){
         ),
         body: isloading
             ? Padding(
-                padding:  EdgeInsets.all(0.0),
+                padding: EdgeInsets.all(0.0),
                 child: Container(
                   height: screenHeight,
                   width: screenWidth,
@@ -202,7 +208,7 @@ method(){
                     children: [
                       showAutoComplete
                           ? Padding(
-                              padding:  EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.0),
                               child: Card(
                                   child: renderAutoComplete(
                                       screenWidth, screenHeight)
@@ -279,7 +285,7 @@ method(){
                                   ),
                             )
                           : Padding(
-                              padding:  EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.0),
                               child: Container(
                                   child: Column(
                                 children: [
@@ -303,7 +309,7 @@ method(){
                                             showAutoComplete = true;
                                           });
                                         },
-                                        icon:  Icon(
+                                        icon: Icon(
                                           Icons.delete,
                                           color: Colors.red,
                                         ),
@@ -316,7 +322,7 @@ method(){
                               )),
                             ),
                       Padding(
-                        padding:  EdgeInsets.all(5.0),
+                        padding: EdgeInsets.all(5.0),
                         child: Container(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -329,9 +335,9 @@ method(){
                                     border: Border.all(
                                         width: 2, color: Colors.white),
                                     color: select_button == "treatment"
-                                        ?  Color.fromARGB(255, 77, 93, 184)
+                                        ? Color.fromARGB(255, 77, 93, 184)
                                         : Colors.white,
-                                    borderRadius:  BorderRadius.only(
+                                    borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10),
                                         bottomLeft: Radius.circular(10),
@@ -341,7 +347,7 @@ method(){
                                         color: Colors.grey.withOpacity(0.3),
                                         spreadRadius: 3,
                                         blurRadius: 3,
-                                        offset:  Offset(
+                                        offset: Offset(
                                             0, 1), // changes position of shadow
                                       ),
                                     ],
@@ -352,7 +358,7 @@ method(){
                                     style: TextStyle(
                                         color: select_button == "treatment"
                                             ? Colors.white
-                                            :  Color.fromARGB(255, 77, 93, 184),
+                                            : Color.fromARGB(255, 77, 93, 184),
                                         fontWeight: FontWeight.bold),
                                   )),
                                 ),
@@ -371,9 +377,9 @@ method(){
                                     border: Border.all(
                                         width: 2, color: Colors.white),
                                     color: select_button == "test"
-                                        ?  Color.fromARGB(255, 77, 93, 184)
+                                        ? Color.fromARGB(255, 77, 93, 184)
                                         : Colors.white,
-                                    borderRadius:  BorderRadius.only(
+                                    borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10),
                                         bottomLeft: Radius.circular(10),
@@ -383,7 +389,7 @@ method(){
                                         color: Colors.grey.withOpacity(0.3),
                                         spreadRadius: 3,
                                         blurRadius: 3,
-                                        offset:  Offset(
+                                        offset: Offset(
                                             0, 1), // changes position of shadow
                                       ),
                                     ],
@@ -394,7 +400,7 @@ method(){
                                     style: TextStyle(
                                         color: select_button == "test"
                                             ? Colors.white
-                                            :  Color.fromARGB(255, 77, 93, 184),
+                                            : Color.fromARGB(255, 77, 93, 184),
                                         fontWeight: FontWeight.bold),
                                   )),
                                 ),
@@ -415,9 +421,9 @@ method(){
                                     border: Border.all(
                                         width: 2, color: Colors.white),
                                     color: select_button == "injection"
-                                        ?  Color.fromARGB(255, 77, 93, 184)
+                                        ? Color.fromARGB(255, 77, 93, 184)
                                         : Colors.white,
-                                    borderRadius:  BorderRadius.only(
+                                    borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10),
                                         bottomLeft: Radius.circular(10),
@@ -427,7 +433,7 @@ method(){
                                         color: Colors.grey.withOpacity(0.3),
                                         spreadRadius: 3,
                                         blurRadius: 3,
-                                        offset:  Offset(
+                                        offset: Offset(
                                             0, 1), // changes position of shadow
                                       ),
                                     ],
@@ -438,7 +444,7 @@ method(){
                                     style: TextStyle(
                                         color: select_button == "injection"
                                             ? Colors.white
-                                            :  Color.fromARGB(255, 77, 93, 184),
+                                            : Color.fromARGB(255, 77, 93, 184),
                                         fontWeight: FontWeight.bold),
                                   )),
                                 ),
@@ -457,9 +463,9 @@ method(){
                                     border: Border.all(
                                         width: 2, color: Colors.white),
                                     color: select_button == "medicine"
-                                        ?  Color.fromARGB(255, 77, 93, 184)
+                                        ? Color.fromARGB(255, 77, 93, 184)
                                         : Colors.white,
-                                    borderRadius:  BorderRadius.only(
+                                    borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10),
                                         bottomLeft: Radius.circular(10),
@@ -469,7 +475,7 @@ method(){
                                         color: Colors.grey.withOpacity(0.3),
                                         spreadRadius: 3,
                                         blurRadius: 3,
-                                        offset:  Offset(
+                                        offset: Offset(
                                             0, 1), // changes position of shadow
                                       ),
                                     ],
@@ -480,7 +486,7 @@ method(){
                                     style: TextStyle(
                                         color: select_button == "medicine"
                                             ? Colors.white
-                                            :  Color.fromARGB(255, 77, 93, 184),
+                                            : Color.fromARGB(255, 77, 93, 184),
                                         fontWeight: FontWeight.bold),
                                   )),
                                 ),
@@ -502,22 +508,22 @@ method(){
                       ),
                       select_button == "treatment"
                           ? Padding(
-                              padding:  EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.0),
                               child: Container(
                                 // color: Colors.red,
                                 height: screenHeight * 0.68,
                                 child: SingleChildScrollView(
-                                  physics:  ScrollPhysics(),
+                                  physics: ScrollPhysics(),
                                   child: Column(
                                     children: [
                                       Padding(
-                                        padding:  EdgeInsets.all(3.0),
+                                        padding: EdgeInsets.all(3.0),
                                         child: Container(
                                           height: screenHeight * 0.08,
                                           width: screenWidth,
                                           // color:Colors.amber,
                                           child: Padding(
-                                            padding:  EdgeInsets.only(
+                                            padding: EdgeInsets.only(
                                                 top: 5,
                                                 bottom: 1,
                                                 left: 0,
@@ -525,7 +531,7 @@ method(){
                                             child: Container(
                                               // height: screenHeight * 0.06,
                                               width: screenWidth,
-                                              decoration:  BoxDecoration(
+                                              decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   // border: Border.all(
                                                   //     color: Color.fromARGB(255, 12, 12, 12)),
@@ -545,9 +551,8 @@ method(){
                                                   Container(
                                                     width: screenWidth * 0.92,
                                                     child: Padding(
-                                                      padding:
-                                                           EdgeInsets.only(
-                                                              bottom: 0.0),
+                                                      padding: EdgeInsets.only(
+                                                          bottom: 0.0),
                                                       child: Helper().isvalidElement(
                                                                   TreatmentList) &&
                                                               TreatmentList
@@ -564,7 +569,7 @@ method(){
                                                               //     InputDecoration.collapsed(
                                                               //         hintText: ''),
                                                               decoration:
-                                                                   InputDecoration(
+                                                                  InputDecoration(
                                                                 labelText:
                                                                     'Treatment',
                                                                 border:
@@ -572,7 +577,7 @@ method(){
                                                                 //icon: Icon(Icons.numbers),
                                                               ),
                                                               isExpanded: true,
-                                                              hint:  Text(
+                                                              hint: Text(
                                                                 'Select Treatment',
                                                               ),
                                                               // value:patternDropdownvalue,
@@ -615,7 +620,7 @@ method(){
                                                           : DropdownButtonFormField(
                                                               // validator: (value) => validateDrops(value),
                                                               // isExpanded: true,
-                                                              hint:  Text(
+                                                              hint: Text(
                                                                   'Select Treatment'),
                                                               // value:' _selectedState[i]',
                                                               onChanged:
@@ -685,11 +690,11 @@ method(){
                                           ),
                                         ),
                                       ),
-                                       SizedBox(
+                                      SizedBox(
                                         height: 2,
                                       ),
                                       Padding(
-                                        padding:  EdgeInsets.all(5.0),
+                                        padding: EdgeInsets.all(5.0),
                                         child: Container(
                                           child: Row(
                                             mainAxisAlignment:
@@ -698,264 +703,250 @@ method(){
                                               SizedBox(
                                                 width: 180,
                                                 child: TextFormField(
-                                                  decoration:
-                                                       InputDecoration(
+                                                  decoration: InputDecoration(
                                                     labelText: 'Fees',
                                                     border:
                                                         OutlineInputBorder(),
                                                     // icon: Icon(Icons.numbers),
                                                   ),
                                                   controller: fees,
-                                                  keyboardType:  TextInputType
+                                                  keyboardType: TextInputType
                                                       .numberWithOptions(
                                                           decimal: true),
                                                 ),
                                               ),
                                               SizedBox(
-                                                // width: 100,
-                                                child: ElevatedButton(
-                                                child:  Text(
-                                                    "ADD TREATMENT",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all<
-                                                                      Color>(
-                                                                  custom_color
-                                                                      .appcolor),
-                                                      shape: MaterialStateProperty.all<
-                                                              RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4.0),
-                                                      ))),onPressed: (){
-                                                         if (selectedPatient ==
-                                                              null ||
-                                                          selectedPatient ==
-                                                              '') {
-                                                        Fluttertoast.showToast(
-                                                            msg:
-                                                                'Please select Patient',
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            timeInSecForIosWeb:
-                                                                2,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 15.0);
-                                                      } else
-                                                     if (treatmentDropdownvalue ==
-                                                              'null' ||
-                                                          treatmentDropdownvalue ==
-                                                              'Select Treatment') {
-                                                        Fluttertoast.showToast(
-                                                            msg:
-                                                                'Please select treatment',
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            timeInSecForIosWeb:
-                                                                2,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 15.0);
-                                                      } else if (fees
-                                                          .text.isEmpty) {
-                                                        Fluttertoast.showToast(
-                                                            msg:
-                                                                'Please enter Fees',
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            timeInSecForIosWeb:
-                                                                2,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 15.0);
-                                                      } else {
-                                                        var data = {
-                                                          "treatmentname":
-                                                              treatmentid
-                                                                  .toString(),
-                                                          "treatment":
-                                                              treatmentname
-                                                                  .toString(),
-                                                          "consult_fees": fees
-                                                              .text
+                                                  // width: 100,
+                                                  child: ElevatedButton(
+                                                child: Text(
+                                                  "ADD TREATMENT",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(
+                                                                custom_color
+                                                                    .appcolor),
+                                                    shape: MaterialStateProperty
+                                                        .all<RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4.0),
+                                                    ))),
+                                                onPressed: () {
+                                                  if (selectedPatient == null ||
+                                                      selectedPatient == '') {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            'Please select Patient',
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIosWeb: 2,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.white,
+                                                        fontSize: 15.0);
+                                                  } else if (treatmentDropdownvalue ==
+                                                          'null' ||
+                                                      treatmentDropdownvalue ==
+                                                          'Select Treatment') {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            'Please select treatment',
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIosWeb: 2,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.white,
+                                                        fontSize: 15.0);
+                                                  } else if (fees
+                                                      .text.isEmpty) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            'Please enter Fees',
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIosWeb: 2,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.white,
+                                                        fontSize: 15.0);
+                                                  } else {
+                                                    var data = {
+                                                      "treatmentname":
+                                                          treatmentid
                                                               .toString(),
-                                                          "description": ""
-                                                        };
-                                                        // print(data);
-                                                        print(data);
-                                                        print(treatmentList);
-                                                        // for(var i=0;i<treatmentList.length;i++)
-                                                        // {
-                                                        //   if(treatmentList[i]==data){
-                                                        //     print('already added');
-                                                        //     totalCalcution();
-                                                        //     return;
+                                                      "treatment": treatmentname
+                                                          .toString(),
+                                                      "consult_fees":
+                                                          fees.text.toString(),
+                                                      "description": ""
+                                                    };
+                                                    // print(data);
+                                                    print(data);
+                                                    print(treatmentList);
+                                                    // for(var i=0;i<treatmentList.length;i++)
+                                                    // {
+                                                    //   if(treatmentList[i]==data){
+                                                    //     print('already added');
+                                                    //     totalCalcution();
+                                                    //     return;
 
-                                                        //   }
-                                                        //   else{
-                                                        //      print('pls  add');
-                                                        //      treatmentList
-                                                        //       .add(data);
-                                                        //       totalCalcution();
-                                                        //       return;
-                                                        //   }
+                                                    //   }
+                                                    //   else{
+                                                    //      print('pls  add');
+                                                    //      treatmentList
+                                                    //       .add(data);
+                                                    //       totalCalcution();
+                                                    //       return;
+                                                    //   }
 
+                                                    // }
+                                                    // treatmentList
+                                                    //       .add(data);
+                                                    //       totalCalcution();
+                                                    if (treatmentList.length >
+                                                        0) {
+                                                      int i = 0;
+                                                      for (var checkitem
+                                                          in treatmentList) {
+                                                        if (checkitem[
+                                                                'treatmentname'] ==
+                                                            data[
+                                                                'treatmentname']) {
+                                                          Fluttertoast.showToast(
+                                                              msg:
+                                                                  'This Treatment Already Added',
+                                                              toastLength: Toast
+                                                                  .LENGTH_SHORT,
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .CENTER,
+                                                              timeInSecForIosWeb:
+                                                                  2,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              textColor:
+                                                                  Colors.white,
+                                                              fontSize: 15.0);
 
-                                                        // }
-                                                        // treatmentList
-                                                        //       .add(data);
-                                                        //       totalCalcution();
-                                                        if (treatmentList.length > 0) {
-                                   int i = 0;
-                                  for (var checkitem in treatmentList) {
-          
-                                    if (checkitem['treatmentname'] ==
-                                        data['treatmentname']) {
-                                          Fluttertoast.showToast(
-                                                            msg:
-                                                                'This Treatment Already Added',
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            timeInSecForIosWeb:
-                                                                2,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 15.0);
-                                     
-                                         print('already added');
-                                      return;
-                                    } else {
-                                      i++;
+                                                          print(
+                                                              'already added');
+                                                          return;
+                                                        } else {
+                                                          i++;
 
-                                      if (treatmentList.length == i) {
-                                        this.setState(() {
-                                          treatmentList.add(data); 
-                                          print(treatmentList);
-                                        });
-                                         totalCalcution();
-                                                        print(treatmentList);
-                                                        gettreatmentlist();
+                                                          if (treatmentList
+                                                                  .length ==
+                                                              i) {
+                                                            this.setState(() {
+                                                              treatmentList
+                                                                  .add(data);
+                                                              print(
+                                                                  treatmentList);
+                                                            });
+                                                            totalCalcution();
+                                                            print(
+                                                                treatmentList);
+                                                            gettreatmentlist();
 
-                                                        setState(() {
-                                                          TreatmentList = null;
-                                                          treatmentDropdownvalue =
-                                                              'null';
-                                                          fees.clear();
-                                                        });
-                                                        setState(() {
-                                                          gettreatmentlist();
-                                                        });
-                                        return;
-                                      }
-
-                                    }
-                                  }
-                                } else {
-                                 setState(() {
-                                    treatmentList.add(data);
-                                    
-                                    print(treatmentList);
-                                  });
-                                   totalCalcution();
-                                                        print(treatmentList);
-                                                        gettreatmentlist();
-
-                                                        setState(() {
-                                                          TreatmentList = null;
-                                                          treatmentDropdownvalue =
-                                                              'null';
-                                                          fees.clear();
-                                                        });
-                                                        setState(() {
-                                                          gettreatmentlist();
-                                                        });
-                                  return;
-                                }
-
-                                               
-                                                   
-                                                      
-
-                                                        // if (treatmentList
-                                                        //     .contains(data)) {
-                                                        //   treatmentList
-                                                        //       .remove(data);
-                                                        // } else {
-                                                        //   treatmentList
-                                                        //       .add(data);
-                                                            
-                                                        // }
-
-
-
-                                                        // totalCalcution();
-                                                        // print(treatmentList);
-                                                        // gettreatmentlist();
-
-                                                        // setState(() {
-                                                        //   TreatmentList = null;
-                                                        //   treatmentDropdownvalue =
-                                                        //       'null';
-                                                        //   fees.clear();
-                                                        // });
-                                                        // setState(() {
-                                                        //   gettreatmentlist();
-                                                        // });
+                                                            setState(() {
+                                                              TreatmentList =
+                                                                  null;
+                                                              treatmentDropdownvalue =
+                                                                  'null';
+                                                              fees.clear();
+                                                            });
+                                                            setState(() {
+                                                              gettreatmentlist();
+                                                            });
+                                                            return;
+                                                          }
+                                                        }
                                                       }
-                                                  },
-                                                )
-                                            
-                                              
-                                                // TextFormField(
-                                                //   decoration:  InputDecoration(
-                                                //     labelText: 'Clinic Notes',
-                                                //     border: OutlineInputBorder(),
-                                                //     //icon: Icon(Icons.numbers),
-                                                //   ),
-                                                //   // controller: addressController,
-                                                // ),
-                                              ),
+                                                    } else {
+                                                      setState(() {
+                                                        treatmentList.add(data);
+
+                                                        print(treatmentList);
+                                                      });
+                                                      totalCalcution();
+                                                      print(treatmentList);
+                                                      gettreatmentlist();
+
+                                                      setState(() {
+                                                        TreatmentList = null;
+                                                        treatmentDropdownvalue =
+                                                            'null';
+                                                        fees.clear();
+                                                      });
+                                                      setState(() {
+                                                        gettreatmentlist();
+                                                      });
+                                                      return;
+                                                    }
+
+                                                    // if (treatmentList
+                                                    //     .contains(data)) {
+                                                    //   treatmentList
+                                                    //       .remove(data);
+                                                    // } else {
+                                                    //   treatmentList
+                                                    //       .add(data);
+
+                                                    // }
+
+                                                    // totalCalcution();
+                                                    // print(treatmentList);
+                                                    // gettreatmentlist();
+
+                                                    // setState(() {
+                                                    //   TreatmentList = null;
+                                                    //   treatmentDropdownvalue =
+                                                    //       'null';
+                                                    //   fees.clear();
+                                                    // });
+                                                    // setState(() {
+                                                    //   gettreatmentlist();
+                                                    // });
+                                                  }
+                                                },
+                                              )
+
+                                                  // TextFormField(
+                                                  //   decoration:  InputDecoration(
+                                                  //     labelText: 'Clinic Notes',
+                                                  //     border: OutlineInputBorder(),
+                                                  //     //icon: Icon(Icons.numbers),
+                                                  //   ),
+                                                  //   // controller: addressController,
+                                                  // ),
+                                                  ),
                                             ],
                                           ),
                                         ),
                                       ),
-                                       SizedBox(
+                                      SizedBox(
                                         height: 5,
                                       ),
                                       Helper().isvalidElement(treatmentList) &&
                                               treatmentList.length > 0
                                           ? Container(
                                               width: screenWidth,
-                                              child:  Text(
+                                              child: Text(
                                                 '  Treatment List :',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
@@ -964,14 +955,14 @@ method(){
                                             )
                                           : Container(),
                                       Container(
-                                          padding:  EdgeInsets.all(5),
+                                          padding: EdgeInsets.all(5),
                                           // height: screenHeight * 0.6,
                                           width: screenWidth,
                                           child: Helper()
                                                   .isvalidElement(treatmentList)
                                               ? ListView.builder(
                                                   physics:
-                                                       NeverScrollableScrollPhysics(),
+                                                      NeverScrollableScrollPhysics(),
                                                   shrinkWrap: true,
                                                   itemCount:
                                                       treatmentList.length,
@@ -1000,7 +991,7 @@ method(){
                                                                   totalCalcution();
                                                                 });
                                                               },
-                                                              icon:  Icon(
+                                                              icon: Icon(
                                                                 Icons.close,
                                                                 color:
                                                                     Colors.red,
@@ -1010,21 +1001,23 @@ method(){
                                                         ),
                                                         // ListTile(title: Text('Test name'),
                                                         // trailing: IconButton(onPressed: (){} ,icon: Icon(Icons.add)),),
-                                                         Divider(
+                                                        Divider(
                                                           height: 0.1,
                                                         )
                                                       ],
                                                     ));
                                                   })
                                               : Container()),
-                                      Container(width: screenWidth,
-                                      
-                                        child: Card(color: Color.fromARGB(255, 103, 118, 207),
+                                      Container(
+                                        width: screenWidth,
+                                        child: Card(
+                                          color: Color.fromARGB(
+                                              255, 103, 118, 207),
                                           child: Padding(
-                                            padding:  EdgeInsets.all(15.0),
+                                            padding: EdgeInsets.all(15.0),
                                             child: Text(
                                               'Total Treatment Amount : ₹ ${fees_total}',
-                                              style:  TextStyle(fontSize: 20),
+                                              style: TextStyle(fontSize: 20),
                                             ),
                                           ),
                                         ),
@@ -1039,11 +1032,11 @@ method(){
                           ? Container(
                               height: screenHeight * 0.7,
                               child: SingleChildScrollView(
-                                physics:  ScrollPhysics(),
+                                physics: ScrollPhysics(),
                                 child: Column(
                                   children: [
                                     Padding(
-                                      padding:  EdgeInsets.all(10.0),
+                                      padding: EdgeInsets.all(10.0),
                                       child: Container(
                                         width: screenWidth,
                                         child: Column(
@@ -1056,7 +1049,7 @@ method(){
                                                     // width: 180,
                                                     child: TextFormField(
                                                       decoration:
-                                                           InputDecoration(
+                                                          InputDecoration(
                                                         labelText: 'Lab Name',
                                                         border:
                                                             OutlineInputBorder(),
@@ -1066,9 +1059,10 @@ method(){
                                                           labnameController,
                                                       onChanged: (text) {
                                                         setState(() {
-                                                          SelectedLab=null;
+                                                          SelectedLab = null;
                                                           testList.clear();
-                                                          testnameController.clear();
+                                                          testnameController
+                                                              .clear();
 
                                                           labnameController
                                                                   .text.isEmpty
@@ -1086,7 +1080,7 @@ method(){
                                                       // keyboardType: TextInputType.numberWithOptions(decimal: true),
                                                     ),
                                                   ),
-                                             SizedBox(
+                                            SizedBox(
                                               height: 10,
                                             ),
                                             testshowAutoComplete
@@ -1096,7 +1090,7 @@ method(){
                                                     // width: 180,
                                                     child: TextFormField(
                                                       decoration:
-                                                           InputDecoration(
+                                                          InputDecoration(
                                                         labelText: 'Test Name',
                                                         border:
                                                             OutlineInputBorder(),
@@ -1120,7 +1114,7 @@ method(){
                                                       // keyboardType: TextInputType.numberWithOptions(decimal: true),
                                                     ),
                                                   ),
-                                             SizedBox(
+                                            SizedBox(
                                               height: 6,
                                             ),
                                             SizedBox(
@@ -1128,7 +1122,10 @@ method(){
                                               child: TextButton(
                                                   onPressed: () async {
                                                     if (labnameController
-                                                        .text.isEmpty||SelectedLab.toString()=='null') {
+                                                            .text.isEmpty ||
+                                                        SelectedLab
+                                                                .toString() ==
+                                                            'null') {
                                                       Fluttertoast.showToast(
                                                           msg:
                                                               'Please select Lab',
@@ -1176,89 +1173,77 @@ method(){
                                                       print(testList
                                                           .contains(test));
 
-                                                           if (testList.length > 0) {
-                                   int i = 0;
-                                  for (var checkitem in testList) {
-          
-                                    if (checkitem['test_id'] ==
-                                        test['test_id']) {
-                                          Fluttertoast.showToast(
-                                                            msg:
-                                                                'This Test Already Added',
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            timeInSecForIosWeb:
-                                                                2,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 15.0);
-                                     
-                                         print('already added');
-                                      return;
-                                    } else {
-                                      i++;
+                                                      if (testList.length > 0) {
+                                                        int i = 0;
+                                                        for (var checkitem
+                                                            in testList) {
+                                                          if (checkitem[
+                                                                  'test_id'] ==
+                                                              test['test_id']) {
+                                                            Fluttertoast.showToast(
+                                                                msg:
+                                                                    'This Test Already Added',
+                                                                toastLength: Toast
+                                                                    .LENGTH_SHORT,
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .CENTER,
+                                                                timeInSecForIosWeb:
+                                                                    2,
+                                                                backgroundColor:
+                                                                    Colors.red,
+                                                                textColor:
+                                                                    Colors
+                                                                        .white,
+                                                                fontSize: 15.0);
 
-                                      if (testList.length == i) {
-                                         print(testList);
-                                                      setState(() {
-                                                         testList.add(test);
-                                                        // labshowAutoComplete =
-                                                        //     true;
-                                                        testshowAutoComplete =
-                                                            true;
-                                                        // labnameController
-                                                        //     .clear();
-                                                        testnameController
-                                                            .clear();
-                                                      });
-                                         
-                                        return;
-                                      }
+                                                            print(
+                                                                'already added');
+                                                            return;
+                                                          } else {
+                                                            i++;
 
-                                    }
-                                  }
-                                } else {
-                                 setState(() {
-                                    testList.add(test);
-                                     print(testList);
-                                                      setState(() {
-                                                        // labshowAutoComplete =
-                                                        //     true;
-                                                        testshowAutoComplete =
-                                                            true;
-                                                        // labnameController
-                                                        //     .clear();
-                                                        testnameController
-                                                            .clear();
-                                                      });
-                                    
-                                    print(testList);
-                                  });
-                                   
-                                  return;
-                                }
+                                                            if (testList
+                                                                    .length ==
+                                                                i) {
+                                                              print(testList);
+                                                              setState(() {
+                                                                testList
+                                                                    .add(test);
+                                                                // labshowAutoComplete =
+                                                                //     true;
+                                                                testshowAutoComplete =
+                                                                    true;
+                                                                // labnameController
+                                                                //     .clear();
+                                                                testnameController
+                                                                    .clear();
+                                                              });
 
+                                                              return;
+                                                            }
+                                                          }
+                                                        }
+                                                      } else {
+                                                        setState(() {
+                                                          testList.add(test);
+                                                          print(testList);
+                                                          setState(() {
+                                                            // labshowAutoComplete =
+                                                            //     true;
+                                                            testshowAutoComplete =
+                                                                true;
+                                                            // labnameController
+                                                            //     .clear();
+                                                            testnameController
+                                                                .clear();
+                                                          });
 
+                                                          print(testList);
+                                                        });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                        return;
+                                                      }
 
                                                       // if (testList
                                                       //     .contains(test)) {
@@ -1279,7 +1264,7 @@ method(){
                                                       // });
                                                     }
                                                   },
-                                                  child:  Text(
+                                                  child: Text(
                                                     "ADD TEST",
                                                     style: TextStyle(
                                                         color: Colors.white,
@@ -1319,7 +1304,7 @@ method(){
                                             testList.length > 0
                                         ? Container(
                                             width: screenWidth,
-                                            child:  Text(
+                                            child: Text(
                                               '  Test List :',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
@@ -1328,7 +1313,7 @@ method(){
                                           )
                                         : Container(),
                                     Container(
-                                        padding:  EdgeInsets.all(5),
+                                        padding: EdgeInsets.all(5),
                                         // height: screenHeight * 0.6,
                                         width: screenWidth,
                                         child: Helper()
@@ -1336,7 +1321,7 @@ method(){
                                                 select_button == 'test'
                                             ? ListView.builder(
                                                 physics:
-                                                     NeverScrollableScrollPhysics(),
+                                                    NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
                                                 itemCount: testList.length,
                                                 itemBuilder:
@@ -1360,7 +1345,7 @@ method(){
                                                                     data);
                                                               });
                                                             },
-                                                            icon:  Icon(
+                                                            icon: Icon(
                                                               Icons.close,
                                                               color: Colors.red,
                                                             ),
@@ -1385,11 +1370,11 @@ method(){
                           ? Container(
                               height: screenHeight * 0.7,
                               child: SingleChildScrollView(
-                                physics:  ScrollPhysics(),
+                                physics: ScrollPhysics(),
                                 child: Column(
                                   children: [
                                     Padding(
-                                      padding:  EdgeInsets.all(10.0),
+                                      padding: EdgeInsets.all(10.0),
                                       child: Container(
                                         width: screenWidth,
                                         child: Column(
@@ -1401,7 +1386,7 @@ method(){
                                                     // width: 180,
                                                     child: TextFormField(
                                                       decoration:
-                                                           InputDecoration(
+                                                          InputDecoration(
                                                         labelText:
                                                             'Injection Name',
                                                         border:
@@ -1422,12 +1407,11 @@ method(){
                                                       },
                                                     ),
                                                   ),
-                                             SizedBox(height: 10),
+                                            SizedBox(height: 10),
                                             SizedBox(
                                               // width: 180,
                                               child: TextFormField(
-                                                decoration:
-                                                     InputDecoration(
+                                                decoration: InputDecoration(
                                                   labelText: 'Dose',
                                                   border: OutlineInputBorder(),
                                                   // icon: Icon(Icons.numbers),
@@ -1438,7 +1422,7 @@ method(){
                                                 },
                                               ),
                                             ),
-                                             SizedBox(height: 10),
+                                            SizedBox(height: 10),
                                             SizedBox(
                                               width: screenWidth,
                                               child: TextButton(
@@ -1510,7 +1494,7 @@ method(){
                                                       });
                                                     }
                                                   },
-                                                  child:  Text(
+                                                  child: Text(
                                                     "ADD INJECTION",
                                                     style: TextStyle(
                                                         color: Colors.white,
@@ -1542,7 +1526,7 @@ method(){
                                             injectionlist.length > 0
                                         ? Container(
                                             width: screenWidth,
-                                            child:  Text(
+                                            child: Text(
                                               ' Injection List :',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
@@ -1551,7 +1535,7 @@ method(){
                                           )
                                         : Container(),
                                     Container(
-                                        padding:  EdgeInsets.all(5),
+                                        padding: EdgeInsets.all(5),
                                         // height: screenHeight * 0.6,
                                         width: screenWidth,
                                         child: Helper().isvalidElement(
@@ -1559,7 +1543,7 @@ method(){
                                                 select_button == 'injection'
                                             ? ListView.builder(
                                                 physics:
-                                                     NeverScrollableScrollPhysics(),
+                                                    NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
                                                 itemCount: injectionlist.length,
                                                 itemBuilder:
@@ -1585,7 +1569,7 @@ method(){
                                                                         data);
                                                               });
                                                             },
-                                                            icon:  Icon(
+                                                            icon: Icon(
                                                               Icons.close,
                                                               color: Colors.red,
                                                             ),
@@ -1610,13 +1594,13 @@ method(){
                           ? Container(
                               height: screenHeight * 0.7 - keyboardHeight,
                               child: SingleChildScrollView(
-                                physics:  ClampingScrollPhysics(),
+                                physics: ClampingScrollPhysics(),
 
                                 //  reverse: true,
                                 child: Column(
                                   children: [
                                     Padding(
-                                      padding:  EdgeInsets.all(8.0),
+                                      padding: EdgeInsets.all(8.0),
                                       child: Container(
                                           child: Column(
                                         children: [
@@ -1626,8 +1610,7 @@ method(){
                                               : SizedBox(
                                                   width: screenWidth,
                                                   child: TextFormField(
-                                                    decoration:
-                                                         InputDecoration(
+                                                    decoration: InputDecoration(
                                                       labelText:
                                                           'Pharmacy Name',
                                                       border:
@@ -1639,7 +1622,8 @@ method(){
                                                     onChanged: (text) {
                                                       setState(() {
                                                         table_list.clear();
-                                                        medicineshowAutoComplete = false;
+                                                        medicineshowAutoComplete =
+                                                            false;
                                                         // SelectedPharmacy = null;
                                                         // getMedicineList();
 
@@ -1654,15 +1638,14 @@ method(){
                                                     // keyboardType: TextInputType.numberWithOptions(decimal: true),
                                                   ),
                                                 ),
-                                           SizedBox(height: 5),
+                                          SizedBox(height: 5),
                                           medicineshowAutoComplete
                                               ? rendermedicinelistAutoComplete(
                                                   screenWidth, screenHeight)
                                               : SizedBox(
                                                   width: screenWidth,
                                                   child: TextFormField(
-                                                    decoration:
-                                                         InputDecoration(
+                                                    decoration: InputDecoration(
                                                       labelText:
                                                           'Medicine Name',
                                                       border:
@@ -1684,7 +1667,7 @@ method(){
                                                     // keyboardType: TextInputType.numberWithOptions(decimal: true),
                                                   ),
                                                 ),
-                                           SizedBox(height: 5),
+                                          SizedBox(height: 5),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -1706,116 +1689,109 @@ method(){
                                               SizedBox(
                                                 width: screenWidth * 0.95,
                                                 child: TextFormField(
-                                                  decoration:
-                                                       InputDecoration(
+                                                  decoration: InputDecoration(
                                                     labelText: 'Day',
                                                     border:
                                                         OutlineInputBorder(),
                                                     // icon: Icon(Icons.numbers),
                                                   ),
                                                   controller: dayController,
-                                                  keyboardType:  TextInputType
+                                                  keyboardType: TextInputType
                                                       .numberWithOptions(
                                                           decimal: true),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                           SizedBox(height: 10),
+                                          SizedBox(height: 10),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               SizedBox(
-                                                width: screenWidth * 0.4,
-                                                child:
-                                              medicineAdded == true ?
-                                                DropdownButtonFormField(
-                                                              // validator: (value) => validateDrops(value),
-                                                              // isExpanded: true,
-                                                              hint:  Text(
-                                                                  'Select Pattern'),
-                                                              // value:' _selectedState[i]',
-                                                              onChanged:
-                                                                  (Pharmacy) {
-                                                                setState(() {});
-                                                              },
-                                                              items: [].map<
-                                                                  DropdownMenuItem<
-                                                                      String>>((item) {
-                                                                return new DropdownMenuItem(
-                                                                  child:
-                                                                      new Text(
-                                                                          ''),
-                                                                  value: '',
-                                                                );
-                                                              }).toList(),
-                                                            ):
-                                                  DropdownButtonFormField(
-                                                
-                                                  decoration:
-                                                       InputDecoration(
-                                                    labelText: 'Pattern',
-                                                    border:
-                                                        OutlineInputBorder(),
-                                                    //icon: Icon(Icons.numbers),
-                                                  ),
-                                                  isExpanded: true,
-                                                  hint:  
-                                                  Text(patternDropdownvalue),
-                                                  // value:patternDropdownvalue,
-                                                  onChanged: (item) async {
-                                                    patternDropdownvalue =
-                                                        item.toString();
-                                                    var data = item
-                                                        .toString()
-                                                        .split('&*');
-                                                    Pattern_type = data[1];
-                                                    count = data[0];
-                                                    mor = data[2];
-                                                    noon = data[3];
-                                                    night = data[4];
-                                                
-                                                  },
-                                                  items: demo.map<
-                                                      DropdownMenuItem<
-                                                          String>>((item) {
-                                                    return DropdownMenuItem(
-                                                      child: 
-                                                      Text(
-                                                        item['name'].toString(),
-                                                      ),
-                                                      value: item['value']
-                                                              .toString() +
-                                                          '&*' +
-                                                          item['name']
-                                                              .toString() +
-                                                          '&*' +
-                                                          item['mor']
-                                                              .toString() +
-                                                          '&*' +
-                                                          item['noon']
-                                                              .toString() +
-                                                          '&*' +
-                                                          item['night']
-                                                              .toString() +
-                                                          '&*',
-                                                    );
-                                                  }).toList(),
-                                                )
-                                             
-                                              ),
+                                                  width: screenWidth * 0.4,
+                                                  child: false
+                                                      ? DropdownButtonFormField(
+                                                          // validator: (value) => validateDrops(value),
+                                                          // isExpanded: true,
+                                                          hint: Text(
+                                                              'Select Pattern'),
+                                                          // value:' _selectedState[i]',
+                                                          onChanged:
+                                                              (Pharmacy) {
+                                                            setState(() {});
+                                                          },
+                                                          items: [].map<
+                                                              DropdownMenuItem<
+                                                                  String>>((item) {
+                                                            return new DropdownMenuItem(
+                                                              child:
+                                                                  new Text(''),
+                                                              value: '',
+                                                            );
+                                                          }).toList(),
+                                                        )
+                                                      : DropdownButtonFormField(
+                                                          key: _patternkey,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelText:
+                                                                'Pattern',
+                                                            border:
+                                                                OutlineInputBorder(),
+                                                            //icon: Icon(Icons.numbers),
+                                                          ),
+                                                          isExpanded: true,
+                                                          hint: Text('Pattern'),
+                                                          // value:patternDropdownvalue,
+                                                          onChanged:
+                                                              (item) async {
+                                                            patternDropdownvalue =
+                                                                item.toString();
+                                                            var data = item
+                                                                .toString()
+                                                                .split('&*');
+                                                            Pattern_type =
+                                                                data[1];
+                                                            count = data[0];
+                                                            mor = data[2];
+                                                            noon = data[3];
+                                                            night = data[4];
+                                                          },
+                                                          items: demo.map<
+                                                              DropdownMenuItem<
+                                                                  String>>((item) {
+                                                            return DropdownMenuItem(
+                                                              child: Text(
+                                                                item['name']
+                                                                    .toString(),
+                                                              ),
+                                                              value: item['value']
+                                                                      .toString() +
+                                                                  '&*' +
+                                                                  item['name']
+                                                                      .toString() +
+                                                                  '&*' +
+                                                                  item['mor']
+                                                                      .toString() +
+                                                                  '&*' +
+                                                                  item['noon']
+                                                                      .toString() +
+                                                                  '&*' +
+                                                                  item['night']
+                                                                      .toString() +
+                                                                  '&*',
+                                                            );
+                                                          }).toList(),
+                                                        )),
                                               SizedBox(
                                                 width: screenWidth * 0.5,
-                                                child: 
-                                                DropdownButtonFormField(
+                                                child: DropdownButtonFormField(
                                                   value:
                                                       prescriptionDropdownvalue,
                                                   autovalidateMode:
                                                       AutovalidateMode.always,
-                                                  
-                                                  decoration:
-                                                       InputDecoration(
+                                                  decoration: InputDecoration(
                                                     labelText: 'Prescription',
                                                     border:
                                                         OutlineInputBorder(),
@@ -1825,9 +1801,7 @@ method(){
                                                       (String items) {
                                                     return DropdownMenuItem(
                                                       value: items,
-                                                      
-                                                        child: Text(items),
-                                                     
+                                                      child: Text(items),
                                                     );
                                                   }).toList(),
                                                   onChanged:
@@ -1841,12 +1815,11 @@ method(){
                                               ),
                                             ],
                                           ),
-                                           SizedBox(height: 5),
+                                          SizedBox(height: 5),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                            
                                               SizedBox(
                                                 width: screenWidth * 0.955,
                                                 child: TextButton(
@@ -1866,7 +1839,7 @@ method(){
                                                       //       textColor: Colors.white,
                                                       //       fontSize: 15.0);
                                                       // } else
-                                                      
+
                                                       // return;
                                                       if (medicineController
                                                           .text.isEmpty) {
@@ -1919,8 +1892,7 @@ method(){
                                                             textColor:
                                                                 Colors.white,
                                                             fontSize: 15.0);
-                                                      }
-                                                       else if (patternDropdownvalue
+                                                      } else if (patternDropdownvalue
                                                               .isEmpty ||
                                                           patternDropdownvalue ==
                                                               'pattern') {
@@ -2009,117 +1981,133 @@ method(){
                                                         };
                                                         print(data);
                                                         print(medicineList);
-                                                       
 
-                                                             if (table_list.length > 0) {
-                                   int i = 0;
-                                  for (var checkitem in table_list) {
-          
-                                    if (checkitem['itemno'] ==
-                                        data['itemno']) {
-                                          Fluttertoast.showToast(
-                                                            msg:
-                                                                'This Medicine Already Added',
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            timeInSecForIosWeb:
-                                                                2,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 15.0);
-                                     
-                                         print('already added');
-                                      return;
-                                    } else {
-                                      i++;
+                                                        if (table_list.length >
+                                                            0) {
+                                                          int i = 0;
+                                                          for (var checkitem
+                                                              in table_list) {
+                                                            if (checkitem[
+                                                                    'itemno'] ==
+                                                                data[
+                                                                    'itemno']) {
+                                                              Fluttertoast.showToast(
+                                                                  msg:
+                                                                      'This Medicine Already Added',
+                                                                  toastLength: Toast
+                                                                      .LENGTH_SHORT,
+                                                                  gravity:
+                                                                      ToastGravity
+                                                                          .CENTER,
+                                                                  timeInSecForIosWeb:
+                                                                      2,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .red,
+                                                                  textColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  fontSize:
+                                                                      15.0);
 
-                                      if (table_list.length == i) {
-                                         print(testList);
-                                                      setState(() {
-                                                         totalCalcution();
-                                                         table_list.add(data);
-                                                        // labshowAutoComplete =
-                                                        //     true;
-                                                        testshowAutoComplete =
-                                                            true;
-                                                        // labnameController
-                                                        //     .clear();
-                                                        testnameController
-                                                            .clear();
-                                                      });
-                                                       setState(() {
-                                                          prescriptionDD=false;
-                                                          medicineshowAutoComplete =
-                                                              true;
+                                                              print(
+                                                                  'already added');
 
-                                                          medicineController
-                                                              .clear();
-                                                          priceController
-                                                              .clear();
-                                                          dayController.clear();
-                                                          patternDropdownvalue =
-                                                              'pattern';
-                                                          prescriptionDropdownvalue =
-                                                              'Select Prescription';
-                                                              prescriptionDD=true;
-                                                        });
-                                         
-                                        return;
-                                      }
+                                                              return;
+                                                            } else {
+                                                              i++;
 
-                                    }
-                                  }
-                                } else {
-                                 setState(() {
-                                    table_list.add(data);
-                                     print(table_list);
-                                                      setState(() {
-                                                         totalCalcution();
-                                                        // labshowAutoComplete =
-                                                        //     true;
-                                                        testshowAutoComplete =
-                                                            true;
-                                                        // labnameController
-                                                        //     .clear();
-                                                        testnameController
-                                                            .clear();
-                                                      });
-                                                       setState(() {
-                                                          // prescriptionDD=false;
-                                                          medicineshowAutoComplete =
-                                                              true;
+                                                              if (table_list
+                                                                      .length ==
+                                                                  i) {
+                                                                print(testList);
+                                                                setState(() {
+                                                                  totalCalcution();
+                                                                  table_list
+                                                                      .add(
+                                                                          data);
+                                                                  // labshowAutoComplete =
+                                                                  //     true;
+                                                                  testshowAutoComplete =
+                                                                      true;
+                                                                  // labnameController
+                                                                  //     .clear();
+                                                                  testnameController
+                                                                      .clear();
+                                                                });
+                                                                setState(() {
+                                                                  prescriptionDD =
+                                                                      false;
+                                                                  medicineshowAutoComplete =
+                                                                      true;
 
-                                                          medicineController
-                                                              .clear();
-                                                          priceController
-                                                              .clear();
-                                                          dayController.clear();
-                                                          patternDropdownvalue =
-                                                              'pattern';
-                                                                medicineAdded = true;
-                                                          prescriptionDropdownvalue =
-                                                              'Select Prescription';
+                                                                  medicineController
+                                                                      .clear();
+                                                                  priceController
+                                                                      .clear();
+                                                                  dayController
+                                                                      .clear();
+                                                                  patternDropdownvalue =
+                                                                      'pattern';
+                                                                  prescriptionDropdownvalue =
+                                                                      'Select Prescription';
+                                                                  prescriptionDD =
+                                                                      true;
+                                                                });
+                                                                _patternkey
+                                                                    .currentState
+                                                                    ?.reset();
+                                                                return;
+                                                              }
+                                                            }
+                                                          }
+                                                        } else {
+                                                          setState(() {
+                                                            table_list
+                                                                .add(data);
+                                                            print(table_list);
+                                                            setState(() {
+                                                              totalCalcution();
+                                                              // labshowAutoComplete =
+                                                              //     true;
+                                                              testshowAutoComplete =
+                                                                  true;
+                                                              // labnameController
+                                                              //     .clear();
+                                                              testnameController
+                                                                  .clear();
+                                                            });
+                                                            setState(() {
+                                                              // prescriptionDD=false;
+                                                              medicineshowAutoComplete =
+                                                                  true;
+
+                                                              medicineController
+                                                                  .clear();
+                                                              priceController
+                                                                  .clear();
+                                                              dayController
+                                                                  .clear();
+                                                              patternDropdownvalue =
+                                                                  'pattern';
+                                                              medicineAdded =
+                                                                  true;
+                                                              prescriptionDropdownvalue =
+                                                                  'Select Prescription';
                                                               // prescriptionDD=true;
-                                                        });
-                                    
-                                    print(testList);
-                                  });
-                                   
-                                  return;
-                                }
+                                                            });
+                                                            print(testList);
+                                                          });
+                                                          _patternkey
+                                                              .currentState
+                                                              ?.reset();
+                                                          return;
+                                                        }
                                                       }
-                                                      // setState(() {
-                                                      //       patternDropdownvalue = 'Select Pattern';
-                                                      //       medicineAdded = true;
-                                                      // });
-                                                
+                                                      _patternkey.currentState
+                                                          ?.reset();
                                                     },
-                                                    child:  Text(
+                                                    child: Text(
                                                       "Add Medicine",
                                                       style: TextStyle(
                                                           color: Colors.white,
@@ -2144,7 +2132,7 @@ method(){
                                               ),
                                             ],
                                           ),
-                                           SizedBox(height: 10),
+                                          SizedBox(height: 10),
                                         ],
                                       )),
                                     ),
@@ -2153,7 +2141,7 @@ method(){
                                             table_list.length > 0
                                         ? Container(
                                             width: screenWidth,
-                                            child:  Text(
+                                            child: Text(
                                               '  Medicine List :',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
@@ -2164,12 +2152,12 @@ method(){
                                     Helper().isvalidElement(table_list) &&
                                             table_list.length > 0
                                         ? Container(
-                                            padding:  EdgeInsets.all(5),
+                                            padding: EdgeInsets.all(5),
                                             // height: screenHeight * 0.6,
                                             width: screenWidth,
                                             child: ListView.builder(
                                                 physics:
-                                                     NeverScrollableScrollPhysics(),
+                                                    NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
                                                 itemCount: table_list.length,
                                                 // itemCount: testList.length,
@@ -2181,12 +2169,13 @@ method(){
                                                   return Container(
                                                     child: Card(
                                                         color: index % 2 == 0
-                                                            ? custom_color.lightcolor
+                                                            ? custom_color
+                                                                .lightcolor
                                                             : Colors.white,
                                                         child: Padding(
                                                           padding:
-                                                               EdgeInsets
-                                                                  .all(8.0),
+                                                              EdgeInsets.all(
+                                                                  8.0),
                                                           child: Column(
                                                             children: [
                                                               Row(
@@ -2200,7 +2189,7 @@ method(){
                                                                             0.6,
                                                                     child: Row(
                                                                       children: [
-                                                                         Text(
+                                                                        Text(
                                                                           'Medicine :',
                                                                           style: TextStyle(
                                                                               fontWeight: FontWeight.bold,
@@ -2209,14 +2198,14 @@ method(){
                                                                         Text(
                                                                           "${data['medicinename'].toString().length < 20 ? data['medicinename'].toString() : data['medicinename'].toString().substring(0, 19)}",
                                                                           style:
-                                                                               TextStyle(fontSize: 15),
+                                                                              TextStyle(fontSize: 15),
                                                                         )
                                                                       ],
                                                                     ),
                                                                   ),
                                                                   Row(
                                                                     children: [
-                                                                       Text(
+                                                                      Text(
                                                                         'Days : ',
                                                                         style: TextStyle(
                                                                             fontWeight:
@@ -2225,7 +2214,7 @@ method(){
                                                                       ),
                                                                       Text(
                                                                         "${data['days'].toString()}",
-                                                                        style:  TextStyle(
+                                                                        style: TextStyle(
                                                                             fontSize:
                                                                                 15),
                                                                       )
@@ -2250,7 +2239,7 @@ method(){
                                                                   // ),
                                                                 ],
                                                               ),
-                                                               SizedBox(
+                                                              SizedBox(
                                                                   height: 10),
                                                               Row(
                                                                 mainAxisAlignment:
@@ -2259,7 +2248,7 @@ method(){
                                                                 children: [
                                                                   Row(
                                                                     children: [
-                                                                       Text(
+                                                                      Text(
                                                                         'Mor:',
                                                                         style: TextStyle(
                                                                             fontWeight:
@@ -2268,7 +2257,7 @@ method(){
                                                                       ),
                                                                       Text(
                                                                         "${data['mor'].toString()}",
-                                                                        style:  TextStyle(
+                                                                        style: TextStyle(
                                                                             fontSize:
                                                                                 15),
                                                                       )
@@ -2276,7 +2265,7 @@ method(){
                                                                   ),
                                                                   Row(
                                                                     children: [
-                                                                       Text(
+                                                                      Text(
                                                                         'Noon: ',
                                                                         style: TextStyle(
                                                                             fontWeight:
@@ -2285,7 +2274,7 @@ method(){
                                                                       ),
                                                                       Text(
                                                                         "${data['noon'].toString()} ",
-                                                                        style:  TextStyle(
+                                                                        style: TextStyle(
                                                                             fontSize:
                                                                                 15),
                                                                       )
@@ -2293,7 +2282,7 @@ method(){
                                                                   ),
                                                                   Row(
                                                                     children: [
-                                                                       Text(
+                                                                      Text(
                                                                         'Night: ',
                                                                         style: TextStyle(
                                                                             fontWeight:
@@ -2302,7 +2291,7 @@ method(){
                                                                       ),
                                                                       Text(
                                                                         "${data['night'].toString()} ",
-                                                                        style:  TextStyle(
+                                                                        style: TextStyle(
                                                                             fontSize:
                                                                                 15),
                                                                       )
@@ -2310,7 +2299,7 @@ method(){
                                                                   ),
                                                                   Row(
                                                                     children: [
-                                                                       Text(
+                                                                      Text(
                                                                         'Total Qty: ',
                                                                         style: TextStyle(
                                                                             fontWeight:
@@ -2319,7 +2308,7 @@ method(){
                                                                       ),
                                                                       Text(
                                                                         "${data['total_qty'].toString()}",
-                                                                        style:  TextStyle(
+                                                                        style: TextStyle(
                                                                             fontSize:
                                                                                 15),
                                                                       )
@@ -2352,7 +2341,7 @@ method(){
                                                                   // ),
                                                                   Row(
                                                                     children: [
-                                                                       Text(
+                                                                      Text(
                                                                         'BF / AF : ',
                                                                         style: TextStyle(
                                                                             fontWeight:
@@ -2361,7 +2350,7 @@ method(){
                                                                       ),
                                                                       Text(
                                                                         "${data['BA_food_select'].toString()}",
-                                                                        style:  TextStyle(
+                                                                        style: TextStyle(
                                                                             fontSize:
                                                                                 15),
                                                                       )
@@ -2388,7 +2377,7 @@ method(){
                                                                     child:
                                                                         TextButton(
                                                                       child:
-                                                                           Text(
+                                                                          Text(
                                                                         "Remove",
                                                                         style: TextStyle(
                                                                             fontSize:
@@ -2444,17 +2433,17 @@ method(){
                                     Container(
                                       child: Column(
                                         children: [
-                                           Text(
+                                          Text(
                                             "Final Discount",
                                             style: TextStyle(fontSize: 18),
                                           ),
-                                           Divider(),
+                                          Divider(),
                                           Row(
                                             children: [
                                               Container(
                                                 width: screenWidth * 0.5,
                                                 child: RadioListTile(
-                                                  title:  Text("Amount ₹"),
+                                                  title: Text("Amount ₹"),
                                                   value: "amount",
                                                   groupValue: finaldiscount,
                                                   onChanged: (value) {
@@ -2469,7 +2458,7 @@ method(){
                                               Container(
                                                 width: screenWidth * 0.5,
                                                 child: RadioListTile(
-                                                  title:  Text("percentage %"),
+                                                  title: Text("percentage %"),
                                                   value: "Percentage",
                                                   groupValue: finaldiscount,
                                                   onChanged: (value) {
@@ -2487,9 +2476,9 @@ method(){
                                       ),
                                     ),
                                     //  Container(height: screenHeight*0.5,),
-                                     SizedBox(height: 5),
+                                    SizedBox(height: 5),
                                     Padding(
-                                      padding:  EdgeInsets.all(8.0),
+                                      padding: EdgeInsets.all(8.0),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -2497,7 +2486,7 @@ method(){
                                           SizedBox(
                                             width: screenWidth * 0.455,
                                             child: TextFormField(
-                                              decoration:  InputDecoration(
+                                              decoration: InputDecoration(
                                                 labelText: 'Discount',
                                                 border: OutlineInputBorder(),
                                                 // icon: Icon(Icons.numbers),
@@ -2519,7 +2508,7 @@ method(){
                                                 //  balanceController.text=balance.toString();
                                               },
                                               // autofocus: true,
-                                              keyboardType:  TextInputType
+                                              keyboardType: TextInputType
                                                   .numberWithOptions(
                                                       decimal: true),
                                             ),
@@ -2528,7 +2517,7 @@ method(){
                                             width: screenWidth * 0.455,
                                             child: TextFormField(
                                               readOnly: true,
-                                              decoration:  InputDecoration(
+                                              decoration: InputDecoration(
                                                 labelText: 'Grant Total',
 
                                                 border: OutlineInputBorder(),
@@ -2536,7 +2525,7 @@ method(){
                                               ),
                                               controller: grandtotalController,
                                               // grandtotalController=
-                                              keyboardType:  TextInputType
+                                              keyboardType: TextInputType
                                                   .numberWithOptions(
                                                       decimal: true),
                                             ),
@@ -2545,7 +2534,7 @@ method(){
                                       ),
                                     ),
                                     Padding(
-                                      padding:  EdgeInsets.all(8.0),
+                                      padding: EdgeInsets.all(8.0),
                                       child: Container(
                                         child: Column(
                                           children: [
@@ -2559,8 +2548,7 @@ method(){
                                                 SizedBox(
                                                   width: screenWidth * 0.455,
                                                   child: TextFormField(
-                                                    decoration:
-                                                         InputDecoration(
+                                                    decoration: InputDecoration(
                                                       labelText: 'Recieved',
                                                       border:
                                                           OutlineInputBorder(),
@@ -2572,7 +2560,7 @@ method(){
                                                       totalCalcution();
                                                     },
                                                     // autofocus: true,
-                                                    keyboardType:  TextInputType
+                                                    keyboardType: TextInputType
                                                         .numberWithOptions(
                                                             decimal: true),
                                                   ),
@@ -2581,8 +2569,7 @@ method(){
                                                   width: screenWidth * 0.455,
                                                   child: TextFormField(
                                                     readOnly: true,
-                                                    decoration:
-                                                         InputDecoration(
+                                                    decoration: InputDecoration(
                                                       labelText: 'Balance',
                                                       border:
                                                           OutlineInputBorder(),
@@ -2590,17 +2577,17 @@ method(){
                                                     ),
                                                     controller:
                                                         balanceController,
-                                                    keyboardType:  TextInputType
+                                                    keyboardType: TextInputType
                                                         .numberWithOptions(
                                                             decimal: true),
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                             SizedBox(
+                                            SizedBox(
                                               height: 5,
                                             ),
-                                             SizedBox(height: 5),
+                                            SizedBox(height: 5),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -2610,8 +2597,7 @@ method(){
                                                   width: screenWidth * 0.455,
                                                   child: TextFormField(
                                                     readOnly: true,
-                                                    decoration:
-                                                         InputDecoration(
+                                                    decoration: InputDecoration(
                                                       labelText: 'Change',
                                                       border:
                                                           OutlineInputBorder(),
@@ -2619,7 +2605,7 @@ method(){
                                                     ),
                                                     controller:
                                                         changeController,
-                                                    keyboardType:  TextInputType
+                                                    keyboardType: TextInputType
                                                         .numberWithOptions(
                                                             decimal: true),
                                                   ),
@@ -2638,14 +2624,13 @@ method(){
                                                 // ),
                                               ],
                                             ),
-                                             SizedBox(
+                                            SizedBox(
                                               height: 7,
                                             ),
                                             Container(
                                               width: screenWidth,
                                               child: Padding(
-                                                padding:
-                                                     EdgeInsets.all(8.0),
+                                                padding: EdgeInsets.all(8.0),
                                                 child: TextButton(
                                                     onPressed: () async {
                                                       if (selectedPatient ==
@@ -2706,8 +2691,20 @@ method(){
                                                               selectedPatient[
                                                                       'cid']
                                                                   .toString(),
-                                                          "pharmeasyid":Helper().isvalidElement(SelectedPharmacy) ?SelectedPharmacy['shop_id'].toString():'',
-                                                          "labid": Helper().isvalidElement(SelectedLab) ?SelectedLab['shop_id'].toString():'',
+                                                          "pharmeasyid": Helper()
+                                                                  .isvalidElement(
+                                                                      SelectedPharmacy)
+                                                              ? SelectedPharmacy[
+                                                                      'shop_id']
+                                                                  .toString()
+                                                              : '',
+                                                          "labid": Helper()
+                                                                  .isvalidElement(
+                                                                      SelectedLab)
+                                                              ? SelectedLab[
+                                                                      'shop_id']
+                                                                  .toString()
+                                                              : '',
                                                           "date":
                                                               "${(Helper().formateDate1(selectedDate))}",
                                                           "prescription_comment":
@@ -2788,7 +2785,7 @@ method(){
                                                       //   titleDropdownvalue = 'Select Treatment';
                                                       // });
                                                     },
-                                                    child:  Text(
+                                                    child: Text(
                                                       "Prescription",
                                                       style: TextStyle(
                                                           color: Colors.white,
@@ -2821,172 +2818,142 @@ method(){
                               ),
                             )
                           : Container(),
-                          Container(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  select_button!='treatment'?
+                      Container(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              select_button != 'treatment'
+                                  ?
                                   // Container(
                                   //   child: IconButton(
                                   //     icon: Icon(Icons.arrow_back_sharp),
                                   //     onPressed: (){
-                            
+
                                   //     },
                                   //   ),
                                   // )
-                                   FloatingActionButton(
-                                    backgroundColor: custom_color.appcolor,
-                                    foregroundColor: Colors.white,
-                                    onPressed: () {
-                                       if(select_button=='medicine'){
-                                        setState(() {
-                                          select_button='injection'; 
-                                        });
-
-                                      }else if(select_button=='injection'){
-                                        setState(() {
-                                          select_button='test'; 
-                                           click_button = "lab";
-                                          
-                                    getMediAndLabNameList();
-                                        });
-
-                                      }else if(select_button=='test'){
-                                        setState(() {
-                                          select_button='treatment'; 
-                                        });
-
-                                      }
-                                    },
-                                    child:  Icon(Icons.arrow_back),
-                                  )
-                                  
-                                  :Container(),
-                            
-                                 
-                             select_button!='medicine'?
                                   FloatingActionButton(
-                                    backgroundColor: custom_color.appcolor,
-                                    foregroundColor: Colors.white,
-                                    onPressed: () {
-                                      if(select_button=='treatment'){
-                                         if (selectedPatient ==
-                                                              null ||
-                                                          selectedPatient ==
-                                                              '') {
-                                                        Fluttertoast.showToast(
-                                                            msg:
-                                                                'Please select Patient',
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            timeInSecForIosWeb:
-                                                                2,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 15.0);
-                                                      }
-                                                       else if (treatmentList.isEmpty) {
-                                                        Fluttertoast.showToast(
-                                                            msg:
-                                                                'Please Add a Atleast one treatment',
-                                                            toastLength: Toast
-                                                                .LENGTH_SHORT,
-                                                            gravity:
-                                                                ToastGravity
-                                                                    .CENTER,
-                                                            timeInSecForIosWeb:
-                                                                2,
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            textColor:
-                                                                Colors.white,
-                                                            fontSize: 15.0);
-                                                      } 
-                                                      
-                                                      else
+                                      backgroundColor: custom_color.appcolor,
+                                      foregroundColor: Colors.white,
+                                      onPressed: () {
+                                        if (select_button == 'medicine') {
+                                          setState(() {
+                                            select_button = 'injection';
+                                          });
+                                        } else if (select_button ==
+                                            'injection') {
+                                          setState(() {
+                                            select_button = 'test';
+                                            click_button = "lab";
 
-                                        setState(() {
-                                          select_button='test'; 
-                                          
-                                    click_button = "lab";
-                                    getMediAndLabNameList();
-                                        });
+                                            getMediAndLabNameList();
+                                          });
+                                        } else if (select_button == 'test') {
+                                          setState(() {
+                                            select_button = 'treatment';
+                                          });
+                                        }
+                                      },
+                                      child: Icon(Icons.arrow_back),
+                                    )
+                                  : Container(),
+                              select_button != 'medicine'
+                                  ? FloatingActionButton(
+                                      backgroundColor: custom_color.appcolor,
+                                      foregroundColor: Colors.white,
+                                      onPressed: () {
+                                        if (select_button == 'treatment') {
+                                          if (selectedPatient == null ||
+                                              selectedPatient == '') {
+                                            Fluttertoast.showToast(
+                                                msg: 'Please select Patient',
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.CENTER,
+                                                timeInSecForIosWeb: 2,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 15.0);
+                                          } else if (treatmentList.isEmpty) {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    'Please Add a Atleast one treatment',
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.CENTER,
+                                                timeInSecForIosWeb: 2,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 15.0);
+                                          } else
+                                            setState(() {
+                                              select_button = 'test';
 
-                                      }else if(select_button=='test'){
-                                        setState(() {
-                                          select_button='injection'; 
-                                        });
-
-                                      }else if(select_button=='injection'){
-                                        setState(() {
-                                          select_button='medicine'; 
+                                              click_button = "lab";
+                                              getMediAndLabNameList();
+                                            });
+                                        } else if (select_button == 'test') {
+                                          setState(() {
+                                            select_button = 'injection';
+                                          });
+                                        } else if (select_button ==
+                                            'injection') {
+                                          setState(() {
+                                            select_button = 'medicine';
                                             medicineAdded = false;
-                                    click_button = 'pharmacy';
-                                    getMediAndLabNameList();
-                                    // getMedicineList();
-                                        });
-
-                                      }
-
-                                    },
-                                    child:  Icon(Icons.arrow_forward),
-                                  ):Container()
-                                ],
-                              ),
-                            ),
-
-
-                          )
+                                            click_button = 'pharmacy';
+                                            getMediAndLabNameList();
+                                            // getMedicineList();
+                                          });
+                                        }
+                                      },
+                                      child: Icon(Icons.arrow_forward),
+                                    )
+                                  : Container()
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
               )
-            :  SpinLoader(),
-  //           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-  // floatingActionButton: Container(
-  //   padding:  EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
-  //   child: Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: <Widget>[
-       
-  //       // Container(
-  //       //   child: IconButton(
-  //       //     icon: Icon(Icons.arrow_back_sharp),
-  //       //     onPressed: (){
+            : SpinLoader(),
+        //           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        // floatingActionButton: Container(
+        //   padding:  EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: <Widget>[
 
-  //       //     },
-  //       //   ),
-  //       // ),
-       
-  //       FloatingActionButton(
-  //          backgroundColor: custom_color.appcolor,  
-  //       foregroundColor: Colors.white, 
-          
-  //         onPressed:(){},
-  //         child:  Icon(Icons.arrow_back),
-  //       ),
+        //       // Container(
+        //       //   child: IconButton(
+        //       //     icon: Icon(Icons.arrow_back_sharp),
+        //       //     onPressed: (){
 
-       
-      
-  //       FloatingActionButton(
-  //         backgroundColor: custom_color.appcolor,  
-  //       foregroundColor: Colors.white, 
-  //         onPressed:() {},
-  //         child:  Icon(Icons.arrow_forward),
-  //       )
+        //       //     },
+        //       //   ),
+        //       // ),
 
-        
-  //     ],
-  //   ),
-  // ),
-      
+        //       FloatingActionButton(
+        //          backgroundColor: custom_color.appcolor,
+        //       foregroundColor: Colors.white,
+
+        //         onPressed:(){},
+        //         child:  Icon(Icons.arrow_back),
+        //       ),
+
+        //       FloatingActionButton(
+        //         backgroundColor: custom_color.appcolor,
+        //       foregroundColor: Colors.white,
+        //         onPressed:() {},
+        //         child:  Icon(Icons.arrow_forward),
+        //       )
+
+        //     ],
+        //   ),
+        // ),
       ),
     );
   }
@@ -3191,8 +3158,8 @@ method(){
 
   getMedicineList() async {
     var data = {
-      "shop_id":SelectedPharmacy['shop_id'].toString(),
-      
+      "shop_id": SelectedPharmacy['shop_id'].toString(),
+
       //  Helper().isvalidElement(SelectedPharmacy)
       //     ? SelectedPharmacy['shop_id'].toString()
       //     : ' ',
@@ -3239,9 +3206,9 @@ method(){
     } else if (Helper().isvalidElement(result) &&
         Helper().isvalidElement(result['message']) &&
         result['message'] == 'Successfully') {
-          AudioPlayer().play(AssetSource('medimessage.mp3'));
-           toClear();
-           storage.deleteItem('selectedcustomer');
+      AudioPlayer().play(AssetSource('medimessage.mp3'));
+      toClear();
+      storage.deleteItem('selectedcustomer');
       print(result['message']);
       Fluttertoast.showToast(
           msg: 'New Prescription Added Successfully',
@@ -3253,26 +3220,25 @@ method(){
           fontSize: 15.0);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>  Dash()),
+        MaterialPageRoute(builder: (context) => Dash()),
       );
-    }else
-      {
-         Fluttertoast.showToast(
-            msg: 'Please Try Again Later',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 2,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 15.0);
-      }
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Please Try Again Later',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 15.0);
+    }
   }
 
   renderAutoComplete(screenWidth, screenHeight) {
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
-          return  Iterable<List>.empty();
+          return Iterable<List>.empty();
         } else {
           var matches = [];
           matches.addAll(PatientList);
@@ -3293,7 +3259,7 @@ method(){
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
@@ -3312,7 +3278,7 @@ method(){
               height: screenHeight * 0.8,
               color: Colors.white,
               child: ListView.builder(
-                padding:  EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
@@ -3332,10 +3298,10 @@ method(){
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
-                                style:  TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.black)),
                           ),
                           // Divider(
                           //   thickness: 1,
@@ -3357,7 +3323,7 @@ method(){
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
-          return  Iterable<List>.empty();
+          return Iterable<List>.empty();
         } else {
           var matches = [];
           matches.addAll(MediAndLabNameList);
@@ -3378,7 +3344,7 @@ method(){
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
@@ -3397,7 +3363,7 @@ method(){
               height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
-                padding:  EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
@@ -3425,10 +3391,10 @@ method(){
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['pharmacy_name'].toString()} ',
-                                style:  TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.black)),
                           ),
                           // Divider(
                           //   thickness: 1,
@@ -3450,7 +3416,7 @@ method(){
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
-          return  Iterable<List>.empty();
+          return Iterable<List>.empty();
         } else {
           //  getLabtestNameList();
           //  setState(() {
@@ -3475,7 +3441,7 @@ method(){
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
@@ -3494,9 +3460,9 @@ method(){
               height: screenHeight * 0.5,
               color: Colors.white,
               child: ListView.builder(
-                physics:  AlwaysScrollableScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 shrinkWrap: true,
-                padding:  EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
@@ -3521,10 +3487,10 @@ method(){
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['test_name'].toString()} ',
-                                style:  TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.black)),
                           ),
                           // Divider(
                           //   thickness: 1,
@@ -3546,7 +3512,7 @@ method(){
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
-          return  Iterable<List>.empty();
+          return Iterable<List>.empty();
         } else {
           var matches = [];
           matches.addAll(MediAndLabNameList);
@@ -3567,7 +3533,7 @@ method(){
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
@@ -3586,7 +3552,7 @@ method(){
               height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
-                padding:  EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
@@ -3615,10 +3581,10 @@ method(){
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['pharmacy_name'].toString()} ',
-                                style:  TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.black)),
                           ),
                           // Divider(
                           //   thickness: 1,
@@ -3640,7 +3606,7 @@ method(){
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
-          return  Iterable<List>.empty();
+          return Iterable<List>.empty();
         } else {
           var matches = [];
           matches.addAll(MedicineList);
@@ -3661,7 +3627,7 @@ method(){
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
@@ -3680,7 +3646,7 @@ method(){
               height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
-                padding:  EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
@@ -3710,10 +3676,10 @@ method(){
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['name'].toString()} ',
-                                style:  TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.black)),
                           ),
                           // Divider(
                           //   thickness: 1,
@@ -3735,7 +3701,7 @@ method(){
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
-          return  Iterable<List>.empty();
+          return Iterable<List>.empty();
         } else {
           var matches = [];
           matches.addAll(InjectionList);
@@ -3756,7 +3722,7 @@ method(){
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
@@ -3775,7 +3741,7 @@ method(){
               height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
-                padding:  EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
@@ -3812,10 +3778,10 @@ method(){
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['injections_name'].toString()} ',
-                                style:  TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.black)),
                           ),
                           // Divider(
                           //   thickness: 1,
