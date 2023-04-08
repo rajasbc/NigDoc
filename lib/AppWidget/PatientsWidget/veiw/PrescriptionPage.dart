@@ -103,6 +103,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   double fees_total = 0.0;
   var accesstoken;
   bool isloading = false;
+  bool medicineAdded =false;
   @override
   void initState() {
     super.initState();
@@ -114,6 +115,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
     gettreatmentlist();
     // grandtotalController.text = grand_total.toString();
     getInjectionList();
+    medicineAdded = false;
   }
 
 method(){
@@ -1726,16 +1728,31 @@ method(){
                                             children: [
                                               SizedBox(
                                                 width: screenWidth * 0.4,
-                                                child:prescriptionDD? DropdownButtonFormField(
-                                                  // validator: (value) => validateDrops(value),
-                                                  // decoration: InputDecoration(
-                                                  //     enabledBorder: InputBorder.none,
-                                                  //     border: UnderlineInputBorder(
-                                                  //         borderSide: BorderSide(
-                                                  //             color: Colors.white))),
-                                                  // decoration:
-                                                  //     InputDecoration.collapsed(
-                                                  //         hintText: ''),
+                                                child:
+                                              medicineAdded == true ?
+                                                DropdownButtonFormField(
+                                                              // validator: (value) => validateDrops(value),
+                                                              // isExpanded: true,
+                                                              hint:  Text(
+                                                                  'Select Pattern'),
+                                                              // value:' _selectedState[i]',
+                                                              onChanged:
+                                                                  (Pharmacy) {
+                                                                setState(() {});
+                                                              },
+                                                              items: [].map<
+                                                                  DropdownMenuItem<
+                                                                      String>>((item) {
+                                                                return new DropdownMenuItem(
+                                                                  child:
+                                                                      new Text(
+                                                                          ''),
+                                                                  value: '',
+                                                                );
+                                                              }).toList(),
+                                                            ):
+                                                  DropdownButtonFormField(
+                                                
                                                   decoration:
                                                        InputDecoration(
                                                     labelText: 'Pattern',
@@ -1744,7 +1761,8 @@ method(){
                                                     //icon: Icon(Icons.numbers),
                                                   ),
                                                   isExpanded: true,
-                                                  hint:  Text('Select Pattern'),
+                                                  hint:  
+                                                  Text(patternDropdownvalue),
                                                   // value:patternDropdownvalue,
                                                   onChanged: (item) async {
                                                     patternDropdownvalue =
@@ -1757,36 +1775,14 @@ method(){
                                                     mor = data[2];
                                                     noon = data[3];
                                                     night = data[4];
-                                                    // selectedPharmacyDetails =
-                                                    //     item.toString().split('&*');
-                                                    // data = {
-                                                    //   'mobile_no': storage
-                                                    //       .getItem('user_mobileno'),
-                                                    //   'shop_id':
-                                                    //       selectedPharmacyDetails[0]
-                                                    // };
-                                                    // setState(() {
-                                                    //   selectedList = null;
-                                                    // });
-                                                    // await getcustomerlist(data);
-                                                    // setState(() {
-                                                    //     pharmacyDropdownvalue = item;
-                                                    // });
-                                                    // data = {
-                                                    //   'mobile_no': storage
-                                                    //       .getItem('user_mobileno'),
-                                                    //   'shop_id': item
-                                                    // };
-                                                    // await getcustomerlist(data);
-                                                    // setState(() {
-                                                    //   // customerdropdown='';
-                                                    // });
+                                                
                                                   },
                                                   items: demo.map<
                                                       DropdownMenuItem<
                                                           String>>((item) {
                                                     return DropdownMenuItem(
-                                                      child: Text(
+                                                      child: 
+                                                      Text(
                                                         item['name'].toString(),
                                                       ),
                                                       value: item['value']
@@ -1806,78 +1802,18 @@ method(){
                                                           '&*',
                                                     );
                                                   }).toList(),
-                                                ): DropdownButtonFormField(
-                                                              // validator: (value) => validateDrops(value),
-                                                              // isExpanded: true,
-                                                               decoration:
-                                                       InputDecoration(
-                                                    labelText: 'Pattern',
-                                                    border:
-                                                        OutlineInputBorder(),
-                                                    //icon: Icon(Icons.numbers),
-                                                  ),
-                                                              hint:  Text(
-                                                                  'Select Pattern'),
-                                                              // value:' _selectedState[i]',
-                                                              onChanged:
-                                                                  (Pharmacy) {
-                                                                setState(() {});
-                                                              },
-                                                              items: [].map<
-                                                                  DropdownMenuItem<
-                                                                      String>>((item) {
-                                                                return new DropdownMenuItem(
-                                                                  child:
-                                                                      new Text(
-                                                                          ''),
-                                                                  value: '',
-                                                                );
-                                                              }).toList(),
-                                                            ),
-                                                // child: DropdownButtonFormField(
-                                                //   // value: patternDropdownvalue,
-                                                //   // autovalidateMode: AutovalidateMode.always,
-                                                //   // validator: (value) {
-                                                //   //   if (value == null ||
-                                                //   //       value.isEmpty ||
-                                                //   //       value == "Title") {
-                                                //   //     return 'please select Title';
-                                                //   //   }
-                                                //   //   return null;
-                                                //   // },
-                                                //   decoration:  InputDecoration(
-                                                //     labelText: 'Prescription',
-                                                //     border: OutlineInputBorder(),
-                                                //     //icon: Icon(Icons.numbers),
-                                                //   ),
-                                                //   items: demo.map((String items) {
-                                                //     return DropdownMenuItem(
-                                                //       value: items['value'],
-                                                //       child: Text(items['name']),
-                                                //     );
-                                                //   }).toList(),
-                                                //   onChanged: (String? newValue) {
-                                                //     setState(() {
-                                                //       patternDropdownvalue = newValue!;
-                                                //     });
-                                                //   },
-                                                // ),
+                                                )
+                                             
                                               ),
                                               SizedBox(
                                                 width: screenWidth * 0.5,
-                                                child: DropdownButtonFormField(
+                                                child: 
+                                                DropdownButtonFormField(
                                                   value:
                                                       prescriptionDropdownvalue,
                                                   autovalidateMode:
                                                       AutovalidateMode.always,
-                                                  // validator: (value) {
-                                                  //   if (value == null ||
-                                                  //       value.isEmpty ||
-                                                  //       value == "Title") {
-                                                  //     return 'please select Title';
-                                                  //   }
-                                                  //   return null;
-                                                  // },
+                                                  
                                                   decoration:
                                                        InputDecoration(
                                                     labelText: 'Prescription',
@@ -1910,50 +1846,7 @@ method(){
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              // SizedBox(
-                                              //   width: 180,
-                                              //   child: TextButton(
-                                              //       onPressed: () async {
-                                              //         // var data = {
-                                              //         //   "treatment": titleDropdownvalue.toString(),
-                                              //         //   "fees": fees.text.toString(),
-                                              //         // };
-                                              //         // print(data);
-                                              //         // print(data);
-                                              //         // print(treatmentList);
-                                              //         // print(treatmentList.contains(data));
-                                              //         // if (treatmentList.contains(data)) {
-                                              //         //   treatmentList.remove(data);
-                                              //         // } else {
-                                              //         //   treatmentList.add(data);
-                                              //         // }
-                                              //         // print(treatmentList);
-                                              //         // setState(() {
-                                              //         //   fees.clear();
-                                              //         //   titleDropdownvalue = 'Select Treatment';
-                                              //         // });
-                                              //       },
-                                              //       child: Text(
-                                              //         "Add Command",
-                                              //         style: TextStyle(
-                                              //             color: Colors.white,
-                                              //             fontSize: 12,
-                                              //             fontWeight:
-                                              //                 FontWeight.bold),
-                                              //       ),
-                                              //       style: ButtonStyle(
-                                              //           backgroundColor:
-                                              //               MaterialStateProperty.all<
-                                              //                       Color>(
-                                              //                   Color.fromARGB(
-                                              //                       255, 10, 132, 87)),
-                                              //           shape: MaterialStateProperty.all<
-                                              //                   RoundedRectangleBorder>(
-                                              //               RoundedRectangleBorder(
-                                              //                   borderRadius:
-                                              //                       BorderRadius.circular(4.0),
-                                              //                   side: BorderSide(color: Colors.blue))))),
-                                              // ),
+                                            
                                               SizedBox(
                                                 width: screenWidth * 0.955,
                                                 child: TextButton(
@@ -1973,6 +1866,8 @@ method(){
                                                       //       textColor: Colors.white,
                                                       //       fontSize: 15.0);
                                                       // } else
+                                                      
+                                                      // return;
                                                       if (medicineController
                                                           .text.isEmpty) {
                                                         Fluttertoast.showToast(
@@ -2024,7 +1919,8 @@ method(){
                                                             textColor:
                                                                 Colors.white,
                                                             fontSize: 15.0);
-                                                      } else if (patternDropdownvalue
+                                                      }
+                                                       else if (patternDropdownvalue
                                                               .isEmpty ||
                                                           patternDropdownvalue ==
                                                               'pattern') {
@@ -2123,7 +2019,7 @@ method(){
                                         data['itemno']) {
                                           Fluttertoast.showToast(
                                                             msg:
-                                                                'This Test Already Added',
+                                                                'This Medicine Already Added',
                                                             toastLength: Toast
                                                                 .LENGTH_SHORT,
                                                             gravity:
@@ -2194,7 +2090,7 @@ method(){
                                                             .clear();
                                                       });
                                                        setState(() {
-                                                          prescriptionDD=false;
+                                                          // prescriptionDD=false;
                                                           medicineshowAutoComplete =
                                                               true;
 
@@ -2205,9 +2101,10 @@ method(){
                                                           dayController.clear();
                                                           patternDropdownvalue =
                                                               'pattern';
+                                                                medicineAdded = true;
                                                           prescriptionDropdownvalue =
                                                               'Select Prescription';
-                                                              prescriptionDD=true;
+                                                              // prescriptionDD=true;
                                                         });
                                     
                                     print(testList);
@@ -2215,79 +2112,12 @@ method(){
                                    
                                   return;
                                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                        // if (table_list
-                                                        //     .contains(data)) {
-                                                        //   table_list
-                                                        //       .remove(data);
-                                                        // } else {
-                                                        //   table_list.add(data);
-                                                          
-                                                        //   setState(() {
-                                                        //     prescriptionDD=false;
-                                                        //   });
-                                                        //   totalCalcution();
-                                                        //   // grand_total=0;
-
-                                                        //   // for (var value
-                                                        //   //     in table_list) {
-                                                        //   //   grand_total = grand_total +fees_total+
-                                                        //   //       double.parse(
-                                                        //   //           value['total']);
-                                                        //   // }
-                                                        //   // // return grand_total;
-                                                        //   // grandtotalController.text=grand_total.toString();
-                                                        //   //  medicineList.addAll(cal);
-                                                        //   // tableCalCulation();
-                                                        //   //  medicineList.addAll(treatmentList);
-                                                        //   // //  medicineList.asMap()
-                                                        // }
-                                                        // print(table_list);
-                                                        // setState(() {
-                                                        //   // prescriptionDD=false;
-                                                        //   medicineshowAutoComplete =
-                                                        //       true;
-
-                                                        //   medicineController
-                                                        //       .clear();
-                                                        //   priceController
-                                                        //       .clear();
-                                                        //   dayController.clear();
-                                                        //   patternDropdownvalue =
-                                                        //       'pattern';
-                                                        //   prescriptionDropdownvalue =
-                                                        //       'Select Prescription';
-                                                        //       prescriptionDD=true;
-                                                        // });
                                                       }
+                                                      // setState(() {
+                                                      //       patternDropdownvalue = 'Select Pattern';
+                                                      //       medicineAdded = true;
+                                                      // });
+                                                
                                                     },
                                                     child:  Text(
                                                       "Add Medicine",
@@ -3019,6 +2849,7 @@ method(){
                                         setState(() {
                                           select_button='test'; 
                                            click_button = "lab";
+                                          
                                     getMediAndLabNameList();
                                         });
 
@@ -3096,7 +2927,7 @@ method(){
                                       }else if(select_button=='injection'){
                                         setState(() {
                                           select_button='medicine'; 
-                                          
+                                            medicineAdded = false;
                                     click_button = 'pharmacy';
                                     getMediAndLabNameList();
                                     // getMedicineList();
@@ -3857,6 +3688,7 @@ method(){
                   return GestureDetector(
                     onTap: () {
                       setState(() {
+                        medicineAdded = false;
                         medicineshowAutoComplete = false;
                         Selectedmedicine = options.toList()[0][index];
                         getMedicineList();
