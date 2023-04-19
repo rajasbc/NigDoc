@@ -16,8 +16,7 @@ import '../../Common/colors.dart' as Customcolor;
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
-import '../../../AppWidget/common/Colors.dart'as custom_color;
-
+import '../../../AppWidget/common/Colors.dart' as custom_color;
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -30,7 +29,7 @@ class _LoginpageState extends State<Loginpage> {
   final LocalStorage storage = new LocalStorage('doctor_store');
   TextEditingController Emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
-   bool showPassword = false;
+  bool showPassword = false;
   bool isloading = false;
   late SharedPreferences pref;
 
@@ -69,11 +68,11 @@ class _LoginpageState extends State<Loginpage> {
                 height: screenHeight * 0.35,
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                    image: DecorationImage(
-                        image: AssetImage("assets/nigdoc.png"),
-                        // fit: BoxFit.fill,
-                        ),
+                  image: DecorationImage(
+                    image: AssetImage("assets/nigdoc.png"),
+                    // fit: BoxFit.fill,
                   ),
+                ),
               ),
               Center(
                 child: SingleChildScrollView(
@@ -87,111 +86,125 @@ class _LoginpageState extends State<Loginpage> {
                         SizedBox(
                           height: 20,
                         ),
-                        Container(child: Text('Login',style: TextStyle(color: Colors.white,fontSize: 50,fontWeight: FontWeight.bold,letterSpacing: 1),),),
-                         SizedBox(
-                          height: 10,
+                        // Container(child: Text('Login',style: TextStyle(color: Colors.white,fontSize: 50,fontWeight: FontWeight.bold,letterSpacing: 1),),),
+                        //  SizedBox(
+                        //   height: 10,
+                        // ),
+                        //  Container(child: Text('Sign in to continue',style: TextStyle(color: Colors.white,fontSize: 15),),),
+                        //  SizedBox(
+                        //   height: 20,
+                        // ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: screenWidth * 0.90,
+                              child: Text(
+                                'Email',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                          ],
                         ),
-                         Container(child: Text('Sign in to continue',style: TextStyle(color: Colors.white,fontSize: 15),),),
-                         SizedBox(
-                          height: 20,
-                        ),
-                        Column(mainAxisAlignment: MainAxisAlignment.start,
-                           children: [
-                             Container(
-                              width: screenWidth*0.90,
-                              child: Text('EMAIL',style: TextStyle(color: Colors.white,fontSize: 15),),),
-                           ],
-                         ),
-                          SizedBox(
+                        SizedBox(
                           height: 5,
                         ),
-                         
+
                         Container(
-                    width: screenWidth*0.90,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        // border: Border.all(color: Colors.blueAccent),
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                    // padding: const EdgeInsets.all(10),
-                    child: TextField(
-                      controller: Emailcontroller,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 8.0, top: 8.0),
-                        border: InputBorder.none,
-                        hintText: 'Enter your email address',
-                      ),
-                    ),
-                  ),
+                          width: screenWidth * 0.90,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              // border: Border.all(color: Colors.blueAccent),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          // padding: const EdgeInsets.all(10),
+                          child: TextField(
+                            controller: Emailcontroller,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                  left: 14.0, bottom: 8.0, top: 8.0),
+                              border: InputBorder.none,
+                              hintText: 'Enter your email address',
+                            ),
+                          ),
+                        ),
                         SizedBox(
                           height: 10,
                         ),
-                         Column(mainAxisAlignment: MainAxisAlignment.start,
-                           children: [
-                             Container(
-                              width: screenWidth*0.90,
-                              child: Text('PASSWORD',style: TextStyle(color: Colors.white,fontSize: 15),),),
-                           ],
-                         ),
-                          SizedBox(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: screenWidth * 0.90,
+                              child: Text(
+                                'Password',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
                           height: 5,
                         ),
                         Container(
-                    width: screenWidth*0.90,
-                     decoration: BoxDecoration(
-                          color: Colors.white,
-                          // border: Border.all(color: Colors.blueAccent),
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            // decoration: BoxDecoration(color: Colors.black,),
-                            // color: Colors.red,
-                            width: screenWidth * 0.65,
-                            child: TextField(
-                              obscureText: !showPassword,
-                              controller: passwordcontroller,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.only(
-                                    left: 14.0, bottom: 8.0, top: 10.0),
-                                border: InputBorder.none,
-                                hintText: '***********',
+                          width: screenWidth * 0.90,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              // border: Border.all(color: Colors.blueAccent),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                // decoration: BoxDecoration(color: Colors.black,),
+                                // color: Colors.red,
+                                width: screenWidth * 0.65,
+                                child: TextField(
+                                  obscureText: !showPassword,
+                                  controller: passwordcontroller,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 14.0, bottom: 8.0, top: 10.0),
+                                    border: InputBorder.none,
+                                    hintText: '***********',
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Container(
-                            // color: Colors.yellow,
-                            width: screenWidth * 0.15,
-                            // width: screenheight / 2.5,
-                            child: IconButton(
-                              icon: Icon(
-                                ! showPassword
-                                    ? FontAwesome.eye_off
-                                    : FontAwesome.eye,
-                                color: Colors.black38,
-                                size: 18,
+                              Container(
+                                // color: Colors.yellow,
+                                width: screenWidth * 0.15,
+                                // width: screenheight / 2.5,
+                                child: IconButton(
+                                  icon: Icon(
+                                    !showPassword
+                                        ? FontAwesome.eye_off
+                                        : FontAwesome.eye,
+                                    color: Colors.black38,
+                                    size: 18,
+                                  ),
+                                  onPressed: () {
+                                    togglePasswordView();
+                                  },
+                                ),
                               ),
-                              onPressed: () {
-                                togglePasswordView();
-                              },
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                  ),
-                  SizedBox(
+                        ),
+                        SizedBox(
                           height: 30,
                         ),
                         Container(
                           decoration: BoxDecoration(
-                        color: Colors.white,
-                        // border: Border.all(color: Colors.blueAccent),
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                         
-                          width: screenWidth*0.9,
-                          height: screenHeight*0.06,
-                         child: TextButton(
+                              color: Colors.white,
+                              // border: Border.all(color: Colors.blueAccent),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30))),
+                          width: screenWidth * 0.9,
+                          height: screenHeight * 0.06,
+                          child: TextButton(
                               onPressed: () async {
                                 this.setState(() {
                                   isloading = true;
@@ -204,7 +217,7 @@ class _LoginpageState extends State<Loginpage> {
                                     !passwordcontroller.text.isEmpty) {
                                   var logindata =
                                       await api().loginresponse(data);
-                                      isloading = false;
+                                  isloading = false;
                                   storage.setItem('userResponse', logindata);
                                   if (Helper().isvalidElement(logindata) &&
                                       Helper()
@@ -220,15 +233,12 @@ class _LoginpageState extends State<Loginpage> {
                                         textColor: Colors.white,
                                         fontSize: 15.0);
                                   } else {
-                                   
-
                                     if (logindata['access_token'] != null) {
                                       Emailcontroller.text = '';
                                       passwordcontroller.text = '';
                                       // await storeBox?.put('userResponse', user_data);
                                       this.setState(() {});
 
-                                      
                                       await pref.setString('access_token',
                                           await logindata['access_token']);
                                       pref.setBool('isLogin', true);
@@ -238,7 +248,6 @@ class _LoginpageState extends State<Loginpage> {
                                                 Dash()),
                                       );
 
-                                      
                                       Fluttertoast.showToast(
                                           msg: "login successfully",
                                           // ${logindata['clinic_profile']['name']}
@@ -249,8 +258,6 @@ class _LoginpageState extends State<Loginpage> {
                                           textColor: Colors.white,
                                           fontSize: 16.0);
                                     } else {
-                                      
-
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -259,7 +266,6 @@ class _LoginpageState extends State<Loginpage> {
                                       this.setState(() {
                                         isloading = false;
                                       });
-                                     
                                     }
                                   }
                                 } else {
@@ -273,14 +279,19 @@ class _LoginpageState extends State<Loginpage> {
                                       fontSize: 15.0);
                                 }
 
-                               
                                 this.setState(() {
                                   isloading = false;
                                 });
                               },
-                          
-                           child: isloading?SpinLoader(): Text('SIGN IN',style: TextStyle(fontSize: 25,color: Customcolor.appcolor,fontWeight: FontWeight.bold),)),
-
+                              child: isloading
+                                  ? SpinLoader()
+                                  : Text(
+                                      'SIGN IN',
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          color: Customcolor.appcolor,
+                                          fontWeight: FontWeight.bold),
+                                    )),
                         ),
 
                         // SizedBox(
@@ -405,23 +416,18 @@ class _LoginpageState extends State<Loginpage> {
 //                                 });
 //                               },
 //                               child: Text('Login')),
-//                    
+//
 //     ),
-                  
-                      ]
-                      ,
-
-
+                      ],
                     ),
                   ),
-                  
                 ),
               ),
               // SizedBox(height: 10,),
-             
+
 //                 Row(
 //                   mainAxisAlignment: MainAxisAlignment.end,
-                  
+
 //                       children: [
 //                         Container(),
 //                         // Padding(
@@ -552,20 +558,20 @@ class _LoginpageState extends State<Loginpage> {
 //                                   isloading = false;
 //                                 });
 //                               },
-                          
+
 //                            child: isloading?SpinLoader(): Text('LOGIN',style: TextStyle(fontSize: 28,color: Customcolor.appcolor),)),
 //                         ),
 //                          Icon(Icons.arrow_forward,size: 30,color: custom_color.appcolor),
 //                       ],
 //                     )
-
             ],
           ),
         ),
       ),
     );
   }
-   togglePasswordView() {
+
+  togglePasswordView() {
     setState(() {
       showPassword = !showPassword;
     });
