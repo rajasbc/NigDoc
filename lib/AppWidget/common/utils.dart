@@ -64,7 +64,7 @@ class Helper {
     // DateTime date = date;
     
     // var formatter = new DateFormat('yyyy-MM-dd');
-        var formatter = new DateFormat('dd-MM-yyyy');
+        var formatter = new DateFormat('yyyy-MM-dd');
 
     String formatted_date = formatter.format(date);
     return formatted_date;

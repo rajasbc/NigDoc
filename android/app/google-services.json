@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "583154191380",
+    "project_id": "nigdoc-e6a1a",
+    "storage_bucket": "nigdoc-e6a1a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583154191380:android:7fbf97d784aebdee4feb01",
+        "android_client_info": {
+          "package_name": "com.nigsoft.nigdoc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByAm7owuzqkPu9mzl1TTVQRat2EjtCDbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

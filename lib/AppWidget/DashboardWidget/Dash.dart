@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/View/Cancelledbill.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/View/Paidbill.dart';
@@ -12,14 +14,18 @@ import 'package:nigdoc/AppWidget/DashboardWidget/DashboardApi.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Nigdocmenubar.dart';
 import 'package:nigdoc/AppWidget/LabLink/LabList.dart';
 import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
+import 'package:nigdoc/AppWidget/Notification/AppoinmentList.dart';
+import 'package:nigdoc/AppWidget/Notification/NotificationPage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PatientList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Patients.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/PharmacyLink/PharmacyList.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/TestList/TestList.dart';
+import 'package:nigdoc/AppWidget/common/DeviceInfo.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
@@ -42,31 +48,153 @@ class _DashState extends State<Dash> {
   var userResponse;
   var accesstoken;
   var DashboardList;
+  String notification = 'Waiting for notification';
+
   @override
   void initState() {
-     getvalue();
+    // getvalue();
     // userResponse = storage.getItem('userResponse');
     // accesstoken= userResponse['access_token'];
-    
 
     // TODO: implement initState
+    init();
     super.initState();
-  } 
+  }
+
+  init() async {
+    await handlePermissions();
+    await handleNotification();
+    await getvalue();
+    await getFcmToken();
+   
+  }
+
   getvalue() async {
     userResponse = storage.getItem('userResponse');
-    accesstoken= await userResponse['access_token'];
+    accesstoken = await userResponse['access_token'];
     getDashBoardList();
-
   }
-  
+
+  Future getFcmToken() async {
+    if (Platform.isIOS) {
+      FirebaseMessaging.instance.requestPermission();
+    }
+    FirebaseMessaging firebaseMessage = FirebaseMessaging.instance;
+    if (storage.getItem('fcm_token') == null) {
+      String? deviceToken = await firebaseMessage.getToken();
+      print("deviceTokenn ${deviceToken}");
+      await storage.setItem('fcm_token', deviceToken);
+      await updateFcm(deviceToken);
+    } else {
+      var deviceToken = storage.getItem('fcm_token');
+      print("deviceTokenn ${deviceToken}");
+      await updateFcm(deviceToken);
+    }
+  }
+
+  updateFcm(deviceToken) async {
+    if (await storage.getItem('device_id') == null) {
+      await Device().initPlatformState();
+    }
+    var data = {
+      'device_id': await storage.getItem('device_id'),
+      'email':
+          storage.getItem('userResponse')['clinic_profile']['email'] == null
+              ? ''
+              : storage.getItem('userResponse')['clinic_profile']['email'],
+      'fcm': deviceToken,
+      'status': 'Active'
+    };
+    var result = await DashboardApi().updateFCM(data);
+    print(result);
+  }
+
+  handlePermissions() async {
+    await Permission.camera.request();
+    await Permission.location.request();
+    await Permission.notification.request();
+    // getCurrentLocation();
+  }
+
+  handleNotification() async {
+    FirebaseMessaging.instance.getInitialMessage().then((event) async {
+      if (event != null) {
+        if (mounted) {
+          setState(() {
+            notification =
+                "${event!.notification!.title} ${event!.notification!.body} i am comming from terminated state";
+          });
+          var notification_data = {
+            'title': event.notification!.title,
+            'description': event.notification!.body,
+            'image': event.notification!.android!.imageUrl,
+            'link': event.notification!.android!.link,
+          };
+          // await StoreNotifications(notification_data);
+          await notificationNavigator(notification_data);
+        }
+      }
+    });
+    //forground State
+    FirebaseMessaging.onMessage.listen((event) async {
+      setState(() {
+        notification =
+            "${event.notification!.title} ${event.notification!.body} i am comming from foreground";
+      });
+      var notification_data = {
+        'title': event.notification!.title,
+        'description': event.notification!.body,
+        'image': event.notification!.android!.imageUrl,
+        'link': event.notification!.android!.link,
+      };
+      // await StoreNotifications(notification_data);
+      // await notificationNavigator(notification_data);
+      return;
+    });
+
+    //Background State
+    if (Platform.isIOS) {
+      FirebaseMessaging.onMessageOpenedApp
+          .listen((RemoteMessage remoteMessage) {
+        String? title = remoteMessage.notification!.title;
+        // setState(() {
+        //   notification =
+        //       "${event.notification!.title} ${event.notification!.body} i am comming from background";
+        // });
+      });
+    } else {
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) async {
+        setState(() {
+          notification =
+              "${event.notification!.title} ${event.notification!.body} i am comming from background";
+        });
+        var notification_data = {
+          'title': event.notification!.title,
+          'description': event.notification!.body,
+          'image': event.notification!.android!.imageUrl,
+          'link': event.notification!.android!.link,
+        };
+        // await StoreNotifications(notification_data);
+        await notificationNavigator(notification_data);
+      });
+    }
+  }
+
+  notificationNavigator(event) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const NotificationPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
     return new WillPopScope(
-       onWillPop: () async {
+      onWillPop: () async {
         exit(0);
-       },
+      },
       child: Scaffold(
         // drawer: SafeArea(
         //     child: Drawer(
@@ -74,98 +202,90 @@ class _DashState extends State<Dash> {
         //   child: Nigdocmenubar(),
         // )),
         appBar: AppBar(
-           automaticallyImplyLeading: false,
+          automaticallyImplyLeading: false,
           //  elevation: 0,
           // backgroundColor: Color.fromARGB(255, 8, 122, 135),
           // backgroundColor: HexColor('#C2DED1'),
           // backgroundColor: Colors.white,
           title: const Text(
             'NigDoc',
-            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,letterSpacing: 1.5),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.5),
           ),
           // iconTheme: IconThemeData(color: custom_color.app),
           backgroundColor: custom_color.appcolor,
-              //  leading: IconButton(
-              //   onPressed: () {
-              //     // Navigator.push(
-              //     //     context,
-              //     //     MaterialPageRoute(
-              //     //       builder: (context) => VistedLab(),
-              //     //     ));
-              //   },
-              //   icon: Icon(
-              //     Icons.arrow_back_ios_new_outlined,
-              //     color: custom_color.appcolor,
-              //   )),
+          //  leading: IconButton(
+          //   onPressed: () {
+          //     // Navigator.push(
+          //     //     context,
+          //     //     MaterialPageRoute(
+          //     //       builder: (context) => VistedLab(),
+          //     //     ));
+          //   },
+          //   icon: Icon(
+          //     Icons.arrow_back_ios_new_outlined,
+          //     color: custom_color.appcolor,
+          //   )),
           actions: [
-            IconButton(
-                // onPressed: () {
-                //   Helper().appLogoutCall(context, 'logout');
-                // },
-                onPressed: () {
-                  Alert(
-      context: context,
-      
-      style: alertStyle,
-      type: AlertType.warning,
-     
-      title: "LOGOUT ALERT",
-      desc: "Are you sure you want to Logout?",
-      buttons: [
-        DialogButton(
-          child: Text(
-            "YES",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () => Helper().appLogoutCall(context, 'logout'),
-          color: Color.fromRGBO(0, 179, 134, 1.0),
-        ),
-        DialogButton(
-          child: Text(
-            " NO ",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () => Navigator.pop(context),
-          gradient: LinearGradient(colors: [
-            Color.fromRGBO(116, 116, 191, 1.0),
-            Color.fromRGBO(52, 138, 199, 1.0)
-          ]),
-        )
-      ],
-    ).show();
-                  // showDialog(
-                  //   context: context,
-                  //   builder: (ctx) => AlertDialog(
-                  //     title: const Text("Logout Alert"),
-                  //     content: const Text("Are you sure you want to Logout?"),
-                  //     actions: <Widget>[
-                  //       TextButton(
-                  //         onPressed: () {
-                  //           Navigator.of(ctx).pop();
-                  //           //  Helper().appLogoutCall(context, 'logout');
-                  //         },
-                  //         child: Container(
-                  //           // color: Colors.green,
-                  //           padding: const EdgeInsets.all(14),
-                  //           child: const Text("No"),
-                  //         ),
-                  //       ),
-                  //       TextButton(
-                  //         onPressed: () {
-                  //           // Navigator.of(ctx).pop();
-                  //           Helper().appLogoutCall(context, 'logout');
-                  //         },
-                  //         child: Container(
-                  //           // color: Colors.green,
-                  //           padding: const EdgeInsets.all(14),
-                  //           child: const Text("Yes"),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // );
-                },
-                icon: Icon(Icons.logout)),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AppointmentList(),
+                          ));
+                    },
+                    icon: Icon(FontAwesome5.plus_circle)),
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NotificationPage(),
+                          ));
+                    },
+                    icon: Icon(FontAwesome5.bell)),
+                IconButton(
+                    onPressed: () {
+                      Alert(
+                        context: context,
+                        style: alertStyle,
+                        type: AlertType.warning,
+                        title: "LOGOUT ALERT",
+                        desc: "Are you sure you want to Logout?",
+                        buttons: [
+                          DialogButton(
+                            child: Text(
+                              "YES",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () =>
+                                Helper().appLogoutCall(context, 'logout'),
+                            color: Color.fromRGBO(0, 179, 134, 1.0),
+                          ),
+                          DialogButton(
+                            child: Text(
+                              " NO ",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            gradient: LinearGradient(colors: [
+                              Color.fromRGBO(116, 116, 191, 1.0),
+                              Color.fromRGBO(52, 138, 199, 1.0)
+                            ]),
+                          )
+                        ],
+                      ).show();
+                    },
+                    icon: Icon(Icons.logout)),
+              ],
+            ),
             // on(onPressed: getAllCustomers, icon: Icon(Icons.category))
           ],
         ),
@@ -173,7 +293,6 @@ class _DashState extends State<Dash> {
           child: Column(
             children: [
               Container(
-                
                 width: screenWidth,
                 color: custom_color.lightcolor,
                 child: Container(
@@ -204,25 +323,27 @@ class _DashState extends State<Dash> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    SizedBox(height: 5,),
-                    Container(
-                      child: Row(
-                        children: [ 
+                    SizedBox(
+                      height: 5,
+                    ),
                     Container(
                       child: Row(
                         children: [
-                          Text(
-                            "Monthly Report",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                letterSpacing: 0.8,
-                                color: custom_color.appcolor),
+                          Container(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Monthly Report",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      letterSpacing: 0.8,
+                                      color: custom_color.appcolor),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                   
+
                           // Text(
                           //   "Monthly Report",
                           //   style: TextStyle(
@@ -231,7 +352,9 @@ class _DashState extends State<Dash> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Container(
                       height: screenHeight * 0.192,
                       child: ListView(
@@ -266,14 +389,20 @@ class _DashState extends State<Dash> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                            Helper().isvalidElement(DashboardList)&&
-                                           Helper().isvalidElement(DashboardList['Patient_count'])? Text(
-                                              '  ${DashboardList['Patient_count'].toString()}',
-                                              style: TextStyle(
-                                                  color: Colors.amber,
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold),
-                                            ):SpinLoader()
+                                            Helper().isvalidElement(
+                                                        DashboardList) &&
+                                                    Helper().isvalidElement(
+                                                        DashboardList[
+                                                            'Patient_count'])
+                                                ? Text(
+                                                    '  ${DashboardList['Patient_count'].toString()}',
+                                                    style: TextStyle(
+                                                        color: Colors.amber,
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                : SpinLoader()
                                             // Text('0',
                                             //     textAlign: TextAlign.end,
                                             //     style: TextStyle(
@@ -315,14 +444,20 @@ class _DashState extends State<Dash> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                            Helper().isvalidElement(DashboardList)&&
-                                             Helper().isvalidElement(DashboardList['prescription_count'])? Text(
-                                              '  ${DashboardList['prescription_count'].toString()}',
-                                              style: TextStyle(
-                                                  color: Colors.amber,
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold),
-                                            ):SpinLoader()
+                                            Helper().isvalidElement(
+                                                        DashboardList) &&
+                                                    Helper().isvalidElement(
+                                                        DashboardList[
+                                                            'prescription_count'])
+                                                ? Text(
+                                                    '  ${DashboardList['prescription_count'].toString()}',
+                                                    style: TextStyle(
+                                                        color: Colors.amber,
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                : SpinLoader()
                                             // Text('0',
                                             //     textAlign: TextAlign.end,
                                             //     style: TextStyle(
@@ -364,14 +499,20 @@ class _DashState extends State<Dash> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                            Helper().isvalidElement(DashboardList)&&
-                                            Helper().isvalidElement(DashboardList['appointment_list'])? Text(
-                                              '  ${DashboardList['appointment_list'].toString()}',
-                                              style: TextStyle(
-                                                  color: Colors.amber,
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold),
-                                            ):SpinLoader()
+                                            Helper().isvalidElement(
+                                                        DashboardList) &&
+                                                    Helper().isvalidElement(
+                                                        DashboardList[
+                                                            'appointment_list'])
+                                                ? Text(
+                                                    '  ${DashboardList['appointment_list'].toString()}',
+                                                    style: TextStyle(
+                                                        color: Colors.amber,
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                : SpinLoader()
                                             // Text('0',
                                             //     textAlign: TextAlign.end,
                                             //     style: TextStyle(
@@ -414,14 +555,20 @@ class _DashState extends State<Dash> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                            Helper().isvalidElement(DashboardList)&&
-                                            Helper().isvalidElement(DashboardList['pending_appoint'])? Text(
-                                              '  ${DashboardList['pending_appoint'].toString()}',
-                                              style: TextStyle(
-                                                  color: Colors.amber,
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold),
-                                            ):SpinLoader()
+                                            Helper().isvalidElement(
+                                                        DashboardList) &&
+                                                    Helper().isvalidElement(
+                                                        DashboardList[
+                                                            'pending_appoint'])
+                                                ? Text(
+                                                    '  ${DashboardList['pending_appoint'].toString()}',
+                                                    style: TextStyle(
+                                                        color: Colors.amber,
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                : SpinLoader()
                                             // Text('0',
                                             //     textAlign: TextAlign.end,
                                             //     style: TextStyle(
@@ -482,7 +629,8 @@ class _DashState extends State<Dash> {
                                               bottomRight: Radius.circular(10)),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
                                               spreadRadius: 4,
                                               blurRadius: 4,
                                               offset: Offset(0,
@@ -560,7 +708,8 @@ class _DashState extends State<Dash> {
                                               bottomRight: Radius.circular(10)),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
                                               spreadRadius: 4,
                                               blurRadius: 4,
                                               offset: Offset(0,
@@ -603,13 +752,13 @@ class _DashState extends State<Dash> {
                                     color: Colors.grey.withOpacity(0.2),
                                     spreadRadius: 4,
                                     blurRadius: 4,
-                                    offset:
-                                        Offset(0, 1), // changes position of shadow
+                                    offset: Offset(
+                                        0, 1), // changes position of shadow
                                   ),
                                 ],
                               ),
                             ),
-                              onTap: () {
+                            onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -638,7 +787,8 @@ class _DashState extends State<Dash> {
                                               bottomRight: Radius.circular(10)),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
                                               spreadRadius: 4,
                                               blurRadius: 4,
                                               offset: Offset(0,
@@ -681,13 +831,13 @@ class _DashState extends State<Dash> {
                                     color: Colors.grey.withOpacity(0.2),
                                     spreadRadius: 4,
                                     blurRadius: 4,
-                                    offset:
-                                        Offset(0, 1), // changes position of shadow
+                                    offset: Offset(
+                                        0, 1), // changes position of shadow
                                   ),
                                 ],
                               ),
                             ),
-                              onTap: () {
+                            onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -695,7 +845,7 @@ class _DashState extends State<Dash> {
                                   ));
                             },
                           ),
-    
+
                           // Text(
                           //   "Collection",
                           //   style: TextStyle(
@@ -962,7 +1112,7 @@ class _DashState extends State<Dash> {
                     //               ));
                     //         },
                     //       ),
-    
+
                     //       // Text(
                     //       //   "Collection",
                     //       //   style: TextStyle(
@@ -972,56 +1122,52 @@ class _DashState extends State<Dash> {
                     //   ),
                     // ),
                     InkWell(
-                       onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PrescriptionPage(),
-                                  ));
-                            },
-
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PrescriptionPage(),
+                            ));
+                      },
                       child: Container(
-                       
-                        width: screenWidth*0.95,
-                        height: screenHeight*0.075,
-                        
-                        
-                    
-                        child:Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        width: screenWidth * 0.95,
+                        height: screenHeight * 0.075,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            
-                            
-                            Text('  Add New Prescription',style: TextStyle(color:custom_color.appcolor,fontWeight: FontWeight.bold,fontSize:18, ),),
-                            Icon(Icons.add,size: 40,color: custom_color.appcolor),
-                            
+                            Text(
+                              '  Add New Prescription',
+                              style: TextStyle(
+                                color: custom_color.appcolor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Icon(Icons.add,
+                                size: 40, color: custom_color.appcolor),
                           ],
-                        
                         ),
-                         decoration: BoxDecoration(
-                                  color:Colors.white,
-                                  border: 
-                                  Border.all(width: 3, color:custom_color.appcolor ),
-                                 
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      spreadRadius: 4,
-                                      blurRadius: 4,
-                                      offset:
-                                          Offset(0, 1), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                        
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              width: 3, color: custom_color.appcolor),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 4,
+                              blurRadius: 4,
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
                       ),
                     )
-                    
-    
                   ],
                 ),
               )
@@ -1031,8 +1177,8 @@ class _DashState extends State<Dash> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: custom_color.appcolor,
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Patients()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Patients()));
           },
           child: Icon(
             Icons.add,
@@ -1102,11 +1248,10 @@ class _DashState extends State<Dash> {
                         bottomNav = 'customer';
                       });
                       Navigator.push(
-                              context,
-    
-                              MaterialPageRoute(
-                                  builder: (context) => const PatientList()),
-                            );
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PatientList()),
+                      );
                     },
                   ),
                   SizedBox(
@@ -1138,11 +1283,10 @@ class _DashState extends State<Dash> {
                         bottomNav = 'product';
                       });
                       Navigator.push(
-                              context,
-    
-                              MaterialPageRoute(
-                                  builder: (context) => const MedicineList()),
-                            );
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MedicineList()),
+                      );
                     },
                   ),
                   InkWell(
@@ -1150,12 +1294,11 @@ class _DashState extends State<Dash> {
                       this.setState(() {
                         bottomNav = 'setting';
                       });
-                       Navigator.push(
-                              context,
-    
-                              MaterialPageRoute(
-                                  builder: (context) => const Setting()),
-                            );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Setting()),
+                      );
                     },
                     child: Column(
                       children: [
@@ -1185,9 +1328,8 @@ class _DashState extends State<Dash> {
       ),
     );
   }
-   getDashBoardList() async {
-    
 
+  getDashBoardList() async {
     var List = await DashboardApi().getdeshboardList(accesstoken);
     if (Helper().isvalidElement(List) &&
         Helper().isvalidElement(List['status']) &&
@@ -1195,32 +1337,30 @@ class _DashState extends State<Dash> {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
       setState(() {
-       
-       DashboardList = List['list'];
+        DashboardList = List['list'];
         // MedicineLoader=true;
         // valid=true;
       });
-    
     }
   }
+
   var alertStyle = AlertStyle(
-    
-      animationType: AnimationType.fromBottom,
-      isCloseButton: false,
-      
-      isOverlayTapDismiss: false,
-      descStyle: TextStyle(fontWeight: FontWeight.bold),
-      descTextAlign: TextAlign.center,
-      animationDuration: Duration(milliseconds: 300),
-      alertBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        side: BorderSide(
-          color: Colors.white,
-        ),
+    animationType: AnimationType.fromBottom,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    descStyle: TextStyle(fontWeight: FontWeight.bold),
+    descTextAlign: TextAlign.center,
+    animationDuration: Duration(milliseconds: 300),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      side: BorderSide(
+        color: Colors.white,
       ),
-      titleStyle: TextStyle(fontWeight: FontWeight.bold,
-        color: Colors.red,
-      ),
-      alertAlignment: Alignment.center,
-    );
+    ),
+    titleStyle: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: Colors.red,
+    ),
+    alertAlignment: Alignment.center,
+  );
 }

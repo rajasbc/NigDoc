@@ -1,0 +1,411 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:nigdoc/AppWidget/Common/utils.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/DashboardApi.dart';
+import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
+import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
+import '../../../AppWidget/common/Colors.dart' as custom_color;
+
+class AppointmentList extends StatefulWidget {
+  const AppointmentList({super.key});
+
+  @override
+  State<AppointmentList> createState() => _AppointmentListState();
+}
+
+class _AppointmentListState extends State<AppointmentList> {
+  final LocalStorage storage = new LocalStorage('doctor_store');
+
+  var appoinmentList = null;
+  late DateTime date;
+
+  DateTimeRange dateRange = DateTimeRange(
+    start: DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day - 7),
+    end:
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+  );
+  var tab_items = ['Active', 'Fixed', 'Cancel', 'Closed'];
+  var active_tab = 'Active';
+  var isLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    init();
+  }
+
+  init() async {
+    await getAppoinmentList();
+  }
+
+  getAppoinmentList() async {
+    var formatter = new DateFormat('yyyy-MM-dd');
+    var data = {
+      'doctor_id': storage.getItem('userResponse')['clinic_type'] == "Admin"
+          ? storage.getItem('userResponse')['clinic_profile']['uid'].toString()
+          : storage.getItem('userResponse')['clinic_profile']['id'].toString(),
+      'shop_id': storage.getItem('userResponse')['clinic_type'] == "Admin"
+          ? storage.getItem('userResponse')['clinic_profile']['id'].toString()
+          : storage
+              .getItem('userResponse')['clinic_profile']['shop_id']
+              .toString(),
+      'type': active_tab,
+      'from': formatter.format(dateRange.start),
+      'to': formatter.format(dateRange.end),
+    };
+    var result = await DashboardApi().eachDoctorAppoinmentList(data);
+    setState(() {
+      appoinmentList = result['result'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenwidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Appoinments'),
+      ),
+      body: SafeArea(
+          child: SingleChildScrollView(
+              child: Helper().isvalidElement(appoinmentList)
+                  ? Column(
+                      children: [
+                        renderDatePicker(),
+                        renderTabs(),
+                        isLoading
+                            ? Container(
+                                height: screenHeight * 0.75,
+                                child: Center(child: const SpinLoader()))
+                            : renderAppoinmentsList(),
+                      ],
+                    )
+                  : Container(
+                      height: screenHeight * 0.85,
+                      child: Center(child: const SpinLoader())))),
+    );
+  }
+
+  Widget renderAppoinmentsList() {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return appoinmentList.length > 0
+        ? Container(
+            height: screenHeight * 0.75,
+            child: ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.all(5.0),
+              itemCount: appoinmentList.length,
+              itemBuilder: (BuildContext context, int index) {
+                var data = appoinmentList[index];
+                return Slidable(
+                    // Specify a key if the Slidable is dismissible.
+                    key: const ValueKey(0),
+                    endActionPane: ActionPane(
+                      motion: const StretchMotion(),
+                      // dismissible: DismissiblePane(onDismissed: () {}),
+                      children: [
+                        SlidableAction(
+                          // An action can be bigger than the others.
+                          flex: 1,
+                          onPressed: (e) async {
+                            await appointmentApprove_Cancel(data, "Fixed");
+                            await getAppoinmentList();
+                            setState(() {
+                              active_tab = "Active";
+                              isLoading = false;
+                            });
+                            // var formatter = new DateFormat('yyyy-MM-dd');
+                            // getAppoinmentList(formatter.format(dateRange.start),
+                            //     formatter.format(dateRange.end));
+                          },
+                          backgroundColor: Color(0xFF7BC043),
+                          foregroundColor: Colors.white,
+                          // icon: Icons.archive,
+                          label: 'Accept',
+                        ),
+                        SlidableAction(
+                          flex: 1,
+                          onPressed: (e) async {
+                            setState(() {
+                              active_tab = "Cancel";
+                              isLoading = true;
+                            });
+                            await appointmentApprove_Cancel(data, "Cancel");
+                            await getAppoinmentList();
+                            setState(() {
+                              active_tab = "Cancel";
+                              isLoading = false;
+                            });
+                          },
+                          backgroundColor: Color(0xFF0392CF),
+                          foregroundColor: Colors.white,
+                          // icon: Icons.save,
+                          label: 'Cancel',
+                        ),
+                      ],
+                    ),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          data['patient_name']
+                                                      .toString()
+                                                      .length >
+                                                  12
+                                              ? 'Name: ' +
+                                                  data['patient_name']
+                                                      .toString()
+                                                      .substring(0, 12) +
+                                                  '...'
+                                              : 'Name: ' +
+                                                  data['patient_name']
+                                                      .toString(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        Text(data['phone'],
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                        Text('Age: ' + data['age'],
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                        Text(
+                                            data['gender'].toString().isEmpty
+                                                ? ''
+                                                : 'Gen: ' +
+                                                    data['gender']
+                                                        .toString()[0],
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          data['appointment_date'].toString(),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        Text(data['appointment_time'],
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                        Text(
+                                            data['tkn_status']
+                                                .toString()
+                                                .capitalize(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                        Text(data['status'],
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ),
+                    ));
+              },
+            ),
+          )
+        : Container(
+            height: screenHeight * 0.85,
+            child: Center(child: Text('No Appoinments')));
+  }
+
+  Widget renderDatePicker() {
+    final start = dateRange.start;
+    final end = dateRange.end;
+    double screenwidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return Center(
+      child: Container(
+        height: screenHeight * 0.07,
+        width: screenwidth * 0.9,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              width: screenwidth * 0.45,
+              child: Row(
+                children: [
+                  Container(
+                    width: screenwidth * 0.10,
+                    child: Text('From:'),
+                  ),
+                  Container(
+                      width: screenwidth * 0.30,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                custom_color.appcolor)),
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          await pickDateRange();
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        child: Text(
+                          '${start.year}/${start.month}/${start.day}',
+                        ),
+                      ))
+                ],
+              ),
+            ),
+            Container(
+              width: screenwidth * 0.45,
+              child: Row(
+                children: [
+                  Container(
+                    width: screenwidth * 0.07,
+                    child: Text('To:'),
+                  ),
+                  Container(
+                    width: screenwidth * 0.30,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              custom_color.appcolor)),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        await pickDateRange();
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      child: Text('${end.year}/${end.month}/${end.day}'),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget renderTabs() {
+    double screenwidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return Container(
+      height: screenHeight * 0.06,
+      width: screenwidth * 0.95,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: tab_items.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () async {
+              setState(() {
+                active_tab = tab_items[index];
+                isLoading = true;
+              });
+              await getAppoinmentList();
+              setState(() {
+                isLoading = false;
+              });
+            },
+            child: new Card(
+                child: new Container(
+              width: screenwidth * 0.25,
+              child: new Text(tab_items[index]),
+              alignment: Alignment.center,
+            )),
+          );
+        },
+        scrollDirection: Axis.horizontal,
+      ),
+    );
+  }
+
+  Future pickDateRange() async {
+    DateTimeRange? newDateRange = await showDateRangePicker(
+      context: context,
+      initialDateRange: dateRange,
+      firstDate: DateTime(DateTime.now().year - 1),
+      lastDate: DateTime(DateTime.now().year + 1),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: custom_color.appcolor, // <-- SEE HERE
+              onPrimary: Colors.white, // <-- SEE HERE
+              onSurface: custom_color.appcolor, // <-- SEE HERE
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary: Colors.red, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    setState(() {
+      dateRange = newDateRange ?? dateRange;
+    });
+    await getAppoinmentList();
+  }
+
+  appointmentApprove_Cancel(data, type) async {
+    var details = {
+      "id": data['appointment_id'].toString(),
+      "patient_id": data['patient_id'].toString(),
+      'doctor_id': storage.getItem('userResponse')['clinic_type'] == "Admin"
+          ? storage.getItem('userResponse')['clinic_profile']['uid'].toString()
+          : storage.getItem('userResponse')['clinic_profile']['id'].toString(),
+      'shop_id': storage.getItem('userResponse')['clinic_type'] == "Admin"
+          ? storage.getItem('userResponse')['clinic_profile']['id'].toString()
+          : storage
+              .getItem('userResponse')['clinic_profile']['shop_id']
+              .toString(),
+      "type": type,
+    };
+    var result = await DashboardApi().appointmnetFixbyDoctor(details);
+    NigDocToast()
+        .showSuccessToast("Appointment ${result['message']} successfully");
+  }
+}
