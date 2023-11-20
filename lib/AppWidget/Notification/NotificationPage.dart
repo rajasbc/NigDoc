@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/DashboardApi.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
 import 'package:marquee_widget/marquee_widget.dart';
@@ -38,7 +39,12 @@ class _NotificationPageState extends State<NotificationPage> {
   bool loading = false;
   List options = ['Enable', 'Disable'];
   var _selectedIndex = 0;
-
+ DateTimeRange dateRange = DateTimeRange(
+    start: DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day ),
+    end:
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+  );
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -57,9 +63,11 @@ class _NotificationPageState extends State<NotificationPage> {
           // appBar: AppBar(title: Text('data')),
           body: SafeArea(
               child: SingleChildScrollView(
+                // physics: NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 Appbar(),
+                renderDatepicker(screenHeight, screenWidth),
                 SizedBox(
                   height: screenHeight * 0.02,
                 ),
@@ -142,6 +150,133 @@ class _NotificationPageState extends State<NotificationPage> {
                     )))
           ],
         ));
+  }
+
+   Future pickDateRange() async {
+    DateTimeRange? newDateRange = await showDateRangePicker(
+      context: context,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: custom_color.appcolor,
+              onPrimary: Colors.white,
+              onSurface: custom_color.appcolor,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: custom_color.appcolor,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+      initialDateRange: dateRange,
+      firstDate: DateTime(DateTime.now().year - 2),
+      lastDate:DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+    );
+    setState(() {
+      dateRange = newDateRange ?? dateRange;
+    });
+    // getPendingCollectionList();
+    setState(() {});
+  }
+
+  renderDatepicker(screenHeight, screenWidth) {
+    final start = dateRange.start;
+    final end = dateRange.end;
+
+    return Container(
+      width: screenWidth,
+      height: screenHeight * 0.1,
+      color:  custom_color.appcolor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          InkWell(
+            onTap: () async {
+              await pickDateRange();
+             await loadNotifications();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.shade400,
+                //     blurRadius: 10.0,
+                //     spreadRadius: 1,
+                //     // offset: Offset(
+                //     //   10,
+                //     //   10,
+                //     // ),
+                //   )
+                // ],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.date_range_outlined,
+                    ),
+                    Text(
+                      'From: ${start.year}/${start.month}/${start.day}  ',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: custom_color.appcolor),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () async {
+              await pickDateRange();
+              await loadNotifications();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.shade400,
+                //     blurRadius: 10.0,
+                //     spreadRadius: 1,
+                //     // offset: Offset(
+                //     //   10,
+                //     //   10,
+                //     // ),
+                //   )
+                // ],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.date_range_outlined,
+                    ),
+                    Text(
+                      'To: ${end.year}/${end.month}/${end.day}  ',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color:  custom_color.appcolor),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Widget Appbar() {
@@ -296,10 +431,11 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   loadNotifications() async {
+     var formatter = DateFormat('yyyy-MM-dd');
     var data = {
       'email': storage.getItem('userResponse')['clinic_profile']['email'],
-      'from': Helper().getCurrentDate(),
-      'to': Helper().getCurrentDate(),
+      'from':formatter.format(dateRange.start),
+      'to': formatter.format(dateRange.end),
     };
     var result = await DashboardApi().GetNotification(data);
     setState(() {

@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/Common/utils.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/DashboardApi.dart';
+import 'package:nigdoc/AppWidget/VideoCall/api_call.dart';
+import 'package:nigdoc/AppWidget/VideoCall/meeting_screen.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
@@ -72,6 +74,7 @@ class _AppointmentListState extends State<AppointmentList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Appoinments'),
+        backgroundColor:custom_color.appcolor ,
       ),
       body: SafeArea(
           child: SingleChildScrollView(
@@ -153,6 +156,7 @@ class _AppointmentListState extends State<AppointmentList> {
                       ],
                     ),
                     child: Card(
+                      elevation: 10,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
@@ -164,7 +168,7 @@ class _AppointmentListState extends State<AppointmentList> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(5.0),
+                                    padding: const EdgeInsets.all(4.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -174,40 +178,72 @@ class _AppointmentListState extends State<AppointmentList> {
                                                       .toString()
                                                       .length >
                                                   12
-                                              ? 'Name: ' +
+                                              ? 
                                                   data['patient_name']
                                                       .toString()
                                                       .substring(0, 12) +
                                                   '...'
-                                              : 'Name: ' +
+                                              : 
                                                   data['patient_name']
                                                       .toString(),
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 14,
                                           ),
                                         ),
                                         Text(data['phone'],
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: 14,
                                             )),
                                         Text('Age: ' + data['age'],
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: 14,
                                             )),
-                                        Text(
-                                            data['gender'].toString().isEmpty
-                                                ? ''
-                                                : 'Gen: ' +
-                                                    data['gender']
-                                                        .toString()[0],
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                            )),
+                                           active_tab == "Fixed" &&
+                                                data['appointment_link'] != ''
+                                            ? InkWell(
+                                                onTap: () {
+                                                  String meetingId =
+                                                      data['appointment_link'];
+                                                  var re = RegExp(
+                                                      "\\w{4}\\-\\w{4}\\-\\w{4}");
+                                                  // check meeting id is not null or invaild
+                                                  // if meeting id is vaild then navigate to MeetingScreen with meetingId,token
+                                                  if (meetingId.isNotEmpty &&
+                                                      re.hasMatch(meetingId)) {
+                                                    // _meetingIdController.clear();
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MeetingScreen(
+                                                          meetingId: meetingId,
+                                                          token: token,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                      content: Text(
+                                                          "Please enter valid meeting id"),
+                                                    ));
+                                                  }
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    
+                                                    Icon(
+                                                      Icons.videocam_outlined,color: Colors.green,size: 30 ),
+                                                   
+                                                  ],
+                                                ))
+                                            : Text('')
                                       ],
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(5.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -215,23 +251,23 @@ class _AppointmentListState extends State<AppointmentList> {
                                         Text(
                                           data['appointment_date'].toString(),
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 14,
                                           ),
                                         ),
                                         Text(data['appointment_time'],
                                             style: TextStyle(
-                                              fontSize: 10,
+                                              fontSize: 12,
                                             )),
                                         Text(
                                             data['tkn_status']
                                                 .toString()
-                                                .capitalize(),
+                                                ,
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: 14,
                                             )),
                                         Text(data['status'],
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: 14,
                                             )),
                                       ],
                                     ),
@@ -347,12 +383,17 @@ class _AppointmentListState extends State<AppointmentList> {
                 isLoading = false;
               });
             },
-            child: new Card(
-                child: new Container(
-              width: screenwidth * 0.25,
-              child: new Text(tab_items[index]),
-              alignment: Alignment.center,
-            )),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: new Container(
+                
+                decoration: BoxDecoration(border: Border.all( color:custom_color.appcolor,
+                  width: 3,), borderRadius: BorderRadius.circular(10),color:active_tab == tab_items[index]?custom_color.appcolor:Colors.white),
+                width: screenwidth * 0.22,
+                child: new Text(tab_items[index],style: TextStyle(color:active_tab == tab_items[index]? Colors.white:custom_color.appcolor,fontSize: 16),),
+                alignment: Alignment.center,
+              ),
+            ),
           );
         },
         scrollDirection: Axis.horizontal,
@@ -391,7 +432,9 @@ class _AppointmentListState extends State<AppointmentList> {
   }
 
   appointmentApprove_Cancel(data, type) async {
-    var details = {
+    if(type=="Fixed"){
+      await createMeeting().then((meetingId) async {
+          var details = {
       "id": data['appointment_id'].toString(),
       "patient_id": data['patient_id'].toString(),
       'doctor_id': storage.getItem('userResponse')['clinic_type'] == "Admin"
@@ -403,9 +446,37 @@ class _AppointmentListState extends State<AppointmentList> {
               .getItem('userResponse')['clinic_profile']['shop_id']
               .toString(),
       "type": type,
+      "link":meetingId
+    };
+    print(details);
+    var result = await DashboardApi().appointmnetFixbyDoctor(details);
+    print(result);
+    NigDocToast()
+        .showSuccessToast("Appointment ${result['message']} successfully");
+
+      });
+
+    }else{
+       var details = {
+      "id": data['appointment_id'].toString(),
+      "patient_id": data['patient_id'].toString(),
+      'doctor_id': storage.getItem('userResponse')['clinic_type'] == "Admin"
+          ? storage.getItem('userResponse')['clinic_profile']['uid'].toString()
+          : storage.getItem('userResponse')['clinic_profile']['id'].toString(),
+      'shop_id': storage.getItem('userResponse')['clinic_type'] == "Admin"
+          ? storage.getItem('userResponse')['clinic_profile']['id'].toString()
+          : storage
+              .getItem('userResponse')['clinic_profile']['shop_id']
+              .toString(),
+      "type": type,
+      "link":type
     };
     var result = await DashboardApi().appointmnetFixbyDoctor(details);
     NigDocToast()
         .showSuccessToast("Appointment ${result['message']} successfully");
+
+    }
+   
+    
   }
 }

@@ -22,6 +22,7 @@ import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/PharmacyLink/PharmacyList.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/TestList/TestList.dart';
+import 'package:nigdoc/AppWidget/VideoCall/join_screen.dart';
 import 'package:nigdoc/AppWidget/common/DeviceInfo.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
@@ -113,6 +114,8 @@ class _DashState extends State<Dash> {
     await Permission.camera.request();
     await Permission.location.request();
     await Permission.notification.request();
+    await Permission.audio.request();
+    await Permission.microphone.request();
     // getCurrentLocation();
   }
 
@@ -231,6 +234,7 @@ class _DashState extends State<Dash> {
           actions: [
             Row(
               children: [
+                     
                 IconButton(
                     onPressed: () {
                       Navigator.push(

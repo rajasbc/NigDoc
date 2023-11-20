@@ -6,13 +6,15 @@ import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Loginpage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 var userResponse;
 var token = null;
 var storeBox;
 
-void main() {
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp();
   final LocalStorage storage = new LocalStorage('doctor_store');
   runApp(MyApp());
 }
