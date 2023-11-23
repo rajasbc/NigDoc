@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Patients.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
@@ -203,7 +204,21 @@ class _PatientListState extends State<PatientList> {
             ),
           ):Center(
             child: Container(child:SpinLoader()
-          )),));
+          )),
+           floatingActionButton: FloatingActionButton(
+          backgroundColor: custom_color.appcolor,
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Patients()));
+          },
+          child: Icon(
+            Icons.add,
+            size: 30,
+            color: Colors.white,
+          ),
+        ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        ));
   }
   
 

@@ -234,6 +234,15 @@ class _DashState extends State<Dash> {
           actions: [
             Row(
               children: [
+                       IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => JoinScreen(),
+                          ));
+                    },
+                    icon: Icon(FontAwesome5.video,color: Colors.white,)),
                      
                 IconButton(
                     onPressed: () {
@@ -243,7 +252,7 @@ class _DashState extends State<Dash> {
                             builder: (context) => AppointmentList(),
                           ));
                     },
-                    icon: Icon(FontAwesome5.plus_circle)),
+                    icon: Icon(FontAwesome5.plus_circle,color: Colors.white)),
                 IconButton(
                     onPressed: () {
                       Navigator.push(
@@ -252,7 +261,7 @@ class _DashState extends State<Dash> {
                             builder: (context) => NotificationPage(),
                           ));
                     },
-                    icon: Icon(FontAwesome5.bell)),
+                    icon: Icon(FontAwesome5.bell,color: Colors.white,)),
                 IconButton(
                     onPressed: () {
                       Alert(
@@ -287,7 +296,7 @@ class _DashState extends State<Dash> {
                         ],
                       ).show();
                     },
-                    icon: Icon(Icons.logout)),
+                    icon: Icon(Icons.logout,color: Colors.white,)),
               ],
             ),
             // on(onPressed: getAllCustomers, icon: Icon(Icons.category))
@@ -1178,23 +1187,23 @@ class _DashState extends State<Dash> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: custom_color.appcolor,
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Patients()));
-          },
-          child: Icon(
-            Icons.add,
-            size: 30,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: custom_color.appcolor,
+        //   onPressed: () {
+        //     Navigator.push(
+        //         context, MaterialPageRoute(builder: (context) => Patients()));
+        //   },
+        //   child: Icon(
+        //     Icons.add,
+        //     size: 30,
+        //   ),
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
         bottomNavigationBar: BottomAppBar(
             shape: CircularNotchedRectangle(),
             notchMargin: 5,
             child: Container(
-              height: screenHeight * 0.07,
+              height: screenHeight * 0.06,
               width: screenWidth,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1258,9 +1267,9 @@ class _DashState extends State<Dash> {
                       );
                     },
                   ),
-                  SizedBox(
-                    width: 5,
-                  ),
+                  // SizedBox(
+                  //   width: 5,
+                  // ),
                   InkWell(
                     splashColor: Colors.white,
                     child: Column(

@@ -131,10 +131,21 @@ class _PatientsState extends State<Patients> {
          return true;
         },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Registration'),
-          backgroundColor: custom_color.appcolor,
-        ),
+         appBar: AppBar(title: Text('Registration',
+              style: TextStyle(color: Colors.white),),
+              backgroundColor:custom_color.appcolor,
+              leading: IconButton(onPressed: (){
+                Navigator.push(
+              context, MaterialPageRoute(builder: (context)=> Dash(),)
+             );
+              }, icon: Icon(Icons.arrow_back,
+              color: Colors.white,),),
+            
+              ),
+        // appBar: AppBar(
+        //   title: Text('Registration',style: TextStyle(color: Colors.white)),
+        //   backgroundColor: custom_color.appcolor,
+        // ),
         body: Container(
           child: SingleChildScrollView(
             child: Column(
@@ -1090,6 +1101,7 @@ class _PatientsState extends State<Patients> {
             ),
           ),
         ),
+           
       ),
     );
   }

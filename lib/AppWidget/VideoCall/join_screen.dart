@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'api_call.dart';
 import 'meeting_screen.dart';
+import '../../../AppWidget/common/Colors.dart' as custom_color;
+
 
 class JoinScreen extends StatelessWidget {
   final _meetingIdController = TextEditingController();
@@ -46,36 +49,59 @@ class JoinScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('VideoSDK QuickStart'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () => onCreateButtonPressed(context),
-              child: const Text('Create Meeting'),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Meeting Id',
-                  border: OutlineInputBorder(),
-                ),
-                controller: _meetingIdController,
+    return WillPopScope(
+      onWillPop: () async {
+         Navigator.push(
+          context, MaterialPageRoute(builder: (context)=> Dash(),)
+         );
+         return true;
+        },
+      child: Scaffold(
+           appBar: AppBar(title: Text('Video Call',
+              style: TextStyle(color: Colors.white),),
+              backgroundColor:custom_color.appcolor,
+              leading: IconButton(onPressed: (){
+                Navigator.push(
+              context, MaterialPageRoute(builder: (context)=> Dash(),)
+             );
+              }, icon: Icon(Icons.arrow_back,
+              color: Colors.white,),),
+            
               ),
+          // appBar: AppBar(
+          //  title: const Text('Video Call'),
+          //     backgroundColor:custom_color.appcolor ,
+          // ),
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Secure Video call Meet',style:TextStyle(color:Colors.blue,fontSize: 20)),
+                // ElevatedButton(
+                //   onPressed: () => onCreateButtonPressed(context),
+                //   child: const Text('Create Meeting'),
+                // ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      hintText: 'Meeting Id',
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: _meetingIdController,
+                  ),
+                ),
+                ElevatedButton(
+                style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(custom_color.appcolor)),
+                  onPressed: () => onJoinButtonPressed(context),
+                  child: const Text('Join Meeting',style:TextStyle(color:Colors.white)),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () => onJoinButtonPressed(context),
-              child: const Text('Join Meeting'),
-            ),
-          ],
+          ),
         ),
-      ),
-    );
+    )
+    ;
   }
 }

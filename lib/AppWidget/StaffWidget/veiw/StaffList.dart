@@ -41,37 +41,48 @@ class _StaffListState extends State<StaffList> {
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('User List'),
-          backgroundColor: custom_color.appcolor,
-          // actions: [
-          //   Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: TextButton(
-          //         onPressed: () {
-          //           Navigator.push(
-          //               context,
-          //               MaterialPageRoute(
-          //                 builder: (context) => AddUser(),
-          //               ));
-          //         },
-          //         child: Text(
-          //           "Add User",
-          //           style: TextStyle(
-          //               color: Colors.white,
-          //               fontSize: 12,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         style: ButtonStyle(
-          //             backgroundColor:
-          //                 MaterialStateProperty.all<Color>(Colors.green),
-          //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          //                 RoundedRectangleBorder(
-          //                     borderRadius: BorderRadius.circular(18.0),
-          //                     side: BorderSide(color: Colors.green))))),
-          //   ),
-          // ],
-        ),
+         appBar: AppBar(title: Text('User List',
+              style: TextStyle(color: Colors.white),),
+              backgroundColor:custom_color.appcolor,
+              leading: IconButton(onPressed: (){
+                Navigator.push(
+              context, MaterialPageRoute(builder: (context)=> Dash(),)
+             );
+              }, icon: Icon(Icons.arrow_back,
+              color: Colors.white,),),
+            
+              ),
+        // appBar: AppBar(
+        //   title: Text('User List'),
+        //   backgroundColor: custom_color.appcolor,
+        //   // actions: [
+        //   //   Padding(
+        //   //     padding: const EdgeInsets.all(8.0),
+        //   //     child: TextButton(
+        //   //         onPressed: () {
+        //   //           Navigator.push(
+        //   //               context,
+        //   //               MaterialPageRoute(
+        //   //                 builder: (context) => AddUser(),
+        //   //               ));
+        //   //         },
+        //   //         child: Text(
+        //   //           "Add User",
+        //   //           style: TextStyle(
+        //   //               color: Colors.white,
+        //   //               fontSize: 12,
+        //   //               fontWeight: FontWeight.bold),
+        //   //         ),
+        //   //         style: ButtonStyle(
+        //   //             backgroundColor:
+        //   //                 MaterialStateProperty.all<Color>(Colors.green),
+        //   //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //   //                 RoundedRectangleBorder(
+        //   //                     borderRadius: BorderRadius.circular(18.0),
+        //   //                     side: BorderSide(color: Colors.green))))),
+        //   //   ),
+        //   // ],
+        // ),
         body:isloading? Container(
           
           

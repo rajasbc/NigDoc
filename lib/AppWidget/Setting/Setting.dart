@@ -385,7 +385,7 @@ class _SettingState extends State<Setting> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => LabList(),
+                                  builder: (context) => InjectionList(),
                                 ));
                           },
                         ),

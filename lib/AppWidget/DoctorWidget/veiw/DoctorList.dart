@@ -43,37 +43,48 @@ class _DoctorListState extends State<DoctorList> {
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Doctor List'),
-          backgroundColor:custom_color.appcolor ,
-          // actions: [
-          //   Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: TextButton(
-          //         onPressed: () {
-          //           Navigator.push(
-          //               context,
-          //               MaterialPageRoute(
-          //                 builder: (context) => AddDoctor(),
-          //               ));
-          //         },
-          //         child: Text(
-          //           "Add Doctor",
-          //           style: TextStyle(
-          //               color: Colors.white,
-          //               fontSize: 12,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         style: ButtonStyle(
-          //             backgroundColor:
-          //                 MaterialStateProperty.all<Color>(Colors.green),
-          //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          //                 RoundedRectangleBorder(
-          //                     borderRadius: BorderRadius.circular(18.0),
-          //                     side: BorderSide(color: Colors.green))))),
-          //   ),
-          // ],
-        ),
+         appBar: AppBar(title: Text('Doctor List',
+              style: TextStyle(color: Colors.white),),
+              backgroundColor:custom_color.appcolor,
+              leading: IconButton(onPressed: (){
+                Navigator.push(
+              context, MaterialPageRoute(builder: (context)=> Dash(),)
+             );
+              }, icon: Icon(Icons.arrow_back,
+              color: Colors.white,),),
+            
+              ),
+        // appBar: AppBar(
+        //   title: Text('Doctor List'),
+        //   backgroundColor:custom_color.appcolor ,
+        //   // actions: [
+        //   //   Padding(
+        //   //     padding: const EdgeInsets.all(8.0),
+        //   //     child: TextButton(
+        //   //         onPressed: () {
+        //   //           Navigator.push(
+        //   //               context,
+        //   //               MaterialPageRoute(
+        //   //                 builder: (context) => AddDoctor(),
+        //   //               ));
+        //   //         },
+        //   //         child: Text(
+        //   //           "Add Doctor",
+        //   //           style: TextStyle(
+        //   //               color: Colors.white,
+        //   //               fontSize: 12,
+        //   //               fontWeight: FontWeight.bold),
+        //   //         ),
+        //   //         style: ButtonStyle(
+        //   //             backgroundColor:
+        //   //                 MaterialStateProperty.all<Color>(Colors.green),
+        //   //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //   //                 RoundedRectangleBorder(
+        //   //                     borderRadius: BorderRadius.circular(18.0),
+        //   //                     side: BorderSide(color: Colors.green))))),
+        //   //   ),
+        //   // ],
+        // ),
         body:isloading? Container(
             child: Helper().isvalidElement(doctorlist) && doctorlist.length > 0
                 ? ListView.builder(

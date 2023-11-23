@@ -95,9 +95,20 @@ var accesstoken;
          return true;
         },
       child: Scaffold(
-        appBar: AppBar(title: Text('Cancelled Bill List'),
-        backgroundColor: Customcolor.appcolor,
-        ),
+         appBar: AppBar(title: Text('Cancelled Bill List',
+              style: TextStyle(color: Colors.white),),
+              backgroundColor:Customcolor.appcolor,
+              leading: IconButton(onPressed: (){
+                Navigator.push(
+              context, MaterialPageRoute(builder: (context)=> Dash(),)
+             );
+              }, icon: Icon(Icons.arrow_back,
+              color: Colors.white,),),
+            
+              ),
+        // appBar: AppBar(title: Text('Cancelled Bill List'),
+        // backgroundColor: Customcolor.appcolor,
+        // ),
         body:isLoading? Container(
            child:
                   Column(

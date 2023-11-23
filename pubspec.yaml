@@ -67,6 +67,7 @@ dependencies:
   url_launcher: ^6.1.11
   flutter_slidable: ^3.0.0
   videosdk: ^1.1.3
+  showcaseview: ^2.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
