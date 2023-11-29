@@ -5,6 +5,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/Api.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/veiw/AddDoctor.dart';
+import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart'as custom_color;
@@ -38,7 +39,7 @@ class _DoctorListState extends State<DoctorList> {
     return WillPopScope(onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Dash()),
+          MaterialPageRoute(builder: (context) => Setting()),
         );
         return true;
       },
@@ -48,7 +49,7 @@ class _DoctorListState extends State<DoctorList> {
               backgroundColor:custom_color.appcolor,
               leading: IconButton(onPressed: (){
                 Navigator.push(
-              context, MaterialPageRoute(builder: (context)=> Dash(),)
+              context, MaterialPageRoute(builder: (context)=> Setting(),)
              );
               }, icon: Icon(Icons.arrow_back,
               color: Colors.white,),),

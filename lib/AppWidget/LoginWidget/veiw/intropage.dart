@@ -85,7 +85,7 @@ class _intropageState extends State<intropage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/1.png',
+                'assets/1.jpg',
                 // height: 400,
                 height: screenHeight * 0.9,
                 width: screenWidth * 1,
@@ -97,7 +97,7 @@ class _intropageState extends State<intropage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/2.png',
+                'assets/2.jpg',
                 // height: 400,
                 height: screenHeight * 0.9,
                 width: screenWidth * 1,
@@ -108,7 +108,7 @@ class _intropageState extends State<intropage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/3.png',
+                'assets/3.jpg',
                 // height: 400,
                 height: screenHeight * 0.9,
                 width: screenWidth * 1,

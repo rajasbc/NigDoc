@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/Api.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/veiw/AddUser.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
@@ -36,7 +37,7 @@ class _StaffListState extends State<StaffList> {
     return WillPopScope(onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Dash()),
+          MaterialPageRoute(builder: (context) => Setting()),
         );
         return true;
       },
@@ -46,7 +47,7 @@ class _StaffListState extends State<StaffList> {
               backgroundColor:custom_color.appcolor,
               leading: IconButton(onPressed: (){
                 Navigator.push(
-              context, MaterialPageRoute(builder: (context)=> Dash(),)
+              context, MaterialPageRoute(builder: (context)=> Setting(),)
              );
               }, icon: Icon(Icons.arrow_back,
               color: Colors.white,),),

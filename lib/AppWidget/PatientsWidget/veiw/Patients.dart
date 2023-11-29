@@ -6,6 +6,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 // import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PatientList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
@@ -85,7 +86,7 @@ class _PatientsState extends State<Patients> {
   var doctors = ['Saveetha', 'Sathish'];
   var DoctorList;
   var selectedPatient;
-  var PatientList;
+  var PatientList1;
   bool name=true;
 
   DateTime currentDate = DateTime.now();
@@ -126,7 +127,7 @@ class _PatientsState extends State<Patients> {
     var screenWidth = MediaQuery.of(context).size.width;
     return WillPopScope(onWillPop: () async {
          Navigator.push(
-          context, MaterialPageRoute(builder: (context)=> Dash(),)
+          context, MaterialPageRoute(builder: (context)=> PatientList(),)
          );
          return true;
         },
@@ -136,7 +137,7 @@ class _PatientsState extends State<Patients> {
               backgroundColor:custom_color.appcolor,
               leading: IconButton(onPressed: (){
                 Navigator.push(
-              context, MaterialPageRoute(builder: (context)=> Dash(),)
+              context, MaterialPageRoute(builder: (context)=> PatientList(),)
              );
               }, icon: Icon(Icons.arrow_back,
               color: Colors.white,),),
@@ -205,7 +206,7 @@ class _PatientsState extends State<Patients> {
                         width: screenWidth * 0.95,
                         height: screenHeight * 0.07,
                         decoration:
-                            BoxDecoration(border: Border.all(color: Colors.grey)
+                            BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
                                 // border: OutlineInputBorder()
                                 ),
                         child: DropdownButtonHideUnderline(
@@ -267,133 +268,137 @@ class _PatientsState extends State<Patients> {
                 SizedBox(
                   height: 10,
                 ),
-                name?
+                // name?
 
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Autocomplete<List>(
-                      optionsBuilder: (TextEditingValue textEditingValue) {
-                        if (textEditingValue.text == '') {
-                          return  Iterable<List>.empty();
-                        } else {
-                          var matches = [];
-                          matches.addAll(PatientList);
-                          matches.retainWhere((s) {
-                            return s['customer_name']
-                  .toString()
-                  .toLowerCase()
-                  .contains(textEditingValue.text.toLowerCase());
-                          });
-                          this.setState(() {});
-                          return [matches];
-                        }
-                      },
-                      fieldViewBuilder: (BuildContext context,
-                          TextEditingController textEditingController,
-                          FocusNode focusNode,
-                          VoidCallback onFieldSubmitted) {
-                        return TextFormField(
-                            controller: textEditingController,
-                            focusNode: focusNode,
-                            decoration:  InputDecoration(
-                  border: OutlineInputBorder(),
-                  // prefix: Icon(Icons.search),
-                  prefixIcon: Icon(Icons.search),
-                  hintText: ' Search Patient Name'),
-                            onFieldSubmitted: (String value) {
-                              onFieldSubmitted();
-                            });
-                      },
-                      optionsViewBuilder: (BuildContext context,
-                          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-                        return Align(
-                          alignment: Alignment.topLeft,
-                          child: Material(
-                            child: Container(
-                              width: screenWidth * 0.9,
-                              height: screenHeight * 0.8,
-                              color: Colors.white,
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 5,),
-                                  InkWell(
-                                    child: Card(color: custom_color.lightcolor,
-                                    child:Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Text("Click to Enter a New Customer",style: TextStyle(color: Colors.red),),
-                                    )),
-                                    onTap: (){
-                                      setState(() {
-                                        name=false;
-                                      });
-                                    },
-                                  ),
-                                  Container(
-                                    width: screenWidth * 0.9,
-                              height: screenHeight * 0.65,
-                                    child: ListView.builder(
-                                                    padding:  EdgeInsets.all(5.0),
-                                                    itemCount: options.toList()[0].length,
-                                                    itemBuilder: (BuildContext context, int index) {
-                                                      final option = options.toList()[0].elementAt(index);
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          storage.setItem(
-                                                              'selectedcustomer', options.toList()[0][index]);
-                                                               Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => PrescriptionPage()),
-                                          );
-                                                          setState(() {
-                                                            // showAutoComplete = false;
-                                                            selectedPatient = options.toList()[0][index];
-                                                          });
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Autocomplete<List>(
+                //       optionsBuilder: (TextEditingValue textEditingValue) {
+                //         if (textEditingValue.text == '') {
+                //           return  Iterable<List>.empty();
+                //         } else {
+                //           var matches = [];
+                //           matches.addAll(PatientList1);
+                //           matches.retainWhere((s) {
+                //             return s['customer_name']
+                //   .toString()
+                //   .toLowerCase()
+                //   .contains(textEditingValue.text.toLowerCase());
+                //           });
+                //           this.setState(() {});
+                //           return [matches];
+                //         }
+                //       },
+                //       fieldViewBuilder: (BuildContext context,
+                //           TextEditingController textEditingController,
+                //           FocusNode focusNode,
+                //           VoidCallback onFieldSubmitted) {
+                //         return TextFormField(
+                //             controller: textEditingController,
+                //             focusNode: focusNode,
+                //             decoration:  InputDecoration(
+                //   border: OutlineInputBorder(),
+                //   // prefix: Icon(Icons.search),
+                //   prefixIcon: Icon(Icons.search),
+                //   hintText: ' Search Patient Name'),
+                //             onFieldSubmitted: (String value) {
+                //               onFieldSubmitted();
+                //             });
+                //       },
+                //       optionsViewBuilder: (BuildContext context,
+                //           AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+                //         return Align(
+                //           alignment: Alignment.topLeft,
+                //           child: Material(
+                //             child: Container(
+                //               // width: screenWidth * 0.9,
+                //               // height: screenHeight * 0.8,
+                //             // color: Colors.white,
+                //               child: Column(
+                //                 children: [
+                //                   // SizedBox(height: 5,),
+                //                   // InkWell(
+                //                   //   child: Card(color: custom_color.lightcolor,
+                //                   //   child:Padding(
+                //                   //     padding: const EdgeInsets.all(15.0),
+                //                   //     child: Text("Click to Enter a New Customer",style: TextStyle(color: Colors.red),),
+                //                   //   )),
+                //                   //   onTap: (){
+                //                   //     setState(() {
+                //                   //       name=false;
+                //                   //     });
+                //                   //   },
+                //                   // ),
+                //                   Container(
+                //                     width: screenWidth ,
+                //               // height: screenHeight * 0.65,
+                //                     child: ListView.builder(
+                //                       shrinkWrap: true,
+                //                                     padding:  EdgeInsets.all(5.0),
+                //                                     itemCount: options.toList()[0].length,
+                //                                     itemBuilder: (BuildContext context, int index) {
+                //                                       final option = options.toList()[0].elementAt(index);
+                //                                       return GestureDetector(
+                //                                         onTap: () {
+                //                                           storage.setItem(
+                //                                               'selectedcustomer', options.toList()[0][index]);
+                //                                                Navigator.push(
+                //                             context,
+                //                             MaterialPageRoute(builder: (context) => PrescriptionPage()),
+                //                           );
+                //                                           setState(() {
+                //                                             // showAutoComplete = false;
+                //                                             selectedPatient = options.toList()[0][index];
+                //                                           });
                                                          
-                                                        },
-                                                        child: Card(
-                                                          color: Colors.grey,
-                                                          // color: custom_color.app_color,
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Padding(
-                                    padding:  EdgeInsets.all(8.0),
-                                    child: Text(
-                                        '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
-                                        style:  TextStyle(color: Colors.black)),
-                                                              ),
-                                                              // Divider(
-                                                              //   thickness: 1,
-                                                              // )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                ):
-                 Container(
-                        width: screenWidth * 0.98,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            controller: namecontroller,
+                //                                         },
+                //                                         child: Card(
+                //                                           color: Colors.grey,
+                //                                           // color: custom_color.app_color,
+                //                                           child: Column(
+                //                                             crossAxisAlignment: CrossAxisAlignment.start,
+                //                                             children: [
+                //                                               Padding(
+                //                     padding:  EdgeInsets.all(8.0),
+                //                     child: Text(
+                //                         '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+                //                         style:  TextStyle(color: Colors.black)),
+                //                                               ),
+                //                                               // Divider(
+                //                                               //   thickness: 1,
+                //                                               // )
+                //                                             ],
+                //                                           ),
+                //                                         ),
+                //                                       );
+                //                                     },
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ),
+                //           ),
+                //         );
+                //       },
+                //     ),
+                // ):
+                //  Container(
+                //         width: screenWidth * 0.98,
+                //         child: Padding(
+                //           padding: const EdgeInsets.all(8.0),
+                //           child: TextField(
+                //             controller: namecontroller,
     
-                            // keyboardType: TextInputType.none,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Full Name *'),
-                          ),
-                        ),
-                      ),
+                //             // keyboardType: TextInputType.none,
+                //             decoration: InputDecoration(
+                //                 border: OutlineInputBorder(),
+                //                 labelText: 'Full Name *'),
+                //           ),
+                //         ),
+                //       ),
+                SizedBox(
+                  width: screenWidth * 0.97,
+                  child:renderAutoComplete1(screenWidth, screenHeight)),
                 SizedBox(
                   height: 10,
                 ),
@@ -570,7 +575,7 @@ class _PatientsState extends State<Patients> {
                       width: screenWidth * 0.20,
                       height: screenHeight * 0.07,
                       decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)
+                          BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
                               // border: OutlineInputBorder()
                               ),
                       child: DropdownButtonHideUnderline(
@@ -616,7 +621,7 @@ class _PatientsState extends State<Patients> {
                       width: screenWidth * 0.23,
                       height: screenHeight * 0.07,
                       decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)
+                          BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
                               // border: OutlineInputBorder()
                               ),
                       child: DropdownButtonHideUnderline(
@@ -748,7 +753,7 @@ class _PatientsState extends State<Patients> {
                       width: screenWidth * 0.20,
                       height: screenHeight * 0.07,
                       decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)
+                          BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
                               // border: OutlineInputBorder()
                               ),
                       child: DropdownButtonHideUnderline(
@@ -848,7 +853,7 @@ class _PatientsState extends State<Patients> {
                     height: screenHeight * 0.06,
                     width: screenWidth * 0.95,
                     decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)
+                        BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
                             // border: OutlineInputBorder()
                             ),
                     child: Padding(
@@ -1093,7 +1098,7 @@ class _PatientsState extends State<Patients> {
                             // add_patient(patient_details);
                           }
                         },
-                        child: Text('Register')),
+                        child: Text('Register',style:TextStyle(color:Colors.white))),
                   ),
                 ),
                     SizedBox(height: 20,)
@@ -1181,7 +1186,7 @@ class _PatientsState extends State<Patients> {
       //  storage.setItem('diagnosisList', diagnosisList);
       setState(() {
         // name=true;
-        PatientList = list['Customer_list'];
+        PatientList1 = list['Customer_list'];
         isloading = true;
       });
     }
@@ -1194,7 +1199,7 @@ class _PatientsState extends State<Patients> {
           return  Iterable<List>.empty();
         } else {
           var matches = [];
-          matches.addAll(PatientList);
+          matches.addAll(PatientList1);
           matches.retainWhere((s) {
             return s['customer_name']
                 .toString()
@@ -1231,6 +1236,7 @@ class _PatientsState extends State<Patients> {
               height: screenHeight * 0.8,
               color: Colors.white,
               child: ListView.builder(
+                shrinkWrap: true,
                 padding:  EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
@@ -1268,6 +1274,170 @@ class _PatientsState extends State<Patients> {
             ),
           ),
         );
+      },
+    );
+  }
+   renderAutoComplete1(screenWidth, screenHeight) {
+    return Autocomplete<List>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        setState(() {
+          namecontroller.text=textEditingValue.text;
+          
+        });
+
+        if (textEditingValue.text == '') {
+          return  const Iterable<List>.empty();
+        } else {
+          var matches = [];
+          matches.addAll(PatientList1);
+          matches.retainWhere((s) {
+            return s['customer_name']
+                .toString()
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          });
+          setState(() {});
+          return [matches];
+        }
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextFormField(
+            controller: textEditingController,
+            focusNode: focusNode,
+                 decoration: InputDecoration(
+                  hintText: 'Search Patient Name',
+                  
+                  prefixIcon: const Icon(Icons.search),
+                  
+                  
+                  enabledBorder: OutlineInputBorder(
+                    
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: custom_color.appcolor,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: custom_color.appcolor,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+            
+            // decoration:  InputDecoration(
+            //     border: OutlineInputBorder(),
+            //     // prefix: Icon(Icons.search),
+            //     prefixIcon: Icon(Icons.search),
+            //     hintText: ' Search Patient Name'),
+            onFieldSubmitted: (String value) {
+              onFieldSubmitted();
+            });
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+        return options.toList()[0].isNotEmpty ?
+         Align(
+          alignment: Alignment.topCenter,
+          child: Material(
+            child: SizedBox(
+              width: screenWidth * 0.9,
+              // height: screenHeight * 0.8,
+              // color:Colors.transparent,
+              // color: Colors.white,
+              child: Card(
+                 color: Colors.transparent,
+                      elevation: 30,
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+             
+                  child: Column(
+                    children: [
+                     
+                
+                      ListView.builder(
+                        shrinkWrap: true,
+                        padding:  const EdgeInsets.all(5.0),
+                        itemCount: options.toList()[0].length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          
+                          final option = options.toList()[0].elementAt(index);
+                          return  GestureDetector(
+                                                        onTap: () {
+                                                          storage.setItem(
+                                                              'selectedcustomer', options.toList()[0][index]);
+                                                               Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => PrescriptionPage()),
+                                          );
+                                                          setState(() {
+                                                            // showAutoComplete = false;
+                                                            selectedPatient = options.toList()[0][index];
+                                                          });
+                                                         
+                                                        },
+                                                        child: Card(
+                                                          color: Colors.grey,
+                                                          // color: custom_color.app_color,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Padding(
+                                    padding:  EdgeInsets.all(8.0),
+                                    child: Text(
+                                        '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+                                        style:  TextStyle(color: Colors.black)),
+                                                              ),
+                                                              // Divider(
+                                                              //   thickness: 1,
+                                                              // )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ):Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  child: Container(
+                    width: screenWidth * 0.5,
+                    color: Colors.blue.shade100,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(5.0),
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              // setState(() {
+                              //   selectedPatient = options.toList()[0][index];
+                              //   showAutoComplete = false;
+                              // });
+                            },
+                            child: const Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Text('Search List Empty'),
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }

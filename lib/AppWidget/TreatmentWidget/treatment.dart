@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
@@ -46,7 +47,7 @@ class _TreatmentListState extends State<TreatmentList> {
       return new WillPopScope(
        onWillPop: () async {
          Navigator.push(
-          context, MaterialPageRoute(builder: (context)=> Dash(),)
+          context, MaterialPageRoute(builder: (context)=> Setting(),)
          );
          return true;
         },
@@ -56,7 +57,7 @@ class _TreatmentListState extends State<TreatmentList> {
           backgroundColor: custom_color.appcolor ,
           leading: IconButton(onPressed: (){
             Navigator.push(
-          context, MaterialPageRoute(builder: (context)=> Dash(),)
+          context, MaterialPageRoute(builder: (context)=> Setting(),)
          );
           }, icon: Icon(Icons.arrow_back,
           color: Colors.white,),),

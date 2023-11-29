@@ -5,6 +5,7 @@ import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 // import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Loginpage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Splashscreen.dart';
+import 'package:nigdoc/AppWidget/LoginWidget/veiw/intropage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 

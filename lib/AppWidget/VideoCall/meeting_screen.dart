@@ -94,10 +94,26 @@ class _MeetingScreenState extends State<MeetingScreen> {
     return WillPopScope(
       onWillPop: () => _onWillPop(),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Video Call'),
-          backgroundColor:custom_color.appcolor ,
+         appBar: AppBar(
+          title: Text(
+            'Video Call',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: custom_color.appcolor,
+          leading: IconButton(
+            onPressed: () {
+             _onWillPop();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
         ),
+        // appBar: AppBar(
+        //   title: const Text('Video Call'),
+        //   backgroundColor:custom_color.appcolor ,
+        // ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

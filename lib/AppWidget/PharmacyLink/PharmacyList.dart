@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart'as custom_color;
@@ -37,7 +38,7 @@ class _PharmacyListState extends State<PharmacyList> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Dash(),
+                builder: (context) => Setting(),
               ));
           return true;
         },
@@ -54,7 +55,7 @@ class _PharmacyListState extends State<PharmacyList> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Dash(),
+                      builder: (context) => Setting(),
                     ));
               },
               icon: Icon(

@@ -39,9 +39,9 @@ class _NotificationPageState extends State<NotificationPage> {
   bool loading = false;
   List options = ['Enable', 'Disable'];
   var _selectedIndex = 0;
- DateTimeRange dateRange = DateTimeRange(
-    start: DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day ),
+  DateTimeRange dateRange = DateTimeRange(
+    start:
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
     end:
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
   );
@@ -59,23 +59,25 @@ class _NotificationPageState extends State<NotificationPage> {
           return true;
         },
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.grey[200],
           // appBar: AppBar(title: Text('data')),
           body: SafeArea(
-              child: SingleChildScrollView(
-                // physics: NeverScrollableScrollPhysics(),
-            child: Column(
-              children: [
-                Appbar(),
-                renderDatepicker(screenHeight, screenWidth),
-                SizedBox(
-                  height: screenHeight * 0.02,
+              child: Column(
+            children: [
+              Appbar(),
+              renderDatepicker(screenHeight, screenWidth),
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                  child: SingleChildScrollView(
+                    // physics: NeverScrollableScrollPhysics(),
+                    child: Helper().isvalidElement(notificationList)
+                        ? renderExpansionTile()
+                        : Center(child: SpinLoader()),
+                  ),
                 ),
-                Helper().isvalidElement(notificationList)
-                    ? renderExpansionTile()
-                    : SpinLoader()
-              ],
-            ),
+              ),
+            ],
           )),
         ));
   }
@@ -152,7 +154,7 @@ class _NotificationPageState extends State<NotificationPage> {
         ));
   }
 
-   Future pickDateRange() async {
+  Future pickDateRange() async {
     DateTimeRange? newDateRange = await showDateRangePicker(
       context: context,
       builder: (context, child) {
@@ -174,7 +176,8 @@ class _NotificationPageState extends State<NotificationPage> {
       },
       initialDateRange: dateRange,
       firstDate: DateTime(DateTime.now().year - 2),
-      lastDate:DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      lastDate: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
     );
     setState(() {
       dateRange = newDateRange ?? dateRange;
@@ -190,14 +193,14 @@ class _NotificationPageState extends State<NotificationPage> {
     return Container(
       width: screenWidth,
       height: screenHeight * 0.1,
-      color:  custom_color.appcolor,
+      color: custom_color.appcolor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           InkWell(
             onTap: () async {
               await pickDateRange();
-             await loadNotifications();
+              await loadNotifications();
             },
             child: Container(
               decoration: BoxDecoration(
@@ -267,7 +270,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color:  custom_color.appcolor),
+                          color: custom_color.appcolor),
                     ),
                   ],
                 ),
@@ -325,10 +328,12 @@ class _NotificationPageState extends State<NotificationPage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: screenHeight * 0.85,
+      
+      // height: screenHeight * 0.85,
       child: notificationList.length > 0
           ? ListView.builder(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.all(5.0),
               itemCount: notificationList.length,
               itemBuilder: (BuildContext context, int index) {
@@ -372,6 +377,17 @@ class _NotificationPageState extends State<NotificationPage> {
                               width: screenWidth * 0.55,
                               // color: Colors.red,
                               child: Marquee(
+                                animationDuration: Duration(seconds: 18),
+
+                                backDuration: Duration(milliseconds: 5000),
+                                pauseDuration: Duration(seconds: 2),
+
+                                // animationDuration =
+                                //     const Duration(milliseconds: 5000),
+                                // backDuration =
+                                //     const Duration(milliseconds: 5000),
+                                // pauseDuration =
+                                //     const Duration(milliseconds: 2000),
                                 directionMarguee: DirectionMarguee.oneDirection,
                                 child: Text(data['description'] == null
                                     ? ''
@@ -431,10 +447,10 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   loadNotifications() async {
-     var formatter = DateFormat('yyyy-MM-dd');
+    var formatter = DateFormat('yyyy-MM-dd');
     var data = {
       'email': storage.getItem('userResponse')['clinic_profile']['email'],
-      'from':formatter.format(dateRange.start),
+      'from': formatter.format(dateRange.start),
       'to': formatter.format(dateRange.end),
     };
     var result = await DashboardApi().GetNotification(data);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/DoctorWidget/Api.dart';
+import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/Shop/Api.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
@@ -103,7 +104,7 @@ class _ClinicConfigState extends State<ClinicConfig> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Dash(),
+                      builder: (context) => Setting(),
                     ));
               },
               icon: Icon(

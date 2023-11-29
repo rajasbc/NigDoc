@@ -38,7 +38,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   String treatmentDropdownvalue = 'Select Treatment';
   String patternDropdownvalue = 'pattern';
   String prescriptionDropdownvalue = 'Select Prescription';
-  String? finaldiscount = 'Percentage';
+  String? finaldiscount = 'amount';
   var select_button = 'treatment';
   var Medicine = 'Medicine';
   var total;
@@ -2462,11 +2462,11 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                   value: "Percentage",
                                                   groupValue: finaldiscount,
                                                   onChanged: (value) {
-                                                    setState(() {
-                                                      finaldiscount =
-                                                          value.toString();
-                                                      totalCalcution();
-                                                    });
+                                                    // setState(() {
+                                                    //   finaldiscount =
+                                                    //       value.toString();
+                                                    //   totalCalcution();
+                                                    // });
                                                   },
                                                 ),
                                               ),
@@ -3233,12 +3233,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
           fontSize: 15.0);
     }
   }
-
   renderAutoComplete(screenWidth, screenHeight) {
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
+      
+
         if (textEditingValue.text == '') {
-          return Iterable<List>.empty();
+          return  const Iterable<List>.empty();
         } else {
           var matches = [];
           matches.addAll(PatientList);
@@ -3248,7 +3249,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                 .toLowerCase()
                 .contains(textEditingValue.text.toLowerCase());
           });
-          this.setState(() {});
+          setState(() {});
           return [matches];
         }
       },
@@ -3259,65 +3260,251 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
-                hintText: ' Search Patient Name'),
+                 decoration: InputDecoration(
+                  hintText: 'Search Patient Name',
+                  
+                  prefixIcon: const Icon(Icons.search),
+                  
+                  
+                  enabledBorder: OutlineInputBorder(
+                    
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: custom_color.appcolor,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: custom_color.appcolor,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+            
+            // decoration:  InputDecoration(
+            //     border: OutlineInputBorder(),
+            //     // prefix: Icon(Icons.search),
+            //     prefixIcon: Icon(Icons.search),
+            //     hintText: ' Search Patient Name'),
             onFieldSubmitted: (String value) {
               onFieldSubmitted();
             });
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
+        return options.toList()[0].isNotEmpty ?
+         Align(
           alignment: Alignment.topLeft,
           child: Material(
-            child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.8,
-              color: Colors.white,
-              child: ListView.builder(
-                padding: EdgeInsets.all(5.0),
-                itemCount: options.toList()[0].length,
-                itemBuilder: (BuildContext context, int index) {
-                  final option = options.toList()[0].elementAt(index);
-                  return GestureDetector(
-                    onTap: () {
-                      storage.setItem(
-                          'selectedPatient', options.toList()[0][index]);
-                      setState(() {
-                        showAutoComplete = false;
-                        selectedPatient = options.toList()[0][index];
-                      });
-                    },
-                    child: Card(
-                      color: Colors.grey,
-                      // color: custom_color.app_color,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                                '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
-                                style: TextStyle(color: Colors.black)),
-                          ),
-                          // Divider(
-                          //   thickness: 1,
-                          // )
-                        ],
+            child: SizedBox(
+              width: screenWidth ,
+              // height: screenHeight * 0.8,
+              // color:Colors.transparent,
+              // color: Colors.white,
+              child: Card(
+                 color: Colors.transparent,
+                      elevation: 30,
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+             
+                  child: Column(
+                    children: [
+                     
+                
+                      ListView.builder(
+                        shrinkWrap: true,
+                        padding:  const EdgeInsets.all(5.0),
+                        itemCount: options.toList()[0].length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                                final option =
+                                    options.toList()[0].elementAt(index);
+                                return GestureDetector(
+                                  onTap: () {
+                                    storage.setItem('selectedPatient',
+                                        options.toList()[0][index]);
+                                    setState(() {
+                                      showAutoComplete = false;
+                                      selectedPatient =
+                                          options.toList()[0][index];
+                                    });
+                                  },
+                                  child: Card(
+                                    color: Colors.grey,
+                                    // color: custom_color.app_color,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                                              Padding(
+                                    padding:  EdgeInsets.all(8.0),
+                                    child: Text(
+                                        '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+                                        style:  TextStyle(color: Colors.black)),
+                                                              ),
+                                                              // Divider(
+                                                              //   thickness: 1,
+                                                              // )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                        },
                       ),
-                    ),
-                  );
-                },
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        );
+        ):Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  child: Container(
+                    width: screenWidth * 0.5,
+                    color: Colors.blue.shade100,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(5.0),
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              // setState(() {
+                              //   selectedPatient = options.toList()[0][index];
+                              //   showAutoComplete = false;
+                              // });
+                            },
+                            child: const Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Text('Search List Empty'),
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }
+
+  // renderAutoComplete(screenWidth, screenHeight) {
+  //   return Autocomplete<List>(
+  //     optionsBuilder: (TextEditingValue textEditingValue) {
+  //       if (textEditingValue.text == '') {
+  //         return Iterable<List>.empty();
+  //       } else {
+  //         var matches = [];
+  //         matches.addAll(PatientList);
+  //         matches.retainWhere((s) {
+  //           return s['customer_name']
+  //               .toString()
+  //               .toLowerCase()
+  //               .contains(textEditingValue.text.toLowerCase());
+  //         });
+  //         this.setState(() {});
+  //         return [matches];
+  //       }
+  //     },
+  //     fieldViewBuilder: (BuildContext context,
+  //         TextEditingController textEditingController,
+  //         FocusNode focusNode,
+  //         VoidCallback onFieldSubmitted) {
+  //       return TextFormField(
+  //           controller: textEditingController,
+  //           focusNode: focusNode,
+  //           decoration: InputDecoration(
+  //               border: OutlineInputBorder(),
+  //               // prefix: Icon(Icons.search),
+  //               prefixIcon: Icon(Icons.search),
+  //               hintText: ' Search Patient Name'),
+  //           onFieldSubmitted: (String value) {
+  //             onFieldSubmitted();
+  //           });
+  //     },
+  //     optionsViewBuilder: (BuildContext context,
+  //         AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
+  //       return Align(
+  //         alignment: Alignment.topLeft,
+  //         child: Material(
+  //           child: Container(
+  //             width: screenWidth * 0.9,
+  //             height: screenHeight * 0.8,
+  //             color: Colors.white,
+  //             child: ListView.builder(
+  //               shrinkWrap: true,
+  //               padding: EdgeInsets.all(5.0),
+  //               itemCount: options.toList()[0].length,
+  //               itemBuilder: (BuildContext context, int index) {
+  //                 final option = options.toList()[0].elementAt(index);
+  //                 return GestureDetector(
+  //                   onTap: () {
+  //                     storage.setItem(
+  //                         'selectedPatient', options.toList()[0][index]);
+  //                     setState(() {
+  //                       showAutoComplete = false;
+  //                       selectedPatient = options.toList()[0][index];
+  //                     });
+  //                   },
+  //                   child: Card(
+  //                     color: Colors.grey,
+  //                     // color: custom_color.app_color,
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Padding(
+  //                           padding: EdgeInsets.all(8.0),
+  //                           child: Text(
+  //                               '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+  //                               style: TextStyle(color: Colors.black)),
+  //                         ),
+  //                         // Divider(
+  //                         //   thickness: 1,
+  //                         // )
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 );
+  //                 //  GestureDetector(
+  //                 //   onTap: () {
+  //                 //     storage.setItem(
+  //                 //         'selectedPatient', options.toList()[0][index]);
+  //                 //     setState(() {
+  //                 //       showAutoComplete = false;
+  //                 //       selectedPatient = options.toList()[0][index];
+  //                 //     });
+  //                 //   },
+  //                 //   child: Card(
+  //                 //     color: Colors.grey,
+  //                 //     // color: custom_color.app_color,
+  //                 //     child: Column(
+  //                 //       crossAxisAlignment: CrossAxisAlignment.start,
+  //                 //       children: [
+  //                 //         Padding(
+  //                 //           padding: EdgeInsets.all(8.0),
+  //                 //           child: Text(
+  //                 //               '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+  //                 //               style: TextStyle(color: Colors.black)),
+  //                 //         ),
+  //                 //         // Divider(
+  //                 //         //   thickness: 1,
+  //                 //         // )
+  //                 //       ],
+  //                 //     ),
+  //                 //   ),
+  //                 // );
+  //               },
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   renderLablistAutoComplete(screenWidth, screenHeight) {
     return Autocomplete<List>(
@@ -3355,15 +3542,16 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
+        return options.toList()[0].isNotEmpty ?Align(
           alignment: Alignment.topLeft,
           child: Material(
             child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.4,
+              width: screenWidth ,
+              // height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
                 padding: EdgeInsets.all(5.0),
+                shrinkWrap: true,
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
@@ -3407,7 +3595,35 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
               ),
             ),
           ),
-        );
+        ):Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  child: Container(
+                    width: screenWidth * 0.5,
+                    color: Colors.blue.shade100,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(5.0),
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              // setState(() {
+                              //   selectedPatient = options.toList()[0][index];
+                              //   showAutoComplete = false;
+                              // });
+                            },
+                            child: const Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Text('Search List Empty'),
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }
@@ -3452,12 +3668,12 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
+        return options.toList()[0].isNotEmpty ? Align(
           alignment: Alignment.topLeft,
           child: Material(
             child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.5,
+              width: screenWidth ,
+              // height: screenHeight * 0.5,
               color: Colors.white,
               child: ListView.builder(
                 physics: AlwaysScrollableScrollPhysics(),
@@ -3503,7 +3719,35 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
               ),
             ),
           ),
-        );
+        ):Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  child: Container(
+                    width: screenWidth * 0.5,
+                    color: Colors.blue.shade100,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(5.0),
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              // setState(() {
+                              //   selectedPatient = options.toList()[0][index];
+                              //   showAutoComplete = false;
+                              // });
+                            },
+                            child: const Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Text('Search List Empty'),
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }
@@ -3544,14 +3788,15 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
+        return options.toList()[0].isNotEmpty ? Align(
           alignment: Alignment.topLeft,
           child: Material(
             child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.4,
+              width: screenWidth ,
+              // height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
+                shrinkWrap: true,
                 padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
@@ -3597,7 +3842,35 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
               ),
             ),
           ),
-        );
+        ):Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  child: Container(
+                    width: screenWidth * 0.5,
+                    color: Colors.blue.shade100,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(5.0),
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              // setState(() {
+                              //   selectedPatient = options.toList()[0][index];
+                              //   showAutoComplete = false;
+                              // });
+                            },
+                            child: const Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Text('Search List Empty'),
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }
@@ -3638,16 +3911,17 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
+        return options.toList()[0].isNotEmpty ? Align(
           alignment: Alignment.topLeft,
           child: Material(
             child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.4,
+              width: screenWidth ,
+              // height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
                 padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
+                shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
 
@@ -3692,7 +3966,35 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
               ),
             ),
           ),
-        );
+        ):Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  child: Container(
+                    width: screenWidth * 0.5,
+                    color: Colors.blue.shade100,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(5.0),
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              // setState(() {
+                              //   selectedPatient = options.toList()[0][index];
+                              //   showAutoComplete = false;
+                              // });
+                            },
+                            child: const Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Text('Search List Empty'),
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }
@@ -3733,14 +4035,15 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return Align(
+        return options.toList()[0].isNotEmpty ? Align(
           alignment: Alignment.topLeft,
           child: Material(
             child: Container(
-              width: screenWidth * 0.9,
-              height: screenHeight * 0.4,
+              width: screenWidth ,
+              // height: screenHeight * 0.4,
               color: Colors.white,
               child: ListView.builder(
+                shrinkWrap: true,
                 padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
@@ -3794,7 +4097,35 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
               ),
             ),
           ),
-        );
+        ):Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  child: Container(
+                    width: screenWidth * 0.5,
+                    color: Colors.blue.shade100,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(5.0),
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {
+                              // setState(() {
+                              //   selectedPatient = options.toList()[0][index];
+                              //   showAutoComplete = false;
+                              // });
+                            },
+                            child: const Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Text('Search List Empty'),
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }

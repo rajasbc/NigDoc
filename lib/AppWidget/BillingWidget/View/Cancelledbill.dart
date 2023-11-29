@@ -20,11 +20,9 @@ class _CancelledbillState extends State<Cancelledbill> {
   TextEditingController fromdateInputController = TextEditingController();
   TextEditingController todateInputController = TextEditingController();
 
-
-var accesstoken;
+  var accesstoken;
   bool isLoading = false;
   var cancellbill;
-
 
   DateTime currentDate = DateTime.now();
   Future<void> selectDate(BuildContext context, data) async {
@@ -67,250 +65,310 @@ var accesstoken;
     } else {
       todateInputController.text = DateFormat(DateFormate).format(pickedDate!);
       // todateInputController.text = pickedDate.toString().split(' ')[0];
-    getcancelledlist();
+      getcancelledlist();
     }
   }
-
- 
 
   void initState() {
     super.initState();
     accesstoken = storage.getItem('userResponse')['access_token'];
-    fromdateInputController.text = Helper().getCurrentDate()  ;
+    fromdateInputController.text = Helper().getCurrentDate();
     todateInputController.text = Helper().getCurrentDate();
     getcancelledlist();
-    
+
     // print('ddd');
   }
+
   @override
   Widget build(BuildContext context) {
     // final cancelstart = canceldateRange.start;
     // final cancelend = canceldateRange.end;
-     var screenHeight = MediaQuery.of(context).size.height;
+    var screenHeight = MediaQuery.of(context).size.height;
     var screenwidht = MediaQuery.of(context).size.width;
-    return WillPopScope( onWillPop: () async {
-         Navigator.push(
-          context, MaterialPageRoute(builder: (context)=> Dash(),)
-         );
-         return true;
-        },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Dash(),
+            ));
+        return true;
+      },
       child: Scaffold(
-         appBar: AppBar(title: Text('Cancelled Bill List',
-              style: TextStyle(color: Colors.white),),
-              backgroundColor:Customcolor.appcolor,
-              leading: IconButton(onPressed: (){
-                Navigator.push(
-              context, MaterialPageRoute(builder: (context)=> Dash(),)
-             );
-              }, icon: Icon(Icons.arrow_back,
-              color: Colors.white,),),
-            
-              ),
+        appBar: AppBar(
+          title: Text(
+            'Cancelled Bill List',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Customcolor.appcolor,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Dash(),
+                  ));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
+        ),
         // appBar: AppBar(title: Text('Cancelled Bill List'),
         // backgroundColor: Customcolor.appcolor,
         // ),
-        body:isLoading? Container(
-           child:
-                  Column(
-                    children: [
-                      SizedBox(height: 10,),
-                        Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: screenwidht,
-                  height: screenHeight * 0.06,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: screenwidht * 0.45,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'From',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            labelText: 'From',
-                            suffixIcon: Icon(
-                              Icons.date_range,
-                              color: Customcolor.appcolor,
-                            ),
-                          ),
-                          controller: fromdateInputController,
-                          readOnly: true,
-                          onTap: () async {
-                            selectDate(context, 'from');
-                          },
-                        ),
-                      ),
-                      Container(
-                        width: screenwidht * 0.45,
-                        child: TextFormField(
-                            decoration: InputDecoration(
-                              hintText: 'To',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              labelText: 'To',
-                              suffixIcon: Icon(
-                                Icons.date_range,
-                                color: Customcolor.appcolor,
-                              ),
-                            ),
-                            controller: todateInputController,
-                            readOnly: true,
-                            onTap: () async {
-                              selectDate(context, 'to');
-                            }),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-               Divider(
-                thickness: 3,
-              ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                    height: screenHeight * 0.7596,
-                          child: 
-                          
-                          Helper().isvalidElement(cancellbill) &&
-                                            cancellbill.length > 0? 
-                      
-                                          
-                                            ListView.builder(
-                            itemCount: cancellbill.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              var data = cancellbill[index];
-                              return Center(
-                                child: Container(
-                                  color: index % 2 == 0
-                                      ? Color.fromARGB(255, 238, 242, 250)
-                                      : Colors.white,
-                                  width: screenwidht,
-                                  // height: screenHeight * 0.20,
-                                  // width: screenWidth * 0.90,
-                                  // decoration:
-                                  //     BoxDecoration(border: Border.all(color: Colors.grey)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                // width: screenwidht * 0.47,
-                                                child: Row(
-                                                  children: [
-                                                   Icon(Icons.person,color:Color.fromARGB(255, 98, 96, 96),),
-                                                      Helper().isvalidElement(data['customer_name'])  ? Text(
-                                                        '${data['customer_name'].toString()}')  : Text(''),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                   Icon(Icons.phone,color:Color.fromARGB(255, 98, 96, 96),),
-                                                    Text('${data['cus_phone'].toString()}')
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                             
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.calendar_month,color:Color.fromARGB(255, 98, 96, 96),),
-                                                    Text('${data['date'].toString().substring(0,10)}')
-                                                  ],
-                                                ),
-                                              ),
-                                                Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Discount :',
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('${data['discount'].toString()}')
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                         
-                                       
-                                        Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                // width: screenwidht * 0.55,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Fess :',
-                                                      // style: TextStyle(
-                                                      //     fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('${data['grand_total'].toString()}')
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Paid :',
-                                                      // style: TextStyle(
-                                                      //     fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('${data['grand_total'] - data['balance']}')
-                                                  ],
-                                                ),
-                                              ),
-                                               Container(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Status :',
-                                                      // style: TextStyle(
-                                                      //     fontWeight: FontWeight.bold),
-                                                    ),
-                                                    Text('${data['pay_status'].toString()}')
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+        body: isLoading
+            ? Container(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: screenwidht,
+                        height: screenHeight * 0.06,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: screenwidht * 0.45,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: 'From',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8)),
+                                  labelText: 'From',
+                                  suffixIcon: Icon(
+                                    Icons.date_range,
+                                    color: Customcolor.appcolor,
                                   ),
                                 ),
-                              );
-                            }):Center(child: Text('No Data Found'),)
+                                controller: fromdateInputController,
+                                readOnly: true,
+                                onTap: () async {
+                                  selectDate(context, 'from');
+                                },
+                              ),
+                            ),
+                            Container(
+                              width: screenwidht * 0.45,
+                              child: TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: 'To',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8)),
+                                    labelText: 'To',
+                                    suffixIcon: Icon(
+                                      Icons.date_range,
+                                      color: Customcolor.appcolor,
+                                    ),
+                                  ),
+                                  controller: todateInputController,
+                                  readOnly: true,
+                                  onTap: () async {
+                                    selectDate(context, 'to');
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      thickness: 3,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            // height: screenHeight * 0.7596,
+                            child: Helper().isvalidElement(cancellbill) &&
+                                    cancellbill.length > 0
+                                ? ListView.builder(
+                                    itemCount: cancellbill.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var data = cancellbill[index];
+                                      return Center(
+                                        child: Container(
+                                          color: index % 2 == 0
+                                              ? Color.fromARGB(
+                                                  255, 238, 242, 250)
+                                              : Colors.white,
+                                          width: screenwidht,
+                                          // height: screenHeight * 0.20,
+                                          // width: screenWidth * 0.90,
+                                          // decoration:
+                                          //     BoxDecoration(border: Border.all(color: Colors.grey)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(1.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        // width: screenwidht * 0.47,
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.person,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      98,
+                                                                      96,
+                                                                      96),
+                                                            ),
+                                                            Helper().isvalidElement(
+                                                                    data[
+                                                                        'customer_name'])
+                                                                ? Text(
+                                                                    '${data['customer_name'].toString()}')
+                                                                : Text(''),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.phone,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      98,
+                                                                      96,
+                                                                      96),
+                                                            ),
+                                                            Text(
+                                                                '${data['cus_phone'].toString()}')
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(1.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .calendar_month,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      98,
+                                                                      96,
+                                                                      96),
+                                                            ),
+                                                            Text(
+                                                                '${data['date'].toString().substring(0, 10)}')
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Discount :',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            Text(
+                                                                '${data['discount'].toString()}')
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(1.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        // width: screenwidht * 0.55,
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Fess :',
+                                                              // style: TextStyle(
+                                                              //     fontWeight: FontWeight.bold),
+                                                            ),
+                                                            Text(
+                                                                '${data['grand_total'].toString()}')
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Paid :',
+                                                              // style: TextStyle(
+                                                              //     fontWeight: FontWeight.bold),
+                                                            ),
+                                                            Text(
+                                                                '${data['grand_total'] - data['balance']}')
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Status :',
+                                                              // style: TextStyle(
+                                                              //     fontWeight: FontWeight.bold),
+                                                            ),
+                                                            Text(
+                                                                '${data['pay_status'].toString()}')
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    })
+                                : Center(
+                                    child: Text('No Data Found'),
+                                  )
                             // :
                             // Text('Nodata'),
-                        ),
-                      )
-                    ],
-                  ),
-        ):SpinLoader(),
+                            ),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            : SpinLoader(),
       ),
     );
   }
@@ -347,8 +405,8 @@ var accesstoken;
   //   // getPatientRegisterReportList();
   //   // this.setState(() {});
   // }
-  getcancelledlist()async{
- var formatter = new DateFormat('yyyy-MM-dd');
+  getcancelledlist() async {
+    var formatter = new DateFormat('yyyy-MM-dd');
     var data = {
       "from_date": fromdateInputController.text.toString(),
       "to_date": todateInputController.text.toString(),

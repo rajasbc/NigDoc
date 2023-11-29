@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart'as custom_color;
@@ -126,7 +127,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
       onWillPop: () async {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Dash()),
+          MaterialPageRoute(builder: (context) => Setting()),
         );
         return true;
       },
@@ -139,6 +140,18 @@ class _ClinicProfileState extends State<ClinicProfile> {
               'Clinic Profile',
               style: TextStyle(color: Colors.white),
             ),
+            leading: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Setting()),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  )) ,
             iconTheme: IconThemeData(color: Colors.white),
             // actions: [
             //   IconButton(
@@ -146,7 +159,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
             //         Navigator.push(
             //           context,
             //           MaterialPageRoute(
-            //               builder: (context) => const Dashboard()),
+            //               builder: (context) => Setting()),
             //         );
             //       },
             //       icon: Icon(
@@ -196,7 +209,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 5,
+                                  spreadRadius: 1,
                                   blurRadius: 3,
                                   offset: Offset(0, 1), // changes position of shadow
                                 ),
@@ -207,10 +220,10 @@ class _ClinicProfileState extends State<ClinicProfile> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  // SizedBox(
-                                  //   height: screenHeight * 0.07,
-                                  //   child: Image.asset('assets/user.png'),
-                                  // ),
+                                  SizedBox(
+                                    height: screenHeight * 0.07,
+                                    child: Image.asset('assets/profile.png'),
+                                  ),
                                   SizedBox(
                                     width: 5,
                                   ),
@@ -219,10 +232,9 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                     //  height: screenHeight * 0.06,
                                     width: screenWidth * 0.6,
                                     child: TextFormField(
-                            // decoration: const InputDecoration(
-                            //   // border: OutlineInputBorder(),
-                            //   labelText: "Shop Name*",
-                            // ),
+                            decoration: const InputDecoration(
+                               border: InputBorder.none,
+                            ),
                             // autovalidateMode: AutovalidateMode.always,
                             readOnly: true,
                             controller: shopnameController,
@@ -726,9 +738,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                           height: 10,
                         ),
                         Container(
-                            child: Column(
-                          children: [
-                            Row(
+                            child: Row(
                               children: [
                                 Container(
                                   // color: Colors.grey,
@@ -767,7 +777,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                 ),
                                 Container(
                                   // color: Colors.amber,
-                                  width: screenWidth * 0.33,
+                                  width: screenWidth * 0.3,
                                   child: RadioListTile(
                                     title: Text("No"),
                                     value: "no",
@@ -781,9 +791,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                   ),
                                 ),
                               ],
-                            ),
-                          ],
-                        )),
+                            )),
                         // Container(
                         //     child: Column(
                         //   children: [
