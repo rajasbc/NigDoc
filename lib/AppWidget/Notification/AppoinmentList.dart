@@ -36,7 +36,7 @@ class _AppointmentListState extends State<AppointmentList> {
     end:
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
   );
-  var tab_items = ['Active', 'Fixed', 'Cancel', 'Closed'];
+  var tab_items = ['Active', 'Fixed', 'Cancel'];
   var active_tab = 'Active';
   var isLoading = false;
   @override
@@ -362,7 +362,7 @@ class _AppointmentListState extends State<AppointmentList> {
                                       ),
                                     ),
                                   ),
-                                  Container(
+                                 active_tab == "Active"? Container(
                                     child: PopupMenuButton(
                                       // elevation: 10,
                                       // icon: Icon(Icons.add),
@@ -404,7 +404,7 @@ class _AppointmentListState extends State<AppointmentList> {
                                         ];
                                       },
                                     ),
-                                  ),
+                                  ):Container(),
                                 ],
                               )),
                         ),
@@ -531,7 +531,7 @@ class _AppointmentListState extends State<AppointmentList> {
                     color: active_tab == tab_items[index]
                         ? custom_color.appcolor
                         : Colors.white),
-                width: screenwidth * 0.22,
+                width: screenwidth * 0.30,
                 child: new Text(
                   tab_items[index],
                   style: TextStyle(

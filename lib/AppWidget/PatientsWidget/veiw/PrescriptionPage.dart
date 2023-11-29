@@ -2438,40 +2438,40 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                             style: TextStyle(fontSize: 18),
                                           ),
                                           Divider(),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: screenWidth * 0.5,
-                                                child: RadioListTile(
-                                                  title: Text("Amount ₹"),
-                                                  value: "amount",
-                                                  groupValue: finaldiscount,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      finaldiscount =
-                                                          value.toString();
-                                                      totalCalcution();
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                              Container(
-                                                width: screenWidth * 0.5,
-                                                child: RadioListTile(
-                                                  title: Text("percentage %"),
-                                                  value: "Percentage",
-                                                  groupValue: finaldiscount,
-                                                  onChanged: (value) {
-                                                    // setState(() {
-                                                    //   finaldiscount =
-                                                    //       value.toString();
-                                                    //   totalCalcution();
-                                                    // });
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                          // Row(
+                                          //   children: [
+                                          //     Container(
+                                          //       width: screenWidth * 0.5,
+                                          //       child: RadioListTile(
+                                          //         title: Text("Amount ₹"),
+                                          //         value: "amount",
+                                          //         groupValue: finaldiscount,
+                                          //         onChanged: (value) {
+                                          //           setState(() {
+                                          //             finaldiscount =
+                                          //                 value.toString();
+                                          //             totalCalcution();
+                                          //           });
+                                          //         },
+                                          //       ),
+                                          //     ),
+                                          //     Container(
+                                          //       width: screenWidth * 0.5,
+                                          //       child: RadioListTile(
+                                          //         title: Text("percentage %"),
+                                          //         value: "Percentage",
+                                          //         groupValue: finaldiscount,
+                                          //         onChanged: (value) {
+                                          //           // setState(() {
+                                          //           //   finaldiscount =
+                                          //           //       value.toString();
+                                          //           //   totalCalcution();
+                                          //           // });
+                                          //         },
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     ),
@@ -2487,7 +2487,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                             width: screenWidth * 0.455,
                                             child: TextFormField(
                                               decoration: InputDecoration(
-                                                labelText: 'Discount',
+                                                labelText: 'Discount(₹)',
                                                 border: OutlineInputBorder(),
                                                 // icon: Icon(Icons.numbers),
                                               ),
