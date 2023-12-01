@@ -14,6 +14,21 @@ _setHeadersWithOutToken() => {
     };
 
 class DashboardApi {
+  appVersionCheck() async {
+    String getnotificationUrl =
+        requestpath.base_url + requestpath.getAppversionEndpoint;
+    var response = await http.get(Uri.parse(getnotificationUrl),headers: _setHeadersWithOutToken());
+    if (response.statusCode == 200) {
+      if (response.body == '{"status":"Token is Expired"}') {
+        return [json.decode(response.body)];
+      } else {
+        return json.decode(response.body);
+      }
+    } else {
+     return json.decode(response.body);
+    }
+  }
+
   getdeshboardList(access_token) async {
     String dashboardlisturl =
         requestpath.base_url + requestpath.dashboardDetailsEndpoint;

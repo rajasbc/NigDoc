@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -28,6 +29,10 @@ import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
 class Dash extends StatefulWidget {
@@ -50,6 +55,8 @@ class _DashState extends State<Dash> {
   var accesstoken;
   var DashboardList;
   String notification = 'Waiting for notification';
+   var build_app_version = null;
+  var api_app_version = null;
 
   @override
   void initState() {
@@ -67,6 +74,7 @@ class _DashState extends State<Dash> {
     await handleNotification();
     await getvalue();
     await getFcmToken();
+    appVersion();
    
   }
 
@@ -1376,4 +1384,66 @@ class _DashState extends State<Dash> {
     ),
     alertAlignment: Alignment.center,
   );
+ appVersion() async {
+    var api_ver = await DashboardApi().appVersionCheck();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    //String appName = packageInfo.appName;
+    //String packageName = packageInfo.packageName;
+    String version = packageInfo.version;
+    //String buildNumber = packageInfo.buildNumber;
+    if (mounted) {
+      setState(() {
+        build_app_version = version;
+        api_app_version = api_ver;
+      });
+    }
+
+    if (Platform.isIOS) {
+      // if (api_app_version['ios_version'] != version) {
+      //   SchedulerBinding.instance.addPostFrameCallback((_) async {
+      //     await checkAppVersion();
+      //   });
+      // }
+    } else if (Platform.isAndroid) {
+      if (api_app_version['android_version'] != version) {
+        // SchedulerBinding.instance.addPostFrameCallback((_) async {
+        await checkAppVersion();
+        // });
+      }
+    } else {
+      //   SchedulerBinding.instance.addPostFrameCallback((_) async {
+      //   await checkAppVersion();
+      // });
+    }
+  }
+
+  Future<dynamic> checkAppVersion() {
+    // double screenHeight = MediaQuery.of(context).size.height;
+    // double screenWidth = MediaQuery.of(context).size.width;
+    return AwesomeDialog(
+      context: context,
+      keyboardAware: true,
+      dismissOnBackKeyPress: false,
+      dialogType: DialogType.info,
+      animType: AnimType.bottomSlide,
+      // btnCancelText: "Back",
+      btnOkText: "Update",
+      titleTextStyle: TextStyle(fontSize: 14),
+      title:
+          'We would like to remind you that you should update your NigDoc to get our new features.',
+      dismissOnTouchOutside: false,
+      btnOkColor: custom_color.appcolor,
+      btnOkOnPress: () async {
+        // var link = Platform.isIOS
+        //     ? api_app_version['ios_link']
+        //     : api_app_version['link'];
+        var link = api_app_version['link'];
+        if (await launch(link)) {
+          await launch(link);
+        } else {
+          throw "Error occured trying to call that number.";
+        }
+      },
+    ).show();
+  }
 }

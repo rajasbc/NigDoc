@@ -17,4 +17,5 @@ String updateFCMEndpoint = 'auth/nigdocfcmlogin';
 String notificationListEndpoint = 'auth/doctor_notifications';
 String appointmentListEndpoint = 'auth/eachDoctorAppoinments';
 String appointmentFixEndpoint = 'auth/appointment_fixby_doctor';
+String getAppversionEndpoint = 'auth/nigdocappversion';
 
