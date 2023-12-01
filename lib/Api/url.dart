@@ -15,7 +15,8 @@ String postprescriptionEndpoint="auth/postPrescription";
 String dashboardDetailsEndpoint="auth/docDashboardDetails";
 String updateFCMEndpoint = 'auth/nigdocfcmlogin';
 String notificationListEndpoint = 'auth/doctor_notifications';
-String appointmentListEndpoint = 'auth/eachDoctorAppoinments';
+// String appointmentListEndpoint = 'auth/eachDoctorAppoinments';
+String appointmentListEndpoint = 'auth/eachDoctorAppoinmentsNew';
 String appointmentFixEndpoint = 'auth/appointment_fixby_doctor';
 String getAppversionEndpoint = 'auth/nigdocappversion';
 

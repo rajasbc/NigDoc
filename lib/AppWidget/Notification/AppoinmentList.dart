@@ -60,6 +60,7 @@ class _AppointmentListState extends State<AppointmentList> {
   getAppoinmentList() async {
     var formatter = new DateFormat('yyyy-MM-dd');
     var data = {
+      'clinic_type':storage.getItem('userResponse')['clinic_type'].toString().toLowerCase(),
       'doctor_id': storage.getItem('userResponse')['clinic_type'] == "Admin"
           ? storage.getItem('userResponse')['clinic_profile']['uid'].toString()
           : storage.getItem('userResponse')['clinic_profile']['id'].toString(),
@@ -377,6 +378,30 @@ class _AppointmentListState extends State<AppointmentList> {
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                 )),
+                                            // Text(data['status'],
+                                            //     style: TextStyle(
+                                            //       fontSize: 14,
+                                            //     )),
+                                          ],
+                                        ),
+                                      ),
+                                       Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [Text('Doctor Name: '),
+                                                Text(data['doctor_name'].toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                           
+                                           
                                             Text(data['status'],
                                                 style: TextStyle(
                                                   fontSize: 14,
