@@ -19,7 +19,7 @@ import 'package:nigdoc/AppWidget/Shop/View/ClinicConfiguration.dart';
 import 'package:nigdoc/AppWidget/Shop/View/ClinicProfile.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/veiw/StaffList.dart';
 // import 'package:nigdoc/AppWidget/StaffWidget/StaffList.dart';
-import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Addprescription.dart';
+// import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Addprescription.dart';
 import 'package:nigdoc/AppWidget/TestList/TestList.dart';
 import 'package:nigdoc/AppWidget/TreatmentWidget/treatment.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
@@ -140,22 +140,22 @@ class _NigdocmenubarState extends State<Nigdocmenubar> {
                               title: Text('Add Prescription'),
                               leading: Icon(Icons.notes),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => AddPrescription(),
-                                    ));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => AddPrescription(),
+                                    // ));
                               },
                             ),
                             ListTile(
                               title: Text('Prescription'),
                               leading: Icon(Icons.note_add_sharp),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Prescription(),
-                                    ));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => Prescription(),
+                                //     ));
                               },
                             ),
                             // ListTile(

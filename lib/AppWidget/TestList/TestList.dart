@@ -87,195 +87,201 @@ class _TestListState extends State<TestList> {
             height: screenHeight,
             child: Column(
               children: [
-                SizedBox(height: 20,),
+                SizedBox(height: 15,),
                
               
-                Column(
-                  children: [
-                    Center(child: 
-                    Container(
-                      height: screenHeight * 0.06,
-                      width: screenWidth*0.931,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border:
-                              Border.all(color: custom_color.appcolor),
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Row(
-                        children: [
-                          Container(
-                              width: screenWidth * 0.1,
-                              height: screenHeight,
-                              child: Icon(Icons.search,
-                                  color: custom_color.appcolor)),
-                          Container(
-                            width: screenWidth * 0.65,
-                            child: TextField(
-                              controller: searchText,
-                              onChanged: (text) {
-                                print(text);
-          
-                                this.setState(() {});
-                                // var list = ProductListItem;
-                                  searchList = testList.where((element) {
-                                    var treatList = element['test_name'].toString().toLowerCase();
-                                    return treatList.contains(text.toLowerCase());
-                                    // return true;
-                                  }).toList();
-                                  this.setState(() {});
-                              },
-                              decoration: new InputDecoration(
-                                filled: true,
-                                border: InputBorder.none,
-                                fillColor: Colors.white,
-                                hintText: 'Search Test List Here...',
-                              ),
-                            ),
-                          ),
-                          searchText.text.isNotEmpty
-                              ? Container(
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        Center(child: 
+                        Container(
+                          height: screenHeight * 0.06,
+                          width: screenWidth*0.931,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border:
+                                  Border.all(color: custom_color.appcolor),
+                              borderRadius: BorderRadius.all(Radius.circular(4))),
+                          child: Row(
+                            children: [
+                              Container(
                                   width: screenWidth * 0.1,
                                   height: screenHeight,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        searchText.text = '';
-                                        searchList='';
-                                      });
-                                    },
-                                  ))
-                              : Container(),
-                        ],
-                      ),
-                    ),),
-          
-          
-                        // SizedBox(height: screenHeight*0.01),
-                       
-          
-                        Helper().isvalidElement(test_List) && test_List.length > 0 ?
-                         Container(
-                          height:screenHeight * 0.85,
-                          
-          
-                         width: screenWidth,
-                          padding:EdgeInsets.all(5),
-                          child: 
-                          ListView.builder(
-                            // shrinkWrap: true,
-                            itemCount: test_List.length,
-                            itemBuilder: (BuildContext context, int index){
-                              list=index+1;
-                              var data=test_List[index];
-                              return Container(
-                                child: Column(
-                                  children: [
-                                    Card(
-                                      color: index % 2 == 0
-                                                    ? custom_color.lightcolor
-                                                    : Colors.white,
-                                      child: ListTile(
-                                        title: SizedBox(child: Text('${data['test_name']}')),
-                                        subtitle:  Text('₹ ${data['test_amount']}'),
-                                        leading: Padding(
-                                          padding: const EdgeInsets.only(top:3.0),
-                                          child: Text('$list'),
-                                        ),
-                          //               trailing: IconButton(onPressed: (){
-                          //                 var List=data;
-          
-          
-                          //                  showDialog(
-                                            
-                          //   context: context,
-                          //   builder: (ctx) => AlertDialog(
+                                  child: Icon(Icons.search,
+                                      color: custom_color.appcolor)),
+                              Container(
+                                width: screenWidth * 0.65,
+                                child: TextField(
+                                  controller: searchText,
+                                  onChanged: (text) {
+                                    print(text);
                               
-                              
-                          //     // backgroundColor: Color.fromARGB(0, 238, 236, 236),
-                          //     title:  Text('Product:  ${List['name'].toString()}' ),
-                          //     content:Container(
-                          //       width: screenWidth*0.8,
-                          //       height: screenHeight*0.15,
-                                
-                          //       child:Column(
-                          //       children:[
-                          //         Row(
-                          //           children: [
-                          //              SizedBox(height: 10,),
-                          //             Text('Cost: '),
-                          //             Text('${List['cost'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                          //           ],
-                          //         ),
-                          //          SizedBox(height: 10,),
-                          //          Row(
-                          //           children: [
-                          //             Text('Price:'),
-                          //             Text('${List['sale_price'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                          //           ],
-                          //         ),
-                          //          SizedBox(height: 10,),
-                          //          Row(
-                          //           children: [
-                          //             Text('Quantity:'),
-                          //             Text('${List['qty'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                          //           ],
-                          //         ),
-                          //         SizedBox(height: 10,),
-                          //         Row(
-                                    
-                          //           children: [
-                          //             Text('Status:'),
-                          //             Text('${List['status'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                          //           ],
-                          //         )
-                          //       ],
-                          //     )
-          
-                          //     ),
-                                  
-                          //     actions: <Widget>[
-                          //       TextButton(
-                          //         onPressed: () {
-                          //           Navigator.of(ctx).pop();
-                          //           //  Helper().appLogoutCall(context, 'logout');
-                          //         },
-                          //         child: Container(
-                          //           // color: Colors.green,
-                          //           padding: const EdgeInsets.all(14),
-                          //           child: const Text("Close"),
-                          //         ),
-                          //       ),
-                          //       // TextButton(
-                          //       //   onPressed: () {
-                          //       //     // Navigator.of(ctx).pop();
-                          //       //     Helper().appLogoutCall(context, 'logout');
-                          //       //   },
-                          //       //   child: Container(
-                          //       //     // color: Colors.green,
-                          //       //     padding: const EdgeInsets.all(14),
-                          //       //     child: const Text("Yes"),
-                          //       //   ),
-                          //       // ),
-                          //     ],
-                          //   ),
-                          // );
-                                          
-                          //               }, icon: Icon(Icons.menu)),
-                                      ),
-                                    )
-                                  ],
+                                    this.setState(() {});
+                                    // var list = ProductListItem;
+                                      searchList = testList.where((element) {
+                                        var treatList = element['test_name'].toString().toLowerCase();
+                                        return treatList.contains(text.toLowerCase());
+                                        // return true;
+                                      }).toList();
+                                      this.setState(() {});
+                                  },
+                                  decoration: new InputDecoration(
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    fillColor: Colors.white,
+                                    hintText: 'Search Test List Here...',
+                                  ),
                                 ),
-                              );
-                          })
-                           ):Container(child:
-            Text('No Data Found')
-            )
-                            
-                  ],
+                              ),
+                              searchText.text.isNotEmpty
+                                  ? Container(
+                                      width: screenWidth * 0.1,
+                                      height: screenHeight,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.close,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            searchText.text = '';
+                                            searchList='';
+                                          });
+                                        },
+                                      ))
+                                  : Container(),
+                            ],
+                          ),
+                        ),),
+                              
+                              
+                            // SizedBox(height: screenHeight*0.01),
+                           
+                              
+                            Helper().isvalidElement(test_List) && test_List.length > 0 ?
+                             Container(
+                              // height:screenHeight * 0.85,
+                              
+                              
+                             width: screenWidth,
+                              padding:EdgeInsets.all(0),
+                              child: 
+                              ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: test_List.length,
+                                itemBuilder: (BuildContext context, int index){
+                                  list=index+1;
+                                  var data=test_List[index];
+                                  return Container(
+                                    child: Column(
+                                      children: [
+                                        Card(
+                                          color: index % 2 == 0
+                                                        ? custom_color.lightcolor
+                                                        : Colors.white,
+                                          child: ListTile(
+                                            title: SizedBox(child: Text('${data['test_name']}')),
+                                            subtitle:  Text('₹ ${data['test_amount']}'),
+                                            leading: Padding(
+                                              padding: const EdgeInsets.only(top:3.0),
+                                              child: Text('$list'),
+                                            ),
+                              //               trailing: IconButton(onPressed: (){
+                              //                 var List=data;
+                              
+                              
+                              //                  showDialog(
+                                                
+                              //   context: context,
+                              //   builder: (ctx) => AlertDialog(
+                                  
+                                  
+                              //     // backgroundColor: Color.fromARGB(0, 238, 236, 236),
+                              //     title:  Text('Product:  ${List['name'].toString()}' ),
+                              //     content:Container(
+                              //       width: screenWidth*0.8,
+                              //       height: screenHeight*0.15,
+                                    
+                              //       child:Column(
+                              //       children:[
+                              //         Row(
+                              //           children: [
+                              //              SizedBox(height: 10,),
+                              //             Text('Cost: '),
+                              //             Text('${List['cost'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                              //           ],
+                              //         ),
+                              //          SizedBox(height: 10,),
+                              //          Row(
+                              //           children: [
+                              //             Text('Price:'),
+                              //             Text('${List['sale_price'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                              //           ],
+                              //         ),
+                              //          SizedBox(height: 10,),
+                              //          Row(
+                              //           children: [
+                              //             Text('Quantity:'),
+                              //             Text('${List['qty'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                              //           ],
+                              //         ),
+                              //         SizedBox(height: 10,),
+                              //         Row(
+                                        
+                              //           children: [
+                              //             Text('Status:'),
+                              //             Text('${List['status'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                              //           ],
+                              //         )
+                              //       ],
+                              //     )
+                              
+                              //     ),
+                                      
+                              //     actions: <Widget>[
+                              //       TextButton(
+                              //         onPressed: () {
+                              //           Navigator.of(ctx).pop();
+                              //           //  Helper().appLogoutCall(context, 'logout');
+                              //         },
+                              //         child: Container(
+                              //           // color: Colors.green,
+                              //           padding: const EdgeInsets.all(14),
+                              //           child: const Text("Close"),
+                              //         ),
+                              //       ),
+                              //       // TextButton(
+                              //       //   onPressed: () {
+                              //       //     // Navigator.of(ctx).pop();
+                              //       //     Helper().appLogoutCall(context, 'logout');
+                              //       //   },
+                              //       //   child: Container(
+                              //       //     // color: Colors.green,
+                              //       //     padding: const EdgeInsets.all(14),
+                              //       //     child: const Text("Yes"),
+                              //       //   ),
+                              //       // ),
+                              //     ],
+                              //   ),
+                              // );
+                                              
+                              //               }, icon: Icon(Icons.menu)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                              })
+                               ):Container(child:
+                                Text('No Data Found')
+                                )
+                                
+                      ],
+                    ),
+                  ),
                 ),
                      ],
             ),

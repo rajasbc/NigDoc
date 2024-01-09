@@ -114,7 +114,7 @@ class _DoctorListState extends State<DoctorList> {
                                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          width: screenWidth * 0.55,
+                                          width: screenWidth * 0.5,
                                           child: Row(
                                             children: [
                                               Text(

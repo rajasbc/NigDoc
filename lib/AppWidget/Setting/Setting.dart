@@ -73,7 +73,7 @@ class _SettingState extends State<Setting> {
                         children: [
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.27,
                               child: Column(
                                 children: [
@@ -152,7 +152,7 @@ class _SettingState extends State<Setting> {
                           ),
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.27,
                               child: Column(
                                 children: [
@@ -232,7 +232,7 @@ class _SettingState extends State<Setting> {
                           ),
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.27,
                               child: Column(
                                 children: [
@@ -331,7 +331,7 @@ class _SettingState extends State<Setting> {
                         children: [
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [
@@ -411,7 +411,7 @@ class _SettingState extends State<Setting> {
                           ),
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [
@@ -490,7 +490,7 @@ class _SettingState extends State<Setting> {
                           ),
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [
@@ -829,7 +829,7 @@ class _SettingState extends State<Setting> {
                         children: [
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [
@@ -908,7 +908,7 @@ class _SettingState extends State<Setting> {
                           ),
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [
@@ -987,7 +987,7 @@ class _SettingState extends State<Setting> {
                           ),
                           InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [
