@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.nigsoft.nigdoc</string>
+	<string>com.nig.soft.nigdoc</string>
 	<key>PROJECT_ID</key>
 	<string>nigdoc-e6a1a</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:583154191380:ios:812da9e791c4cbb34feb01</string>
+	<string>1:583154191380:ios:fa673e80c8e385b24feb01</string>
 </dict>
 </plist>

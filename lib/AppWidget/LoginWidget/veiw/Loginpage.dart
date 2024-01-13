@@ -201,7 +201,7 @@ class _LoginpageState extends State<Loginpage> {
                               color: Colors.white,
                               // border: Border.all(color: Colors.blueAccent),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
+                                  BorderRadius.all(Radius.circular(10))),
                           width: screenWidth * 0.9,
                           height: screenHeight * 0.06,
                           child: TextButton(
