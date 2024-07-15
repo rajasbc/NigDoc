@@ -7,9 +7,12 @@ import 'package:nigdoc/AppWidget/DoctorWidget/veiw/DoctorList.dart';
 import 'package:nigdoc/AppWidget/InjectionList/InjectionList.dart';
 import 'package:nigdoc/AppWidget/LabLink/LabList.dart';
 import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/Prescription/PrescriptionList.dart';
 import 'package:nigdoc/AppWidget/PharmacyLink/PharmacyList.dart';
 import 'package:nigdoc/AppWidget/Shop/View/ClinicConfiguration.dart';
 import 'package:nigdoc/AppWidget/Shop/View/ClinicProfile.dart';
+import 'package:nigdoc/AppWidget/StaffWidget/Department/DepartmentList.dart';
+import 'package:nigdoc/AppWidget/StaffWidget/Referral/Referral.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/veiw/StaffList.dart';
 import 'package:nigdoc/AppWidget/TestList/TestList.dart';
 import 'package:nigdoc/AppWidget/TreatmentWidget/treatment.dart';
@@ -576,6 +579,7 @@ class _SettingState extends State<Setting> {
                     SizedBox(
                       height: 10,
                     ),
+                              
                     // Container(
                     //   child: Row(
                     //     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -823,6 +827,7 @@ class _SettingState extends State<Setting> {
                     //     ],
                     //   ),
                     // ),
+                    
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1066,6 +1071,7 @@ class _SettingState extends State<Setting> {
                             },
                           ),
 
+
                           // Text(
                           //   "Collection",
                           //   style: TextStyle(
@@ -1077,6 +1083,266 @@ class _SettingState extends State<Setting> {
                     SizedBox(
                       height: 15,
                     ),
+
+                      SizedBox(height: 10,),
+                           SizedBox(height: 10,),
+                           Padding(
+                             padding: const EdgeInsets.only(left: 20),
+                             child: Container(
+                              child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                    InkWell(
+                              child: Container(
+                                height: screenHeight * 0.1567,
+                                width: screenWidth * 0.27,
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: custom_color.appcolor,
+                                            // border: width != 0 ?
+                                            // Border.all(width: 2, color:custom_color.app_color1 )
+                                            // : Border(),
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                topRight: Radius.circular(10),
+                                                bottomLeft: Radius.circular(10),
+                                                bottomRight: Radius.circular(10)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color:
+                                                    Colors.grey.withOpacity(0.2),
+                                                spreadRadius: 4,
+                                                blurRadius: 4,
+                                                offset: Offset(0,
+                                                    1), // changes position of shadow
+                                              ),
+                                            ],
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              'Referral',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        )),
+                                    Container(
+                                      // color: Colors.amber,
+                                      height: screenHeight * 0.1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.asset('assets/profile.png'),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  color: custom_color.lightcolor,
+                                  // border: width != 0 ?
+                                  // Border.all(width: 2, color:custom_color.app_color1 )
+                                  //: Border(),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      spreadRadius: 4,
+                                      blurRadius: 4,
+                                      offset: Offset(
+                                          0, 1), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Referral(),
+                                    ));
+                              },
+                                                       ),
+                              SizedBox(width: screenWidth*0.06,),
+
+
+                             InkWell(
+                            child: Container(
+                              height: screenHeight * 0.1567,
+                              width: screenWidth * 0.25,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: custom_color.appcolor,
+                                          // border: width != 0 ?
+                                          // Border.all(width: 2, color:custom_color.app_color1 )
+                                          // : Border(),
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 4,
+                                              blurRadius: 4,
+                                              offset: Offset(0,
+                                                  1), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Department',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                    // color: Colors.amber,
+                                    height: screenHeight * 0.1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child:
+                                          Image.asset('assets/testreport.png'),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                color: custom_color.lightcolor,
+                                // border: width != 0 ?
+                                // Border.all(width: 2, color:custom_color.app_color1 )
+                                // : Border(),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 4,
+                                    blurRadius: 4,
+                                    offset: Offset(
+                                        0, 1), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => department_List(),
+                                  ));
+                            },
+                          ),
+                   
+            SizedBox(width: screenWidth*0.08,),
+                    InkWell(
+                            child: Container(
+                              height: screenHeight * 0.1567,
+                              width: screenWidth * 0.25,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: custom_color.appcolor,
+                                          // border: width != 0 ?
+                                          // Border.all(width: 2, color:custom_color.app_color1 )
+                                          // : Border(),
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 4,
+                                              blurRadius: 4,
+                                              offset: Offset(0,
+                                                  1), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Prescription',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                ),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                    // color: Colors.amber,
+                                    height: screenHeight * 0.1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child:
+                                          Image.asset('assets/testreport.png'),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                color: custom_color.lightcolor,
+                                // border: width != 0 ?
+                                // Border.all(width: 2, color:custom_color.app_color1 )
+                                // : Border(),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 4,
+                                    blurRadius: 4,
+                                    offset: Offset(
+                                        0, 1), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>Prescription_List(),
+                                  ));
+                            },
+                          ),
+
+
+
+                                ],
+                              ),
+                             ),
+                           ),
                     Expanded(
                       child: Container(
                         // height: screenHeight*0.4,

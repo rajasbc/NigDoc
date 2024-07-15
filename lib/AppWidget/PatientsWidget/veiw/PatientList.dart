@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/veiw/EditPatient.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Patients.dart';
+//import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Registration.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
@@ -53,7 +55,7 @@ class _PatientListState extends State<PatientList> {
   @override
   Widget build(BuildContext context) {
     patient_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: patientList;
-    double screenHeight = MediaQuery.of(context).size.height ;
+    double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
       return new WillPopScope(
        onWillPop: () async {
@@ -92,119 +94,138 @@ class _PatientListState extends State<PatientList> {
                  SizedBox(
                   height: 10,
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        Center(child: 
-                        Container(
-                          height: screenHeight * 0.06,
-                          width: screenWidth*0.95,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border:
-                                  Border.all(color: custom_color.appcolor,),
-                              borderRadius: BorderRadius.all(Radius.circular(4))),
-                          child: Row(
-                            children: [
-                              Container(
+                Column(
+                  children: [
+                    Center(child: 
+                    Container(
+                      height: screenHeight * 0.06,
+                      width: screenWidth*0.95,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border:
+                              Border.all(color: custom_color.appcolor,),
+                          borderRadius: BorderRadius.all(Radius.circular(4))),
+                      child: Row(
+                        children: [
+                          Container(
+                              width: screenWidth * 0.1,
+                              height: screenHeight,
+                              child: Icon(Icons.search,
+                                  color: custom_color.appcolor,)),
+                          Container(
+                            width: screenWidth * 0.65,
+                            child: TextField(
+                              controller: searchText,
+                              onChanged: (text) {
+                                print(text);
+          
+                                this.setState(() {});
+                                // var list = ProductListItem;
+                                  searchList = patientList.where((element) {
+                                    var treatList = element['customer_name'].toString().toLowerCase();
+                                    return treatList.contains(text.toLowerCase());
+                                    // return true;
+                                  }).toList();
+                                  this.setState(() {});
+                              },
+                              decoration: new InputDecoration(
+                                filled: true,
+                                border: InputBorder.none,
+                                fillColor: Colors.white,
+                                hintText: 'Search Patient List Here...',
+                              ),
+                            ),
+                          ),
+                          searchText.text.isNotEmpty
+                              ? Container(
                                   width: screenWidth * 0.1,
                                   height: screenHeight,
-                                  child: Icon(Icons.search,
-                                      color: custom_color.appcolor,)),
-                              Container(
-                                width: screenWidth * 0.65,
-                                child: TextField(
-                                  controller: searchText,
-                                  onChanged: (text) {
-                                    print(text);
-                              
-                                    this.setState(() {});
-                                    // var list = ProductListItem;
-                                      searchList = patientList.where((element) {
-                                        var treatList = element['customer_name'].toString().toLowerCase();
-                                        return treatList.contains(text.toLowerCase());
-                                        // return true;
-                                      }).toList();
-                                      this.setState(() {});
-                                  },
-                                  decoration: new InputDecoration(
-                                    filled: true,
-                                    border: InputBorder.none,
-                                    fillColor: Colors.white,
-                                    hintText: 'Search Patient List Here...',
-                                  ),
-                                ),
-                              ),
-                              searchText.text.isNotEmpty
-                                  ? Container(
-                                      width: screenWidth * 0.1,
-                                      height: screenHeight,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: Colors.red,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        searchText.text = '';
+                                        searchList='';
+                                      });
+                                    },
+                                  ))
+                              : Container(),
+                        ],
+                      ),
+                    ),),
+          
+          
+                        // SizedBox(height: screenHeight*0.01),
+                       
+          
+                        Helper().isvalidElement(patient_List) && patient_List.length > 0 ?
+                         Container(
+                          height:screenHeight * 0.85,
+                          
+          
+                         width: screenWidth,
+                          padding:EdgeInsets.all(5),
+                          child: 
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: patient_List.length,
+                            itemBuilder: (BuildContext context, int index){
+                              list=index+1;
+                              var data=patient_List[index];
+                              return Container(
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      color: index % 2 == 0
+                                                    ?custom_color.lightcolor
+                                                    : Colors.white,
+                                      child: ListTile(
+                                        title: SizedBox(child: Text('${data['customer_name'].toString() }(${data['customer_id']})')),
+                                        subtitle: Text('${data['phone']}'),
+                                        leading: Padding(
+                                          padding: const EdgeInsets.only(top:3.0),
+                                          child: Text('$list'),
                                         ),
-                                        onPressed: () {
-                                          setState(() {
-                                            searchText.text = '';
-                                            searchList='';
-                                          });
-                                        },
-                                      ))
-                                  : Container(),
+
+
+
+                         trailing: PopupMenuButton(itemBuilder:(context)=>[
+                          PopupMenuItem(child: Row(
+                            children: [
+                              Icon(Icons.edit,color: custom_color.appcolor,),
+                              Padding(padding: EdgeInsets.only(left:10),
+                              child: Text('Edit',style: TextStyle(fontSize: 16),),
+
+                              
+                              ),
+                              
                             ],
                           ),
-                        ),),
-                              
-                              
-                            // SizedBox(height: screenHeight*0.01),
-                           
-                              
-                            Helper().isvalidElement(patient_List) && patient_List.length > 0 ?
-                             Container(
-                              // height:screenHeight * 0.85,
-                              
-                              
-                             width: screenWidth,
-                              padding:EdgeInsets.all(0.0),
-                              child: 
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: patient_List.length,
-                                itemBuilder: (BuildContext context, int index){
-                                  list=index+1;
-                                  var data=patient_List[index];
-                                  return Container(
-                                    child: Column(
-                                      children: [
-                                        Card(
-                                          color: index % 2 == 0
-                                                        ?custom_color.lightcolor
-                                                        : Colors.white,
-                                          child: ListTile(
-                                            title: SizedBox(child: Text('${data['customer_name'].toString() }(${data['customer_id']})')),
-                                            subtitle: Text('${data['phone']}'),
-                                            leading: Padding(
-                                              padding: const EdgeInsets.only(top:3.0),
-                                              child: Text('$list'),
-                                            ),
-                             
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                              })
-                               ):Container(child:
-                                Text('No Data Found')
-                                )
-                                
-                      ],
-                    ),
-                  ),
+                          onTap: (() {
+                            var selectdata= data;
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_Patients(selecteddata: selectdata,)));
+                          }),
+                          ),
+                          
+                         ],
+                        
+                          ),
+
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                          }
+                          )
+                           ):Container(child:
+            Text('No Data Found')
+            )
+                            
+                  ],
                 ),
                      ],
             ),

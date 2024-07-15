@@ -2,414 +2,523 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:nigdoc/AppWidget/AppWidget/common/NigDocToast.dart';
+import 'package:nigdoc/AppWidget/StaffWidget/veiw/StaffList.dart';
+import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
+import 'package:nigdoc/AppWidget/common/utils.dart';
+import '../../../AppWidget/common/Colors.dart' as custom_color;
 
-class AddUser extends StatefulWidget {
-  const AddUser({super.key});
+class Add_staff extends StatefulWidget {
+  const Add_staff({super.key});
 
   @override
-  State<AddUser> createState() => _AddUserState();
+  State<Add_staff> createState() => _Add_staff();
 }
 
-class _AddUserState extends State<AddUser> {
-
+class _Add_staff extends State<Add_staff> {
+  TextEditingController titlecontroller = TextEditingController();
   TextEditingController staffnamecontroller = TextEditingController();
   TextEditingController designationcontroller = TextEditingController();
+  TextEditingController Professionscontroller= TextEditingController();
   TextEditingController mobilecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController addresscontroller = TextEditingController();
   TextEditingController passcontroller = TextEditingController();
   TextEditingController confirmpasscontroller = TextEditingController();
-  TextEditingController usernamecontroller = TextEditingController();
+  TextEditingController departmentcontroller= TextEditingController();
+   TextEditingController userlevelcontroller = TextEditingController();
+    TextEditingController usernamecontroller = TextEditingController();
 
-var selectedlevel;
+var add_User;
+var selected_level;
+var title =[
+     'Select',
+     'Mr',
+     'Mrs',
+     'Miss',
+     'Dr',
+];
+var selected_Values;
+var list=[
+        'list1',
+        'list2',
+        'list3',
+        'list4',
+        'list5',
+];
+var selected_item;
 var user = [
     'Admin',
     'Doctor',
     'Managers',
     'Staff',
   ];
-bool showPassword = false;
+  bool isloading = false;
+  bool showPassword = false;
   bool showPassword2 = false;
 
 @override
-  bool _passwordVisible = false;
-  bool _passwordVisible2 = false;
+  bool _passwordVisible = true;
+  bool _passwordVisible2 =false;
   void initState() {
-    _passwordVisible = false;
+    _passwordVisible = true;
     _passwordVisible2 = false;
   }
 
   @override
   Widget build(BuildContext context) {
-     var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      appBar: AppBar(title: Text('Add User'),),
+     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+ return  PopScope(
+       canPop:false,
+       onPopInvoked:(bool didpop) {
+         Navigator.push(
+          context, MaterialPageRoute(builder: (context)=> StaffList(),)
+         );
+         
+        },
+    child: Scaffold(
+      appBar: AppBar(title: Text('Add Staff',style: TextStyle(color: Colors.white),),
+      backgroundColor: custom_color.appcolor,
+      leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StaffList(),
+                ));
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
+        
+      ),
+      
+      
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-             Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
-                  child: TextFormField(
-                    autovalidateMode: AutovalidateMode.always,
-                    controller: staffnamecontroller,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                    // maxLength: 10,
-                    // keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Staff Name'),
-                  ),
-                ),
-                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
-                  child: TextFormField(
-                    autovalidateMode: AutovalidateMode.always,
-                    controller: designationcontroller,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                    // maxLength: 10,
-                    // keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Designation'),
-                  ),
-                ),
-                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
-                  child: TextFormField(
-                    maxLength: 10,
-                    keyboardType: TextInputType.phone,
-                    autovalidateMode: AutovalidateMode.always,
-                    controller: mobilecontroller,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                    // maxLength: 10,
-                    // keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Mobile Number'),
-                  ),
-                ),
-                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 2.0, bottom: 2, left: 8, right: 8),
-                  child: TextFormField(
-                    autovalidateMode: AutovalidateMode.always,
-                    controller: emailcontroller,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                    // maxLength: 10,
-                    // keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Email Id'),
-                  ),
-                ),
-                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
-                  child: TextFormField(
-                    autovalidateMode: AutovalidateMode.always,
-                    controller: addresscontroller,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                    // maxLength: 10,
-                    // keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Address'),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: screenHeight * 0.06,
-                    width: screenWidth * 0.95,
-                    decoration: BoxDecoration(border: Border.all(color: Colors.grey)
-                        // border: OutlineInputBorder()
-                        ),
-                    child: DropdownButtonFormField(
-                      // validator: (value) => validateDrops(value),
-                      // isExpanded: true,
-                      decoration: InputDecoration.collapsed(hintText: ''),
-                      isExpanded: true,
-                      hint: Padding(
-                        padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
-                        child: Text(
-                          'Select User Level',
-                          style:
-                              TextStyle(color: Colors.red),
+        child: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(height: screenHeight*0.02,),
+               Padding(
+                 padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                    //padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      height: screenHeight * 0.07,
+                      width: screenWidth * 0.96,
+                      decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5.0)
+                          // border: OutlineInputBorder()
+                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Center(
+                          child: DropdownButtonFormField(
+                          
+                            decoration: InputDecoration.collapsed(hintText: ''),
+                            isExpanded: true,
+                            hint: Padding(
+                            padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
+                              child: Text(
+                                'Title *',
+                               
+                              ),
+                            ),
+                           
+                            onChanged: (selectedstaffs) {
+                              selected_level=selectedstaffs;
+                              setState(() {
+                               
+                              });
+                            },
+                            items: title.map<DropdownMenuItem<String>>((item) {
+                              return new DropdownMenuItem(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+                                  child: new Text(item,style: TextStyle(fontSize: 15),),
+                                ),
+                                value: item.toString(),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
-                      // value:' _selectedState[i]',
-                      onChanged: (selecteddoctor) {
-                        selectedlevel=selecteddoctor;
-                        setState(() {
-                          // selectedDoctor = selectedDoctor;
-                          // print("Stae value");
-                          // print(newValue);
-                          // _selectedState[i]= newValue;
-                          // getMyDistricts(newValue, i);
-                        });
-                      },
-                      items: user.map<DropdownMenuItem<String>>((item) {
-                        return new DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-                            child: new Text(item,style: TextStyle(fontSize: 15),),
-                          ),
-                          value: item.toString(),
-                        );
-                      }).toList(),
                     ),
                   ),
-                ),
-                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 12.0, bottom: 2, left: 8, right: 8),
-                  child: TextFormField(
-                    // autovalidateMode: AutovalidateMode.always,
-                    controller: usernamecontroller,
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty) {
-                    //     return '';
-                    //   }
-                    //   return null;
-                    // },
-                    // maxLength: 10,
-                    // keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'User Name'),
-                  ),
-                ),
-                 Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          // autovalidateMode: AutovalidateMode.always,
-                          controller: passcontroller,
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return '';
-                          //   } else if (value.length >= 1 && value.length < 6) {
-                          //     return 'More Than 6 Characters';
-                          //   } else {
-                          //     return null;
-                          //   }
-                          // },
-                          obscureText:
-                              !_passwordVisible, //This will obscure text dynamically
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            hintText: 'Password',
-                            // Here is key idea
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                // Based on passwordVisible state choose the icon
-                                _passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Theme.of(context).primaryColorDark,
-                              ),
-                              onPressed: () {
-                                // Update the state i.e. toogle the state of passwordVisible variable
-                                setState(() {
-                                  _passwordVisible = !_passwordVisible;
-                                });
-                              },
-                            ),
+             SizedBox(height: screenHeight*0.01,),
+
+
+
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
+                    child: TextFormField(
+                      autovalidateMode: AutovalidateMode.always,
+                      controller:staffnamecontroller,
+                     
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Staff Name *'
                           ),
-                        ),
-                 ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          // autovalidateMode: AutovalidateMode.always,
-                          controller: confirmpasscontroller,
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return '';
-                          //   } else if (value.length >= 1 && value.length < 6) {
-                          //     return 'More Than 6 Characters';
-                          //   } else {
-                          //     return null;
-                          //   }
-                          // },
-                          obscureText:
-                              !_passwordVisible2, //This will obscure text dynamically
-                          decoration: InputDecoration(
-                            labelText: 'Confirm Password',
-                            hintText: 'Confirm Password',
-                            // Here is key idea
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                // Based on passwordVisible state choose the icon
-                                _passwordVisible2
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Theme.of(context).primaryColorDark,
+                          
+                    ),
+                  ),
+                  SizedBox(height: screenHeight*0.01,),
+                   Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
+                    child: TextFormField(
+                      autovalidateMode: AutovalidateMode.always,
+                      controller: designationcontroller,
+                     
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Designation *'
+                          ),
+                          
+                    ),
+                  ),
+          
+                  SizedBox(height: screenHeight*0.01,),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
+                    child: TextFormField(
+                      autovalidateMode: AutovalidateMode.always,
+                      controller: Professionscontroller,
+                      
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Professions *'
+                          ),
+                          
+                    ),
+                  ),
+                  SizedBox(height: screenHeight*0.02,),
+
+
+                   Padding(
+                   // padding: const EdgeInsets.all(8.0),
+                   padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                    child: Container(
+                      height: screenHeight * 0.07,
+                      width: screenWidth * 0.96,
+                      decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5.0)
+                         
+                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Center(
+                          child: DropdownButtonFormField(
+                           
+                            decoration: InputDecoration.collapsed(hintText: ''),
+                            isExpanded: true,
+                            hint: Padding(
+                              padding: const EdgeInsets.only(top: 0, left: 2, right: 0),
+                              child: Text(
+                                'Department *',
+                               
                               ),
-                              onPressed: () {
-                                // Update the state i.e. toogle the state of passwordVisible variable
-                                setState(() {
-                                  _passwordVisible2 = !_passwordVisible2;
-                                });
-                              },
                             ),
+                          
+                            onChanged: (selectedstaffs) {
+                              selected_Values=selectedstaffs;
+                              setState(() {
+                               
+                              });
+                            },
+                            items: list.map<DropdownMenuItem<String>>((item) {
+                              return new DropdownMenuItem(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+                                  child: new Text(item,style: TextStyle(fontSize: 15),),
+                                ),
+                                value: item.toString(),
+                              );
+                            }).toList(),
                           ),
                         ),
                       ),
-                      ElevatedButton(onPressed: (){
-      if(staffnamecontroller.text.isEmpty){
-    Fluttertoast.showToast(
-                          msg: 'Enter Staff Name',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if(designationcontroller.text.isEmpty){
-          Fluttertoast.showToast(
-                          msg: 'Enter Designation',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if(mobilecontroller.text.isEmpty){
-          Fluttertoast.showToast(
-                          msg: 'Enter Mobile Number',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-       else if(mobilecontroller.text.length<10){
-          Fluttertoast.showToast(
-                          msg: 'Mobile Number Must Have 10 Digits',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if(emailcontroller.text.isEmpty){
-          Fluttertoast.showToast(
-                          msg: 'Enter Your Email Id',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if (!emailcontroller.text
-                                        .contains('@') ||
-                                    !emailcontroller.text.contains('.') ||
-                                    !emailcontroller.text.contains('com')) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Enter Valid Email Id',
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.CENTER,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                }
-      else if(addresscontroller.text.isEmpty){
-          Fluttertoast.showToast(
-                          msg: 'Enter Address',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if(selectedlevel==null){
-          Fluttertoast.showToast(
-                          msg: 'Select User Level',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if(usernamecontroller.text.isEmpty){
-          Fluttertoast.showToast(
-                          msg: 'Enter User Name',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if(passcontroller.text.isEmpty){
-          Fluttertoast.showToast(
-                          msg: 'Enter Password',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if(confirmpasscontroller.text.isEmpty){
-          Fluttertoast.showToast(
-                          msg: 'Confirm Your Password',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-      else if(passcontroller.text != confirmpasscontroller.text){
-          Fluttertoast.showToast(
-                          msg: 'Passwords Does Not match',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-      }
-                      }, child: Text('Save'))
-          ],
+                    ),
+                  ),
+                    SizedBox(height: screenHeight*0.02,),
+
+                   Padding(
+                   // padding: const EdgeInsets.all(8.0),
+                   padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                    child: Container(
+                      height: screenHeight * 0.07,
+                      width: screenWidth * 0.96,
+                      decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5.0)
+                         
+                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Center(
+                          child: DropdownButtonFormField(
+                           
+                            decoration: InputDecoration.collapsed(hintText: ''),
+                            isExpanded: true,
+                            hint: Padding(
+                              padding: const EdgeInsets.only(top: 0, left: 2, right: 0),
+                              child: Text(
+                                'User Level *',
+                                // style:
+                                //     TextStyle(color: Colors.red),
+                              ),
+                            ),
+                            // value:' _selectedState[i]',
+                            onChanged: (selectedstaffs) {
+                              selected_item=selectedstaffs;
+                              setState(() {
+                              
+                              });
+                            },
+                            items: user.map<DropdownMenuItem<String>>((item) {
+                              return new DropdownMenuItem(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+                                  child: new Text(item,style: TextStyle(fontSize: 15),),
+                                ),
+                                value: item.toString(),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: screenHeight*0.02,),
+                  
+
+                   Padding(
+                    padding:
+                        const EdgeInsets.only(top: 2.0, bottom: 2, left: 8, right: 8),
+                    child: TextFormField(
+                      
+                      autovalidateMode: AutovalidateMode.always,
+                      controller: emailcontroller,
+                      keyboardType: TextInputType.emailAddress,
+                     
+                      // maxLength: 10,
+                      // keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Email Id *'),
+                    ),
+                  ),
+                   SizedBox(height: screenHeight*0.01,),
+
+
+
+                    Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
+                    child: TextFormField(
+                      maxLength: 10,
+                      keyboardType: TextInputType.phone,
+                      autovalidateMode: AutovalidateMode.always,
+                      controller: mobilecontroller,
+                    
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Mobile No *'),
+                    ),
+                  ),
+                   SizedBox(height: screenHeight*0.01,),
+
+
+
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
+                    child: TextFormField(
+                      autovalidateMode: AutovalidateMode.always,
+                      controller: addresscontroller,
+                   
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Address *'
+                          ),
+                          
+                    ),
+                  ),
+                   SizedBox(height: screenHeight*0.01,),
+
+
+
+                  
+                   Padding(
+                    padding:
+                        const EdgeInsets.only(top: 12.0, bottom: 2, left: 8, right: 8),
+                    child: TextFormField(
+                      // autovalidateMode: AutovalidateMode.always,
+                      controller: usernamecontroller,
+                     
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Username'),
+                    ),
+                  ),
+                   SizedBox(height: screenHeight*0.01,),
+
+                  Padding(padding:
+                  const EdgeInsets.only(top:8.0,bottom: 2,left:8,right:8) ,
+                  child: TextFormField(
+                    obscureText: _passwordVisible,
+                    controller: passcontroller,
+                    keyboardType: TextInputType.text,
+                    autovalidateMode: AutovalidateMode.always,
+                    decoration: InputDecoration(
+                    border: OutlineInputBorder(),labelText: 'Password ',
+                     
+                     suffixIcon: IconButton(
+                      icon: Icon(_passwordVisible
+                      ?Icons.visibility_off
+                      :Icons.visibility,
+                      color: custom_color.appcolor,
+                      ),
+                      onPressed: (() {
+                        setState(() {
+                          _passwordVisible=!_passwordVisible;
+                        });
+                      }),
+                     )
+                    ),
+                  ),
+                  ),
+                    SizedBox(height: screenHeight*0.01,),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
+                    child: TextFormField(
+                        keyboardType: TextInputType.text,
+                      obscureText:  !_passwordVisible2,
+                      autovalidateMode: AutovalidateMode.always,
+                      controller: confirmpasscontroller,
+                   
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Confirm Password ',
+                          suffixIcon: IconButton(
+
+                          
+                           icon:Icon(_passwordVisible2
+                           ?Icons.visibility
+                          : Icons.visibility_off,
+                          color: custom_color.appcolor,
+                           ),
+                            onPressed: () {
+                                      setState(() {
+                                        _passwordVisible2=! _passwordVisible2;
+                                      });
+                                    
+                             } )
+                          
+                          ),
+                        
+       ), ),
+
+
+                      
+
+                         SizedBox(height: screenHeight*0.01,),
+
+
+
+                        Container(width: screenWidth,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                
+                                RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                   
+                                  
+                                 ),
+                                
+                                 )
+                              
+                                 ),
+                              onPressed: (){
+                                          if(selected_level==null){
+                                            NigDocToast().showErrorToast('Please Select Titel');
+                               
+                                           }else if(staffnamecontroller.text.isEmpty){
+                                          NigDocToast().showErrorToast('Please Enter Staff Name');
+                              
+                                            }
+                                            else if(designationcontroller.text.isEmpty){
+                                        NigDocToast().showErrorToast('Please Enter Designation');
+                               
+                                            }
+                                            else if(Professionscontroller.text.isEmpty){
+                                        NigDocToast().showErrorToast('Please Enter Professions');
+                               
+                                            }
+                                             else if(selected_Values==null){
+                                        NigDocToast().showErrorToast('Please Select Department');
+                               
+                                            }
+                                            else if(selected_item==null){
+                                        NigDocToast().showErrorToast('Please Select User Level');
+                               
+                                            }
+                                            else if (!emailcontroller.text
+                                   .contains('@') ||
+                                   !emailcontroller.text.contains('.') ||
+                                   !emailcontroller.text.contains('com')) {
+                                    NigDocToast().showErrorToast("Please Enter Your Email id");
+                                  }
+                                            else if(mobilecontroller.text.isEmpty){
+                                        NigDocToast().showErrorToast('Enter Mobile No');
+                               
+                                            }
+                                            else if (addresscontroller.text.isEmpty){
+                                              NigDocToast().showErrorToast('Please Enter Address');
+                                           
+                               
+                                            }
+                                            else if(usernamecontroller.text.isEmpty){
+                                        NigDocToast().showErrorToast('Please Enter User Name ');
+                              
+                                            }
+                                            else if(passcontroller.text.isEmpty){
+                                        NigDocToast().showErrorToast('Enter Password');
+                              
+                                            }
+                                            else if(confirmpasscontroller.text.isEmpty){
+                                        NigDocToast().showErrorToast('Enter Confirm Password');
+                                     
+                                            }else{
+                                                var data={
+                                                  "title":titlecontroller.text.toString(),
+                                                  "staff":staffnamecontroller.text.toString(),
+                                                  "designation":designationcontroller.text.toString(),
+                                                  "professions":Professionscontroller.text.toString(),
+                                                  "department":departmentcontroller.text.toString(),
+                                                  "userlevel":userlevelcontroller.text.toString(),
+                                                  "email":emailcontroller.text.toString(),
+                                                  "mob no":mobilecontroller.text.toString(),
+                                                  "address":addresscontroller.text.toString(),
+                                                  "user name":usernamecontroller.text.toString(),
+                                                  "pass":passcontroller.text.toString(),
+                                                  "confirm pass":confirmpasscontroller.text.toString(),
+                            
+                                                };
+                                                Helper().isvalidElement(data);
+                                                print(data);
+                                               }
+                                               
+                                              
+                                     }, child: Text('Save',style: TextStyle(color:Colors.white,fontSize: 20),)),
+                          ),
+                        ),SizedBox(height: screenHeight*0.05,),
+         
+            ],
+          ),
         ),
       ),
+    ),
     );
   }
 }

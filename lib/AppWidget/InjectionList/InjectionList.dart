@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+import 'package:nigdoc/AppWidget/InjectionList/AddInjectionList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
@@ -184,7 +185,18 @@ class _InjectionListState extends State<InjectionList> {
             ),),
           ):Center(
             child: Container(child:SpinLoader()
-          ))));
+          )
+          ),
+                    floatingActionButton: FloatingActionButton(onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_injection()));
+          },
+          child: Icon(Icons.add,
+          size: 30,
+          color: Colors.white,
+          ),
+          backgroundColor:custom_color.appcolor,
+          ),
+          ));
   }
     getInjectionList() async {
     var List = await PatientApi().getinjectionList(accesstoken);

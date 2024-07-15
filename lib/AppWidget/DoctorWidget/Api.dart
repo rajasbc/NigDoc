@@ -24,4 +24,6 @@ class api {
       return json.decode(response.body);
     }
   }
+
+  userSignup(Map<String, String> data, accessToken, BuildContext context) {}
 }

@@ -76,4 +76,6 @@ class Helper {
     String formatted_date = formatter.format(date);
     return formatted_date;
   }
+
+  void sessionExpired(context) {}
 }

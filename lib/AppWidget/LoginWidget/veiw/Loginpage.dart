@@ -6,7 +6,9 @@ import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 // import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/Api.dart';
+import 'package:nigdoc/AppWidget/LoginWidget/veiw/SignUp.dart';
 import 'package:nigdoc/AppWidget/LoginWidget/veiw/Splashscreen.dart';
+import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 // import 'package:nigdoc/AppWidget/LoginWidget/veiw/onBoard.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
@@ -29,6 +31,9 @@ class _LoginpageState extends State<Loginpage> {
   final LocalStorage storage = new LocalStorage('doctor_store');
   TextEditingController Emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+
+  TextEditingController emailcontroller = TextEditingController();
+
   bool showPassword = false;
   bool isloading = false;
   late SharedPreferences pref;
@@ -193,8 +198,87 @@ class _LoginpageState extends State<Loginpage> {
                             ],
                           ),
                         ),
+                        SizedBox(height: screenHeight*0.04,),
+                        // Container(
+                        //       child: TextButton(onPressed: (){
+                        //         showDialog(context: context, builder: (context)=>AlertDialog(
+                        //             actions: [
+                        //               Container(
+                        //               height: screenHeight*0.04,
+                        //               width: screenWidth*0.14,
+                        //               ),
+                        //               Container(
+                                         
+                        //                 child: Column(
+                        //                   children: [
+                                           
+                        //                       Container(
+                                              
+                        //                       child: Padding(
+                        //                         padding: const EdgeInsets.only(left: 10),
+                        //                         child: Text('Forgot Password',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                        //                       )),
+                        //                      SizedBox(height: screenHeight*0.02,),
+                        //                     Container(
+                        //                       child: TextFormField(
+                        //                         controller: emailcontroller,
+                        //                         decoration: InputDecoration(
+                        //                           border: OutlineInputBorder(),
+                        //                           labelText: 'Email Address'
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                     SizedBox(height: screenHeight*0.03,),
+                        //                     Container(
+                        //                       width: screenWidth,
+                        //                       child: ElevatedButton(
+                        //                          style: ButtonStyle(
+                        //       backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
+                        //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      
+                        //        RoundedRectangleBorder(
+                        //        borderRadius: BorderRadius.circular(10),
+                         
+                        
+                        //        ),
+                      
+                        //       )
+                    
+                        //       ),
+                        //                         onPressed: (){
+                        //                       if(!emailcontroller.text.contains('@')||
+                        //                          !emailcontroller.text.contains('.')||
+                        //                          !emailcontroller.text.contains('com')){
+                        //                         NigDocToast().showErrorToast('Enter Your Email Id');
+                        //                       }else{
+                        //                         var data={
+                        //                        "emailAddress":emailcontroller.text.toString(),
+                        //                         };
+                        //                         Helper().isvalidElement(data);
+                        //                         print(data);
+                        //                       }
+                        //                       }, child: Text('Ok',style: TextStyle(color: Colors.white,fontSize: 20),)),
+                                            
+                        //                     ),
+                        //                     SizedBox(height: screenHeight*0.02,)
+                        //                   ],
+                        //                 ),
+                        //               )
+                        //             ],
+                        //         ));
+                      
+                     
+                        //       }, 
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.only(left: 230),
+                        //         child: Text('Forgot Password?',style: TextStyle(color: Colors.white,fontSize: 16),
+                                
+                        //         ),
+                        //       )
+                        //        ),
+                        //         ),
                         SizedBox(
-                          height: 30,
+                          height:screenHeight*0.00,
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -216,9 +300,10 @@ class _LoginpageState extends State<Loginpage> {
                                 if (!Emailcontroller.text.isEmpty &&
                                     !passwordcontroller.text.isEmpty) {
                                   var logindata =
-                                      await api().loginresponse(data);
+                                      await loginpage().loginresponse(data);
+
                                   isloading = false;
-                                  storage.setItem('userResponse', logindata);
+                                 await storage.setItem('userResponse', logindata);
                                   if (Helper().isvalidElement(logindata) &&
                                       Helper()
                                           .isvalidElement(logindata['error']) &&
@@ -240,7 +325,7 @@ class _LoginpageState extends State<Loginpage> {
                                       this.setState(() {});
 
                                       await pref.setString('access_token',
-                                          await logindata['access_token']);
+                                      await logindata['access_token']);
                                       pref.setBool('isLogin', true);
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
@@ -418,7 +503,35 @@ class _LoginpageState extends State<Loginpage> {
 //                               child: Text('Login')),
 //
 //     ),
-                      ],
+  SizedBox(height: screenHeight*0.03,),
+      Padding(
+        padding: const EdgeInsets.only(left: 75),
+        child: Row(
+          children: [
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 00),
+                child: Text("Dont't have An Account ?",
+                style: TextStyle(fontSize: 15,color: Colors.white),),
+              ),
+            ),
+             Container(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Row(
+                  children: [
+                    TextButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder:(context)=>SignUp()));
+                    }, child: Text('Sign Up',style: TextStyle(
+                      color: Colors.white,fontSize: 20),))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      )
+        ],
                     ),
                   ),
                 ),

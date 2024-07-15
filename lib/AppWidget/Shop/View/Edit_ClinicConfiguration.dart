@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
-import 'package:nigdoc/AppWidget/DoctorWidget/Api.dart';
-import 'package:nigdoc/AppWidget/Setting/Setting.dart';
+import 'package:nigdoc/Api/url.dart';
+import 'package:nigdoc/AppWidget/Common/utils.dart';
+import 'package:nigdoc/AppWidget/LabLink/LabList.dart';
+import 'package:nigdoc/AppWidget/Medicine/AddMedicineList.dart';
 import 'package:nigdoc/AppWidget/Shop/Api.dart';
-import 'package:nigdoc/AppWidget/Shop/View/EditClincProfile.dart';
-import 'package:nigdoc/AppWidget/Shop/View/Edit_ClinicConfiguration.dart';
+import 'package:nigdoc/AppWidget/Shop/View/ClinicConfiguration.dart';
+import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
-import 'package:nigdoc/AppWidget/common/utils.dart';
-import '../../../AppWidget/common/Colors.dart'as custom_color;
+import 'package:nigdoc/main.dart';
+import '../../../AppWidget/common/Colors.dart' as custom_color;
 
-class ClinicConfig extends StatefulWidget {
-  const ClinicConfig({super.key});
+class Edit_Confiuration extends StatefulWidget {
+  const Edit_Confiuration({super.key});
 
   @override
-  State<ClinicConfig> createState() => _ClinicConfigState();
+  State<Edit_Confiuration> createState() => _Edit_ConfiurationState();
 }
 
-class _ClinicConfigState extends State<ClinicConfig> {
-  TextEditingController presprefixController = TextEditingController();
-  TextEditingController patprefixController = TextEditingController();
+class _Edit_ConfiurationState extends State<Edit_Confiuration> {
+  
+  TextEditingController prescriptionController = TextEditingController();
+  TextEditingController patientprefixController = TextEditingController();
   TextEditingController calltokenController = TextEditingController();
   TextEditingController visittokenController = TextEditingController();
   TextEditingController lowqualityController = TextEditingController();
@@ -62,117 +64,100 @@ class _ClinicConfigState extends State<ClinicConfig> {
   int? _recptformtSelected;
   String _recptformtVal = "";
 
-  var prespageconfig = [
-    'PageFormat 1',
-    'PageFormat 2',
-    'PageFormat 3',
-  ];
+
   var accesstoken;
-  var clinicconfig;
-  bool isLoading = false;
-  @override
-  void initState() {
-    accesstoken = storage.getItem('userResponse')['access_token'];
+  
+  var  clinicconfig;
+  bool isloading=false;
 
-    // getdoctorlist();
-    getclinicconfig();
-    // TODO: implement initState
-    super.initState();
-  }
+@override
+void initState(){
+  accesstoken=storage.getItem('userResponse')['access_token'];
+  getclinicconfig();
 
+  super.initState();
+}
+  
   @override
   Widget build(BuildContext context) {
-    var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Dash(),
-            ));
-        return true;
-      },
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: Text(
-              'Clinic Configuration',
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor:custom_color.appcolor,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Setting(),
-                    ));
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          body:isLoading? Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      readOnly: true,
-                      controller: presprefixController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Prescription Prefix'),
+    double screenHeight=MediaQuery.of(context).size.height;
+    double screenWidth=MediaQuery.of(context).size.width;
+    return PopScope(
+      canPop: false,
+     onPopInvoked: (didPop) {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>ClinicConfig()));
+     },
+     child: Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Clinic Configuration',
+        style: TextStyle(color: Colors.white),),
+        leading: IconButton(onPressed: (){
+           Navigator.push(context, MaterialPageRoute(builder: (context)=>ClinicConfig()));
+        }, icon: Icon(Icons.arrow_back,color: Colors.white,),
+        ),
+        backgroundColor:custom_color.appcolor ,
+      ),
+      
+              
+      body: isloading? SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+      
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: prescriptionController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Prescription Prefix',
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      readOnly: true,
-                      controller: patprefixController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Patient Prefix'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: patientprefixController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Patient Prefix',
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      readOnly: true,
-                      controller: calltokenController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Call Token'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: calltokenController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Call Token',
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      readOnly: true,
-                      controller: visittokenController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Visit Token'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: visittokenController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Visit Token',
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      readOnly: true,
-                      controller: lowqualityController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Low Quality'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: lowqualityController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Low Quality',
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
+                ),
+                SizedBox(height: screenHeight*0.02,),
+
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
@@ -189,15 +174,14 @@ class _ClinicConfigState extends State<ClinicConfig> {
                           children: [
                             Row(
                               children: [
-                              
                                 Radio(
                                   value: 1,
                                   groupValue: _lablinkSelected,
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _lablinkSelected = value as int;
-                                      // _lablinkVal = 'Yes';
+                                       _lablinkSelected = value as int;
+                                       _lablinkVal = 'Yes';
                                       print(_lablinkVal);
                                     });
                                   },
@@ -213,8 +197,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Color.fromRGBO(33, 150, 243, 1),
                                   onChanged: (value) {
                                     setState(() {
-                                      // _lablinkSelected = value as int;
-                                      // _lablinkVal = 'No';
+                                       _lablinkSelected = value as int;
+                                       _lablinkVal = 'No';
                                       print(_lablinkVal);
                                     });
                                   },
@@ -253,8 +237,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _bloodSelected = value as int;
-                                      // _bloodVal = 'Yes';
+                                       _bloodSelected = value as int;
+                                       _bloodVal = 'Yes';
                                       print(_bloodVal);
                                     });
                                   },
@@ -270,8 +254,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _bloodSelected = value as int;
-                                      // _bloodVal = 'No';
+                                       _bloodSelected = value as int;
+                                       _bloodVal = 'No';
                                       print(_bloodVal);
                                     });
                                   },
@@ -310,8 +294,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _refferedSelected = value as int;
-                                      // _refferedVal = 'Yes';
+                                       _refferedSelected = value as int;
+                                       _refferedVal = 'Yes';
                                       print(_refferedVal);
                                     });
                                   },
@@ -327,8 +311,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _refferedSelected = value as int;
-                                      // _refferedVal = 'No';
+                                       _refferedSelected = value as int;
+                                       _refferedVal = 'No';
                                       print(_refferedVal);
                                     });
                                   },
@@ -367,8 +351,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _bmiSelected = value as int;
-                                      // _bmiVal = 'Yes';
+                                       _bmiSelected = value as int;
+                                       _bmiVal = 'Yes';
                                       print(_bmiVal);
                                     });
                                   },
@@ -384,8 +368,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _bmiSelected = value as int;
-                                      // _bmiVal = 'No';
+                                       _bmiSelected = value as int;
+                                       _bmiVal = 'No';
                                       print(_bmiVal);
                                     });
                                   },
@@ -424,8 +408,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _heightSelected = value as int;
-                                      // _heightVal = 'Yes';
+                                       _heightSelected = value as int;
+                                       _heightVal = 'Yes';
                                       print(_heightVal);
                                     });
                                   },
@@ -441,8 +425,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _heightSelected = value as int;
-                                      // _heightVal = 'No';
+                                       _heightSelected = value as int;
+                                       _heightVal = 'No';
                                       print(_heightVal);
                                     });
                                   },
@@ -481,8 +465,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _weightSelected = value as int;
-                                      // _weightVal = 'Yes';
+                                       _weightSelected = value as int;
+                                       _weightVal = 'Yes';
                                       print(_weightVal);
                                     });
                                   },
@@ -498,8 +482,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _weightSelected = value as int;
-                                      // _weightVal = 'No';
+                                       _weightSelected = value as int;
+                                       _weightVal = 'No';
                                       print(_weightVal);
                                     });
                                   },
@@ -538,8 +522,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _sugarSelected = value as int;
-                                      // _sugarVal = 'Yes';
+                                       _sugarSelected = value as int;
+                                       _sugarVal = 'Yes';
                                       print(_sugarVal);
                                     });
                                   },
@@ -555,8 +539,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _sugarSelected = value as int;
-                                      // _sugarVal = 'No';
+                                       _sugarSelected = value as int;
+                                       _sugarVal = 'No';
                                       print(_sugarVal);
                                     });
                                   },
@@ -595,8 +579,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _pulseSelected = value as int;
-                                      // _pulseVal = 'Yes';
+                                       _pulseSelected = value as int;
+                                       _pulseVal = 'Yes';
                                       print(_pulseVal);
                                     });
                                   },
@@ -612,8 +596,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _pulseSelected = value as int;
-                                      // _pulseVal = 'No';
+                                       _pulseSelected = value as int;
+                                       _pulseVal = 'No';
                                       print(_pulseVal);
                                     });
                                   },
@@ -652,8 +636,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _bpSelected = value as int;
-                                      // _bpVal = 'Yes';
+                                       _bpSelected = value as int;
+                                       _bpVal = 'Yes';
                                       print(_bpVal);
                                     });
                                   },
@@ -669,8 +653,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _bpSelected = value as int;
-                                      // _bpVal = 'No';
+                                       _bpSelected = value as int;
+                                       _bpVal = 'No';
                                       print(_bpVal);
                                     });
                                   },
@@ -709,8 +693,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _tempSelected = value as int;
-                                      // _tempVal = 'Yes';
+                                       _tempSelected = value as int;
+                                       _tempVal = 'Yes';
                                       print(_tempVal);
                                     });
                                   },
@@ -726,8 +710,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _tempSelected = value as int;
-                                      // _tempVal = 'No';
+                                       _tempSelected = value as int;
+                                       _tempVal = 'No';
                                       print(_tempVal);
                                     });
                                   },
@@ -766,8 +750,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _spo2Selected = value as int;
-                                      // _spo2Val = 'Yes';
+                                       _spo2Selected = value as int;
+                                       _spo2Val = 'Yes';
                                       print(_spo2Val);
                                     });
                                   },
@@ -783,8 +767,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _spo2Selected = value as int;
-                                      // _spo2Val = 'No';
+                                       _spo2Selected = value as int;
+                                       _spo2Val = 'No';
                                       print(_spo2Val);
                                     });
                                   },
@@ -823,8 +807,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _medipriceSelected = value as int;
-                                      // _medipriceVal = 'Yes';
+                                       _medipriceSelected = value as int;
+                                       _medipriceVal = 'Yes';
                                       print(_medipriceVal);
                                     });
                                   },
@@ -840,8 +824,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _medipriceSelected = value as int;
-                                      // _medipriceVal = 'No';
+                                       _medipriceSelected = value as int;
+                                       _medipriceVal = 'No';
                                       print(_medipriceVal);
                                     });
                                   },
@@ -880,8 +864,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _patternSelected = value as int;
-                                      // _patternVal = 'Yes';
+                                       _patternSelected = value as int;
+                                       _patternVal = 'Yes';
                                       print(_patternVal);
                                     });
                                   },
@@ -897,8 +881,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _patternSelected = value as int;
-                                      // _patternVal = 'No';
+                                       _patternSelected = value as int;
+                                       _patternVal = 'No';
                                       print(_patternVal);
                                     });
                                   },
@@ -937,8 +921,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _expensesSelected = value as int;
-                                      // _expensesVal = 'Yes';
+                                       _expensesSelected = value as int;
+                                       _expensesVal = 'Yes';
                                       print(_expensesVal);
                                     });
                                   },
@@ -954,8 +938,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _expensesSelected = value as int;
-                                      // _expensesVal = 'No';
+                                       _expensesSelected = value as int;
+                                       _expensesVal = 'No';
                                       print(_expensesVal);
                                     });
                                   },
@@ -994,8 +978,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _appointmentsSelected = value as int;
-                                      // _appointmentsVal = 'Yes';
+                                       _appointmentsSelected = value as int;
+                                       _appointmentsVal = 'Yes';
                                       print(_appointmentsVal);
                                     });
                                   },
@@ -1011,8 +995,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _appointmentsSelected = value as int;
-                                      // _appointmentsVal = 'No';
+                                       _appointmentsSelected = value as int;
+                                       _appointmentsVal = 'No';
                                       print(_appointmentsVal);
                                     });
                                   },
@@ -1051,8 +1035,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _dobSelected = value as int;
-                                      // _dobVal = 'Yes';
+                                       _dobSelected = value as int;
+                                       _dobVal = 'Yes';
                                       print(_dobVal);
                                     });
                                   },
@@ -1068,8 +1052,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _dobSelected = value as int;
-                                      // _dobVal = 'No';
+                                       _dobSelected = value as int;
+                                       _dobVal = 'No';
                                       print(_dobVal);
                                     });
                                   },
@@ -1108,8 +1092,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _emailSelected = value as int;
-                                      // _emailVal = 'Yes';
+                                       _emailSelected = value as int;
+                                       _emailVal = 'Yes';
                                       print(_emailVal);
                                     });
                                   },
@@ -1125,8 +1109,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _emailSelected = value as int;
-                                      // _emailVal = 'No';
+                                       _emailSelected = value as int;
+                                       _emailVal = 'No';
                                       print(_emailVal);
                                     });
                                   },
@@ -1165,8 +1149,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _recptformtSelected = value as int;
-                                      // _recptformtVal = 'Yes';
+                                       _recptformtSelected = value as int;
+                                       _recptformtVal = 'Yes';
                                       print(_recptformtVal);
                                     });
                                   },
@@ -1182,8 +1166,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                                   activeColor: Colors.blue,
                                   onChanged: (value) {
                                     setState(() {
-                                      // _recptformtSelected = value as int;
-                                      // _recptformtVal = 'No';
+                                       _recptformtSelected = value as int;
+                                       _recptformtVal = 'No';
                                       print(_recptformtVal);
                                     });
                                   },
@@ -1195,84 +1179,99 @@ class _ClinicConfigState extends State<ClinicConfig> {
                         ),
                       )
                     ],
+                  ),     
+           SizedBox(height: screenHeight*0.02,),
+               
+               Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: feesController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Fees',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      readOnly: true,
-                      controller: feesController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Fees'),
-                    ),
-                  ),
-                  SizedBox(height: 20,)
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Container(
-                  //     height: screenHeight * 0.06,
-                  //     width: screenWidth * 0.95,
-                  //     decoration:
-                  //         BoxDecoration(border: Border.all(color: Colors.grey)
-                  //             // border: OutlineInputBorder()
-                  //             ),
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: DropdownButtonFormField(
-                  //         // validator: (value) => validateDrops(value),
-                  //         // isExpanded: true,
-                  //         decoration: InputDecoration.collapsed(hintText: ''),
-                  //         isExpanded: true,
-                  //         hint: Padding(
-                  //           padding: const EdgeInsets.only(
-                  //               top: 0, left: 8, right: 8),
-                  //           child: Text(
-                  //             'Prescription Page Config',
-                  //             style: TextStyle(
-                  //                 color: Color.fromARGB(255, 112, 107, 107)),
-                  //           ),
-                  //         ),
-                  //         // value:' _selectedState[i]',
-                  //         onChanged: (selecteddoctor) {
-                  //           setState(() {
-                  //             // selectedDoctor = selectedDoctor;
-                  //             // print("Stae value");
-                  //             // print(newValue);
-                  //             // _selectedState[i]= newValue;
-                  //             // getMyDistricts(newValue, i);
-                  //           });
-                  //         },
-                  //         items: prespageconfig
-                  //             .map<DropdownMenuItem<String>>((item) {
-                  //           return new DropdownMenuItem(
-                  //             child: new Text(item),
-                  //             value: item.toString(),
-                  //           );
-                  //         }).toList(),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // ElevatedButton(onPressed: () {}, child: Text('Update'))
-                ],
-              ),
+                 ),
+               ),
+               SizedBox(height: screenHeight*0.02,),
+
+               Container(width: screenWidth,
+                 child: Padding(
+                   padding: const EdgeInsets.all(8.0),
+                   child: ElevatedButton(
+                    // style: ElevatedButton.styleFrom(
+                    //   backgroundColor: custom_color.appcolor,
+                    // ),
+                      style: ButtonStyle(
+                               backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
+                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                       
+                               RoundedRectangleBorder(
+                               borderRadius: BorderRadius.circular(10),
+                          
+                         
+                       ),
+                       
+                     )
+                     
+                   ),
+                    onPressed: (){
+                                 if(prescriptionController.text.isEmpty){
+                    NigDocToast().showErrorToast('Enter Prescription Prefix');
+                                 }else if(patientprefixController.text.isEmpty){
+                    NigDocToast().showErrorToast('Enter Patient Prefix');
+                                 }else if(calltokenController.text.isEmpty){
+                    NigDocToast().showErrorToast('Enter Call Token');
+                                 }else if(visittokenController.text.isEmpty){
+                    NigDocToast().showErrorToast('Enter Visit Token');
+                                 }else if(lowqualityController.text.isEmpty){
+                    NigDocToast().showErrorToast('Enter Low Quality');
+                                 }else if(feesController.text.isEmpty){
+                    NigDocToast().showErrorToast('Enter Your Fees');
+                                 }else{
+                    var data={
+                      "prescription":prescriptionController.text.toString(),
+                       "patient":patientprefixController.text.toString(),
+                        "call token":calltokenController.text.toString(),
+                         "visit":visittokenController.text.toString(),
+                          "low quality":lowqualityController.text.toString(),
+                           "fees":feesController.text.toString(),
+                   
+                   
+                   
+                    };
+                    Helper().isvalidElement(data);
+                    print(data);
+                                 }
+                               
+                   
+                    }, 
+                   child: Text('Update',
+                   style: TextStyle(color: Colors.white,
+                   fontSize: 20),
+                   
+                   ),
+                   
+                   ),
+                 ),
+               ),
+               SizedBox(
+                height: screenHeight*0.04,
+               )
+
+              ],
+
             ),
-          ):Center(child: SpinLoader(),),
-            floatingActionButton: FloatingActionButton(onPressed: (() {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_Confiuration()));
-        }
-        ),
-        child: Icon(Icons.edit,color: Colors.white,size: 30,),
-        backgroundColor: custom_color.appcolor,
-        ),
-
           ),
-
+        ),
+      ):Center(child: SpinLoader(),)
+     ),
     );
   }
 
-  getclinicconfig() async {
-   
 
+    getclinicconfig() async {
+      
     clinicconfig = await ShopApi().getclinicconfig(accesstoken);
     if (Helper().isvalidElement(clinicconfig) &&
         Helper().isvalidElement(clinicconfig['status']) &&
@@ -1282,8 +1281,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
       var data = clinicconfig['list'];
 
       //  storage.setItem('diagnosisList', diagnosisList);
-      presprefixController.text = data[0]['bill_prefix'].toString();
-      patprefixController.text = data[0]['patient_prefix'].toString();
+      prescriptionController.text = data[0]['bill_prefix'].toString();
+      patientprefixController.text = data[0]['patient_prefix'].toString();
       calltokenController.text = data[0]['call_tkn'].toString();
       visittokenController.text = data[0]['visit_tkn'].toString();
       lowqualityController.text = data[0]['low_quantity'].toString();
@@ -1358,8 +1357,9 @@ class _ClinicConfigState extends State<ClinicConfig> {
 
       feesController.text = data[0]['fees'].toString();
       this.setState(() {
-        isLoading = true;
+        isloading = true;
       });
     }
   }
+
 }

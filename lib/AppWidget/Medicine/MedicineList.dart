@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+import 'package:nigdoc/AppWidget/Medicine/AddMedicineList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
@@ -16,6 +18,10 @@ class MedicineList extends StatefulWidget {
 class _MedicineListState extends State<MedicineList> {
   final LocalStorage storage = new LocalStorage('doctor_store');
    TextEditingController searchText = TextEditingController();
+    TextEditingController medicine_Controller=TextEditingController();
+TextEditingController Alternative_Controller=TextEditingController();
+TextEditingController pattrn_Controller=TextEditingController();
+
    String medicineDropdownvalue="empty";
 
 
@@ -34,6 +40,15 @@ class _MedicineListState extends State<MedicineList> {
  var medicine_List;
  bool valid=false;
  bool MedicineLoader=false;
+
+ var selected_item;
+var item =[
+ 'item1',
+ 'item2',
+ 'item3',
+ 'item4',
+ 'item5',
+];
 
    @override
   void initState() {
@@ -361,6 +376,195 @@ class _MedicineListState extends State<MedicineList> {
                             // );
                                             
                             //               }, icon: Icon(Icons.menu)),
+
+                             trailing: PopupMenuButton(itemBuilder: (context)=>
+                    [
+                    PopupMenuItem(child: Row(
+                      children: [
+                        
+                          Icon(Icons.edit,
+                          color: custom_color.appcolor,
+                          ),
+                             Padding(padding: EdgeInsets.only(left:10),
+                             child: Center(child: Text('Edit',style: TextStyle(fontSize: 16),)),),
+
+                      ],
+                    ),
+                    
+                    onTap: () {
+                   
+                   showDialog(context: context, builder: (context)=>AlertDialog(
+                          actions: [
+                        
+                            Padding(padding: EdgeInsets.all(10)),
+
+                            Container(
+                              height: screenHeight*0.04,
+                              width:screenWidth*0.8,
+                            ),
+                            TextFormField(
+                    controller: medicine_Controller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      
+                      labelText: "Medicine Name "
+                    ),
+                  
+                ),
+
+                 SizedBox(height: screenHeight*0.02,),
+                 TextFormField(
+                  controller: Alternative_Controller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      
+                      labelText: "Alternative Medicine "
+                    ),
+                   
+                ),
+                 SizedBox(height: screenHeight*0.02,),
+                 Padding(
+                 padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                    //padding: const EdgeInsets.all(20),
+                    child: Container(
+                      height: screenHeight * 0.07,
+                      width: screenWidth * 0.96,
+                      
+                      decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5.0)
+                          // border: OutlineInputBorder()
+                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        
+                        child: Center(
+                          child: DropdownButtonFormField(
+                          
+                            decoration: InputDecoration.collapsed(hintText: ''),
+                            isExpanded: true,
+                            hint: Padding(
+                           
+                            padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
+                              child: Text(
+                                'Pattern Type ',
+                               
+                              ),
+                              
+                            ),
+                           
+                            onChanged: (selected) {
+                              selected_item=selected;
+                              setState(() {
+                               
+                              });
+                            },
+                            items: item.map<DropdownMenuItem<String>>((item) {
+                              return new DropdownMenuItem(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+                                  child: new Text(item,style: TextStyle(fontSize: 15),),
+                                ),
+                                value: item.toString(),
+                              );
+                            }).toList(),
+                          ),
+                          
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: screenHeight*0.04,),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                       child: ElevatedButton( 
+                       style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
+  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+    
+    RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+       
+      
+    ),
+    
+  )
+  
+),
+                         child:Text('Update',
+                         style: TextStyle(fontSize: 20,color: Colors.white),),
+                         onPressed: (() {
+                           if(medicine_Controller.text.isEmpty){
+                             NigDocToast().showErrorToast('Please Enter Medicine Nmae');
+
+                           }else if(Alternative_Controller.text.isEmpty){
+                             NigDocToast().showErrorToast('Enter The Alter Medicine');
+
+                           }
+                           else if(selected_item==null){
+                             NigDocToast().showErrorToast('Select Pattern Type');
+                           }else{
+                             var data={
+                                 "medicin":medicine_Controller.text.toString(),
+                                 "altern":Alternative_Controller.text.toString(),
+                                 "pattern Type":selected_item.toString(),
+                             };
+                            Helper().isvalidElement(data);
+                              print(data);
+                           }
+                          
+                         }),),
+                     ),
+
+                       Padding(
+                         padding: const EdgeInsets.only(top: 0,left: 30,right:10),
+                         child: ElevatedButton( 
+                          
+                          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+    
+    RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+       
+      
+    ),
+    
+  )
+  
+),
+                         child:Text('Cancel',
+                         style: TextStyle(fontSize: 20,color: Colors.white),),
+                         onPressed: (() {
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                         }),),
+                       ),
+                       SizedBox(height: screenHeight*0.04,),
+                   ],
+                 ),
+                  
+                            
+                            
+                          ],
+
+                   ));
+                  
+                              },
+                                        
+                                 ),
+                    // PopupMenuItem(child: Text('Cancel'),
+                    // onTap: () {
+                    // Navigator.push(context, MaterialPageRoute(builder:(context)=>MedicineList()));
+                    //            },
+                                        
+                    //               ),
+                    ],            
+                               ),
                                         ),
                                       )
                                     ],
@@ -378,7 +582,22 @@ class _MedicineListState extends State<MedicineList> {
             ),
           ):Center(
             child: Container(child:SpinLoader()
-          )),));
+          )
+          ),
+               floatingActionButton: FloatingActionButton(
+            
+            onPressed:(){
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_MedicineList()));
+            },
+          child:Icon(Icons.add,
+          size: 30,
+          color: Colors.white,),
+          backgroundColor: custom_color.appcolor,
+            
+            ), 
+
+          )
+          );
   }
   getMedicineList() async {
     var data = {

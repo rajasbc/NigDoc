@@ -36,7 +36,7 @@ class _paidbilllistState extends State<paidbilllist> {
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: Customcolor.appcolor, // button text color
+                  foregroundColor: Customcolor.appcolor, // button text color
                 ),
               ),
             ),

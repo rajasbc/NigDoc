@@ -15,7 +15,8 @@ _setHeadersWithOutToken() => {
 class PatientApi{
   getpatientlist(access_token) async {
     String patientlisturl = requestpath.base_url + requestpath.patientListEndpoint;
-    var response = await http.get(Uri.parse(patientlisturl),
+    var response = await http.get(
+      Uri.parse(patientlisturl),
         headers: _setHeaders(access_token));
         if (response.statusCode == 200) {
       return json.decode(response.body);
@@ -85,6 +86,19 @@ add_patient(access_token,patient_details) async {
     }
   }
 
+   getReferralList(access_token,data) async{
+    String getReferralList =requestpath.base_url + requestpath.ReferralListEndpoint;
+    var response = await http.post(
+      Uri.parse(getReferralList),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+      if(response.statusCode==200){
+        return json.decode(response.body);
+      }else{
+        return json.decode(response.body);
+      }
+  }
+
   getinjectionList(access_token) async {
     String getinjectionlisturl = requestpath.base_url + requestpath.getinjectionEndpoint;
    var response = await http.get(
@@ -106,6 +120,7 @@ add_patient(access_token,patient_details) async {
       return json.decode(response.body);
     }
   }
+ 
   
    
 }

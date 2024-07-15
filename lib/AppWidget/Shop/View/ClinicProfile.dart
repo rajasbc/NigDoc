@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
+import 'package:nigdoc/AppWidget/Shop/View/EditClincProfile.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart'as custom_color;
@@ -945,6 +946,16 @@ class _ClinicProfileState extends State<ClinicProfile> {
             ),
           ),
         ): Center(child:  SpinLoader(),),
+
+         floatingActionButton: FloatingActionButton(onPressed: (){
+
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_ClinicProfile()));
+              
+        
+        },
+        
+        child: Icon(Icons.edit,color: Colors.white,size: 30,),
+        backgroundColor: custom_color.appcolor,),
       ),
     );
   }

@@ -40,7 +40,7 @@ class _CancelledbillState extends State<Cancelledbill> {
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: Customcolor.appcolor, // button text color
+                  foregroundColor: Customcolor.appcolor, // button text color
                 ),
               ),
             ),

@@ -1,4 +1,6 @@
+//String base_url ="http://10.0.2.2:8000/api/";
 String base_url = "https://sapi.nigsoft.com/api/";
+String userSignup = "auth/doc_sign_up";
 String userlogin = "auth/doctorLogin";
 String StaffListEndpoint = "auth/getClinicStaffList";
 String DoctorListEndpoint = "auth/getClinicDoctorList";
@@ -19,4 +21,5 @@ String notificationListEndpoint = 'auth/doctor_notifications';
 String appointmentListEndpoint = 'auth/eachDoctorAppoinmentsNew';
 String appointmentFixEndpoint = 'auth/appointment_fixby_doctor';
 String getAppversionEndpoint = 'auth/nigdocappversion';
+String ReferralListEndpoint ='getReferralList';
 

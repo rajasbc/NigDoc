@@ -1006,9 +1006,19 @@ class _PatientsState extends State<Patients> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                              primary: custom_color.appcolor,
-                            ),
+                       style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+    
+                            RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+       
+      
+                             ),
+    
+                             )
+  
+                             ),
                         onPressed: () {
                           if (namecontroller.text.isEmpty) {
                             Fluttertoast.showToast(
@@ -1098,7 +1108,7 @@ class _PatientsState extends State<Patients> {
                             // add_patient(patient_details);
                           }
                         },
-                        child: Text('Register',style:TextStyle(color:Colors.white))),
+                        child: Text('Register',style:TextStyle(color:Colors.white,fontSize: 20))),
                   ),
                 ),
                     SizedBox(height: 20,)
