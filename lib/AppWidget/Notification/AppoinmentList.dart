@@ -495,7 +495,7 @@ class _AppointmentListState extends State<AppointmentList> {
                       // width: screenwidth * 0.30,
                       child: ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                        backgroundColor: WidgetStateProperty.all<Color>(
                             custom_color.appcolor)),
                     onPressed: () async {
                       setState(() {
@@ -526,7 +526,7 @@ class _AppointmentListState extends State<AppointmentList> {
                     // width: screenwidth * 0.30,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
+                          backgroundColor: WidgetStateProperty.all<Color>(
                               custom_color.appcolor)),
                       onPressed: () async {
                         setState(() {

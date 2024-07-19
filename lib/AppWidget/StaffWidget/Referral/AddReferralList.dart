@@ -268,8 +268,8 @@ class _Add_referralListState extends State<Add_referralList> {
                    padding: const EdgeInsets.all(8.0),
                    child: ElevatedButton(
                     style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                        
                                 RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),

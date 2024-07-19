@@ -732,11 +732,11 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                     ),
                                                     style: ButtonStyle(
                                                         backgroundColor:
-                                                            MaterialStateProperty
+                                                            WidgetStateProperty
                                                                 .all<Color>(
                                                                     custom_color
                                                                         .appcolor),
-                                                        shape: MaterialStateProperty
+                                                        shape: WidgetStateProperty
                                                             .all<RoundedRectangleBorder>(
                                                                 RoundedRectangleBorder(
                                                           borderRadius:
@@ -1278,12 +1278,12 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                       ),
                                                       style: ButtonStyle(
                                                           backgroundColor:
-                                                              MaterialStateProperty
+                                                              WidgetStateProperty
                                                                   .all<
                                                                           Color>(
                                                                       custom_color
                                                                           .appcolor),
-                                                          shape: MaterialStateProperty.all<
+                                                          shape: WidgetStateProperty.all<
                                                                   RoundedRectangleBorder>(
                                                               RoundedRectangleBorder(
                                                             borderRadius:
@@ -1508,12 +1508,12 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                       ),
                                                       style: ButtonStyle(
                                                           backgroundColor:
-                                                              MaterialStateProperty
+                                                              WidgetStateProperty
                                                                   .all<
                                                                           Color>(
                                                                       custom_color
                                                                           .appcolor),
-                                                          shape: MaterialStateProperty.all<
+                                                          shape: WidgetStateProperty.all<
                                                                   RoundedRectangleBorder>(
                                                               RoundedRectangleBorder(
                                                             borderRadius:
@@ -2121,11 +2121,11 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         ),
                                                         style: ButtonStyle(
                                                             backgroundColor:
-                                                                MaterialStateProperty
+                                                                WidgetStateProperty
                                                                     .all<Color>(
                                                                         custom_color
                                                                             .appcolor),
-                                                            shape: MaterialStateProperty.all<
+                                                            shape: WidgetStateProperty.all<
                                                                     RoundedRectangleBorder>(
                                                                 RoundedRectangleBorder(
                                                               borderRadius:
@@ -2799,11 +2799,11 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                                         ),
                                                         style: ButtonStyle(
                                                             backgroundColor:
-                                                                MaterialStateProperty
+                                                                WidgetStateProperty
                                                                     .all<Color>(
                                                                         custom_color
                                                                             .appcolor),
-                                                            shape: MaterialStateProperty.all<
+                                                            shape: WidgetStateProperty.all<
                                                                     RoundedRectangleBorder>(
                                                                 RoundedRectangleBorder(
                                                               borderRadius:

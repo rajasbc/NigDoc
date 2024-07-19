@@ -827,9 +827,9 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         //           //   ),
                         //           //   style: ButtonStyle(
                         //           //     backgroundColor:
-                        //           //         MaterialStateProperty.all<Color>(
+                        //           //         WidgetStateProperty.all<Color>(
                         //           //             Colors.grey),
-                        //           //     shape: MaterialStateProperty.all<
+                        //           //     shape: WidgetStateProperty.all<
                         //           //         RoundedRectangleBorder>(
                         //           //       RoundedRectangleBorder(
                         //           //         borderRadius: BorderRadius.circular(0.0),
@@ -922,10 +922,10 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         //           color: Colors.white, fontWeight: FontWeight.bold),
                         //     ),
                         //     style: ButtonStyle(
-                        //       backgroundColor: MaterialStateProperty.all<Color>(
+                        //       backgroundColor: WidgetStateProperty.all<Color>(
                         //           Color.fromARGB(255, 8, 122, 135)),
                         //       shape:
-                        //           MaterialStateProperty.all<RoundedRectangleBorder>(
+                        //           WidgetStateProperty.all<RoundedRectangleBorder>(
                         //         RoundedRectangleBorder(
                         //           borderRadius: BorderRadius.circular(50.0),
                         //           side: BorderSide(
@@ -947,15 +947,15 @@ class _ClinicProfileState extends State<ClinicProfile> {
           ),
         ): Center(child:  SpinLoader(),),
 
-         floatingActionButton: FloatingActionButton(onPressed: (){
+        //  floatingActionButton: FloatingActionButton(onPressed: (){
 
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_ClinicProfile()));
+        //       Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_ClinicProfile()));
               
         
-        },
+        // },
         
-        child: Icon(Icons.edit,color: Colors.white,size: 30,),
-        backgroundColor: custom_color.appcolor,),
+        // child: Icon(Icons.edit,color: Colors.white,size: 30,),
+        // backgroundColor: custom_color.appcolor,),
       ),
     );
   }

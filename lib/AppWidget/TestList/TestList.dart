@@ -194,129 +194,129 @@ class _TestListState extends State<TestList> {
                                               child: Text('$list'),
                                             ),
 
-                                            trailing: PopupMenuButton(itemBuilder: (context)=>[
-                                          PopupMenuItem(
+                    //                         trailing: PopupMenuButton(itemBuilder: (context)=>[
+                    //                       PopupMenuItem(
                                             
-                                            child:Row(
-                                              children: [
-                                                Icon(Icons.edit,color: custom_color.appcolor,),
-                                                Padding(padding: EdgeInsets.only(left: 10),
-                                                child: Text('Edit',style: TextStyle(fontSize: 16),),)
-                                              ],
-                                            ),
-                                               onTap: (() {
-                                                 showDialog(context: context, builder: (context)=>AlertDialog(
-                                                  actions: [
+                    //                         child:Row(
+                    //                           children: [
+                    //                             Icon(Icons.edit,color: custom_color.appcolor,),
+                    //                             Padding(padding: EdgeInsets.only(left: 10),
+                    //                             child: Text('Edit',style: TextStyle(fontSize: 16),),)
+                    //                           ],
+                    //                         ),
+                    //                            onTap: (() {
+                    //                              showDialog(context: context, builder: (context)=>AlertDialog(
+                    //                               actions: [
 
                                                     
-                                                    Padding(padding: EdgeInsets.all(10)),
-                                                    Container(
-                                                      height: screenHeight*0.04,
-                                                      width: screenWidth*0.14,
-                                                    ),
+                    //                                 Padding(padding: EdgeInsets.all(10)),
+                    //                                 Container(
+                    //                                   height: screenHeight*0.04,
+                    //                                   width: screenWidth*0.14,
+                    //                                 ),
 
                                                   
                                                   
                    
-                                                 TextFormField(
-                                                     controller: testnamecontroller,
-                                                     decoration: InputDecoration(
-                                                     border: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(5.0),
-                                                     ),
-                                                     labelText: "Test Name",
-                                                     ),
-                                                     ),
+                    //                              TextFormField(
+                    //                                  controller: testnamecontroller,
+                    //                                  decoration: InputDecoration(
+                    //                                  border: OutlineInputBorder(
+                    //                                   borderRadius: BorderRadius.circular(5.0),
+                    //                                  ),
+                    //                                  labelText: "Test Name",
+                    //                                  ),
+                    //                                  ),
                                                      
-                                                     SizedBox(height: screenHeight*0.02,),
+                    //                                  SizedBox(height: screenHeight*0.02,),
                                                       
-                                                      TextFormField(
-                                                        keyboardType: TextInputType.number,
-                                                    controller: testamountcontroller,
-                                                          decoration: InputDecoration(
-                                                    border: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(5.0),
-                                                    ),
-                                                         labelText: 'Test Amount',
-                                                    ),
+                    //                                   TextFormField(
+                    //                                     keyboardType: TextInputType.number,
+                    //                                 controller: testamountcontroller,
+                    //                                       decoration: InputDecoration(
+                    //                                 border: OutlineInputBorder(
+                    //                                   borderRadius: BorderRadius.circular(5.0),
+                    //                                 ),
+                    //                                      labelText: 'Test Amount',
+                    //                                 ),
               
-                                                     ),
-                                                     SizedBox(height: screenHeight*0.04,),
-                     Row(
-                      children: [
+                    //                                  ),
+                    //                                  SizedBox(height: screenHeight*0.04,),
+                    //  Row(
+                    //   children: [
 
-                        Padding(padding: EdgeInsets.only(left:20),
-                        child: ElevatedButton(
-                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    //     Padding(padding: EdgeInsets.only(left:20),
+                    //     child: ElevatedButton(
+                    //        style: ButtonStyle(
+                    //         backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                    //         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
-                            RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                    //         RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(10),
        
       
-                             ),
+                    //          ),
     
-                             )
+                    //          )
   
-                             ),
-                           child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
-                           onPressed: (() {
-                             if(testnamecontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Your Test Name');
+                    //          ),
+                    //        child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                    //        onPressed: (() {
+                    //          if(testnamecontroller.text.isEmpty){
+                    //           NigDocToast().showErrorToast('Enter Your Test Name');
 
-                             }else if(testamountcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Test Amount ');
+                    //          }else if(testamountcontroller.text.isEmpty){
+                    //           NigDocToast().showErrorToast('Enter Test Amount ');
 
-                             }else{
-                              var data={
-                                testnamecontroller.text.toString(),
-                                testamountcontroller.text.toString(),
-                              };
-                              Helper().isvalidElement(data);
-                              print(data);
-                             };
+                    //          }else{
+                    //           var data={
+                    //             testnamecontroller.text.toString(),
+                    //             testamountcontroller.text.toString(),
+                    //           };
+                    //           Helper().isvalidElement(data);
+                    //           print(data);
+                    //          };
                              
-                           }),
-                           ),
-                        ),
+                    //        }),
+                    //        ),
+                    //     ),
 
-                        Padding(padding: EdgeInsets.only(left: 20),
+                    //     Padding(padding: EdgeInsets.only(left: 20),
                         
-                        child: ElevatedButton( 
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    //     child: ElevatedButton( 
+                    //       style: ButtonStyle(
+                    //         backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                    //         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
-                            RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                    //         RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(10),
        
       
-                             ),
+                    //          ),
     
-                             )
+                    //          )
   
-                             ),
-                          child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
+                    //          ),
+                    //       child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
 
-                          onPressed: (() {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>TestList()));
-                          }),
+                    //       onPressed: (() {
+                    //         Navigator.push(context, MaterialPageRoute(builder: (context)=>TestList()));
+                    //       }),
                           
-                          ),
+                    //       ),
                           
                           
-                          ),
-                      ],
-                    ),
-                            SizedBox(height: screenHeight*0.02,),              
-                                                  ],
-                                                 ));
+                    //       ),
+                    //   ],
+                    // ),
+                    //         SizedBox(height: screenHeight*0.02,),              
+                    //                               ],
+                    //                              ));
                                                  
-                                               }),
+                    //                            }),
                                              
-                                          ),
-                                        ]),
+                    //                       ),
+                    //                     ]),
                               //               trailing: IconButton(onPressed: (){
                               //                 var List=data;
                               
@@ -417,17 +417,17 @@ class _TestListState extends State<TestList> {
             child: Container(child:SpinLoader()
           )
           ),
-           floatingActionButton: FloatingActionButton(onPressed: (){
+          //  floatingActionButton: FloatingActionButton(onPressed: (){
 
             
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_TestList()));
+          //   Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_TestList()));
 
-          },
-          child: Icon(Icons.add,
-          size: 30,
-          color: Colors.white,),
-          backgroundColor: custom_color.appcolor,
-          ),
+          // },
+          // child: Icon(Icons.add,
+          // size: 30,
+          // color: Colors.white,),
+          // backgroundColor: custom_color.appcolor,
+          // ),
           )
           );
   }

@@ -201,381 +201,305 @@ var item =[
                   height: 10,
                 ),
                 Expanded(
-                  child: Column(
-                    children: [
-                      Center(child: 
-                      Container(
-                        height: screenHeight * 0.06,
-                        width: screenWidth*0.95,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border:
-                                Border.all(color: custom_color.appcolor,),
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
-                        child: Row(
-                          children: [
-                            Container(
-                                width: screenWidth * 0.1,
-                                height: screenHeight,
-                                child: Icon(Icons.search,
-                                    color: custom_color.appcolor,)),
-                            Container(
-                              width: screenWidth * 0.65,
-                              child: TextField(
-                                controller: searchText,
-                                onChanged: (text) {
-                                  print(text);
-                            
-                                  this.setState(() {});
-                                  // var list = ProductListItem;
-                                    searchList = medicineList.where((element) {
-                                      var treatList = element['name'].toString().toLowerCase();
-                                      return treatList.contains(text.toLowerCase());
-                                      // return true;
-                                    }).toList();
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Center(child: 
+                        Container(
+                          height: screenHeight * 0.06,
+                          width: screenWidth*0.95,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border:
+                                  Border.all(color: custom_color.appcolor,),
+                              borderRadius: BorderRadius.all(Radius.circular(4))),
+                          child: Row(
+                            children: [
+                              Container(
+                                  width: screenWidth * 0.1,
+                                  height: screenHeight,
+                                  child: Icon(Icons.search,
+                                      color: custom_color.appcolor,)),
+                              Container(
+                                width: screenWidth * 0.65,
+                                child: TextField(
+                                  controller: searchText,
+                                  onChanged: (text) {
+                                    print(text);
+                              
                                     this.setState(() {});
-                                },
-                                decoration: new InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  fillColor: Colors.white,
-                                  hintText: 'Search Medicine List Here...',
+                                    // var list = ProductListItem;
+                                      searchList = medicineList.where((element) {
+                                        var treatList = element['name'].toString().toLowerCase();
+                                        return treatList.contains(text.toLowerCase());
+                                        // return true;
+                                      }).toList();
+                                      this.setState(() {});
+                                  },
+                                  decoration: new InputDecoration(
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    fillColor: Colors.white,
+                                    hintText: 'Search Medicine List Here...',
+                                  ),
                                 ),
                               ),
-                            ),
-                            searchText.text.isNotEmpty
-                                ? Container(
-                                    width: screenWidth * 0.1,
-                                    height: screenHeight,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        Icons.close,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          searchText.text = '';
-                                          searchList='';
-                                        });
-                                      },
-                                    ))
-                                : Container(),
-                          ],
-                        ),
-                      ),),
-                            
-                            
-                          // SizedBox(height: screenHeight*0.01),
-                         
-                            
-                          Helper().isvalidElement(medicine_List) && medicine_List.length > 0 ?
-                           Container(
-                            // height:screenHeight * 0.85,
-                            
-                                     
-                           width: screenWidth,
-                            padding:EdgeInsets.all(5),
-                            child: 
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: medicine_List.length,
-                              itemBuilder: (BuildContext context, int index){
-                                list=index+1;
-                                var data=medicine_List[index];
-                                return Container(
-                                  child: Column(
-                                    children: [
-                                      Card(
-                                        color: index % 2 == 0
-                                                      ?custom_color.lightcolor
-                                                      : Colors.white,
-                                        child: ListTile(
-                                          title: SizedBox(child: Text('${data['name']}')),
-                                          subtitle: Text('₹  ${data['mrp']}'),
-                                          leading: Padding(
-                                            padding: const EdgeInsets.only(top:3.0),
-                                            child: Text('$list'),
-                                          ),
-                            //               trailing: IconButton(onPressed: (){
-                            //                 var List=data;
-                                     
-                                     
-                            //                  showDialog(
-                                              
-                            //   context: context,
-                            //   builder: (ctx) => AlertDialog(
-                                
-                                
-                            //     // backgroundColor: Color.fromARGB(0, 238, 236, 236),
-                            //     title:  Text('Product:  ${List['name'].toString()}' ),
-                            //     content:Container(
-                            //       width: screenWidth*0.8,
-                            //       height: screenHeight*0.15,
-                                  
-                            //       child:Column(
-                            //       children:[
-                            //         Row(
-                            //           children: [
-                            //              SizedBox(height: 10,),
-                            //             Text('Cost: '),
-                            //             Text('${List['cost'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                            //           ],
-                            //         ),
-                            //          SizedBox(height: 10,),
-                            //          Row(
-                            //           children: [
-                            //             Text('Price:'),
-                            //             Text('${List['sale_price'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                            //           ],
-                            //         ),
-                            //          SizedBox(height: 10,),
-                            //          Row(
-                            //           children: [
-                            //             Text('Quantity:'),
-                            //             Text('${List['qty'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                            //           ],
-                            //         ),
-                            //         SizedBox(height: 10,),
-                            //         Row(
-                                      
-                            //           children: [
-                            //             Text('Status:'),
-                            //             Text('${List['status'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                            //           ],
-                            //         )
-                            //       ],
-                            //     )
-                                     
-                            //     ),
-                                    
-                            //     actions: <Widget>[
-                            //       TextButton(
-                            //         onPressed: () {
-                            //           Navigator.of(ctx).pop();
-                            //           //  Helper().appLogoutCall(context, 'logout');
-                            //         },
-                            //         child: Container(
-                            //           // color: Colors.green,
-                            //           padding: const EdgeInsets.all(14),
-                            //           child: const Text("Close"),
-                            //         ),
-                            //       ),
-                            //       // TextButton(
-                            //       //   onPressed: () {
-                            //       //     // Navigator.of(ctx).pop();
-                            //       //     Helper().appLogoutCall(context, 'logout');
-                            //       //   },
-                            //       //   child: Container(
-                            //       //     // color: Colors.green,
-                            //       //     padding: const EdgeInsets.all(14),
-                            //       //     child: const Text("Yes"),
-                            //       //   ),
-                            //       // ),
-                            //     ],
-                            //   ),
-                            // );
-                                            
-                            //               }, icon: Icon(Icons.menu)),
-
-                             trailing: PopupMenuButton(itemBuilder: (context)=>
-                    [
-                    PopupMenuItem(child: Row(
-                      children: [
-                        
-                          Icon(Icons.edit,
-                          color: custom_color.appcolor,
+                              searchText.text.isNotEmpty
+                                  ? Container(
+                                      width: screenWidth * 0.1,
+                                      height: screenHeight,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.close,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            searchText.text = '';
+                                            searchList='';
+                                          });
+                                        },
+                                      ))
+                                  : Container(),
+                            ],
                           ),
-                             Padding(padding: EdgeInsets.only(left:10),
-                             child: Center(child: Text('Edit',style: TextStyle(fontSize: 16),)),),
-
+                        ),),
+                              
+                              
+                            // SizedBox(height: screenHeight*0.01),
+                           
+                              
+                            Helper().isvalidElement(medicine_List) && medicine_List.length > 0 ?
+                             Container(
+                              // height:screenHeight * 0.85,
+                              
+                                       
+                             width: screenWidth,
+                              padding:EdgeInsets.all(5),
+                              child: 
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: medicine_List.length,
+                                itemBuilder: (BuildContext context, int index){
+                                  list=index+1;
+                                  var data=medicine_List[index];
+                                  return Container(
+                                    child: Column(
+                                      children: [
+                                        Card(
+                                          color: index % 2 == 0
+                                                        ?custom_color.lightcolor
+                                                        : Colors.white,
+                                          child: ListTile(
+                                            title: SizedBox(child: Text('${data['name']}')),
+                                            subtitle: Text('₹  ${data['mrp']}'),
+                                            leading: Padding(
+                                              padding: const EdgeInsets.only(top:3.0),
+                                              child: Text('$list'),
+                                            ),
+                              
+                    
+                    //            trailing: PopupMenuButton(itemBuilder: (context)=>
+                    //   [
+                    //   PopupMenuItem(child: Row(
+                    //     children: [
+                          
+                    //         Icon(Icons.edit,
+                    //         color: custom_color.appcolor,
+                    //         ),
+                    //            Padding(padding: EdgeInsets.only(left:10),
+                    //            child: Center(child: Text('Edit',style: TextStyle(fontSize: 16),)),),
+                    
+                    //     ],
+                    //   ),
+                      
+                    //   onTap: () {
+                     
+                    //  showDialog(context: context, builder: (context)=>AlertDialog(
+                    //         actions: [
+                          
+                    //           Padding(padding: EdgeInsets.all(10)),
+                    
+                    //           Container(
+                    //             height: screenHeight*0.04,
+                    //             width:screenWidth*0.8,
+                    //           ),
+                    //           TextFormField(
+                    //   controller: medicine_Controller,
+                    //   decoration: InputDecoration(
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //     ),
+                        
+                    //     labelText: "Medicine Name "
+                    //   ),
+                    
+                    //                 ),
+                    
+                    //                  SizedBox(height: screenHeight*0.02,),
+                    //                  TextFormField(
+                    // controller: Alternative_Controller,
+                    //   decoration: InputDecoration(
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(5.0),
+                    //     ),
+                        
+                    //     labelText: "Alternative Medicine "
+                    //   ),
+                     
+                    //                 ),
+                    //                  SizedBox(height: screenHeight*0.02,),
+                    //                  Padding(
+                    //                  padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                    //   //padding: const EdgeInsets.all(20),
+                    //   child: Container(
+                    //     height: screenHeight * 0.07,
+                    //     width: screenWidth * 0.96,
+                        
+                    //     decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+                    //     borderRadius: BorderRadius.circular(5.0)
+                    //         // border: OutlineInputBorder()
+                    //         ),
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.all(10),
+                          
+                    //       child: Center(
+                    //         child: DropdownButtonFormField(
+                            
+                    //           decoration: InputDecoration.collapsed(hintText: ''),
+                    //           isExpanded: true,
+                    //           hint: Padding(
+                             
+                    //           padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
+                    //             child: Text(
+                    //               'Pattern Type ',
+                                 
+                    //             ),
+                                
+                    //           ),
+                             
+                    //           onChanged: (selected) {
+                    //             selected_item=selected;
+                    //             setState(() {
+                                 
+                    //             });
+                    //           },
+                    //           items: item.map<DropdownMenuItem<String>>((item) {
+                    //             return new DropdownMenuItem(
+                    //               child: Padding(
+                    //                 padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+                    //                 child: new Text(item,style: TextStyle(fontSize: 15),),
+                    //               ),
+                    //               value: item.toString(),
+                    //             );
+                    //           }).toList(),
+                    //         ),
+                            
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(height: screenHeight*0.04,),
+                    //                 Row(
+                    // children: [
+                    //   Padding(
+                    //     padding: const EdgeInsets.only(left: 20),
+                    //      child: ElevatedButton( 
+                    //      style: ButtonStyle(
+                    //             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                    //   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        
+                    //     RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(10),
+                           
+                          
+                    //     ),
+                        
+                    //   )
+                      
+                    // ),
+                    //        child:Text('Update',
+                    //        style: TextStyle(fontSize: 20,color: Colors.white),),
+                    //        onPressed: (() {
+                    //          if(medicine_Controller.text.isEmpty){
+                    //            NigDocToast().showErrorToast('Please Enter Medicine Nmae');
+                    
+                    //          }else if(Alternative_Controller.text.isEmpty){
+                    //            NigDocToast().showErrorToast('Enter The Alter Medicine');
+                    
+                    //          }
+                    //          else if(selected_item==null){
+                    //            NigDocToast().showErrorToast('Select Pattern Type');
+                    //          }else{
+                    //            var data={
+                    //                "medicin":medicine_Controller.text.toString(),
+                    //                "altern":Alternative_Controller.text.toString(),
+                    //                "pattern Type":selected_item.toString(),
+                    //            };
+                    //           Helper().isvalidElement(data);
+                    //             print(data);
+                    //          }
+                            
+                    //        }),),
+                    //    ),
+                    
+                    //      Padding(
+                    //        padding: const EdgeInsets.only(top: 0,left: 30,right:10),
+                    //        child: ElevatedButton( 
+                            
+                    //         style: ButtonStyle(
+                    //             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                    //             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        
+                    //     RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(10),
+                           
+                          
+                    //     ),
+                        
+                    //   )
+                      
+                    // ),
+                    //        child:Text('Cancel',
+                    //        style: TextStyle(fontSize: 20,color: Colors.white),),
+                    //        onPressed: (() {
+                    //        Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                    //        }),),
+                    //      ),
+                    //      SizedBox(height: screenHeight*0.04,),
+                    //  ],
+                    //                  ),
+                    
+                              
+                              
+                    //         ],
+                    
+                    //  ));
+                    
+                    //             },
+                                          
+                    //                ),
+                    //   // PopupMenuItem(child: Text('Cancel'),
+                    //   // onTap: () {
+                    //   // Navigator.push(context, MaterialPageRoute(builder:(context)=>MedicineList()));
+                    //   //            },
+                                          
+                    //   //               ),
+                    //   ],            
+                    //              ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                              })
+                               ):Container(child:
+                                Text('No Data Found')
+                                )
+                                
                       ],
                     ),
-                    
-                    onTap: () {
-                   
-                   showDialog(context: context, builder: (context)=>AlertDialog(
-                          actions: [
-                        
-                            Padding(padding: EdgeInsets.all(10)),
-
-                            Container(
-                              height: screenHeight*0.04,
-                              width:screenWidth*0.8,
-                            ),
-                            TextFormField(
-                    controller: medicine_Controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      
-                      labelText: "Medicine Name "
-                    ),
-                  
-                ),
-
-                 SizedBox(height: screenHeight*0.02,),
-                 TextFormField(
-                  controller: Alternative_Controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      
-                      labelText: "Alternative Medicine "
-                    ),
-                   
-                ),
-                 SizedBox(height: screenHeight*0.02,),
-                 Padding(
-                 padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-                    //padding: const EdgeInsets.all(20),
-                    child: Container(
-                      height: screenHeight * 0.07,
-                      width: screenWidth * 0.96,
-                      
-                      decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0)
-                          // border: OutlineInputBorder()
-                          ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        
-                        child: Center(
-                          child: DropdownButtonFormField(
-                          
-                            decoration: InputDecoration.collapsed(hintText: ''),
-                            isExpanded: true,
-                            hint: Padding(
-                           
-                            padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
-                              child: Text(
-                                'Pattern Type ',
-                               
-                              ),
-                              
-                            ),
-                           
-                            onChanged: (selected) {
-                              selected_item=selected;
-                              setState(() {
-                               
-                              });
-                            },
-                            items: item.map<DropdownMenuItem<String>>((item) {
-                              return new DropdownMenuItem(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-                                  child: new Text(item,style: TextStyle(fontSize: 15),),
-                                ),
-                                value: item.toString(),
-                              );
-                            }).toList(),
-                          ),
-                          
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: screenHeight*0.04,),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                       child: ElevatedButton( 
-                       style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-    
-    RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-       
-      
-    ),
-    
-  )
-  
-),
-                         child:Text('Update',
-                         style: TextStyle(fontSize: 20,color: Colors.white),),
-                         onPressed: (() {
-                           if(medicine_Controller.text.isEmpty){
-                             NigDocToast().showErrorToast('Please Enter Medicine Nmae');
-
-                           }else if(Alternative_Controller.text.isEmpty){
-                             NigDocToast().showErrorToast('Enter The Alter Medicine');
-
-                           }
-                           else if(selected_item==null){
-                             NigDocToast().showErrorToast('Select Pattern Type');
-                           }else{
-                             var data={
-                                 "medicin":medicine_Controller.text.toString(),
-                                 "altern":Alternative_Controller.text.toString(),
-                                 "pattern Type":selected_item.toString(),
-                             };
-                            Helper().isvalidElement(data);
-                              print(data);
-                           }
-                          
-                         }),),
-                     ),
-
-                       Padding(
-                         padding: const EdgeInsets.only(top: 0,left: 30,right:10),
-                         child: ElevatedButton( 
-                          
-                          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-    
-    RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-       
-      
-    ),
-    
-  )
-  
-),
-                         child:Text('Cancel',
-                         style: TextStyle(fontSize: 20,color: Colors.white),),
-                         onPressed: (() {
-                         Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
-                         }),),
-                       ),
-                       SizedBox(height: screenHeight*0.04,),
-                   ],
-                 ),
-                  
-                            
-                            
-                          ],
-
-                   ));
-                  
-                              },
-                                        
-                                 ),
-                    // PopupMenuItem(child: Text('Cancel'),
-                    // onTap: () {
-                    // Navigator.push(context, MaterialPageRoute(builder:(context)=>MedicineList()));
-                    //            },
-                                        
-                    //               ),
-                    ],            
-                               ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                            })
-                             ):Container(child:
-                              Text('No Data Found')
-                              )
-                              
-                    ],
                   ),
                 ),
                      ],
@@ -584,17 +508,17 @@ var item =[
             child: Container(child:SpinLoader()
           )
           ),
-               floatingActionButton: FloatingActionButton(
+          //      floatingActionButton: FloatingActionButton(
             
-            onPressed:(){
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_MedicineList()));
-            },
-          child:Icon(Icons.add,
-          size: 30,
-          color: Colors.white,),
-          backgroundColor: custom_color.appcolor,
+          //   onPressed:(){
+          //     Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_MedicineList()));
+          //   },
+          // child:Icon(Icons.add,
+          // size: 30,
+          // color: Colors.white,),
+          // backgroundColor: custom_color.appcolor,
             
-            ), 
+          //   ), 
 
           )
           );

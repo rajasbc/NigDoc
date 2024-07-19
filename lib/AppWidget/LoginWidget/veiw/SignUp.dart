@@ -155,29 +155,38 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 children: [
                   SizedBox(height: screenHeight*0.02,),
-                  TextFormField(
-                    controller: clinicnamecontroller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Clinic Name',
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: clinicnamecontroller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Clinic Name',
+                      ),
                     ),
                   ),
 
-                  SizedBox(height: screenHeight*0.02,),
-                  TextFormField(
-                    controller: doctornamecontroller,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Doctor Name',
-                      ),
+                  // SizedBox(height: screenHeight*0.0,),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: doctornamecontroller,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Doctor Name',
+                        ),
+                    ),
                   ),
-                  SizedBox(height: screenHeight*0.02,),
-                  TextFormField(
-                  controller: emailcontroller,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Email Id',
-                      ),
+                  // SizedBox(height: screenHeight*0.02,),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                    controller: emailcontroller,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Email Id',
+                        ),
+                    ),
                   ),
                    SizedBox(height: screenHeight*0.01,),
                  Row(
@@ -403,7 +412,7 @@ class _SignUpState extends State<SignUp> {
                      
                    ],
                  ),
-                  SizedBox(height: screenHeight*0.02,),
+                  // SizedBox(height: screenHeight*0.02,),
                   
                 //  TextFormField(
                 //   controller: generalphysiciancontroller,
@@ -413,43 +422,39 @@ class _SignUpState extends State<SignUp> {
                 //   ),
                 //  ),
                 Padding(
-                 padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-                    //padding: const EdgeInsets.all(20),
-                    child: Container(
-                      height: screenHeight * 0.08,
-                      width: screenWidth * 0.98,
-                      
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: screenHeight * 0.08,
+                    // width: screenWidth * 0.98,
                     
-                      child: DropdownButtonFormField(
-                        
-                                     
-                                         decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: select_general,
-                                         ),
-                                      isExpanded: true,
-                         
-                                         onChanged: (medicine){
-                                           select_general=select_general;
-                                           setState(() {
-                                             
-                                           });
-                                          
-                                         },
-                            items: item.map<DropdownMenuItem<String>>((item) {
-                            return new DropdownMenuItem(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-                                child: new Text(item,style: TextStyle(fontSize: 15),),
-                              ),
-                              value: item.toString(),
-                            );
-                          }).toList(),
+                  
+                    child: DropdownButtonFormField(
+                      
+                                   
+                                       decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: select_general,
+                                       ),
+                                    isExpanded: true,
+                       
+                                       onChanged: (medicine){
+                                         select_general=select_general;
+                                         setState(() {
+                                           
+                                         });
                                         
-                      ),
+                                       },
+                          items: item.map<DropdownMenuItem<String>>((item) {
+                          return new DropdownMenuItem(
+                            child: new Text(item,style: TextStyle(fontSize: 15),),
+                            value: item.toString(),
+                          );
+                        }).toList(),
+                                      
                     ),
                   ),
-                 SizedBox(height: screenHeight*0.02,),
+                ),
+                //  SizedBox(height: screenHeight*0.02,),
 
                  Row(
                      children: [
@@ -500,115 +505,120 @@ class _SignUpState extends State<SignUp> {
                  SizedBox(height: screenHeight*0.01,),
                  Container(
                   width: screenWidth,
-                   child: ElevatedButton(
-                     style: ButtonStyle(
-                      
-                                backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: ElevatedButton(
+                       style: ButtonStyle(
                         
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                           
+                                  backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           
-                        ),
-                        
-                      )
-                      
-                    ),
-                   onPressed: () async {
-                   if(clinicnamecontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Clinic Name');
-                   }else if(doctornamecontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Doctor Name');
-                   }else if(!emailcontroller.text.contains('@')||
-                            !emailcontroller.text.contains('.')||
-                            !emailcontroller.text.contains('com') ){
-                    NigDocToast().showErrorToast("Enter Your Email Id");
-                   }else if(mobilenocontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Your Mobile No');
-                  //  }else if(alternativecontroller.text.isEmpty){
-                  //   NigDocToast().showErrorToast('Enter Alternative No');
-                   }else if(passwordcontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Your Password');
-                   }else if (passwordcontroller.text.length<6){
-                    NigDocToast().showErrorToast('Please Enter Your Password Maximum Six Digit');
-                   
-                   }else if(confirmpasscontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Confirm Password');
-                    }else if(confirmpasscontroller.text !=
-                    passwordcontroller.text){
-                      NigDocToast().showErrorToast('password and Confirm Password mismatch');
-                    }
-                    
-                    else if(address1controller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Your Address 1');
-                   }else if(address2controller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Your Address 2');
-                   }else if(citycontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Your City');
-                   }else if(statecontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Your State');
-                   }else if(countrycontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Your Country');
-                   }else if(pincodecontroller.text.isEmpty){
-                    NigDocToast().showErrorToast('Enter Your Pincode');
-                   }else if(select_general == null){
-                    NigDocToast().showErrorToast('Select General Physician');
-                   }else if(ischecked == false){
-                    NigDocToast().showErrorToast('Please Agree the Privacy Policy and Terms of Use');
-                   }
-                   
-                   else {
-                    var data ={
-                          "name":clinicnamecontroller.text.toString(),
-                          "doctor_name":doctornamecontroller.text.toString(),
-                          "email":emailcontroller.text.toString(),
-                          "contact_no":mobilenocontroller.text.toString(),
-                          "alt_mobile_no":alternativecontroller.text.toString(),
-                          "password":passwordcontroller.text.toString(),
-                          //"confirm":confirmpasscontroller.text.toString(),
-                          "address1":address1controller.text.toString(),
-                          "address2":address2controller.text.toString(),
-                          "city":citycontroller.text.toString(),
-                          "state":statecontroller.text.toString(),
-                          "country":countrycontroller.text.toString(),
-                          "pincode":pincodecontroller.text.toString(),
-                          "department":select_general.toString(),
-                          "user_type":"admin",
-                          "status":"Active"
-
-                    };
-                    
-                     var list=await loginpage().userSignup(data );
-                            // if(list['message']=="email already exits ")
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                              
-                            // {
-                            //    NigDocToast().showSuccessToast(
-                            //     'email already exits');
-                            // // print(data);
-                            // }
-                              if(list['access_token']!=null)
-                              {
-                              await storage.setItem('userResponse', list);
-                              await pref.setString('access_token',
-                                      await list['access_token']);
-                                      pref.setBool('isLogin', true);
-                               NigDocToast().showSuccessToast(
-                                'Signup Successfully');
-                                Navigator.push(
-                                context, MaterialPageRoute(builder: (context)=>Dash()));
-                                }else if(list['message']=='email already exits'){
-                                  NigDocToast().showErrorToast('email already exits');
-                                }
-                                
-                                else{
-                              NigDocToast().showErrorToast('pls tryagain later');
-                            }
-                   }
-                    
-                                    
-                   }, child: Text('Sign Up',
-                   style: TextStyle(color: Colors.white,fontSize: 20),)),
+                            
+                          ),
+                          
+                        )
+                        
+                      ),
+                     onPressed: () async {
+                     if(clinicnamecontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Clinic Name');
+                     }else if(doctornamecontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Doctor Name');
+                     }else if(!emailcontroller.text.contains('@')||
+                              !emailcontroller.text.contains('.')||
+                              !emailcontroller.text.contains('com') ){
+                      NigDocToast().showErrorToast("Enter Your Email Id");
+                     }else if(mobilenocontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Your Mobile No');
+                                       
+                      }else if(mobilenocontroller.text.isNotEmpty&&mobilenocontroller.text.length<10){
+                      NigDocToast().showErrorToast('Please Enter the valid Mobile No');
+                                       
+                     }else if(passwordcontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Your Password');
+                     }else if (passwordcontroller.text.length<6){
+                      NigDocToast().showErrorToast('Please Enter Your Password Maximum Six Digit');
+                     
+                     }else if(confirmpasscontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Confirm Password');
+                      }else if(confirmpasscontroller.text !=
+                      passwordcontroller.text){
+                        NigDocToast().showErrorToast('password and Confirm Password mismatch');
+                      }
+                      
+                      else if(address1controller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Your Address 1');
+                     }else if(citycontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Your City');
+                     }else if(statecontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Your State');
+                     }else if(countrycontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Your Country');
+                     }else if(pincodecontroller.text.isEmpty){
+                      NigDocToast().showErrorToast('Enter Your Pincode');
+                      }else if(pincodecontroller.text.isNotEmpty&&pincodecontroller.text.length<6){
+                      NigDocToast().showErrorToast('Please Enter the valid Pincode');
+                     }else if(select_general == null){
+                      NigDocToast().showErrorToast('Select General Physician');
+                     }else if(ischecked == false){
+                      NigDocToast().showErrorToast('Please Agree the Privacy Policy and Terms of Use');
+                     }
+                     
+                     else {
+                      var data ={
+                            "name":clinicnamecontroller.text.toString(),
+                            "doctor_name":doctornamecontroller.text.toString(),
+                            "email":emailcontroller.text.toString(),
+                            "contact_no":mobilenocontroller.text.toString(),
+                            "alt_mobile_no":alternativecontroller.text.toString(),
+                            "password":passwordcontroller.text.toString(),
+                            //"confirm":confirmpasscontroller.text.toString(),
+                            "address1":address1controller.text.toString(),
+                            "address2":address2controller.text.toString(),
+                            "city":citycontroller.text.toString(),
+                            "state":statecontroller.text.toString(),
+                            "country":countrycontroller.text.toString(),
+                            "pincode":pincodecontroller.text.toString(),
+                            "department":select_general.toString(),
+                            "user_type":"admin",
+                            "status":"Active"
+                     
+                      };
+                      
+                       var list=await loginpage().userSignup(data );
+                              // if(list['message']=="email already exits ")
+                               
+                              // {
+                              //    NigDocToast().showSuccessToast(
+                              //     'email already exits');
+                              // // print(data);
+                              // }
+                                if(list['access_token']!=null)
+                                {
+                                await storage.setItem('userResponse', list);
+                                await pref.setString('access_token',
+                                        await list['access_token']);
+                                        pref.setBool('isLogin', true);
+                                 NigDocToast().showSuccessToast(
+                                  'Signup Successfully');
+                                  Navigator.push(
+                                  context, MaterialPageRoute(builder: (context)=>Dash()));
+                                  }else if(list['message']=='email already exits'){
+                                    NigDocToast().showErrorToast('email already exits');
+                                  }
+                                  
+                                  else{
+                                NigDocToast().showErrorToast('pls tryagain later');
+                              }
+                     }
+                      
+                                      
+                     }, child: Text('Sign Up',
+                     style: TextStyle(color: Colors.white,fontSize: 20),)),
+                   ),
                  ),
 
                   SizedBox(height: screenHeight*0.04,),

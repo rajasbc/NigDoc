@@ -491,8 +491,8 @@ void initState(){
           Container(width: screenWidth,
             child: ElevatedButton(
              style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),

@@ -215,264 +215,264 @@ TextEditingController Treatmentcontroller = TextEditingController();
                                     title: SizedBox(child: Text('${data['treatment_name']}')),
                                     leading: Text('$list'),
 
-                                    trailing: PopupMenuButton(itemBuilder: (context)=>[
-                                      PopupMenuItem(child: Row(
-                                              children: [
-                                                Icon(Icons.edit,color: custom_color.appcolor,),
-                                                Padding(padding: EdgeInsets.only(left: 10),
-                                                child: Text('Edit',style: TextStyle(fontSize: 16),),)
-                                              ],
-                                            ),
-                                            onTap: () {
-                                              showDialog(context: context, builder:(context)=>AlertDialog(
+//                                     trailing: PopupMenuButton(itemBuilder: (context)=>[
+//                                       PopupMenuItem(child: Row(
+//                                               children: [
+//                                                 Icon(Icons.edit,color: custom_color.appcolor,),
+//                                                 Padding(padding: EdgeInsets.only(left: 10),
+//                                                 child: Text('Edit',style: TextStyle(fontSize: 16),),)
+//                                               ],
+//                                             ),
+//                                             onTap: () {
+//                                               showDialog(context: context, builder:(context)=>AlertDialog(
                                                
-                                               actions: [
-                                                 Padding(padding: EdgeInsets.all(10)),
-                                                    Container(
-                                                      height: screenHeight*0.04,
-                                                      width: screenWidth*0.14,
-                                                    ),
+//                                                actions: [
+//                                                  Padding(padding: EdgeInsets.all(10)),
+//                                                     Container(
+//                                                       height: screenHeight*0.04,
+//                                                       width: screenWidth*0.14,
+//                                                     ),
                                                     
-                                                               SizedBox(height: screenHeight*0.02,),
-                TextFormField(
+//                                                                SizedBox(height: screenHeight*0.02,),
+//                 TextFormField(
                  
-                  controller: Treatmentcontroller,
+//                   controller: Treatmentcontroller,
 
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Treatment Name'
-                  ),
-                ),
+//                   decoration: InputDecoration(
+//                     border: OutlineInputBorder(),
+//                     labelText: 'Treatment Name'
+//                   ),
+//                 ),
                
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
+//                 SizedBox(
+//                   height: screenHeight * 0.02,
+//                 ),
                 
 
-                 Padding(
-                   padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-                      //padding: const EdgeInsets.all(20.0),
-                      child: Container(
-                        height: screenHeight *0.07,
-                        width: screenWidth * 0.96,
-                        decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0)
-                            // border: OutlineInputBorder()
-                            ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Center(
-                            child: DropdownButtonFormField(
+//                  Padding(
+//                    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+//                       //padding: const EdgeInsets.all(20.0),
+//                       child: Container(
+//                         height: screenHeight *0.07,
+//                         width: screenWidth * 0.96,
+//                         decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+//                         borderRadius: BorderRadius.circular(5.0)
+//                             // border: OutlineInputBorder()
+//                             ),
+//                         child: Padding(
+//                           padding: const EdgeInsets.all(10.0),
+//                           child: Center(
+//                             child: DropdownButtonFormField(
                             
-                              decoration: InputDecoration.collapsed(hintText: ''),
-                              isExpanded: true,
-                              hint: Padding(
-                              padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
-                                child: Text(
-                                  ' Medicine List*',
+//                               decoration: InputDecoration.collapsed(hintText: ''),
+//                               isExpanded: true,
+//                               hint: Padding(
+//                               padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
+//                                 child: Text(
+//                                   ' Medicine List*',
                                  
-                                ),
-                              ),
+//                                 ),
+//                               ),
                              
-                              onChanged: (newvalue) {
-                              //  medicineList=newvalue.toString();
-                              medicinedropdow=newvalue.toString();
-                                setState(() {
+//                               onChanged: (newvalue) {
+//                               //  medicineList=newvalue.toString();
+//                               medicinedropdow=newvalue.toString();
+//                                 setState(() {
                                  
-                                });
+//                                 });
                              
-                              },
-                              items: title.map<DropdownMenuItem<String>>((item) {
-                                return new DropdownMenuItem(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-                                    child: new Text(item,style: TextStyle(fontSize: 15),),
-                                  ),
-                                  value: item.toString(),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-                Padding(
-                   padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+//                               },
+//                               items: title.map<DropdownMenuItem<String>>((item) {
+//                                 return new DropdownMenuItem(
+//                                   child: Padding(
+//                                     padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+//                                     child: new Text(item,style: TextStyle(fontSize: 15),),
+//                                   ),
+//                                   value: item.toString(),
+//                                 );
+//                               }).toList(),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                 SizedBox(
+//                   height: screenHeight * 0.02,
+//                 ),
+//                 Padding(
+//                    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
                   
-                  child: Container(
-                     height: screenHeight * 0.07,
-                      width: screenWidth * 0.96,
+//                   child: Container(
+//                      height: screenHeight * 0.07,
+//                       width: screenWidth * 0.96,
 
-                   decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0)
+//                    decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+//                       borderRadius: BorderRadius.circular(5.0)
                          
-                          ),
+//                           ),
                   
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      //padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-                      child: Center(
-                        child: DropdownButtonFormField(
-                          decoration: InputDecoration.collapsed(hintText: ''),
-                            isExpanded: true,
-                            hint: Padding(
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(10.0),
+//                       //padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+//                       child: Center(
+//                         child: DropdownButtonFormField(
+//                           decoration: InputDecoration.collapsed(hintText: ''),
+//                             isExpanded: true,
+//                             hint: Padding(
                               
-                              padding: const EdgeInsets.only(top: 0, left: 2, right: 0),
-                              child: Text(
-                                ' Department *',
+//                               padding: const EdgeInsets.only(top: 0, left: 2, right: 0),
+//                               child: Text(
+//                                 ' Department *',
                                
-                              ),
-                            ),
+//                               ),
+//                             ),
                         
-                            onChanged: (newvalue) {
-                              departmentdropdown=newvalue.toString();
-                              setState(() {
+//                             onChanged: (newvalue) {
+//                               departmentdropdown=newvalue.toString();
+//                               setState(() {
                                 
-                              });
-                            },
+//                               });
+//                             },
                             
-                            items: title2.map<DropdownMenuItem<String>>((item) {
-                              return new DropdownMenuItem(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-                                  child: new Text(item,style: TextStyle(fontSize: 15),),
-                                ),
-                                value: item.toString(),
-                              );
-                            }).toList(),
+//                             items: title2.map<DropdownMenuItem<String>>((item) {
+//                               return new DropdownMenuItem(
+//                                 child: Padding(
+//                                   padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+//                                   child: new Text(item,style: TextStyle(fontSize: 15),),
+//                                 ),
+//                                 value: item.toString(),
+//                               );
+//                             }).toList(),
                       
-                         ),
-                      ),
-                    ),
-                  ),
-                ),
+//                          ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
           
-                SizedBox(
-                  height: screenHeight * 0.03,
-                ),
+//                 SizedBox(
+//                   height: screenHeight * 0.03,
+//                 ),
           
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                      autovalidateMode: AutovalidateMode.always,
+//                 TextFormField(
+//                   keyboardType: TextInputType.number,
+//                       autovalidateMode: AutovalidateMode.always,
                   
-                  controller: Feescontroller,
+//                   controller: Feescontroller,
 
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Fees'
-                  ),
-                ),
+//                   decoration: InputDecoration(
+//                     border: OutlineInputBorder(),
+//                     labelText: 'Fees'
+//                   ),
+//                 ),
                
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
+//                 SizedBox(
+//                   height: screenHeight * 0.02,
+//                 ),
 
-                Row(
-                      children: [
+//                 Row(
+//                       children: [
 
-                        Padding(padding: EdgeInsets.only(left:20),
-                        child: ElevatedButton(
-                          // style: ElevatedButton.styleFrom(
-                          //   backgroundColor: custom_color.appcolor,
-                          // ),
-                            style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+//                         Padding(padding: EdgeInsets.only(left:20),
+//                         child: ElevatedButton(
+//                           // style: ElevatedButton.styleFrom(
+//                           //   backgroundColor: custom_color.appcolor,
+//                           // ),
+//                             style: ButtonStyle(
+//                             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+//                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
-                            RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+//                             RoundedRectangleBorder(
+//                             borderRadius: BorderRadius.circular(10),
        
       
-                            ),
+//                             ),
     
-                            )
+//                             )
   
-                            ),
-                           child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
-                           onPressed: (() {
-                         if (Treatmentcontroller.text.isEmpty) {
+//                             ),
+//                            child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+//                            onPressed: (() {
+//                          if (Treatmentcontroller.text.isEmpty) {
                         
-                        Fluttertoast.showToast(
-                            msg: ' Enter Treatment Name',
+//                         Fluttertoast.showToast(
+//                             msg: ' Enter Treatment Name',
                            
-                            textColor: Colors.black,
-                            fontSize: 15.0);
-                      } else if (medicinedropdow == null ||
-                          medicinedropdow == "Select Medicine List *") {
-                        Fluttertoast.showToast(
-                            msg: 'Please Select Medicine List', fontSize: 15.0);
-                      } else if (departmentdropdown == null ||
-                          departmentdropdown == "Select Department *") {
-                        Fluttertoast.showToast(
-                            msg: 'Please Select Department', fontSize: 15.0);
-                      } else if (Feescontroller.text.isEmpty) {
-                        Fluttertoast.showToast(
-                            msg: " Enter Fees", fontSize: 15.0);
-                       }else {
-                        var data = {
-                          "treatmentname": Treatmentcontroller.text.toString(),
-                          "medicine": medicinedropdow.toString(),
-                          "Department": departmentdropdown.toString(),
-                          "consult_fees": Feescontroller.text.toString(),
-                          "description": ""
-                        };
-                      Helper().isvalidElement(data);
+//                             textColor: Colors.black,
+//                             fontSize: 15.0);
+//                       } else if (medicinedropdow == null ||
+//                           medicinedropdow == "Select Medicine List *") {
+//                         Fluttertoast.showToast(
+//                             msg: 'Please Select Medicine List', fontSize: 15.0);
+//                       } else if (departmentdropdown == null ||
+//                           departmentdropdown == "Select Department *") {
+//                         Fluttertoast.showToast(
+//                             msg: 'Please Select Department', fontSize: 15.0);
+//                       } else if (Feescontroller.text.isEmpty) {
+//                         Fluttertoast.showToast(
+//                             msg: " Enter Fees", fontSize: 15.0);
+//                        }else {
+//                         var data = {
+//                           "treatmentname": Treatmentcontroller.text.toString(),
+//                           "medicine": medicinedropdow.toString(),
+//                           "Department": departmentdropdown.toString(),
+//                           "consult_fees": Feescontroller.text.toString(),
+//                           "description": ""
+//                         };
+//                       Helper().isvalidElement(data);
                        
-                        print(data);
+//                         print(data);
                        
-                      }
+//                       }
                              
-                           }),
-                           ),
-                        ),
+//                            }),
+//                            ),
+//                         ),
 
-                        Padding(padding: EdgeInsets.only(left: 20),
+//                         Padding(padding: EdgeInsets.only(left: 20),
                         
-                        child: ElevatedButton( 
-                          // style: ElevatedButton.styleFrom(
-                          //   backgroundColor: custom_color.appcolor,
-                          // ),
-                            style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+//                         child: ElevatedButton( 
+//                           // style: ElevatedButton.styleFrom(
+//                           //   backgroundColor: custom_color.appcolor,
+//                           // ),
+//                             style: ButtonStyle(
+//             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+//             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
-            RoundedRectangleBorder(
-           borderRadius: BorderRadius.circular(10),
+//             RoundedRectangleBorder(
+//            borderRadius: BorderRadius.circular(10),
        
       
-    ),
+//     ),
     
-  )
+//   )
   
-),
-                          child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
+// ),
+//                           child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
 
-                          onPressed: (() {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>TreatmentList()));
-                          }),
+//                           onPressed: (() {
+//                             Navigator.push(context, MaterialPageRoute(builder: (context)=>TreatmentList()));
+//                           }),
                           
-                          ),
+//                           ),
                           
                           
-                          ),
-                      ],
-                    ),
+//                           ),
+//                       ],
+//                     ),
 
-                                               ],
+//                                                ],
 
-                                              ) );
-                                            },
-                                            ),
+//                                               ) );
+//                                             },
+//                                             ),
 
                                             
 
 
-                                    ]
+//                                     ]
                                     
-                                    ),
+//                                     ),
                      
                                   ),
                                 )
@@ -490,19 +490,19 @@ TextEditingController Treatmentcontroller = TextEditingController();
             child: Container(child:SpinLoader()
           )
           ),
-          floatingActionButton: FloatingActionButton(onPressed:(){
-             Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddTretment(),
-                          ));
-   },
-   child: Icon(Icons.add,
-   size: 30,
-   color: Colors.white,),
-   backgroundColor: custom_color.appcolor,
+  //         floatingActionButton: FloatingActionButton(onPressed:(){
+  //            Navigator.push(
+  //                         context,
+  //                         MaterialPageRoute(
+  //                           builder: (context) => AddTretment(),
+  //                         ));
+  //  },
+  //  child: Icon(Icons.add,
+  //  size: 30,
+  //  color: Colors.white,),
+  //  backgroundColor: custom_color.appcolor,
   
-   ),
+  //  ),
           )
           );
   }

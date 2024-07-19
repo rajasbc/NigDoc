@@ -76,8 +76,8 @@ class _StaffListState extends State<StaffList> {
         //   //         ),
         //   //         style: ButtonStyle(
         //   //             backgroundColor:
-        //   //                 MaterialStateProperty.all<Color>(Colors.green),
-        //   //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //   //                 WidgetStateProperty.all<Color>(Colors.green),
+        //   //             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
         //   //                 RoundedRectangleBorder(
         //   //                     borderRadius: BorderRadius.circular(18.0),
         //   //                     side: BorderSide(color: Colors.green))))),
@@ -183,16 +183,16 @@ class _StaffListState extends State<StaffList> {
                 );
               }):Center(child: Text('No Data Found')),
         ):Center(child: SpinLoader(),),
-         floatingActionButton: FloatingActionButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_staff()));
-        },
-        child: Icon(Icons.add,
-        size: 30,
-        color: Colors.white,
+        //  floatingActionButton: FloatingActionButton(onPressed: (){
+        //   Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_staff()));
+        // },
+        // child: Icon(Icons.add,
+        // size: 30,
+        // color: Colors.white,
         
-        ),
-        backgroundColor: custom_color.appcolor,
-        ),
+        // ),
+        // backgroundColor: custom_color.appcolor,
+        // ),
       ),
     );
   }

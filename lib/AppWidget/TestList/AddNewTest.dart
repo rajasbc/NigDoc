@@ -86,8 +86,8 @@ class _Add_TestListState extends State<Add_TestList> {
                         Padding(padding: EdgeInsets.only(left: 50),
                         child: ElevatedButton(
                            style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
                             RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -123,8 +123,8 @@ class _Add_TestListState extends State<Add_TestList> {
                         
                         child: ElevatedButton( 
                            style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
                             RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

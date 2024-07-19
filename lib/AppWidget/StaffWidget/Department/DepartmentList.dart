@@ -192,8 +192,8 @@ class _department_ListState extends State<department_List> {
                                                                    Padding(padding: EdgeInsets.only(left:20),
                         child: ElevatedButton(
                            style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
                             RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -226,8 +226,8 @@ class _department_ListState extends State<department_List> {
                         
                         child: ElevatedButton( 
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
                             RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -278,13 +278,13 @@ class _department_ListState extends State<department_List> {
             ),
           ),
         ),
-       floatingActionButton: FloatingActionButton(onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_Department()));
+      //  floatingActionButton: FloatingActionButton(onPressed: (){
+      //   Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_Department()));
 
-       },
-       child: Icon(Icons.add,color: Colors.white,size: 30,),
-       backgroundColor: custom_color.appcolor,
-       ),
+      //  },
+      //  child: Icon(Icons.add,color: Colors.white,size: 30,),
+      //  backgroundColor: custom_color.appcolor,
+      //  ),
       ),
     );
   }

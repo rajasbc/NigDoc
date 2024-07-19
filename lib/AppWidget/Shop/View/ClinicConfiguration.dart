@@ -1257,13 +1257,13 @@ class _ClinicConfigState extends State<ClinicConfig> {
               ),
             ),
           ):Center(child: SpinLoader(),),
-            floatingActionButton: FloatingActionButton(onPressed: (() {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_Confiuration()));
-        }
-        ),
-        child: Icon(Icons.edit,color: Colors.white,size: 30,),
-        backgroundColor: custom_color.appcolor,
-        ),
+        //     floatingActionButton: FloatingActionButton(onPressed: (() {
+        //   Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_Confiuration()));
+        // }
+        // ),
+        // child: Icon(Icons.edit,color: Colors.white,size: 30,),
+        // backgroundColor: custom_color.appcolor,
+        // ),
 
           ),
 

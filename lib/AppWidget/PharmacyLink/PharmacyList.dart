@@ -96,7 +96,7 @@ class _PharmacyListState extends State<PharmacyList> {
                                             Row(
                                               children: [
                                                 Text(
-                                                  'Pharmacy Name:',
+                                                  'Name:',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),

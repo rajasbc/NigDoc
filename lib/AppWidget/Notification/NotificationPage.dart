@@ -59,7 +59,7 @@ class _NotificationPageState extends State<NotificationPage> {
           return true;
         },
         child: Scaffold(
-          backgroundColor: Colors.grey[200],
+          backgroundColor: custom_color.appcolor,
           // appBar: AppBar(title: Text('data')),
           body: SafeArea(
               child: Column(
@@ -193,7 +193,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return Container(
       width: screenWidth,
       height: screenHeight * 0.1,
-      color: custom_color.appcolor,
+       color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -204,7 +204,7 @@ class _NotificationPageState extends State<NotificationPage> {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: custom_color.appcolor,
                 // boxShadow: [
                 //   BoxShadow(
                 //     color: Colors.grey.shade400,
@@ -224,13 +224,14 @@ class _NotificationPageState extends State<NotificationPage> {
                   children: [
                     const Icon(
                       Icons.date_range_outlined,
+                      color: Colors.white,
                     ),
                     Text(
-                      'From: ${start.year}/${start.month}/${start.day}  ',
+                      '  From: ${start.year}/${start.month}/${start.day}  ',
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: custom_color.appcolor),
+                          color: Colors.white),
                     ),
                   ],
                 ),
@@ -244,7 +245,7 @@ class _NotificationPageState extends State<NotificationPage> {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: custom_color.appcolor,
                 // boxShadow: [
                 //   BoxShadow(
                 //     color: Colors.grey.shade400,
@@ -264,13 +265,14 @@ class _NotificationPageState extends State<NotificationPage> {
                   children: [
                     const Icon(
                       Icons.date_range_outlined,
+                      color: Colors.white,
                     ),
                     Text(
-                      'To: ${end.year}/${end.month}/${end.day}  ',
+                      '  To: ${end.year}/${end.month}/${end.day}  ',
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: custom_color.appcolor),
+                          color: Colors.white),
                     ),
                   ],
                 ),
@@ -284,7 +286,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
   Widget Appbar() {
     return Container(
-      color: Colors.grey[200],
+      color: custom_color.appcolor,
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Row(
@@ -295,7 +297,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 InkWell(
                   child: Icon(
                     Icons.arrow_back,
-                    color: custom_color.appcolor,
+                    color: Colors.white,
                   ),
                   onTap: () async {
                     await storage.setItem('bottom_index', _selectedIndex);
@@ -310,7 +312,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   child: Text(
                     'Notifications',
                     style: TextStyle(
-                        color: custom_color.appcolor,
+                        color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.42),

@@ -587,8 +587,8 @@ class _Prescription_ListState extends State<Prescription_List> {
                       padding: const EdgeInsets.only(left: 20),
                        child: ElevatedButton( 
                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
                             RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -612,8 +612,8 @@ class _Prescription_ListState extends State<Prescription_List> {
                          child: ElevatedButton( 
                           
                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
                             RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
