@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
+import 'package:nigdoc/AppWidget/BillingWidget/View/PendingPayment.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
@@ -44,8 +46,8 @@ class _PendingbilllistState extends State<Pendingbilllist> {
           );
         },
         initialDate: currentDate,
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2025));
+        firstDate: DateTime(DateTime.now().year-1, DateTime.now().month, DateTime.now().day),
+        lastDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
 
     if (pickedDate != null && pickedDate != currentDate)
       setState(() {
@@ -182,7 +184,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(5.0),
                         child: Container(
                             // color: Colors.white,
                             // height: screenHeight * 0.7596,
@@ -206,160 +208,208 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                                           // width: screenWidth * 0.90,
                                           // decoration:
                                           //     BoxDecoration(border: Border.all(color: Colors.grey)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(1.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                 width: screenwidht*0.83,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Column(
                                                     children: [
-                                                      Container(
-                                                        // width: screenwidht * 0.47,
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(1.0),
                                                         child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: [
-                                                            Icon(
-                                                              Icons.person,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      98,
-                                                                      96,
-                                                                      96),
+                                                            Container(
+                                                              // width: screenwidht * 0.47,
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.person,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            98,
+                                                                            96,
+                                                                            96),
+                                                                  ),
+                                                                  Helper().isvalidElement(
+                                                                          data[
+                                                                              'customer_name'])
+                                                                      ? Text(
+                                                                          '${data['customer_name'].toString()}')
+                                                                      : Text(''),
+                                                                ],
+                                                              ),
                                                             ),
-                                                            Helper().isvalidElement(
-                                                                    data[
-                                                                        'customer_name'])
-                                                                ? Text(
-                                                                    '${data['customer_name'].toString()}')
-                                                                : Text(''),
+                                                            Container(
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons.phone,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            98,
+                                                                            96,
+                                                                            96),
+                                                                  ),
+                                                                  Text(
+                                                                      '${data['cus_phone'].toString()}')
+                                                                ],
+                                                              ),
+                                                            ),
                                                           ],
                                                         ),
                                                       ),
-                                                      Container(
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(1.0),
                                                         child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: [
-                                                            Icon(
-                                                              Icons.phone,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      98,
-                                                                      96,
-                                                                      96),
+                                                            Container(
+                                                              //  width: screenwidht * 0.47,
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .calendar_month,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            98,
+                                                                            96,
+                                                                            96),
+                                                                  ),
+                                                                  Text(
+                                                                      '${data['date'].toString().substring(0, 10)}')
+                                                                ],
+                                                              ),
                                                             ),
-                                                            Text(
-                                                                '${data['cus_phone'].toString()}')
+                                                            Container(
+                                                              // width: screenwidht * 0.47,
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    'Fees :',
+                                                                    // style: TextStyle(
+                                                                    //     fontWeight:
+                                                                    //         FontWeight.bold,color: Color.fromARGB(255, 54, 50, 50)),
+                                                                  ),
+                                                                  Text(
+                                                                      '${data['grand_total'].toString()}')
+                                                                ],
+                                                              ),
+                                                            ),
                                                           ],
                                                         ),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Container(
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  'Discount :',
+                                                                  // style: TextStyle(
+                                                                  //     // fontWeight:
+                                                                  //     //     FontWeight.bold
+                                                                  //         color: Color.fromARGB(255, 54, 50, 50)),
+                                                                ),
+                                                                Text(
+                                                                    '${data['discount'].toString()}')
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            // width: screenwidht * 0.55,
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  'Adv :',
+                                                                  // style: TextStyle(
+                                                                  //     // fontWeight:
+                                                                  //     //     FontWeight.bold
+                                                                  //         color: Color.fromARGB(255, 54, 50, 50)),
+                                                                ),
+                                                                Text(
+                                                                    '${data['advance']}')
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  'Balance :',
+                                                                  // style: TextStyle(
+                                                                  //     // fontWeight:
+                                                                  //     //     FontWeight.bold,
+                                                                  //         color: Color.fromARGB(255, 54, 50, 50)),
+                                                                ),
+                                                                Text(
+                                                                    '${data['balance'].toString()}')
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(1.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Container(
-                                                        //  width: screenwidht * 0.47,
-                                                        child: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .calendar_month,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      98,
-                                                                      96,
-                                                                      96),
+                                              ),
+                                              // Icon(Icons.menu)
+                                              PopupMenuButton(
+                                              itemBuilder: (context) => [
+                                              
+                                                PopupMenuItem(
+                                                      child: Row(
+                                                        children: [
+                                                          // Icon(
+                                                          //   Icons.edit,
+                                                          //   color:Customcolor.app_color,
+                                                          // ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 0),
+                                                            child: Row(
+                                                              children: [
+                                                                Icon(
+                                                                  FontAwesomeIcons
+                                                                      .file,
+                                                                  color: Colors
+                                                                      .blue,
+                                                                ),
+                                                                Text(
+                                                                  '  Pay',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
+                                                              ],
                                                             ),
-                                                            Text(
-                                                                '${data['date'].toString().substring(0, 10)}')
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        // width: screenwidht * 0.47,
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                              'Fees :',
-                                                              // style: TextStyle(
-                                                              //     fontWeight:
-                                                              //         FontWeight.bold,color: Color.fromARGB(255, 54, 50, 50)),
-                                                            ),
-                                                            Text(
-                                                                '${data['grand_total'].toString()}')
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            'Discount :',
-                                                            // style: TextStyle(
-                                                            //     // fontWeight:
-                                                            //     //     FontWeight.bold
-                                                            //         color: Color.fromARGB(255, 54, 50, 50)),
                                                           ),
-                                                          Text(
-                                                              '${data['discount'].toString()}')
                                                         ],
                                                       ),
+                                                      onTap: (() async {
+                                                        await storage.setItem('pendingAmount',data);
+                                                         Navigator.push(context, MaterialPageRoute(builder: (context)=>PendingPayment()));
+                                                      }),
                                                     ),
-                                                    Container(
-                                                      // width: screenwidht * 0.55,
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            'Adv :',
-                                                            // style: TextStyle(
-                                                            //     // fontWeight:
-                                                            //     //     FontWeight.bold
-                                                            //         color: Color.fromARGB(255, 54, 50, 50)),
-                                                          ),
-                                                          Text(
-                                                              '${data['advance']}')
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            'Balance :',
-                                                            // style: TextStyle(
-                                                            //     // fontWeight:
-                                                            //     //     FontWeight.bold,
-                                                            //         color: Color.fromARGB(255, 54, 50, 50)),
-                                                          ),
-                                                          Text(
-                                                              '${data['balance'].toString()}')
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                                    
+                                              ]),
+                                            ],
                                           ),
                                         ),
                                       );

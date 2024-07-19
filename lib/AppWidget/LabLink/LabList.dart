@@ -93,16 +93,18 @@ class _LabListState extends State<LabList> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Pharmacy Name:',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text("${data['pharmacy_name']}"),
-                                              ],
+                                            Container(width: screenWidth*0.6,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Name:',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                Flexible(child: Text("${data['pharmacy_name']}")),
+                                                ],
+                                              ),
                                             ),
                                             Row(
                                               children: [

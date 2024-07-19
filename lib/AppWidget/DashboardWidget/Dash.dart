@@ -266,7 +266,7 @@ Widget Appbar() {
                         context: context,
                         style: alertStyle,
                         type: AlertType.warning,
-                        title: "LOGOUT ALERT",
+                        title: "LOGOUT",
                         desc: "Are you sure you want to Logout?",
                         buttons: [
                           DialogButton(

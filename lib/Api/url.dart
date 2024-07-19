@@ -22,4 +22,10 @@ String appointmentListEndpoint = 'auth/eachDoctorAppoinmentsNew';
 String appointmentFixEndpoint = 'auth/appointment_fixby_doctor';
 String getAppversionEndpoint = 'auth/nigdocappversion';
 String ReferralListEndpoint ='getReferralList';
+String getdoctormobilenumberEndpoint ='auth/getdoctormobilenumber';
+String doctor_forgot_otpEndpoint ='auth/doctor_forgot_otp';
+String doctor_forgotpasswordEndpoint ='auth/doctor_forgotpassword';
+String docpendingpayment ='auth/doctor_forgotpassword';
+String pendingpayment= 'auth/docpendingpayment';
+
 

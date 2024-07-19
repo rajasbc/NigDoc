@@ -1007,8 +1007,8 @@ class _PatientsState extends State<Patients> {
                     padding: const EdgeInsets.all(10.0),
                     child: ElevatedButton(
                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(custom_color.appcolor),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
     
                             RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -1231,7 +1231,7 @@ class _PatientsState extends State<Patients> {
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
-                hintText: ' Search Patient Name'),
+                hintText: ' Patient Name'),
             onFieldSubmitted: (String value) {
               onFieldSubmitted();
             });
@@ -1318,7 +1318,7 @@ class _PatientsState extends State<Patients> {
             controller: textEditingController,
             focusNode: focusNode,
                  decoration: InputDecoration(
-                  hintText: 'Search Patient Name',
+                  hintText: 'Patient Name',
                   
                   prefixIcon: const Icon(Icons.search),
                   

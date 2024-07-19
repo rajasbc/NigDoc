@@ -48,8 +48,9 @@ class _CancelledbillState extends State<Cancelledbill> {
           );
         },
         initialDate: currentDate,
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2025));
+        firstDate: DateTime(DateTime.now().year-1, DateTime.now().month, DateTime.now().day),
+        lastDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
+
 
     if (pickedDate != null && pickedDate != currentDate)
       setState(() {

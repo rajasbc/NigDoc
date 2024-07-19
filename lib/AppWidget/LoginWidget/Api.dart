@@ -38,6 +38,47 @@ class loginpage {
       return json.decode(response.body);
     }
   }
+
+
+getmobilenum(data) async {
+    String signupurl = requestpath.base_url + requestpath.getdoctormobilenumberEndpoint;
+   var response = await http.post(
+      Uri.parse(signupurl),
+      body: jsonEncode(data),
+      headers: _setHeadersWithOutToken());
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+
+  sendotpnum(data) async {
+    String signupurl = requestpath.base_url + requestpath.doctor_forgot_otpEndpoint;
+   var response = await http.post(
+      Uri.parse(signupurl),
+      body: jsonEncode(data),
+      headers: _setHeadersWithOutToken());
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+
+  changepassword(data) async {
+    String signupurl = requestpath.base_url + requestpath.doctor_forgotpasswordEndpoint;
+   var response = await http.post(
+      Uri.parse(signupurl),
+      body: jsonEncode(data),
+      headers: _setHeadersWithOutToken());
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+
   // userSignup(data,accessToken, context) async {
   //   try {
   //     String signupurl = requestpath.base_url + requestpath.userSignup;

@@ -187,15 +187,15 @@ class _InjectionListState extends State<InjectionList> {
             child: Container(child:SpinLoader()
           )
           ),
-                    floatingActionButton: FloatingActionButton(onPressed: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_injection()));
-          },
-          child: Icon(Icons.add,
-          size: 30,
-          color: Colors.white,
-          ),
-          backgroundColor:custom_color.appcolor,
-          ),
+          //           floatingActionButton: FloatingActionButton(onPressed: (){
+          //   Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_injection()));
+          // },
+          // child: Icon(Icons.add,
+          // size: 30,
+          // color: Colors.white,
+          // ),
+          // backgroundColor:custom_color.appcolor,
+          // ),
           ));
   }
     getInjectionList() async {
