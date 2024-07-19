@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
-import 'package:nigdoc/AppWidget/StaffWidget/Department/Add%20Department%20List.dart';
+import 'package:nigdoc/AppWidget/StaffWidget/Department/AddDepartmentList.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
