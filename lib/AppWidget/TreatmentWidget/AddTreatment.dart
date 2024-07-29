@@ -53,6 +53,7 @@ class _AddTretmentState extends State<AddTretment> {
   List <dynamic> medicineList=[];
   var Depaartment;
   String? selectedValue;
+  var userResponse;
   var accesstoken;
   bool isloading=false;
 
