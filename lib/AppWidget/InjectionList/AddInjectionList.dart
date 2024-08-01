@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nigdoc/AppWidget/InjectionList/InjectionList.dart';
 import 'package:nigdoc/AppWidget/Medicine/AddMedicineList.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
 
@@ -15,8 +17,28 @@ class Add_injection extends StatefulWidget {
 }
 
 class _Add_injectionState extends State<Add_injection> {
-  TextEditingController add_injectioncontroller=TextEditingController();
- 
+  TextEditingController injectionnamecontroller = TextEditingController();
+  TextEditingController injectionamountcontroller = TextEditingController();
+  TextEditingController injectionqtycontroller = TextEditingController();
+  TextEditingController expdatecontroller = TextEditingController();
+  var userResponse;
+  var accesstoken;
+  @override
+  void initState(){
+    init();
+    
+   
+    super.initState();
+    //  initilzeMethod();
+  }
+   init() async {
+    // await storage.ready;
+    userResponse = await storage.getItem('userResponse');
+    accesstoken = await userResponse['access_token'];
+    //subcategory = await storage.getItem('list');
+
+   
+  }
   @override
   Widget build(BuildContext context) {
     double ScreenHeight=MediaQuery.of(context).size.height;
@@ -86,12 +108,59 @@ class _Add_injectionState extends State<Add_injection> {
               
       // ),
       Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextFormField(
-          controller: add_injectioncontroller,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Injection Name *'
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          child: Column(
+            children: [
+              TextFormField(
+                controller: injectionnamecontroller,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Injection Name *'
+                ),
+              ),
+            
+            SizedBox(height: ScreenHeight*0.02,),
+               TextFormField(
+                controller: injectionamountcontroller,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Injection Amount*'
+                ),
+              ),
+
+                SizedBox(height: ScreenHeight*0.02,),
+               TextFormField(
+                controller: injectionqtycontroller,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Injection Qty*'
+                ),
+              ),
+                SizedBox(height: ScreenHeight*0.02,),
+                  Container(
+                // width: screenWidth*0.49,
+                child: TextField(
+                   controller: expdatecontroller,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                  //filled: true,
+                  prefixIcon: Icon(Icons.calendar_today,color: custom_color.appcolor,),
+                          
+                  labelText: "Exp Date *"
+                ),
+                          
+                readOnly: true,
+                onTap: (() {
+                  _selectDate();
+                }),
+                
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -118,19 +187,52 @@ class _Add_injectionState extends State<Add_injection> {
                     ),
                      child: Text('Save',
                      style: TextStyle(fontSize: 20,color: Colors.white),),
-                     onPressed: (() {
-                       if(add_injectioncontroller.text.isEmpty){
-                       Fluttertoast.showToast(
-                         msg:"Please Enter Injection Name",
+                     onPressed: (() async {
+                       if(injectionnamecontroller.text.isEmpty){
+                        NigDocToast().showErrorToast(
+                         "Please Enter Injection Name",
                        );
                        
-                       }else{
-                        var data={
-                          "addInjection":add_injectioncontroller.text.toString(),
-                          isloading:true,
+                       }else if(injectionamountcontroller.text.isEmpty){
+                          NigDocToast().showErrorToast(
+                         "Please Enter Injection Amount ",
+                       );
+                       }
+                       else if(injectionqtycontroller.text.isEmpty){
+                          NigDocToast().showErrorToast(
+                         "Please Enter Injection Qty ",
+                       );
+                       }else if(expdatecontroller.text.isEmpty){
+                          NigDocToast().showErrorToast(
+                         "Please Select Exp Date ",
+                       );
+                       }
+                       
+                       else{
+                        var data = {
+                          "injections_name":injectionnamecontroller.text.toString(),
+                          "injection_amount":injectionamountcontroller.text.toString(),
+                          "injection_qty":injectionqtycontroller.text.toString(),
+                          "injection_exp_date":expdatecontroller.text.toString(),
+
+                          // isloading:true,
                         };
-                        Helper().isvalidElement(data);
-                        print(data);
+                        var list = await PatientApi()
+                                    .add_injection( accesstoken, data);
+                                if (list['message'] ==
+                                    "Injection Add successfully") {
+                                  NigDocToast().showSuccessToast(
+                                      'Injection Add successfully');
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => InjectionList()));
+                                } else {
+                                  NigDocToast()
+                                      .showErrorToast('Please TryAgain later');
+                                }
+                        // Helper().isvalidElement(data);
+                        // print(data);
                        }
                       
                       
@@ -147,4 +249,17 @@ class _Add_injectionState extends State<Add_injection> {
     ),
     );
   }
+   Future<void>_selectDate() async {
+      DateTime? _picked =  await showDatePicker(
+        context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1980), 
+      lastDate: DateTime(2050),
+      );
+      if(_picked != null){
+       setState(() {
+         expdatecontroller.text=_picked.toString().split(" ")[0];
+       });
+      }
+    }
 }

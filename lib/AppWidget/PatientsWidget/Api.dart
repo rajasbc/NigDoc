@@ -85,6 +85,30 @@ add_patient(access_token,patient_details) async {
       return json.decode(response.body);
     }
   }
+  medicineList(access_token,data) async {
+    String medicinelisturl = requestpath.base_url + requestpath.medicinelist;
+   var response = await http.post(
+      Uri.parse(medicinelisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  Deletemedicine(access_token,data) async {
+    String deletemedicinelisturl = requestpath.base_url + requestpath.deletemedicine;
+   var response = await http.post(
+      Uri.parse(deletemedicinelisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
 
    getReferralList(access_token,data) async{
     String getReferralList =requestpath.base_url + requestpath.ReferralListEndpoint;
@@ -121,6 +145,109 @@ add_patient(access_token,patient_details) async {
     }
   }
  
-  
-   
+  add_medicine(access_token,data) async {
+    String addmedicineurl = requestpath.base_url + requestpath.addmedicine;
+    var response = await http.post(Uri.parse(addmedicineurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   Editmedicine(access_token,data) async {
+    String editmedicineurl = requestpath.base_url + requestpath.editmedicine;
+    var response = await http.post(Uri.parse(editmedicineurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   getdepartmentlist(access_token) async {
+    String departmenturl = requestpath.base_url + requestpath.department;
+    var response = await http.get(
+      Uri.parse(departmenturl),
+        headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  Adddepartment(access_token,data) async {
+    String adddepartmenturl = requestpath.base_url + requestpath.adddepartment;
+    var response = await http.post(Uri.parse(adddepartmenturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  Editdepartment(access_token,data) async {
+    String editdepartmenturl = requestpath.base_url + requestpath.editdepartment;
+    var response = await http.post(Uri.parse(editdepartmenturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  getProfile(access_token) async {
+    String profileurl = requestpath.base_url + requestpath.Docprofile;
+    var response = await http.get(
+      Uri.parse(profileurl),
+        headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  Editprofile(access_token,data) async {
+    String editprofileurl = requestpath.base_url + requestpath.editprofile;
+    var response = await http.post(Uri.parse(editprofileurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  add_injection(access_token,data) async {
+    String addinjectionurl = requestpath.base_url + requestpath.addinjection;
+    var response = await http.post(Uri.parse(addinjectionurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  Editinjection(access_token,data) async {
+    String editinjectionurl = requestpath.base_url + requestpath.editinjection;
+    var response = await http.post(Uri.parse(editinjectionurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   Deleteinjection(access_token,data) async {
+    String deleteinjectionurl = requestpath.base_url + requestpath.deleteinjection;
+   var response = await http.post(
+      Uri.parse(deleteinjectionurl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+
 }

@@ -10,11 +10,12 @@ import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
 
-class Add_MedicineList extends StatefulWidget {
-  const Add_MedicineList({super.key});
+class Edit_MedicineList extends StatefulWidget {
+  final selected_medicine;
+  const Edit_MedicineList({super.key, required, this.selected_medicine});
 
   @override
-  State<Add_MedicineList> createState() => _Add_MedicineListState();
+  State<Edit_MedicineList> createState() => _Edit_MedicineListState();
 }
 
 
@@ -24,7 +25,6 @@ var selected_item;
 var item =[
  '0-0-0-1',
  '0-0-1-0',
- '0-1-0-1',
  '0-0-1-1',
  '0-1-0-1',
  '0-1-1-0',
@@ -57,7 +57,7 @@ var item =[
 ];
 var accesstoken;
 var userResponse;
-class _Add_MedicineListState extends State<Add_MedicineList> {
+class _Edit_MedicineListState extends State<Edit_MedicineList> {
   final LocalStorage storage = new LocalStorage('doctor_store');
 TextEditingController medicine_Controller=TextEditingController();
 TextEditingController Alternative_Controller=TextEditingController();
@@ -69,6 +69,7 @@ TextEditingController eachstrippricecontroller = TextEditingController();
 TextEditingController eachqtypricecontroller = TextEditingController();
 TextEditingController totalpricecontroller = TextEditingController();
 TextEditingController expdatecontroller = TextEditingController();
+var data;
 @override
   void initState(){
     init();
@@ -81,7 +82,21 @@ TextEditingController expdatecontroller = TextEditingController();
     // await storage.ready;
     userResponse = await storage.getItem('userResponse');
     accesstoken = await userResponse['access_token'];
-    //subcategory = await storage.getItem('list');
+    data = widget.selected_medicine;
+
+    setState(() {
+     
+      medicine_Controller.text = data['name'].toString();
+      Alternative_Controller.text = data['aname'].toString();
+      selected_item = data['pattern'].toString();
+      stripcontroller.text = data['nbox'].toString();
+      qtycontroller.text = data['qty'].toString();
+      totalqtycontroller.text = data['totalqty'].toString();
+      eachstrippricecontroller.text = data['nbox'].toString();
+      eachqtypricecontroller.text = data['mrp'].toString();
+      totalpricecontroller.text = data['totalqty'].toString();
+      expdatecontroller.text = data['expiry_date'].tostring();
+    });
 
    
   }
@@ -99,7 +114,7 @@ TextEditingController expdatecontroller = TextEditingController();
          
         },
     child: Scaffold(
-      appBar: AppBar(title: Text('Add Medicine',style: TextStyle(color: Colors.white),),
+      appBar: AppBar(title: Text('Edit Medicine',style: TextStyle(color: Colors.white),),
       backgroundColor:custom_color.appcolor,
 
       leading: IconButton(onPressed: (){
@@ -311,78 +326,113 @@ TextEditingController expdatecontroller = TextEditingController();
               ),
                 
                   SizedBox(height: screenHeight*0.04,),
-      
+                  
               Container(width: screenWidth,
-                child: ElevatedButton(
-                  
-                 style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              
+                child: Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
                     
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                       
+                   
+                    // SizedBox(width: screenWidth*0.03,),
+                    Container(
+                      width: screenWidth*0.40,
+                      child: ElevatedButton(
+                        
+                       style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                             
+                            
+                          ),
+                          
+                        )
+                        
+                      ),
+                        
+                        
+                        child: Text('Save',style: TextStyle(fontSize: 20,color: Colors.white),),
+                        
+                        onPressed: ()async{
+                                  if(medicine_Controller.text.isEmpty){
+                                    NigDocToast().showErrorToast('Please Enter Medicine Nmae');
                       
+                                  }else if(Alternative_Controller.text.isEmpty){
+                                    NigDocToast().showErrorToast('Enter Alternattive Medicine');
+                      
+                                  }
+                                  else if(stripcontroller.text.isEmpty){
+                                    NigDocToast().showErrorToast('Enter Strip');
+                      
+                                    }else if(qtycontroller.text.isEmpty){
+                                    NigDocToast().showErrorToast('Enter your Qty');
+                                    
+                                   } else if(eachstrippricecontroller.text.isEmpty){
+                                    NigDocToast().showErrorToast('Enter Strip Price');
+                                //  } else if(selected_item==null){
+                                //     NigDocToast().showErrorToast('Select Pattern Type');
+                                  }else {
+                                    var items={
+                                       "id":data['id'],
+                                        "name":medicine_Controller.text.toString(),
+                                        "aname":Alternative_Controller.text.toString(),
+                                        "pattern":selected_item.toString(),
+                                        "strip_price":eachstrippricecontroller.text.toString(),
+                                        "qty_price":eachqtypricecontroller.text.toString(),
+                                        "total_price":totalpricecontroller.text.toString(),
+                                        "exp_date":expdatecontroller.text.toString(),
+                                        "strip":stripcontroller.text.toString(),
+                                        "qty":qtycontroller.text.toString(),
+                                        "totalqty":totalqtycontroller.text.toString(),
+                                    };
+                                  var list = await PatientApi()
+                                          .Editmedicine( accesstoken, items);
+                                      if (list['message'] ==
+                                          "updated successfully") {
+                                        NigDocToast().showSuccessToast(
+                                            'updated successfully');
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => MedicineList()));
+                                      } else {
+                                        NigDocToast()
+                                            .showErrorToast('Please TryAgain later');
+                                      }
+                                  }
+                      },
+                       ),
                     ),
-                    
-                  )
-                  
+                    SizedBox(width: screenWidth*0.03,),
+                     Container(
+                      width: screenWidth*0.40,
+                       child: ElevatedButton(
+                        
+                         style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                             
+                            
+                          ),
+                          
+                        )
+                        
+                                           ),
+                        onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                       }, child: Text('Cancel',style: TextStyle(fontSize: 20,color: Colors.white),),),
+                     )
+                  ],
                 ),
-                  
-                  
-                  child: Text('Save',style: TextStyle(fontSize: 20,color: Colors.white),),
-                  
-                  onPressed: ()async{
-                            if(medicine_Controller.text.isEmpty){
-                              NigDocToast().showErrorToast('Please Enter Medicine Nmae');
-                
-                            }else if(Alternative_Controller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Alternattive Medicine');
-                
-                            }
-                            else if(stripcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Strip');
-
-                              }else if(qtycontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter your Qty');
-                              
-                             } else if(eachstrippricecontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Strip Price');
-                          //  } else if(selected_item==null){
-                          //     NigDocToast().showErrorToast('Select Pattern Type');
-                            }else {
-                              var data={
-                                  "name":medicine_Controller.text.toString(),
-                                  "aname":Alternative_Controller.text.toString(),
-                                  "pattern":selected_item.toString(),
-                                  "strip_price":eachstrippricecontroller.text.toString(),
-                                  "qty_price":eachqtypricecontroller.text.toString(),
-                                  "total_price":totalpricecontroller.text.toString(),
-                                  "exp_date":expdatecontroller.text.toString(),
-                                  "strip":stripcontroller.text.toString(),
-                                  "qty":qtycontroller.text.toString(),
-                                  "totalqty":totalqtycontroller.text.toString(),
-                              };
-                            var list = await PatientApi()
-                                    .add_medicine( accesstoken, data);
-                                if (list['message'] ==
-                                    "Medicine Add successfully") {
-                                  NigDocToast().showSuccessToast(
-                                      'Medicine Add successfully');
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MedicineList()));
-                                } else {
-                                  NigDocToast()
-                                      .showErrorToast('Please TryAgain later');
-                                }
-                            }
-                },
-                 ),
               ),
                 
-                  
+                  SizedBox(height: screenHeight*0.04,)
                 // Row(
                 //   children: [
                 //     Padding(

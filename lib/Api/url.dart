@@ -1,12 +1,14 @@
-//String base_url ="http://10.0.2.2:8000/api/";
-String base_url = "https://sapi.nigsoft.com/api/";
+// String base_url ="http://10.0.2.2:8000/api/";
+// String base_url = "https://sapi.nigsoft.com/api/";
+// String base_url = "http://127.0.0.1:8000/api/";
+String base_url = "https://f511-2405-201-e04a-c800-8c4f-975a-1498-f9fc.ngrok-free.app/api/";
 String userSignup = "auth/doc_sign_up";
 String userlogin = "auth/doctorLogin";
 String StaffListEndpoint = "auth/getClinicStaffList";
 String DoctorListEndpoint = "auth/getClinicDoctorList";
 String patientListEndpoint = "auth/getDocCustomerList";
 String treatmentListEndpoint = "auth/docGetTreatment";
-String getMediAndLabNameListEndpoint = "auth/getMediAndLabNameList";
+String getMediAndLabNameListEndpoint = "auth/getMediAndLabNameList";  
 String getlabtestListEndpoint = "auth/linkLabList";
 String getmedicineListEndpoint = "auth/linkMedicineList";
 String apppatientEndpoint = "auth/addPatient";
@@ -27,5 +29,16 @@ String doctor_forgot_otpEndpoint ='auth/doctor_forgot_otp';
 String doctor_forgotpasswordEndpoint ='auth/doctor_forgotpassword';
 String docpendingpayment ='auth/doctor_forgotpassword';
 String pendingpayment= 'auth/docpendingpayment';
-
+String addmedicine= 'auth/Addmedicine';
+String editmedicine= 'auth/Editmedicine';
+String medicinelist= 'auth/DocMedicineList';
+String deletemedicine= 'auth/deletemedicine';
+String department = 'auth/getdepartment';
+String adddepartment = 'auth/adddepartment';
+String editdepartment = 'auth/editdepartment';
+String Docprofile = 'auth/getdocprofile';
+String editprofile = 'auth/editclinicprofile';
+String addinjection = 'auth/addinjection';
+String editinjection = 'auth/editinjection';
+String deleteinjection = 'auth/deleteinjection';
 

@@ -183,16 +183,16 @@ class _StaffListState extends State<StaffList> {
                 );
               }):Center(child: Text('No Data Found')),
         ):Center(child: SpinLoader(),),
-        //  floatingActionButton: FloatingActionButton(onPressed: (){
-        //   Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_staff()));
-        // },
-        // child: Icon(Icons.add,
-        // size: 30,
-        // color: Colors.white,
+         floatingActionButton: FloatingActionButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_staff()));
+        },
+        child: Icon(Icons.add,
+        size: 30,
+        color: Colors.white,
         
-        // ),
-        // backgroundColor: custom_color.appcolor,
-        // ),
+        ),
+        backgroundColor: custom_color.appcolor,
+        ),
       ),
     );
   }

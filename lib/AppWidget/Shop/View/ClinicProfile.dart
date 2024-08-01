@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/Shop/View/EditClincProfile.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
@@ -39,7 +40,9 @@ class _ClinicProfileState extends State<ClinicProfile> {
   bool isLoading =true;
   bool isSwitched = false;
   var userResponse;
-
+  var accesstoken;
+  var profile ;
+  var list;
   var shop = [
     'Select Shop',
   ];
@@ -57,10 +60,20 @@ class _ClinicProfileState extends State<ClinicProfile> {
   @override
   void initState() {
     userResponse = storage.getItem('userResponse');
-    shopInfo();
+    accesstoken=userResponse['access_token'];
+    // getMediAndLabNameList();
+    int();
+    
+    
     // TODO: implement initState
     super.initState();
+    
   }
+  int()async{
+  await geProfile();
+   await shopInfo();
+  }
+   
 
   // final ImagePicker picker = ImagePicker();
 
@@ -137,7 +150,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
           child: AppBar(
             backgroundColor:custom_color.appcolor,
             title: const Text(
-              'Clinic Profile',
+              'Clinic Profile ',
               style: TextStyle(color: Colors.white),
             ),
             leading: IconButton(
@@ -175,7 +188,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
           // color: Colors.red,
 
           child: Padding(
-            padding: const EdgeInsets.only(left: 0.0, right: 0.0),
+            padding: const EdgeInsets.all(10),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -384,31 +397,31 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         SizedBox(
                           height: 10,
                         ),
-                        SizedBox(
-                          child: TextFormField(
-                            enabled: false,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Email Id",
-                            ),
-                            // autovalidateMode: AutovalidateMode.always,
-                            readOnly: true,
-                            controller: emailidController,
-                            // validator: (value) {
-                            //   if(value == null || value.isEmpty) {
-                            //     return "";
-                            //   }
-                            //   return null;
-                            // },
-                          ),
-                        ),
+                        // SizedBox(
+                        //   child: TextFormField(
+                        //     enabled: false,
+                        //     decoration: const InputDecoration(
+                        //       border: OutlineInputBorder(),
+                        //       labelText: "Email Id",
+                        //     ),
+                        //     // autovalidateMode: AutovalidateMode.always,
+                        //     readOnly: true,
+                        //     controller: emailidController,
+                        //     // validator: (value) {
+                        //     //   if(value == null || value.isEmpty) {
+                        //     //     return "";
+                        //     //   }
+                        //     //   return null;
+                        //     // },
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 10,
                         ),
                         Row(
                           children: [
                             SizedBox(
-                              width: 185,
+                              width: screenWidth*0.42,
                               child: TextFormField(
                                 enabled: false,
                                 decoration: const InputDecoration(
@@ -429,10 +442,10 @@ class _ClinicProfileState extends State<ClinicProfile> {
                             ),
                             // SizedBox(height: 10,),
                             SizedBox(
-                              width: 5,
+                              width: screenWidth*0.06,
                             ),
                             SizedBox(
-                              width: 185,
+                              width: screenWidth*0.42,
                               child: TextFormField(
                                 enabled: false,
                                 decoration: const InputDecoration(
@@ -458,7 +471,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         Row(
                           children: [
                             SizedBox(
-                              width: 185,
+                               width: screenWidth*0.42,
                               child: TextFormField(
                                 enabled: false,
                                 decoration: const InputDecoration(
@@ -478,10 +491,10 @@ class _ClinicProfileState extends State<ClinicProfile> {
                             ),
                             // SizedBox(height: 10,),
                             SizedBox(
-                              width: 5,
+                               width: screenWidth*0.06,
                             ),
                             SizedBox(
-                              width: 185,
+                               width: screenWidth*0.42,
                               child: TextFormField(
                                 enabled: false,
                                 decoration: const InputDecoration(
@@ -507,7 +520,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         Row(
                           children: [
                             SizedBox(
-                              width: 185,
+                               width: screenWidth*0.42,
                               child: TextFormField(
                                 enabled: false,
                                 decoration: const InputDecoration(
@@ -527,36 +540,29 @@ class _ClinicProfileState extends State<ClinicProfile> {
                             ),
                             // SizedBox(height: 10,),
                             SizedBox(
-                              width: 5,
+                               width: screenWidth*0.06,
                             ),
+                            // SizedBox(
+                            //   width: 185,
+                            //   child: TextFormField(
+                            //     enabled: false,
+                            //     decoration: const InputDecoration(
+                            //       border: OutlineInputBorder(),
+                            //       labelText: "State Code",
+                            //     ),
+                            //     // autovalidateMode: AutovalidateMode.always,
+                            //     controller: statecodeController,
+                            //     readOnly: true,
+                            //     // validator: (value) {
+                            //     //   if(value == null || value.isEmpty) {
+                            //     //     return "";
+                            //     //   }
+                            //     //   return null;
+                            //     // },
+                            //   ),
+                            // ),
                             SizedBox(
-                              width: 185,
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "State Code",
-                                ),
-                                // autovalidateMode: AutovalidateMode.always,
-                                controller: statecodeController,
-                                readOnly: true,
-                                // validator: (value) {
-                                //   if(value == null || value.isEmpty) {
-                                //     return "";
-                                //   }
-                                //   return null;
-                                // },
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 185,
+                              width: screenWidth*0.42,
                               child: TextFormField(
                                 enabled: false,
                                 decoration: const InputDecoration(
@@ -574,32 +580,34 @@ class _ClinicProfileState extends State<ClinicProfile> {
                                 // },
                               ),
                             ),
-                            // SizedBox(height: 10,),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            SizedBox(
-                              width: 185,
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Pincode",
-                                ),
-                                keyboardType: TextInputType.number,
-                                // maxLength: 6,
-                                // autovalidateMode: AutovalidateMode.always,
-                                controller: pincodeController,
-                                readOnly: true,
-                                // validator: (value) {
-                                //   if(value == null || value.isEmpty) {
-                                //     return "";
-                                //   }
-                                //   return null;
-                                // },
-                              ),
-                            ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        // SizedBox(
+                        //   width: 5,
+                        // ),
+                        SizedBox(
+                          width: screenWidth*0.94,
+                          child: TextFormField(
+                            enabled: false,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Pincode",
+                            ),
+                            keyboardType: TextInputType.number,
+                            // maxLength: 6,
+                            // autovalidateMode: AutovalidateMode.always,
+                            controller: pincodeController,
+                            readOnly: true,
+                            // validator: (value) {
+                            //   if(value == null || value.isEmpty) {
+                            //     return "";
+                            //   }
+                            //   return null;
+                            // },
+                          ),
                         ),
                         SizedBox(
                           height: 10,
@@ -737,61 +745,61 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         SizedBox(
                           height: 10,
                         ),
-                        Container(
-                            child: Row(
-                              children: [
-                                Container(
-                                  // color: Colors.grey,
-                                  width: screenWidth * 0.2,
-                                  child: Text(
-                                    "  Barcode",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ),
-                                // Switch(
-                                //         value: isSwitched,
-                                //         onChanged: (value) {
-                                //           setState(() {
-                                //             isSwitched = value;
-                                //             print(isSwitched);
-                                //           });
-                                //         },
-                                //         activeTrackColor:
-                                //             Colors.lightGreenAccent,
-                                //         activeColor: Colors.green,
-                                //       ),
-                                Container(
-                                  // color: Colors.blue,
-                                  width: screenWidth * 0.33,
-                                  child: RadioListTile(
-                                    title: Text("Yes"),
-                                    value: "yes",
-                                    groupValue: barcode,
-                                    onChanged: (value) {
-                                      value = barcode;
-                                      setState(() {
-                                        barcode = value.toString();
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Container(
-                                  // color: Colors.amber,
-                                  width: screenWidth * 0.3,
-                                  child: RadioListTile(
-                                    title: Text("No"),
-                                    value: "no",
-                                    groupValue: barcode,
-                                    onChanged: (value) {
-                                      value = barcode;
-                                      setState(() {
-                                        barcode = value.toString();
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            )),
+                        // Container(
+                        //     child: Row(
+                        //       children: [
+                        //         Container(
+                        //           // color: Colors.grey,
+                        //           width: screenWidth * 0.2,
+                        //           child: Text(
+                        //             "  Barcode",
+                        //             style: TextStyle(fontSize: 18),
+                        //           ),
+                        //         ),
+                        //         // Switch(
+                        //         //         value: isSwitched,
+                        //         //         onChanged: (value) {
+                        //         //           setState(() {
+                        //         //             isSwitched = value;
+                        //         //             print(isSwitched);
+                        //         //           });
+                        //         //         },
+                        //         //         activeTrackColor:
+                        //         //             Colors.lightGreenAccent,
+                        //         //         activeColor: Colors.green,
+                        //         //       ),
+                        //         Container(
+                        //           // color: Colors.blue,
+                        //           width: screenWidth * 0.33,
+                        //           child: RadioListTile(
+                        //             title: Text("Yes"),
+                        //             value: "yes",
+                        //             groupValue: barcode,
+                        //             onChanged: (value) {
+                        //               value = barcode;
+                        //               setState(() {
+                        //                 barcode = value.toString();
+                        //               });
+                        //             },
+                        //           ),
+                        //         ),
+                        //         Container(
+                        //           // color: Colors.amber,
+                        //           width: screenWidth * 0.3,
+                        //           child: RadioListTile(
+                        //             title: Text("No"),
+                        //             value: "no",
+                        //             groupValue: barcode,
+                        //             onChanged: (value) {
+                        //               value = barcode;
+                        //               setState(() {
+                        //                 barcode = value.toString();
+                        //               });
+                        //             },
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     )),
                         // Container(
                         //     child: Column(
                         //   children: [
@@ -947,43 +955,63 @@ class _ClinicProfileState extends State<ClinicProfile> {
           ),
         ): Center(child:  SpinLoader(),),
 
-        //  floatingActionButton: FloatingActionButton(onPressed: (){
+         floatingActionButton: FloatingActionButton(onPressed: (){
 
-        //       Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_ClinicProfile()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_ClinicProfile(select_profile : list)));
               
         
-        // },
+        },
         
-        // child: Icon(Icons.edit,color: Colors.white,size: 30,),
-        // backgroundColor: custom_color.appcolor,),
+        child: Icon(Icons.edit,color: Colors.white,size: 30,),
+        backgroundColor: custom_color.appcolor,),
       ),
     );
   }
 
-  shopInfo() {
-    var list = userResponse['clinic_profile'];
-    setState(() {
-      shopnameController.text =Helper().isvalidElement(list['name'])? list['name'].toString():'';
-      // shopshortnameController.text = list['email'].toString();
-      dlnoController.text = Helper().isvalidElement(list['dl_no'])? list['dl_no'].toString():'';
-      gstController.text = Helper().isvalidElement(list['shop_gst_no'])? list['shop_gst_no'].toString():'';
-      emailidController.text = Helper().isvalidElement(list['email'])? list['email'].toString():'';
-      address1Controller.text = Helper().isvalidElement(list['address1'])? list['address1'].toString():'';
-      address2Controller.text = Helper().isvalidElement(list['address2'])? list['address2'].toString():'';
-      areaController.text =Helper().isvalidElement(list['area'])? list['area'].toString():''; 
-      cityController.text = Helper().isvalidElement(list['city'])? list['city'].toString():'';
-      stateController.text =  Helper().isvalidElement(list['state'])? list['state'].toString():'';
-      statecodeController.text =  Helper().isvalidElement(list['state_code'])? list['state_code'].toString():'';
-      countryController.text =  Helper().isvalidElement(list['country'])? list['country'].toString():'';
-      pincodeController.text = Helper().isvalidElement(list['pincode'])? list['pincode'].toString():'';
-      mobileController.text =Helper().isvalidElement(list['mobile_no'])? list['mobile_no'].toString():''; 
-      altermobileController.text =Helper().isvalidElement(list['alt_mobile_no'])? list['alt_mobile_no'].toString():''; 
-      landlineController.text = Helper().isvalidElement(list['landline_no'])? list['landline_no'].toString():'';
-      barcode = Helper().isvalidElement(list['barcode'])? list['barcode'].toString().toLowerCase():'';
-      shoptypeController.text =  Helper().isvalidElement(list['clinic_type'])? list['clinic_type'].toString():'';
-      clinicRegnumberController.text =  Helper().isvalidElement(list['register_id'])? list['register_id'].toString():'';
+  shopInfo(){
+    list = profile[0];
+  
+    print(list);
+    setState((){
+       shopnameController.text =Helper().isvalidElement(list['name'])? list['name'].toString():'';
+       shopshortnameController.text = Helper().isvalidElement(list['shop_short_name'])? list['name'].toString():'';
+       dlnoController.text = Helper().isvalidElement(list['dl_no'])? list['dl_no'].toString():'';
+       gstController.text = Helper().isvalidElement(list['shop_gst_no'])? list['shop_gst_no'].toString():'';
+       emailidController.text = Helper().isvalidElement(list['email'])? list['email'].toString():'';
+       address1Controller.text = Helper().isvalidElement(list['address1'])? list['address1'].toString():'';
+       address2Controller.text = Helper().isvalidElement(list['address2'])? list['address2'].toString():'';
+       areaController.text =Helper().isvalidElement(list['area'])? list['area'].toString():''; 
+       cityController.text = Helper().isvalidElement(list['city'])? list['city'].toString():'';
+       stateController.text =  Helper().isvalidElement(list['state'])? list['state'].toString():'';
+       statecodeController.text =  Helper().isvalidElement(list['state_code'])? list['state_code'].toString():'';
+       countryController.text =  Helper().isvalidElement(list['country'])? list['country'].toString():'';
+       pincodeController.text = Helper().isvalidElement(list['pincode'])? list['pincode'].toString():'';
+       mobileController.text =Helper().isvalidElement(list['mobile_no'])? list['mobile_no'].toString():''; 
+       altermobileController.text =Helper().isvalidElement(list['alt_mobile_no'])? list['alt_mobile_no'].toString():''; 
+       landlineController.text = Helper().isvalidElement(list['landline_no'])? list['landline_no'].toString():'';
+       barcode = Helper().isvalidElement(list['barcode'])? list['barcode'].toString().toLowerCase():'';
+       shoptypeController.text =  Helper().isvalidElement(list['shop_type'])? list['shop_type'].toString():'';
+       clinicRegnumberController.text =  Helper().isvalidElement(list['register_id'])? list['register_id'].toString():'';
       isLoading=true;
       // isSwitched=Helper().isvalidElement(list['barcode'])&&list['barcode'].toString().toLowerCase()=='no'?false:true ;
     });
+  }
+  geProfile() async {
+   
+    var List = await PatientApi().getProfile(accesstoken);
+    if (Helper().isvalidElement(List) &&
+        Helper().isvalidElement(List['status']) &&
+        List['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      setState(() {
+        profile = List['list'];
+        print(profile);
+        isLoading=true;
+        // var values = MediAndLabNameList;
+      });
+      // TreatmentList = List['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+    }
   }
 }

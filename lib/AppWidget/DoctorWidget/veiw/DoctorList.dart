@@ -233,14 +233,14 @@ class _DoctorListState extends State<DoctorList> {
                     })
                 : Center(child: Text('No Data Found'))):Center(child: SpinLoader(),
                 ),
-            //      floatingActionButton: FloatingActionButton(onPressed: (){
-            // Navigator.push(context,MaterialPageRoute(builder: (context)=>AddDoctor()));
-            // },
-            // child: Icon(Icons.add,
-            // size: 30,
-            // color: Colors.white,),
-            // backgroundColor: custom_color.appcolor,
-            // ),
+                 floatingActionButton: FloatingActionButton(onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context)=>AddDoctor()));
+            },
+            child: Icon(Icons.add,
+            size: 30,
+            color: Colors.white,),
+            backgroundColor: custom_color.appcolor,
+            ),
      
       ),
     );

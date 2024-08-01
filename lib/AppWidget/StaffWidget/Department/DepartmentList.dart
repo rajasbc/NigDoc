@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/Department/AddDepartmentList.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
@@ -16,6 +17,21 @@ class department_List extends StatefulWidget {
 class _department_ListState extends State<department_List> {
 
    TextEditingController departmentcontroller=TextEditingController();
+   TextEditingController adddepartmentcontroller=TextEditingController();
+   bool isLoading = false;
+   var userResponse;
+   var accesstoken;
+   var departmentList;
+   var list=0;
+   @override
+  void initState() {
+    userResponse = storage.getItem('userResponse');
+    accesstoken=userResponse['access_token'];
+
+    getdepartmentlist();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double screenHeight=MediaQuery.of(context).size.height;
@@ -46,129 +62,214 @@ class _department_ListState extends State<department_List> {
                 color: Colors.white,
               ),
             )),
-         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 100),
-                child: Container(
-                 
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              color: index % 2 == 0
-                                  ? custom_color.lightcolor
-                                  : Colors.white,
-                              width: screenWidth,
-                              height: screenHeight * 0.07,
-                             // width: screenWidth * 0.90,
-                              // decoration:
-                              //     BoxDecoration(border: Border.all(color: Colors.grey)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: screenWidth*0.75,
-                                      // color: Colors.red,
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: Row(
-                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  // color: Colors.amber,
-                                                  width: screenWidth * 0.45,
-                                                  height: screenWidth*0.07,
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        'Name :',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold),
-                                                      ),
-                                                    
-                                                    ],
-                                                  ),
-                                                ),
-                                                // Container(
-                                                //   //  width: screenWidth * 0.35,
-                                                //   child: Row(
-                                                //     children: [
-                                                //       Text(
-                                                //         'Address :',
-                                                //         style: TextStyle(
-                                                //             fontWeight:
-                                                //                 FontWeight.bold),
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                // ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: Row(
-                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  width: screenWidth * 0.45,
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        'Pincode :',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                // Container(
-                                                //   //  width: screenWidth * 0.35,
-                                                //   child: Row(
-                                                //     children: [
-                                                //       Text(
-                                                //         'Mobile No :',
-                                                //         style: TextStyle(
-                                                //             fontWeight:
-                                                //                 FontWeight.bold),
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                // )
-                                              ],
-                                            ),
-                                          ),
+         body: SafeArea(
+           child: Helper().isvalidElement(departmentList) && departmentList.length > 0 ? Container(
+            
+             child: Padding(
+               padding: const EdgeInsets.all(5.0),
+               child: ListView.builder(
+                 shrinkWrap: true,
+                 // itemCount: 5,
+                  itemCount: departmentList.length,
+                  
+                 itemBuilder: (BuildContext context, int index) {
+                     list=index+1;
+                   var data=departmentList[index];
+                   return Center(
+                     child: Padding(
+                       padding: const EdgeInsets.all(0.0),
+                       child: Container(
+                         color: index % 2 == 0
+                             ? custom_color.lightcolor
+                             : Colors.white,
+                         width: screenWidth,
+                         height: screenHeight * 0.09,
+                        // width: screenWidth * 0.90,
+                         // decoration:
+                         //     BoxDecoration(border: Border.all(color: Colors.grey)),
+                         child: Padding(
+                           padding: const EdgeInsets.all(20),
+                           child: Row(
+                             children: [
+                               Container(
+                                 width: screenWidth*0.75,
+                                 // color: Colors.red,
+                                 child: Column(
+                                   children: [
+                                     Padding(
+                                       padding: const EdgeInsets.all(0.0),
+                                       child: Row(
+                                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                         children: [
+                                           SizedBox(width: screenWidth*0.01,),
+                                           Text('($list)',style: TextStyle(fontWeight: FontWeight.bold),),
+                                           SizedBox(width: screenWidth*0.02,),
+                                           Container(
+                                             // color: Colors.amber,
+                                             width: screenWidth * 0.66,
+                                             height: screenWidth*0.07,
+                                             child: Row(
+                                               children: [
+                                                 Text(
+                                                   'Name : ${data['department_name'].toString()}',
+                                                   style: TextStyle(
+                                                       fontWeight:
+                                                           FontWeight.bold),
+                                                 ),
+                                               
+                                               ],
+                                             ),
+                                           ),
+                                           
+                                         ],
+                                       ),
+                                     ),
+                                    
+                                    
+           
+                                   ],
+                                 ),
+                               ),
+                               PopupMenuButton(itemBuilder: (context)=>[
+                                 PopupMenuItem(child: Row(
+                                         children: [
+                                           Icon(Icons.edit,color: custom_color.appcolor,),
+                                           Padding(padding: EdgeInsets.only(left: 10),
+                                           child: Text('Edit',style: TextStyle(fontSize: 16),),)
+                                         ],
+           
                                          
+                                       ),
+                                       onTap: () {
+                                        var item = {
+                                          departmentcontroller.text = data['department_name']
+                                        };
+                                         showDialog(context: context, builder: ((context) => AlertDialog(
+                                           actions: [
+                                               Padding(padding: EdgeInsets.all(10)),
+                                               Container(
+                                                 height: screenHeight*0.04,
+                                                 width: screenWidth*0.14,
+                                               ),
+                                               
+                                                          SizedBox(height: screenHeight*0.00,),
+           
+           
+                                                          TextFormField(
+                                                           controller: departmentcontroller,
+                                                           decoration: InputDecoration(
+                                                             border: OutlineInputBorder(),
+                                                             labelText: 'Department *',
+                                                           ),
+                                                          ),
+                                                          SizedBox(height: screenHeight*0.04,),
+                                                          Row(
+                                                           children: [
+                                                             Padding(padding: EdgeInsets.only(left: 20),
+                   
+                   child: ElevatedButton( 
+                     style: ButtonStyle(
+                       backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+               
+                       RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(10),
+                  
+                 
+                        ),
+               
+                        )
+             
+                        ),
+                     child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
+           
+                     onPressed: (() {
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>department_List()));
+                     }),
+                     
+                     ),
+                     
+                     
+                     ),
+                   Padding(padding: EdgeInsets.only(left:20),
+                   child: ElevatedButton(
+                      style: ButtonStyle(
+                       backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+               
+                       RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(10),
+                  
+                 
+                        ),
+               
+                        )
+             
+                        ),
+                      child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                      onPressed: (() async{
+                             if(departmentcontroller.text.isEmpty){
+                 NigDocToast().showErrorToast('Enter Department');
+                }else{
+              
+                var value={
+                  'id':data['id'],
+                   "department_name":departmentcontroller.text.toString(),
+                                                                                                                                               
+                 };
+                 var list = await PatientApi()
+                   .Editdepartment( accesstoken, value);
+                                 if (list['message'] ==
+                                     "updated successfully") {
+                                   NigDocToast().showSuccessToast(
+                                       'updated successfully');
+                                   Navigator.push(
+                                       context,
+                                       MaterialPageRoute(
+                                           builder: (context) => department_List()));
+                                 } else {
+                                   NigDocToast()
+                                       .showErrorToast('Please TryAgain later');
+                                 }
+              }                         
+                 
+                        
+                      }),
+                      ),
+                   ),
+           
+                   
+                     ],
+                    ),
+                     SizedBox(height: screenHeight*0.04,),
+                                           ],
+                                         )));
+                                       },
+                                       
+                                       )
+                               ])
+                             ],
+                           ),
+                         ),
+                       ),
+                  
+                     ),
+                     
+                   );
+                  
+                 },
+           
+                 
+               )
+           
+             ),
+             
+           ):Container(child: Center(child: Text('No Data Found')),),
+         ),
+       floatingActionButton: FloatingActionButton(onPressed: (){
+        // Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_Department()));
 
-                                        ],
-                                      ),
-                                    ),
-                                    PopupMenuButton(itemBuilder: (context)=>[
-                                      PopupMenuItem(child: Row(
-                                              children: [
-                                                Icon(Icons.edit,color: custom_color.appcolor,),
-                                                Padding(padding: EdgeInsets.only(left: 10),
-                                                child: Text('Edit',style: TextStyle(fontSize: 16),),)
-                                              ],
-
-                                              
-                                            ),
-                                            onTap: () {
-                                              showDialog(context: context, builder: ((context) => AlertDialog(
+       showDialog(context: context, builder: ((context) => AlertDialog(
                                                 actions: [
                                                     Padding(padding: EdgeInsets.all(10)),
                                                     Container(
@@ -180,112 +281,80 @@ class _department_ListState extends State<department_List> {
 
 
                                                                TextFormField(
-                                                                controller: departmentcontroller,
+                                                                controller: adddepartmentcontroller,
                                                                 decoration: InputDecoration(
                                                                   border: OutlineInputBorder(),
                                                                   labelText: 'Department *',
                                                                 ),
                                                                ),
                                                                SizedBox(height: screenHeight*0.04,),
-                                                               Row(
-                                                                children: [
-                                                                   Padding(padding: EdgeInsets.only(left:20),
-                        child: ElevatedButton(
-                           style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-    
-                            RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-       
-      
-                             ),
-    
-                             )
-  
-                             ),
-                           child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
-                           onPressed: (() {
-                                  if(departmentcontroller.text.isEmpty){
-                      NigDocToast().showErrorToast('Enter Department');
-                     }else{
-                    var data={
-                      "department":departmentcontroller.text.toString(),
-                    
-                    };
-                    Helper().isvalidElement(data);
-                    print(data);
-                   }                         
-                      
-                             
-                           }),
-                           ),
-                        ),
-
-                        Padding(padding: EdgeInsets.only(left: 20),
-                        
-                        child: ElevatedButton( 
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-    
-                            RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-       
-      
-                             ),
-    
-                             )
-  
-                             ),
-                          child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
-
-                          onPressed: (() {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>department_List()));
-                          }),
-                          
-                          ),
-                          
-                          
-                          ),
-                          ],
-                         ),
+                                                               Center(
+                                                                 child: ElevatedButton(
+                                                                    style: ButtonStyle(
+                                                                     backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                                                                     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                                                                                                                                    
+                                                                     RoundedRectangleBorder(
+                                                                     borderRadius: BorderRadius.circular(10),
+                                                                                                                                       
+                                                                                                                                      
+                                                                      ),
+                                                                                                                                    
+                                                                      )
+                                                                                                                                  
+                                                                      ),
+                                                                    child: Text('Save',style: TextStyle(color: Colors.white,fontSize: 20),),
+                                                                    onPressed: (() async{
+                                                                           if(adddepartmentcontroller.text.isEmpty){
+                                                                          NigDocToast().showErrorToast('Enter Department');
+                                                                         }else{
+                                                                       var data={
+                                                                         "department_name":adddepartmentcontroller.text.toString(),
+                                                                                                                                                    
+                                                                        };
+                                                                       var list = await PatientApi()
+                                                                 .Adddepartment( accesstoken, data);
+                                                                  if (list['message'] ==
+                                                                      "Department Add successfully") {
+                                                                    NigDocToast().showSuccessToast(
+                                                                        'Department Add successfully');
+                                                                    Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) => department_List()));
+                                                                  } else {
+                                                                    NigDocToast()
+                                                                        .showErrorToast('Please TryAgain later');
+                                                                  }
+                                                                                                  }                         
+                                                                                                                                                      
+                                                                      
+                                                                    }),
+                                                                    ),
+                                                               ),
                           SizedBox(height: screenHeight*0.04,),
                                                 ],
                                               )));
-                                            },
-                                            
-                                            )
-                                    ])
-                                  ],
-                                ),
-                              ),
-                            ),
-                       
-                          ),
-                          
-                        );
-                       
-                      },
-
-                      
-                    ),
-
-                  ),
-                  
-                ),
-              ),
-            ),
-          ),
-        ),
-      //  floatingActionButton: FloatingActionButton(onPressed: (){
-      //   Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_Department()));
-
-      //  },
-      //  child: Icon(Icons.add,color: Colors.white,size: 30,),
-      //  backgroundColor: custom_color.appcolor,
-      //  ),
+       },
+       child: Icon(Icons.add,color: Colors.white,size: 30,),
+       backgroundColor: custom_color.appcolor,
+       ),
       ),
     );
+  }
+  getdepartmentlist() async {
+    var List = await PatientApi().getdepartmentlist(accesstoken);
+    if (Helper().isvalidElement(List) &&
+        Helper().isvalidElement(List['status']) &&
+        List['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      setState(() {
+        isLoading=true;
+        departmentList = List['list'];
+      });
+      // TreatmentList = List['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+    }
   }
 }
