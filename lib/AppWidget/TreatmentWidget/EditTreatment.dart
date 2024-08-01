@@ -1,106 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:nigdoc/AppWidget/Common/utils.dart';
-import 'package:nigdoc/AppWidget/Medicine/AddMedicineList.dart';
-import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/TreatmentWidget/treatment.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
+import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
-import 'package:fluttericon/font_awesome_icons.dart';
-import 'package:nigdoc/main.dart';
 
-class AddTretment extends StatefulWidget {
-  const AddTretment({super.key});
+class Edittreatment extends StatefulWidget {
+  final medicinelist;
+  const Edittreatment({super.key, required this.medicinelist});
 
   @override
-  State<AddTretment> createState() => _AddTretmentState();
+  State<Edittreatment> createState() => _EdittreatmentState();
 }
 
-class _AddTretmentState extends State<AddTretment> {
-    TextEditingController Medicinecontroller = TextEditingController();
+class _EdittreatmentState extends State<Edittreatment> {
   final LocalStorage storage = new LocalStorage('doctor_store');
-  String medicinedropdow = "Select Medicine List *";
-  String departmentdropdown = "Select Department *";
-  List Medicine_List =[];
- var selectedmedicine;
-  var SelectedPharmacy;
-  List medicineList=[];
+    TextEditingController Medicinecontroller = TextEditingController();
+  TextEditingController Treatmentcontroller = TextEditingController();
+  TextEditingController Feescontroller = TextEditingController();
+  var departmentdropdown;
   List departmentListList =[];
-  var Depaartment;
-  // String? selectedValue;
+  var SelectedPharmacy;
   var userResponse;
   var accesstoken;
-  bool isloading=false;
+  var medicinelist;
+ var selectedmedicine;
+  List Medicine_List =[];
   bool medicine =true;
-
-  TextEditingController Treatmentcontroller = TextEditingController();
-  TextEditingController medicinecontroller = TextEditingController();
-  TextEditingController Departmentcontroller = TextEditingController();
-  TextEditingController Feescontroller = TextEditingController();
-  
-@override
+  List medicineList=[];
+  var demo;
+  var dep;
+  var treatment_id;
+  var data1;
+  @override
   void initState() {
      userResponse = storage.getItem('userResponse');
     accesstoken=userResponse['access_token'];
     getdepartmentList();
     getMedicineList();
-
-    // TODO: implement initState
     super.initState();
-  }
-  getdepartmentList() async{
-    var List = await PatientApi().getdepartmentList(accesstoken);
-    if (Helper().isvalidElement(List) &&
-        Helper().isvalidElement(List['status']) &&
-        List['status'] == 'Token is Expired') {
-      Helper().appLogoutCall(context, 'Session expeired');
-    } else {
-      setState(() {
-        departmentListList = List['list'];
-      });
-    }
-  }
-    getMedicineList() async {
-    var data = {
-      "shop_id": Helper().isvalidElement(SelectedPharmacy)?  SelectedPharmacy.toString():'',
-    };
-
-    var List = await PatientApi().getMedicineList(accesstoken, data);
-    if (Helper().isvalidElement(List) &&
-        Helper().isvalidElement(List['status']) &&
-        List['status'] == 'Token is Expired') {
-      Helper().appLogoutCall(context, 'Session expeired');
-    } else {
-      setState(() {
-        //  MediAndLabNameList = List['list'];
-        medicineList = List['list'];
-        // MedicineLoader=true;
-        // valid=true;
-        // isLoading=true;
-      });
-      // TreatmentList = List['list'];
-      //  storage.setItem('diagnosisList', diagnosisList);
-    }
+    var data = widget.medicinelist;
+    treatment_id = data['treatment_id'];
+    setState(() {
+       demo = data["medicinelist"];
+      Treatmentcontroller.text = data["treatment"].toString();
+      dep = data["department"];
+      departmentdropdown = data["department_id"];
+      Feescontroller.text = data["fees"].toString();
+      Medicine_List = demo;
+    });
   }
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
- return  PopScope(
+    return PopScope(
        canPop:false,
        onPopInvoked:(bool didpop) {
          Navigator.push(
           context, MaterialPageRoute(builder: (context)=> TreatmentList(),)
          );
-         
         },
     child: Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Treatment',
+          'Edit Treatment',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: custom_color.appcolor,
@@ -118,80 +84,23 @@ class _AddTretmentState extends State<AddTretment> {
           ),
         ),
       ),
-
       body:SingleChildScrollView(
         child: SafeArea(
           child: Container(
-            
-            
-            padding: EdgeInsets.all(10.0),
+             padding: EdgeInsets.all(10.0),
             child: Column(
               children: [
                 SizedBox(height: screenHeight*0.02,),
                 TextFormField(
-                  
                   controller: Treatmentcontroller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Treatment Name'
                   ),
                 ),
-               
                 SizedBox(
                   height: screenHeight * 0.02,
                 ),
-
-                
-                //  Padding(
-                //    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-                //       //padding: const EdgeInsets.all(20.0),
-                //       child: Container(
-                //         height: screenHeight *0.07,
-                //         width: screenWidth * 0.96,
-                //         decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-                //         borderRadius: BorderRadius.circular(5.0)
-                //             // border: OutlineInputBorder()
-                //             ),
-                //         child: Padding(
-                //           padding: const EdgeInsets.all(10.0),
-                //           child: Center(
-                //             child: DropdownButtonFormField(
-                            
-                //               decoration: InputDecoration.collapsed(hintText: ''),
-                //               isExpanded: true,
-                //               hint: Padding(
-                //               padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
-                //                 child: Text(
-                //                   ' Medicine List*',
-                                 
-                //                 ),
-                //               ),
-                             
-                //               onChanged: (newvalue) {
-                //               //  medicineList=newvalue.toString();
-                //               medicinedropdow=newvalue.toString();
-                //                 setState(() {
-                                 
-                //                 });
-                             
-                //               },
-                //               items:title .map<DropdownMenuItem<String>>((item) {
-                //                 return new DropdownMenuItem(
-                //                   child: Padding(
-                //                     padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-                //                     child: new Text(item,style: TextStyle(fontSize: 15),),
-                //                   ),
-                //                   value: item.toString(),
-                //                 );
-                //               }).toList(),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-
-               
-
                 SizedBox(
             width: screenWidth * 0.95,
             child: DropdownButtonFormField(
@@ -212,8 +121,8 @@ class _AddTretmentState extends State<AddTretment> {
                   ),
                 ),
                 isExpanded: true,
-                hint: const Text(
-                  'Department*',
+                hint: Text(
+                  '${dep}',
                 ),
                 // value:patternDropdownvalue,
                 onChanged: (item) async {
@@ -231,7 +140,6 @@ class _AddTretmentState extends State<AddTretment> {
                 SizedBox(
                   height: screenHeight * 0.02,
                 ),
-          
                 TextFormField(
                   keyboardType: TextInputType.number,
                      controller: Feescontroller,
@@ -241,18 +149,17 @@ class _AddTretmentState extends State<AddTretment> {
                     labelText: 'Fees *'
                   ),
                 ),
-          SizedBox(height: screenHeight*0.02),
+                 SizedBox(height: screenHeight*0.02),
                Container(
                  child: Helper().isvalidElement(selectedmedicine)
                 ? RenderPatientdata(screenHeight, screenWidth)
                 : renderPatientAutoComplete(screenHeight, screenWidth)
                ),
-          SizedBox(height: screenHeight*0.02),
+                SizedBox(height: screenHeight*0.02),
           Medicine_List.length>0?renderMedicineListWidget(screenHeight, screenWidth):Container(),
-                SizedBox(
+            SizedBox(
                   height: screenHeight * 0.02,
                 ),
-
                 Container(width: screenWidth,
                   child: ElevatedButton(
                        style: ButtonStyle(
@@ -261,15 +168,12 @@ class _AddTretmentState extends State<AddTretment> {
                       
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                         
-                        
                       ),
-                      
                     )
                     
                   ),
                       child: Text(
-                        'Save',
+                        'Update',
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
                             color: Colors.white,
@@ -280,22 +184,23 @@ class _AddTretmentState extends State<AddTretment> {
                           NigDocToast().showErrorToast('Enter Treatment Name');
                         } else if (Medicine_List.length == 0) {
                           NigDocToast().showErrorToast('Please Select Medicine List');
-                        } else if (departmentdropdown == "Select Department *") {
+                        } else if (departmentdropdown == null ) {
                           NigDocToast().showErrorToast('Please Select Department');
                         } else if (Feescontroller.text.isEmpty) {
                           NigDocToast().showErrorToast('Enter Fees');
                          }else {
-                          var data = {
-                            "treatmentname": Treatmentcontroller.text.toString(),
-                            "medicinelist": Medicine_List,
-                            "department": departmentdropdown.toString(),
-                            "fees": Feescontroller.text.toString(),
+                           data1 = {
+                           "treatmentid":treatment_id.toString(),
+                           "treatmentname":Treatmentcontroller.text.toString(),
+                           "fees":Feescontroller.text.toString(),
+                           "medicinelist":Medicine_List,
+                           "departmentid":departmentdropdown.toString(),
                           };
-                          var list = await PatientApi().AddTreatment(accesstoken, data);
-                           if (list['message'] ==
-                                    "Add Treatment successfully") {
+                          var list = await PatientApi().EditTreatment(accesstoken, data1);
+                          if (list['message'] ==
+                                    "Edit Treatment successfully") {
                                   NigDocToast().showSuccessToast(
-                                      'Treatment Add successfully');
+                                      'Treatment Edit successfully');
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -306,13 +211,23 @@ class _AddTretmentState extends State<AddTretment> {
                                 }
                         }
                       }),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),),
+                ),          
+              ])
+          )))
+    )
     );
+  }
+  getdepartmentList() async{
+    var List = await PatientApi().getdepartmentList(accesstoken);
+    if (Helper().isvalidElement(List) &&
+        Helper().isvalidElement(List['status']) &&
+        List['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      setState(() {
+        departmentListList = List['list'];
+      });
+    }
   }
 
   RenderPatientdata(screenHeight, screenWidth) {
@@ -352,7 +267,6 @@ class _AddTretmentState extends State<AddTretment> {
         
         );
   }
-
   renderPatientAutoComplete(screenHeight, screenWidth) {
     return Padding(
       padding: const EdgeInsets.all(0.0),
@@ -491,7 +405,28 @@ class _AddTretmentState extends State<AddTretment> {
       ),
     );
   }
+  getMedicineList() async {
+    var data = {
+      "shop_id": Helper().isvalidElement(SelectedPharmacy)?  SelectedPharmacy.toString():'',
+    };
 
+    var List = await PatientApi().getMedicineList(accesstoken, data);
+    if (Helper().isvalidElement(List) &&
+        Helper().isvalidElement(List['status']) &&
+        List['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      setState(() {
+        //  MediAndLabNameList = List['list'];
+        medicineList = List['list'];
+        // MedicineLoader=true;
+        // valid=true;
+        // isLoading=true;
+      });
+      // TreatmentList = List['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+    }
+  }
   renderMedicineListWidget(screenHeight, screenWidth){
     return Padding(
       padding: const EdgeInsets.all(1.0),

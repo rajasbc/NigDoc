@@ -250,4 +250,65 @@ add_patient(access_token,patient_details) async {
     }
   }
 
+
+getTreatmentList(access_token) async{
+    String Treatmentlisturl = requestpath.base_url + requestpath.TreatmentListEndpoint;
+    var response = await http.get(Uri.parse(Treatmentlisturl),
+     headers: _setHeaders(access_token)
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+
+
+AddTreatment(access_token,data) async{
+    String addtreatmenturl = requestpath.base_url + requestpath.addtreatmentEndpoint;
+    var response = await http.post(Uri.parse(addtreatmenturl),
+     body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  EditTreatment(access_token,data) async{
+    String edittreatmenturl = requestpath.base_url + requestpath.edittreatmentEndpoint;
+    var response = await http.post(Uri.parse(edittreatmenturl),
+    body: jsonEncode(data), headers: _setHeaders(access_token)
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+
+
+
+getMedicineList(access_token,data) async {
+    String getmedicinelisturl = requestpath.base_url + requestpath.medicinelist;
+   var response = await http.post(
+      Uri.parse(getmedicinelisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  getdepartmentList(access_token) async{
+    String getdepartmenturl = requestpath.base_url + requestpath.getdepartmentEndpoint;
+    var response = await http.get(
+      Uri.parse(getdepartmenturl),      
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
 }
