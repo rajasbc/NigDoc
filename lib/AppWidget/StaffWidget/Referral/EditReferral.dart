@@ -2,8 +2,10 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 //import 'package:nigdoc/AppWidget/DoctorWidget/Referral/Referral.dart';
 import 'package:nigdoc/AppWidget/Medicine/AddMedicineList.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/Referral/Referral.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
@@ -11,13 +13,17 @@ import '../../../AppWidget/common/Colors.dart' as custom_color;
 
 
 class Edit_Referral extends StatefulWidget {
-  const Edit_Referral({super.key});
+  final select_referral;
+  const Edit_Referral({super.key,request, this.select_referral});
 
   @override
   State<Edit_Referral> createState() => _Edit_ReferralState();
 }
 
-  TextEditingController select_Titlecontroller =TextEditingController();
+ 
+class _Edit_ReferralState extends State<Edit_Referral> {
+  @override
+   TextEditingController select_Titlecontroller =TextEditingController();
   TextEditingController Referral_Namecontroller=TextEditingController();
   TextEditingController mobilecontroller =TextEditingController();
   TextEditingController Emailcontroller =TextEditingController();
@@ -38,9 +44,38 @@ class Edit_Referral extends StatefulWidget {
        "Dr",
 
   };
+var data;
+@override
+  void initState(){
+    init();
+    
+   
+    super.initState();
+    //  initilzeMethod();
+  }
+   init() async {
+    // await storage.ready;
+      userResponse = await storage.getItem('userResponse');
+      accesstoken = await userResponse['access_token'];
+      data = widget.select_referral;
 
-class _Edit_ReferralState extends State<Edit_Referral> {
-  @override
+    setState(() {
+
+      selected_item = data['title'].toString();
+      Referral_Namecontroller.text = data['name'].toString();
+      mobilecontroller.text = data['mobile_no'].toString();   
+      Emailcontroller.text = data['email_id'].toString();
+      addresscontroller.text = data['address'].toString();
+      citycontroller.text = data['city'].toString();
+      pincodecontroller.text = data['pincode'].toString();
+      dobcontroller.text = data['dob'].toString();
+      date_of_anniversarycontroller.text = data['doa'].toString();
+      organizationcontroller.text = data['organization'].toString();
+
+    });
+
+   
+  }
   Widget build(BuildContext context) {
      double screenHeight=MediaQuery.of(context).size.width;
       double screenWidth = MediaQuery.of(context).size.width;
@@ -85,7 +120,8 @@ class _Edit_ReferralState extends State<Edit_Referral> {
                               hint: Padding(
                               padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
                                 child: Text(
-                                  'Select Title *',
+                                  // 'Select Title *',
+                                  '${data['title']}'
                                  
                                 ),
                               ),
@@ -99,7 +135,7 @@ class _Edit_ReferralState extends State<Edit_Referral> {
                               items: title.map<DropdownMenuItem<String>>((item) {
                                 return new DropdownMenuItem(
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+                                    padding: const EdgeInsets.only(top: 0, left: 8, right: 8),
                                     child: new Text(item,style: TextStyle(fontSize: 15),),
                                   ),
                                   value: item.toString(),
@@ -141,6 +177,7 @@ class _Edit_ReferralState extends State<Edit_Referral> {
                padding: const EdgeInsets.all(8.0),
                child: TextFormField(
                 controller: Emailcontroller,
+                keyboardType: TextInputType.none,
                 decoration: InputDecoration(
                   
                   border: OutlineInputBorder(),
@@ -326,59 +363,75 @@ class _Edit_ReferralState extends State<Edit_Referral> {
                                  ),
                     child: Text("Update",style: TextStyle(fontSize: 18,color: Colors.white),),
                              
-                    onPressed: (() {
+                    onPressed: (() async {
                       if(selected_item==null){
                         NigDocToast().showErrorToast("Select Your Title");
                    
                       }else if(Referral_Namecontroller.text.isEmpty){
                         NigDocToast().showErrorToast("Enter Referral Name");
                    
-                      }else if(mobilecontroller.text.isEmpty){
-                        NigDocToast().showErrorToast("Enter Mobile No");
+                      // }else if(mobilecontroller.text.isEmpty){
+                      //   NigDocToast().showErrorToast("Enter Mobile No");
                    
-                      } else if (!Emailcontroller.text
-                                   .contains('@') ||
-                                   !Emailcontroller.text.contains('.') ||
-                                   !Emailcontroller.text.contains('com')) {
-                                    NigDocToast().showErrorToast("Please Enter Your Email id");
+                      // } else if (!Emailcontroller.text
+                      //              .contains('@') ||
+                      //              !Emailcontroller.text.contains('.') ||
+                      //              !Emailcontroller.text.contains('com')) {
+                      //               NigDocToast().showErrorToast("Please Enter Your Email id");
                                   
                    
-                      }else if(addresscontroller.text.isEmpty){
-                        NigDocToast().showErrorToast("Enter Your Address");
+                      // }else if(addresscontroller.text.isEmpty){
+                      //   NigDocToast().showErrorToast("Enter Your Address");
                    
-                      }else if(citycontroller.text.isEmpty){
-                        NigDocToast().showErrorToast("Enter Your City");
+                      // }else if(citycontroller.text.isEmpty){
+                      //   NigDocToast().showErrorToast("Enter Your City");
                    
                    
-                      }else if(pincodecontroller.text.isEmpty){
-                        NigDocToast().showErrorToast("Enter Your Pincode");
+                      // }else if(pincodecontroller.text.isEmpty){
+                      //   NigDocToast().showErrorToast("Enter Your Pincode");
                    
-                      }else if(dobcontroller.text.isEmpty){
-                        NigDocToast().showErrorToast("Enter Your DOB");
+                      // }else if(dobcontroller.text.isEmpty){
+                      //   NigDocToast().showErrorToast("Enter Your DOB");
                    
-                      }else if(date_of_anniversarycontroller.text.isEmpty){
-                        NigDocToast().showErrorToast("Enter Your Anniversary Date");
+                      // }else if(date_of_anniversarycontroller.text.isEmpty){
+                      //   NigDocToast().showErrorToast("Enter Your Anniversary Date");
                    
                       }else if(organizationcontroller.text.isEmpty){
                         NigDocToast().showErrorToast("Enter Organizer");
                    
                       }else{
-                           var data= {
-                          "title":select_Titlecontroller.text.toString(),
-                          "referral":Referral_Namecontroller.text.toString(),
-                          "mobile":mobilecontroller.text.toString(),
-                          "email":Emailcontroller.text.toString(),
-                            "address":addresscontroller.text.toString(),
-                              "city":citycontroller.text.toString(),
-                                "pincode":pincodecontroller.text.toString(),
-                                  "dob":dobcontroller.text.toString(),
-                                  "anniversary":date_of_anniversarycontroller.text.toString(),
-                                    "organization":organizationcontroller.text.toString(),
+                           var item= {
+                          'id':data['id'].toString(),
+                          "title":selected_item.toString(),
+                          "name":Referral_Namecontroller.text.toString(),
+                          "mobile_no":mobilecontroller.text.toString(),
+                          // "email_id":Emailcontroller.text.toString(),
+                          "address":addresscontroller.text.toString(),
+                          "city":citycontroller.text.toString(),
+                          "pincode":pincodecontroller.text.toString(),
+                          "dob":dobcontroller.text.toString(),
+                          "doa":date_of_anniversarycontroller.text.toString(),
+                          "organization":organizationcontroller.text.toString(),
                                     
                         
                            };
-                            Helper().isvalidElement(data);
-                        print(data);
+                            var list = await PatientApi()
+                                    .Editreferral( accesstoken, item);
+                                if (list['message'] ==
+                                    "updated successfully") {
+                                  NigDocToast().showSuccessToast(
+                                      'updated successfully');
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Referral()));
+                               
+                                }
+                                 else {
+                                  NigDocToast()
+                                      .showErrorToast('Please TryAgain later');
+                                }
+                           
                       }
                      
                     }),

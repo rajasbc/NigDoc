@@ -1252,7 +1252,8 @@ class _ClinicConfigState extends State<ClinicConfig> {
                       ),
                     ),
                   ),
-                  ElevatedButton(onPressed: () {}, child: Text('Update'))
+                  // ElevatedButton(onPressed: () {}, child: Text('Update'))
+                  SizedBox(height: screenHeight*0.04,)
                 ],
               ),
             ),

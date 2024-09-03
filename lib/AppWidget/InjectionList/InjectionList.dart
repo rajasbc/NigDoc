@@ -48,7 +48,8 @@ class _InjectionListState extends State<InjectionList> {
 
   @override
   Widget build(BuildContext context) {
-    Injection_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: injectionList;
+   
+    // Injection_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: injectionList;
     double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
       return new WillPopScope(
@@ -98,25 +99,26 @@ class _InjectionListState extends State<InjectionList> {
                       borderRadius: BorderRadius.all(Radius.circular(4))),
                   child: Row(
                     children: [
-                      Container(
-                          width: screenWidth * 0.1,
-                          height: screenHeight,
-                          child: Icon(Icons.search,
-                              color: custom_color.appcolor)),
+                      // Container(
+                      //     width: screenWidth * 0.1,
+                      //     height: screenHeight,
+                      //     child: Icon(Icons.search,
+                      //         color: custom_color.appcolor)),
                       Container(
                         width: screenWidth * 0.65,
                         child: TextField(
                           controller: searchText,
                           onChanged: (text) {
                             print(text);
-
+ filterItems(text);
                             this.setState(() {});
                             // var list = ProductListItem;
-                              searchList = treatmentList.where((element) {
-                                var treatList = element['treatment_name'].toString().toLowerCase();
-                                return treatList.contains(text.toLowerCase());
-                                // return true;
-                              }).toList();
+                          
+                              // searchList = Injection_List.where((element) {
+                              //   var treatList = element['injections_name'].toString().toLowerCase();
+                              //   return treatList.contains(text.toLowerCase());
+                              //   // return true;
+                              // }).toList();
                               this.setState(() {});
                           },
                           decoration: new InputDecoration(
@@ -129,7 +131,7 @@ class _InjectionListState extends State<InjectionList> {
                       ),
                       searchText.text.isNotEmpty
                           ? Container(
-                              width: screenWidth * 0.1,
+                              width: screenWidth * 0.06,
                               height: screenHeight,
                               child: IconButton(
                                 icon: Icon(
@@ -138,12 +140,19 @@ class _InjectionListState extends State<InjectionList> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    searchText.text = '';
-                                    searchList='';
+                                    searchText.clear();
+                                     filterItems(searchText.text);
+                                    // searchText.text = '';
+                                    // searchList='';
                                   });
                                 },
                               ))
                           : Container(),
+                           Container(
+                          width: screenWidth * 0.18,
+                          height: screenHeight,
+                          child: Icon(Icons.search,
+                              color: custom_color.appcolor)),
                     ],
                   ),
                 ),),
@@ -521,8 +530,12 @@ class _InjectionListState extends State<InjectionList> {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
       setState(() {
-        isLoading=true;
+        
+        
         injectionList = List['list'];
+        isLoading=true;
+        filterItems(searchText.text);
+        
       });
      
     }
@@ -540,4 +553,26 @@ class _InjectionListState extends State<InjectionList> {
        });
       }
     }
+    void filterItems(String text) {
+    // setState(() {
+    if (text.isEmpty) {
+      setState(() {
+        Injection_List = injectionList;
+      });
+    } 
+    else if (text.length >= 3) {
+      setState(() {
+        Injection_List = injectionList.where((item) =>
+            item['injections_name']
+                .toString()
+                .toLowerCase()
+                .contains(text.toLowerCase()),
+            // item['phone']
+            //     .toString()
+            //     .toLowerCase()
+            //     .contains(text.toLowerCase())
+                ).toList();
+      });
+    }
+  }
 }

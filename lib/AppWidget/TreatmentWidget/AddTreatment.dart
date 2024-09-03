@@ -195,6 +195,7 @@ class _AddTretmentState extends State<AddTretment> {
                 SizedBox(
             width: screenWidth * 0.95,
             child: DropdownButtonFormField(
+              menuMaxHeight: 300,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),

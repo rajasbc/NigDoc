@@ -913,7 +913,7 @@ class _SettingState extends State<Setting> {
                           ),
                           InkWell(
                             child: Container(
-                              // height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.19,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [
@@ -944,7 +944,7 @@ class _SettingState extends State<Setting> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            'Pharmacy',
+                                            'Pharmacy Link',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold),
@@ -953,7 +953,7 @@ class _SettingState extends State<Setting> {
                                       )),
                                   Container(
                                     // color: Colors.amber,
-                                    height: screenHeight * 0.1,
+                                    height: screenHeight * 0.08,
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Image.asset('assets/pharmacy.png'),
@@ -1094,8 +1094,8 @@ class _SettingState extends State<Setting> {
                                 children: [
                                     InkWell(
                               child: Container(
-                                height: screenHeight * 0.1567,
-                                width: screenWidth * 0.27,
+                                // height: screenHeight * 0.1567,
+                                width: screenWidth * 0.25,
                                 child: Column(
                                   children: [
                                     Padding(
@@ -1176,7 +1176,7 @@ class _SettingState extends State<Setting> {
 
                              InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [
@@ -1258,7 +1258,7 @@ class _SettingState extends State<Setting> {
             SizedBox(width: screenWidth*0.08,),
                     InkWell(
                             child: Container(
-                              height: screenHeight * 0.1567,
+                              // height: screenHeight * 0.1567,
                               width: screenWidth * 0.25,
                               child: Column(
                                 children: [

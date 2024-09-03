@@ -537,7 +537,7 @@ class _PatientsState extends State<Patients> {
                         child: TextField(
                           controller: bmicontroller,
     
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(), labelText: 'BMI'),
                         ),
@@ -565,7 +565,7 @@ class _PatientsState extends State<Patients> {
                         child: TextField(
                           controller: heightcontroller,
     
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(), labelText: 'Height'),
                         ),
@@ -611,7 +611,7 @@ class _PatientsState extends State<Patients> {
                         child: TextField(
                           controller: weightcontroller,
     
-                          // keyboardType: TextInputType.none,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(), labelText: 'Weight'),
                         ),
@@ -658,7 +658,7 @@ class _PatientsState extends State<Patients> {
                         child: TextField(
                           controller: sugarcontroller,
     
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(), labelText: 'Sugar'),
                         ),
@@ -686,7 +686,7 @@ class _PatientsState extends State<Patients> {
                         child: TextField(
                           controller: bpcontroller,
     
-                          // keyboardType: TextInputType.none,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(), labelText: 'Bp'),
                         ),
@@ -714,7 +714,7 @@ class _PatientsState extends State<Patients> {
                         child: TextField(
                           controller: pulsecontroller,
     
-                          // keyboardType: TextInputType.none,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(), labelText: 'Pulse'),
                         ),
@@ -742,7 +742,7 @@ class _PatientsState extends State<Patients> {
                         child: TextField(
                           controller: temmpcontroller,
     
-                          // keyboardType: TextInputType.none,
+                         keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Temparature'),
@@ -790,7 +790,7 @@ class _PatientsState extends State<Patients> {
                         child: TextField(
                           controller: spO2controller,
     
-                          // keyboardType: TextInputType.none,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(), labelText: 'SpO2'),
                         ),
@@ -1320,7 +1320,7 @@ class _PatientsState extends State<Patients> {
                  decoration: InputDecoration(
                   hintText: 'Patient Name',
                   
-                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: Icon(Icons.search,color: custom_color.appcolor,),
                   
                   
                   enabledBorder: OutlineInputBorder(

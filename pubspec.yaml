@@ -127,6 +127,14 @@ flutter:
     - assets/1.jpg
     - assets/2.jpg
     - assets/3.jpg
+    - assets/add_category.png
+    - assets/addgroup.png
+    - assets/menu.png
+    - assets/summary.png
+    - assets/dailycollection.png
+    - assets/patient.png
+    - assets/collectionreport.png
+    - assets/depwise.png
 
 
 

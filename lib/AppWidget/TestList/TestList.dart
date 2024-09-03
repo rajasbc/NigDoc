@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
@@ -21,6 +22,8 @@ class _TestListState extends State<TestList> {
    TextEditingController searchText = TextEditingController();
    TextEditingController testnamecontroller=TextEditingController();
    TextEditingController testamountcontroller=TextEditingController();
+
+  
    String medicineDropdownvalue="empty";
 
 
@@ -45,7 +48,8 @@ class _TestListState extends State<TestList> {
     userResponse = storage.getItem('userResponse');
     accesstoken=userResponse['access_token'];
     // getMediAndLabNameList();
-    gettestList();
+    // gettestList();
+    gettestlist();
 
     // gettreatmentlist();
     // TODO: implement initState
@@ -54,7 +58,7 @@ class _TestListState extends State<TestList> {
 
   @override
   Widget build(BuildContext context) {
-    test_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: testList;
+    // test_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: testList;
     double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
       return new WillPopScope(
@@ -94,321 +98,256 @@ class _TestListState extends State<TestList> {
                 SizedBox(height: 15,),
                
               
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        Center(child: 
-                        Container(
-                          height: screenHeight * 0.06,
-                          width: screenWidth*0.931,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border:
-                                  Border.all(color: custom_color.appcolor),
-                              borderRadius: BorderRadius.all(Radius.circular(4))),
-                          child: Row(
-                            children: [
-                              Container(
-                                  width: screenWidth * 0.1,
-                                  height: screenHeight,
-                                  child: Icon(Icons.search,
-                                      color: custom_color.appcolor)),
-                              Container(
-                                width: screenWidth * 0.65,
-                                child: TextField(
-                                  controller: searchText,
-                                  onChanged: (text) {
-                                    print(text);
-                              
-                                    this.setState(() {});
-                                    // var list = ProductListItem;
-                                      searchList = testList.where((element) {
-                                        var treatList = element['test_name'].toString().toLowerCase();
-                                        return treatList.contains(text.toLowerCase());
-                                        // return true;
-                                      }).toList();
-                                      this.setState(() {});
-                                  },
-                                  decoration: new InputDecoration(
-                                    filled: true,
-                                    border: InputBorder.none,
-                                    fillColor: Colors.white,
-                                    hintText: 'Search Test List Here...',
-                                  ),
+                SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Center(child: 
+                      Container(
+                        height: screenHeight * 0.06,
+                        width: screenWidth*0.931,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border:
+                                Border.all(color: custom_color.appcolor),
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                        child: Row(
+                          children: [
+                            // Container(
+                            //     width: screenWidth * 0.1,
+                            //     height: screenHeight,
+                            //     child: Icon(Icons.search,
+                            //         color: custom_color.appcolor)),
+                            Container(
+                              width: screenWidth * 0.65,
+                              child: TextField(
+                                controller: searchText,
+                                onChanged: (text) {
+                                  print(text);
+                            filterItems(text);
+                                  this.setState(() {});
+                                  // var list = ProductListItem;
+                                    // searchList = testList.where((element) {
+                                    //   var treatList = element['test_name'].toString().toLowerCase();
+                                    //   return treatList.contains(text.toLowerCase());
+                                    //   // return true;
+                                    // }).toList();
+                                    // this.setState(() {});
+                                },
+                                decoration: new InputDecoration(
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  fillColor: Colors.white,
+                                  hintText: 'Search Test List Here...',
                                 ),
                               ),
-                              searchText.text.isNotEmpty
-                                  ? Container(
-                                      width: screenWidth * 0.1,
-                                      height: screenHeight,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            searchText.text = '';
-                                            searchList='';
-                                          });
-                                        },
-                                      ))
-                                  : Container(),
-                            ],
-                          ),
-                        ),),
-                              
-                              
-                            // SizedBox(height: screenHeight*0.01),
-                           
-                              
-                            Helper().isvalidElement(test_List) && test_List.length > 0 ?
-                             Container(
-                              // height:screenHeight * 0.85,
-                              
-                              
-                             width: screenWidth,
-                              padding:EdgeInsets.all(0),
-                              child: 
-                              ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: test_List.length,
-                                itemBuilder: (BuildContext context, int index){
-                                  list=index+1;
-                                  var data=test_List[index];
-                                  return Container(
-                                    child: Column(
-                                      children: [
-                                        Card(
-                                          color: index % 2 == 0
-                                                        ? custom_color.lightcolor
-                                                        : Colors.white,
-                                          child: ListTile(
-                                            title: SizedBox(child: Text('${data['test_name']}')),
-                                            subtitle:  Text('₹ ${data['test_amount']}'),
-                                            leading: Padding(
-                                              padding: const EdgeInsets.only(top:3.0),
-                                              child: Text('$list'),
-                                            ),
-
-                    //                         trailing: PopupMenuButton(itemBuilder: (context)=>[
-                    //                       PopupMenuItem(
-                                            
-                    //                         child:Row(
-                    //                           children: [
-                    //                             Icon(Icons.edit,color: custom_color.appcolor,),
-                    //                             Padding(padding: EdgeInsets.only(left: 10),
-                    //                             child: Text('Edit',style: TextStyle(fontSize: 16),),)
-                    //                           ],
-                    //                         ),
-                    //                            onTap: (() {
-                    //                              showDialog(context: context, builder: (context)=>AlertDialog(
-                    //                               actions: [
-
-                                                    
-                    //                                 Padding(padding: EdgeInsets.all(10)),
-                    //                                 Container(
-                    //                                   height: screenHeight*0.04,
-                    //                                   width: screenWidth*0.14,
-                    //                                 ),
-
-                                                  
-                                                  
-                   
-                    //                              TextFormField(
-                    //                                  controller: testnamecontroller,
-                    //                                  decoration: InputDecoration(
-                    //                                  border: OutlineInputBorder(
-                    //                                   borderRadius: BorderRadius.circular(5.0),
-                    //                                  ),
-                    //                                  labelText: "Test Name",
-                    //                                  ),
-                    //                                  ),
-                                                     
-                    //                                  SizedBox(height: screenHeight*0.02,),
-                                                      
-                    //                                   TextFormField(
-                    //                                     keyboardType: TextInputType.number,
-                    //                                 controller: testamountcontroller,
-                    //                                       decoration: InputDecoration(
-                    //                                 border: OutlineInputBorder(
-                    //                                   borderRadius: BorderRadius.circular(5.0),
-                    //                                 ),
-                    //                                      labelText: 'Test Amount',
-                    //                                 ),
-              
-                    //                                  ),
-                    //                                  SizedBox(height: screenHeight*0.04,),
-                    //  Row(
-                    //   children: [
-
-                    //     Padding(padding: EdgeInsets.only(left:20),
-                    //     child: ElevatedButton(
-                    //        style: ButtonStyle(
-                    //         backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                    //         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-    
-                    //         RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(10),
-       
-      
-                    //          ),
-    
-                    //          )
-  
-                    //          ),
-                    //        child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
-                    //        onPressed: (() {
-                    //          if(testnamecontroller.text.isEmpty){
-                    //           NigDocToast().showErrorToast('Enter Your Test Name');
-
-                    //          }else if(testamountcontroller.text.isEmpty){
-                    //           NigDocToast().showErrorToast('Enter Test Amount ');
-
-                    //          }else{
-                    //           var data={
-                    //             testnamecontroller.text.toString(),
-                    //             testamountcontroller.text.toString(),
-                    //           };
-                    //           Helper().isvalidElement(data);
-                    //           print(data);
-                    //          };
-                             
-                    //        }),
-                    //        ),
-                    //     ),
-
-                    //     Padding(padding: EdgeInsets.only(left: 20),
-                        
-                    //     child: ElevatedButton( 
-                    //       style: ButtonStyle(
-                    //         backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                    //         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-    
-                    //         RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(10),
-       
-      
-                    //          ),
-    
-                    //          )
-  
-                    //          ),
-                    //       child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
-
-                    //       onPressed: (() {
-                    //         Navigator.push(context, MaterialPageRoute(builder: (context)=>TestList()));
-                    //       }),
-                          
-                    //       ),
-                          
-                          
-                    //       ),
-                    //   ],
-                    // ),
-                    //         SizedBox(height: screenHeight*0.02,),              
-                    //                               ],
-                    //                              ));
-                                                 
-                    //                            }),
-                                             
-                    //                       ),
-                    //                     ]),
-                              //               trailing: IconButton(onPressed: (){
-                              //                 var List=data;
-                              
-                              
-                              //                  showDialog(
-                                                
-                              //   context: context,
-                              //   builder: (ctx) => AlertDialog(
-                                  
-                                  
-                              //     // backgroundColor: Color.fromARGB(0, 238, 236, 236),
-                              //     title:  Text('Product:  ${List['name'].toString()}' ),
-                              //     content:Container(
-                              //       width: screenWidth*0.8,
-                              //       height: screenHeight*0.15,
-                                    
-                              //       child:Column(
-                              //       children:[
-                              //         Row(
-                              //           children: [
-                              //              SizedBox(height: 10,),
-                              //             Text('Cost: '),
-                              //             Text('${List['cost'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                              //           ],
-                              //         ),
-                              //          SizedBox(height: 10,),
-                              //          Row(
-                              //           children: [
-                              //             Text('Price:'),
-                              //             Text('${List['sale_price'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                              //           ],
-                              //         ),
-                              //          SizedBox(height: 10,),
-                              //          Row(
-                              //           children: [
-                              //             Text('Quantity:'),
-                              //             Text('${List['qty'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                              //           ],
-                              //         ),
-                              //         SizedBox(height: 10,),
-                              //         Row(
-                                        
-                              //           children: [
-                              //             Text('Status:'),
-                              //             Text('${List['status'].toString()}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                              //           ],
-                              //         )
-                              //       ],
-                              //     )
-                              
-                              //     ),
-                                      
-                              //     actions: <Widget>[
-                              //       TextButton(
-                              //         onPressed: () {
-                              //           Navigator.of(ctx).pop();
-                              //           //  Helper().appLogoutCall(context, 'logout');
-                              //         },
-                              //         child: Container(
-                              //           // color: Colors.green,
-                              //           padding: const EdgeInsets.all(14),
-                              //           child: const Text("Close"),
-                              //         ),
-                              //       ),
-                              //       // TextButton(
-                              //       //   onPressed: () {
-                              //       //     // Navigator.of(ctx).pop();
-                              //       //     Helper().appLogoutCall(context, 'logout');
-                              //       //   },
-                              //       //   child: Container(
-                              //       //     // color: Colors.green,
-                              //       //     padding: const EdgeInsets.all(14),
-                              //       //     child: const Text("Yes"),
-                              //       //   ),
-                              //       // ),
-                              //     ],
-                              //   ),
-                              // );
-                                              
-                              //               }, icon: Icon(Icons.menu)),
+                            ),
+                            searchText.text.isNotEmpty
+                                ? Container(
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.close,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          searchText.clear();
+                                          filterItems(searchText.text);
+                                          // searchList='';
+                                        });
+                                      },
+                                    ))
+                                : Container(),
+                                 Container(
+                                width: screenWidth * 0.18,
+                                height: screenHeight,
+                                child: Icon(Icons.search,
+                                    color: custom_color.appcolor)),
+                          ],
+                        ),
+                      ),),
+                            
+                            
+                          SizedBox(height: screenHeight*0.01),
+                         
+                            
+                          Helper().isvalidElement(test_List) && test_List.length > 0 ?
+                           Container(
+                            height:screenHeight * 0.85,
+                            
+                            
+                           width: screenWidth,
+                            padding:EdgeInsets.all(0),
+                            child: 
+                            ListView.builder(
+                              // physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: test_List.length,
+                              itemBuilder: (BuildContext context, int index){
+                                list=index+1;
+                                var data=test_List[index];
+                                return Container(
+                                  child: Column(
+                                    children: [
+                                      Card(
+                                        color: index % 2 == 0
+                                                      ? custom_color.lightcolor
+                                                      : Colors.white,
+                                        child: ListTile(
+                                          title: SizedBox(child: Text('${data['test_name']}')),
+                                          subtitle:  Text('₹ ${data['test_amount']}'),
+                                          leading: Padding(
+                                            padding: const EdgeInsets.only(top:3.0),
+                                            child: Text('$list'),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                              })
-                               ):Container(child:
-                                Text('No Data Found')
-                                )
+                                          
+                                          trailing: PopupMenuButton(itemBuilder: (context)=>[
+                                         PopupMenuItem(child: Row(
+                                                 children: [
+                                                   Icon(Icons.edit,color: custom_color.appcolor,),
+                                                   Padding(padding: EdgeInsets.only(left: 10),
+                                                   child: Text('Edit',style: TextStyle(fontSize: 16),),)
+                                                 ],
                                 
-                      ],
-                    ),
+                                                 
+                                               ),
+                                               onTap: () {
+                                                var item = {
+                                                  testnamecontroller.text = data['test_name'].toString(),
+                                                  testamountcontroller.text = data['test_amount'].toString(),
+                                                };
+                                                 showDialog(context: context, builder: ((context) => AlertDialog(
+                                                   actions: [
+                                                       Padding(padding: EdgeInsets.all(10)),
+                                                       Container(
+                                                         height: screenHeight*0.04,
+                                                         width: screenWidth*0.14,
+                                                       ),                                        
+                                
+                                             TextFormField(
+                                             controller: testnamecontroller,
+                                             decoration: InputDecoration(
+                                             border: OutlineInputBorder(),
+                                             labelText: 'Test Name',
+                                               ),
+                                              ),
+                                              SizedBox(height: screenHeight*0.02,),
+                                               TextFormField(
+                                             controller: testamountcontroller,
+                                             keyboardType: TextInputType.number,
+                                             decoration: InputDecoration(
+                                             border: OutlineInputBorder(),
+                                             labelText: 'Test Amount',
+                                               ),
+                                              ),
+                                              SizedBox(height: screenHeight*0.04,),
+                                              Row(
+                                              children: [
+                                              Padding(padding: EdgeInsets.only(left: 20),
+                           
+                           child: ElevatedButton( 
+                             style: ButtonStyle(
+                               backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                               shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                       
+                               RoundedRectangleBorder(
+                               borderRadius: BorderRadius.circular(10),
+                          
+                         
+                                ),
+                       
+                                )
+                                          
+                                ),
+                             child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
+                                
+                             onPressed: (() {
+                               Navigator.push(context, MaterialPageRoute(builder: (context)=>TestList()));
+                             }),
+                             
+                             ),
+                             
+                             
+                             ),
+                           Padding(padding: EdgeInsets.only(left:20),
+                           child: ElevatedButton(
+                              style: ButtonStyle(
+                               backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                               shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                       
+                               RoundedRectangleBorder(
+                               borderRadius: BorderRadius.circular(10),
+                          
+                         
+                                ),
+                       
+                                )
+                                          
+                                ),
+                              child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                              onPressed: (() async{
+                                     if(testnamecontroller.text.isEmpty){
+                         NigDocToast().showErrorToast('Enter Test Name');
+                        }else if(testamountcontroller.text.isEmpty){
+                          NigDocToast().showErrorToast('Enter Test Amount');
+                        }
+                        
+                        else{
+                                           
+                        var value={
+                           'test_id':data['test_id'].toString(),
+                           "test_name":testnamecontroller.text.toString(),
+                           'test_amount':testamountcontroller.text.toString(),
+                                                                                                                                                       
+                         };
+                         var list = await PatientApi()
+                           .Edittest( accesstoken, value);
+                                         if (list['message'] ==
+                                             "updated successfully") {
+                                           NigDocToast().showSuccessToast(
+                                               'updated successfully');
+                                           Navigator.push(
+                                               context,
+                                               MaterialPageRoute(
+                                                   builder: (context) => TestList()));
+                                         } else {
+                                           NigDocToast()
+                                               .showErrorToast('Please TryAgain later');
+                                         }
+                                           }                         
+                         
+                                
+                              }),
+                              ),
+                           ),
+                                
+                           
+                             ],
+                            ),
+                             SizedBox(height: screenHeight*0.04,),
+                                                   ],
+                                                 )));
+                                               },
+                                               
+                                               )
+                                       ]),
+                  
+                                        ),
+                                      ),
+                                       
+                                    ],
+                                  ),
+                                  
+                                  
+                                );
+                            })
+                             ):Container(child:
+                              Text('No Data Found')
+                              )
+                              
+                    ],
                   ),
                 ),
                      ],
@@ -431,26 +370,42 @@ class _TestListState extends State<TestList> {
           )
           );
   }
-  gettestList() async {
-    var data = {
-      "shop_id": Helper().isvalidElement(SelectedPharmacy)?SelectedPharmacy.toString():'',
-    };
+  // gettestList() async {
+  //   var data = {
+  //     "shop_id": Helper().isvalidElement(SelectedPharmacy)?SelectedPharmacy.toString():'',
+  //   };
 
-    var List = await PatientApi().getLabtestList(accesstoken,data);
+  //   var List = await PatientApi().getLabtestList(accesstoken,data);
+  //   if (Helper().isvalidElement(List) &&
+  //       Helper().isvalidElement(List['status']) &&
+  //       List['status'] == 'Token is Expired') {
+  //     Helper().appLogoutCall(context, 'Session expeired');
+  //   } else {
+  //     setState(() {
+  //       //  MediAndLabNameList = List['list'];
+  //       testList = List['list'];
+  //       isLoading=true;
+  //       MedicineLoader=true;
+  //       valid=true;
+  //     });
+  //     // TreatmentList = List['list'];
+  //     //  storage.setItem('diagnosisList', diagnosisList);
+  //   }
+  // }
+  gettestlist() async {
+    var List = await PatientApi().getlinklablist(accesstoken);
     if (Helper().isvalidElement(List) &&
         Helper().isvalidElement(List['status']) &&
         List['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
       setState(() {
-        //  MediAndLabNameList = List['list'];
-        testList = List['list'];
         isLoading=true;
-        MedicineLoader=true;
-        valid=true;
+        testList = List['list'];
+        print(testList);
+        filterItems(searchText.text);
       });
-      // TreatmentList = List['list'];
-      //  storage.setItem('diagnosisList', diagnosisList);
+     
     }
   }
 
@@ -472,6 +427,28 @@ class _TestListState extends State<TestList> {
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
+    }
+  }
+  void filterItems(String text) {
+    // setState(() {
+    if (text.isEmpty) {
+      setState(() {
+        test_List = testList;
+      });
+    } 
+    else if (text.length >= 3) {
+      setState(() {
+        test_List = testList.where((item) =>
+            item['test_name']
+                .toString()
+                .toLowerCase()
+                .contains(text.toLowerCase()),
+            // item['phone']
+            //     .toString()
+            //     .toLowerCase()
+            //     .contains(text.toLowerCase())
+                ).toList();
+      });
     }
   }
 }

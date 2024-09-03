@@ -54,7 +54,7 @@ class _PatientListState extends State<PatientList> {
 
   @override
   Widget build(BuildContext context) {
-    patient_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: patientList;
+    // patient_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: patientList;
     double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
       return new WillPopScope(
@@ -107,25 +107,26 @@ class _PatientListState extends State<PatientList> {
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Row(
                         children: [
-                          Container(
-                              width: screenWidth * 0.1,
-                              height: screenHeight,
-                              child: Icon(Icons.search,
-                                  color: custom_color.appcolor,)),
+                          // Container(
+                          //     width: screenWidth * 0.1,
+                          //     height: screenHeight,
+                          //     child: Icon(Icons.search,
+                          //         color: custom_color.appcolor,)),
                           Container(
                             width: screenWidth * 0.65,
                             child: TextField(
                               controller: searchText,
                               onChanged: (text) {
                                 print(text);
+                                filterItems(text);
           
-                                this.setState(() {});
-                                // var list = ProductListItem;
-                                  searchList = patientList.where((element) {
-                                    var treatList = element['customer_name'].toString().toLowerCase();
-                                    return treatList.contains(text.toLowerCase());
-                                    // return true;
-                                  }).toList();
+                                // this.setState(() {});
+                                // // var list = ProductListItem;
+                                //   searchList = patientList.where((element) {
+                                //     var treatList = element['customer_name'].toString().toLowerCase();
+                                //     return treatList.contains(text.toLowerCase());
+                                //     // return true;
+                                //   }).toList();
                                   this.setState(() {});
                               },
                               decoration: new InputDecoration(
@@ -138,7 +139,7 @@ class _PatientListState extends State<PatientList> {
                           ),
                           searchText.text.isNotEmpty
                               ? Container(
-                                  width: screenWidth * 0.1,
+                                  width: screenWidth * 0.06,
                                   height: screenHeight,
                                   child: IconButton(
                                     icon: Icon(
@@ -147,12 +148,18 @@ class _PatientListState extends State<PatientList> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        searchText.text = '';
+                                        searchText.clear();
+                                        filterItems(searchText.text);
                                         searchList='';
                                       });
                                     },
                                   ))
                               : Container(),
+                              Container(
+                              width: screenWidth * 0.18,
+                              height: screenHeight,
+                              child: Icon(Icons.search,
+                                  color: custom_color.appcolor,)),
                         ],
                       ),
                     ),),
@@ -183,7 +190,8 @@ class _PatientListState extends State<PatientList> {
                                                     ?custom_color.lightcolor
                                                     : Colors.white,
                                       child: ListTile(
-                                        title: SizedBox(child: Text('${data['customer_name'].toString() }(${data['customer_id']})')),
+                                        // title: SizedBox(child: Text('${data['customer_name'].toString() }(${data['customer_id']})')),
+                                        title: SizedBox(child: Text('${data['customer_name'].toString() }')),
                                         subtitle: Text('${data['phone']}'),
                                         leading: Padding(
                                           padding: const EdgeInsets.only(top:3.0),
@@ -261,10 +269,33 @@ class _PatientListState extends State<PatientList> {
       setState(() {
         patientList = List['Customer_list'];
         isLoading=true;
+        filterItems(searchText.text);
         // var values = MediAndLabNameList;
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
+    }
+  }
+  void filterItems(String text) {
+    // setState(() {
+    if (text.isEmpty) {
+      setState(() {
+        patient_List = patientList;
+      });
+    } 
+    else if (text.length >= 3) {
+      setState(() {
+        patient_List = patientList.where((item) =>
+            item['customer_name']
+                .toString()
+                .toLowerCase()
+                .contains(text.toLowerCase())||
+            item['phone']
+                .toString()
+                .toLowerCase()
+                .contains(text.toLowerCase())
+                ).toList();
+      });
     }
   }
 }

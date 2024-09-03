@@ -128,7 +128,7 @@ var delete = 'yes';
  var data2;
   @override
   Widget build(BuildContext context) {
-    medicine_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: medicineList;
+    // medicine_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: medicineList;
     double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
       return new WillPopScope(
@@ -163,572 +163,474 @@ var delete = 'yes';
           body:isLoading? Container(
             height: screenHeight,
             child: Column(
-              children: [
-                // SizedBox(height: 20,),
-                //  Container(
-                //                               width: screenWidth *0.95,
-                //                               child: Padding(
-                //                                 padding:
-                //                                     const EdgeInsets.all(0.0),
-                //                                 child: Helper().isvalidElement(
-                //                                             MediNameList) &&
-                //                                         MediNameList.length > 0
-                //                                     ? DropdownButtonFormField(
-                //                                         // validator: (value) => validateDrops(value),
-                //                                         // decoration: InputDecoration(
-                //                                         //     enabledBorder: InputBorder.none,
-                //                                         //     border: UnderlineInputBorder(
-                //                                         //         borderSide: BorderSide(
-                //                                         //             color: Colors.white))),
-                //                                         // decoration:
-                //                                         //     InputDecoration.collapsed(
-                //                                         //         hintText: ''),
-                //                                         decoration:
-                //                                             const InputDecoration(
-                //                                           labelText:
-                //                                               'Pharmacy',
-                //                                           border:
-                //                                               OutlineInputBorder(),
-                //                                           //icon: Icon(Icons.numbers),
-                //                                         ),
-                //                                         isExpanded: true,
-                //                                         hint: Text(
-                //                                           'Select Pharmacy',
-                //                                         ),
-                //                                         // value:patternDropdownvalue,
-                //                                         onChanged:
-                //                                             (item) async {
-                //                                           // medicineDropdownvalue =
-                //                                           //     item.toString();
-                //                                           var data = item
-                //                                               .toString()
-                //                                               .split('&*');
-                //                                               setState(() {
-                //                                                  SelectedPharmacy=data[0];
-                //                                                  getMedicineList();
-                //                                                  valid=true;
-                //                                                  MedicineLoader=false;
-          
-                //                                               });
-                                                        
-                //                                         },
-                //                                         items: MediNameList.map<
-                //                                             DropdownMenuItem<
-                //                                                 String>>((item) {
-                //                                           return DropdownMenuItem(
-                //                                             child: Text(
-                //                                               item['pharmacy_name']
-                //                                                   .toString(),
-                //                                             ),
-                //                                             value: item['shop_id']
-                //                                                     .toString() +
-                //                                                 '&*' + item['pharmacy_name']
-                //                                                     .toString()
-                                                                
-                //                                           );
-                //                                         }).toList(),
-                //                                       )
-                //                                     : DropdownButtonFormField(
-                //                                         // validator: (value) => validateDrops(value),
-                //                                         // isExpanded: true,
-                //                                         hint: Text(
-                //                                             'NO Pharmacy List'),
-                //                                         // value:' _selectedState[i]',
-                //                                         onChanged: (Pharmacy) {
-                //                                           setState(() {});
-                //                                         },
-                //                                         items: [].map<
-                //                                             DropdownMenuItem<
-                //                                                 String>>((item) {
-                //                                           return new DropdownMenuItem(
-                //                                             child: new Text(''),
-                //                                             value: '',
-                //                                           );
-                //                                         }).toList(),
-                //                                       ),
-                //                               ),
-                //                             ),
-                // Container(
-                //   width: screenWidth*0.9,
-                //   child: TextFormField(decoration: 
-                //   InputDecoration(border: OutlineInputBorder(
-                //     borderRadius: BorderRadius.circular(8),
-                //   ),hintText: 'Search',
-                //   prefixIcon: Container(
-                //     padding: EdgeInsets.all(10),
-                //     child: Icon(Icons.search),
-                //   ),
-                //   ),
-                //   ),
-                //     ),
+              children: [            
                  SizedBox(
                   height: 10,
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Center(child: 
-                        Container(
-                          height: screenHeight * 0.06,
-                          width: screenWidth*0.95,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border:
-                                  Border.all(color: custom_color.appcolor,),
-                              borderRadius: BorderRadius.all(Radius.circular(4))),
-                          child: Row(
-                            children: [
-                              Container(
-                                  width: screenWidth * 0.1,
-                                  height: screenHeight,
-                                  child: Icon(Icons.search,
-                                      color: custom_color.appcolor,)),
-                              Container(
-                                width: screenWidth * 0.65,
-                                child: TextField(
-                                  controller: searchText,
-                                  onChanged: (text) {
-                                    print(text);
-                              
-                                    this.setState(() {});
-                                    // var list = ProductListItem;
-                                      searchList = medicineList.where((element) {
-                                        var treatList = element['name'].toString().toLowerCase();
-                                        return treatList.contains(text.toLowerCase());
-                                        // return true;
-                                      }).toList();
-                                      this.setState(() {});
-                                  },
-                                  decoration: new InputDecoration(
-                                    filled: true,
-                                    border: InputBorder.none,
-                                    fillColor: Colors.white,
-                                    hintText: 'Search Medicine List Here...',
-                                  ),
-                                ),
-                              ),
-                              searchText.text.isNotEmpty
-                                  ? Container(
-                                      width: screenWidth * 0.1,
-                                      height: screenHeight,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            searchText.text = '';
-                                            searchList='';
-                                          });
-                                        },
-                                      ))
-                                  : Container(),
-                            ],
-                          ),
-                        ),),
-                              
-                              
-                            // SizedBox(height: screenHeight*0.01),
-                           
-                              
-                            Helper().isvalidElement(medicine_List) && medicine_List.length > 0 ?
-                             Container(
-                              // height:screenHeight * 0.85,
-                              
-                                       
-                             width: screenWidth,
-                              padding:EdgeInsets.all(5),
-                              child: 
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: medicine_List.length,
-                                itemBuilder: (BuildContext context, int index){
-                                  list=index+1;
-                                  var data=medicine_List[index];
-                                  return Container(
-                                    child: Column(
-                                      children: [
-                                        Card(
-                                          color: index % 2 == 0
-                                                        ?custom_color.lightcolor
-                                                        : Colors.white,
-                                          child: ListTile(
-                                            title: SizedBox(child: Text('${data['name']}')),
-                                            subtitle: Text('₹  ${data['mrp']}'),
-                                            leading: Padding(
-                                              padding: const EdgeInsets.only(top:3.0),
-                                              child: Text('$list'),
-                                            ),
-                              
-                    
-                               trailing: PopupMenuButton(itemBuilder: (context)=>
-                      [
-                      PopupMenuItem(
-                        child: Row(
-                        children: [
-                          
-                            Icon(Icons.edit,
-                            color: custom_color.appcolor,
-                            ),
-                               Padding(padding: EdgeInsets.only(left:10),
-                               child: Center(child: Text('Edit',style: TextStyle(fontSize: 16),)),),
-                    
-                        ],
-                      ),
-                     
-                      onTap: () {
-                        if(commonmedicine == 'YES'){
-                       Navigator.push(
-                       context, MaterialPageRoute(builder: (context)=> Edit_MedicineList(selected_medicine :data,)));
-                        }else{
-
-                        
-                      data2 = {
-                            medicine_Controller.text = data['name'].toString(),
-                            Alternative_Controller.text = data['aname'].toString(),
-                            selected_item= data['pattern'].toString(),
-
-                           };
-                     showDialog(context: context, builder: (context)=>AlertDialog(
-                      
-                            actions: [
-                           
-                              Padding(padding: EdgeInsets.all(10)),
-                    
-                              Container(
-                                
-                                height: screenHeight*0.04,
-                                width:screenWidth*0.8,
-                              ),
-                              TextFormField(
-                      controller: medicine_Controller,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        
-                        labelText: "Medicine Name "
-                      ),
-                    
-                                    ),
-                    
-                                     SizedBox(height: screenHeight*0.02,),
-                                     TextFormField(
-                    controller: Alternative_Controller,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        
-                        labelText: "Alternative Medicine"
-                      ),
-                     
-                       ),
-                       SizedBox(height: screenHeight*0.02,),
-                       Padding(
-                       padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-                      //padding: const EdgeInsets.all(20),
-                      child: Container(
-                        height: screenHeight * 0.07,
-                        width: screenWidth * 0.96,
-                        
-                        decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0)
-                            // border: OutlineInputBorder()
-                            ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          
-                          child: Center(
-                            child: DropdownButtonFormField(
-                            
-                              decoration: InputDecoration.collapsed(hintText: ''),
-                              isExpanded: true,
-                              hint: Padding(
-                             
-                              padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
-                                child: Text(
-                                  'Pattern Type ',
-                                 
-                                ),
-                                
-                              ),
-                             
-                              onChanged: (selected) {
-                                selected_item=selected;
-                                setState(() {
-                                 
-                                });
-                              },
-                              items: item.map<DropdownMenuItem<String>>((item) {
-                                return new DropdownMenuItem(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-                                    child: new Text(item,style: TextStyle(fontSize: 15),),
-                                  ),
-                                  value: item.toString(),
-                                );
-                              }).toList(),
-                            ),
-                            
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight*0.02,),
-                     Container(
-                // width: screenWidth*0.49,
-                child: TextField(
-                   controller: expdatecontroller,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  fillColor: Colors.white,
-                  //filled: true,
-                  prefixIcon: Icon(Icons.calendar_today,color: custom_color.appcolor,),
-                          
-                  labelText: "Exp Date"
-                ),
-                          
-                readOnly: true,
-                onTap: (() {
-                  _selectDate();
-                }),
-                
-                ),
-              ),
-                    SizedBox(height: screenHeight*0.04,),
-                                    Row(
+                SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Padding(
-                           padding: const EdgeInsets.only(top: 0,left: 30,right:10),
-                           child: ElevatedButton( 
-                            
-                            style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        
-                      )
-                      
-                    ),
-                           child:Text('Cancel',
-                           style: TextStyle(fontSize: 20,color: Colors.white),),
-                           onPressed: (() {
-                           Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
-                           }),),
-                         ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                         child: ElevatedButton( 
-                         style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                           
-                          
-                        ),
-                        
-                      )
-                      
-                    ),
-                           child:Text('Update',
-                           style: TextStyle(fontSize: 20,color: Colors.white),),
-                           onPressed: ()async {
-                             if(medicine_Controller.text.isEmpty){
-                               NigDocToast().showErrorToast('Please Enter Medicine Nmae');
-                    
-                             }else if(Alternative_Controller.text.isEmpty){
-                               NigDocToast().showErrorToast('Enter The Alter Medicine');
-                    
-                             }
-                             else if(selected_item==null){
-                               NigDocToast().showErrorToast('Select Pattern Type');
-                             }else{
-                               var items={
-                                   "id":data['id'],
-                                   "name":medicine_Controller.text.toString(),
-                                   "aname":Alternative_Controller.text.toString(),
-                                   "pattern":selected_item.toString(),
-                                   "exp_date":expdatecontroller.text.toString(),
-                               };
-                               var list = await PatientApi()
-                                          .Editmedicine( accesstoken, items);
-                                      if (list['message'] ==
-                                          "updated successfully") {
-                                        NigDocToast().showSuccessToast(
-                                            'updated successfully');
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => MedicineList()));
-                                      } else {
-                                        NigDocToast()
-                                            .showErrorToast('Please TryAgain later');
-                                      }
-                              // Helper().isvalidElement(data);
-                              //   print(data);
-                             }
-                            
-                           }),),
-                       
-                    
-                    //      Padding(
-                    //        padding: const EdgeInsets.only(top: 0,left: 30,right:10),
-                    //        child: ElevatedButton( 
-                            
-                    //         style: ButtonStyle(
-                    //             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                    //             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        
-                    //     RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(10),
-                    //     ),
-                        
-                    //   )
-                      
-                    // ),
-                    //        child:Text('Cancel',
-                    //        style: TextStyle(fontSize: 20,color: Colors.white),),
-                    //        onPressed: (() {
-                    //        Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
-                    //        }),),
-                    //      ),
-                         SizedBox(height: screenHeight*0.04,),
-                     ],
-                   ),
-                    
-                     ],
-                    
-                     ));
-                    
-                        }
-                      }
-                                          
-                         ),
-
-                      PopupMenuItem(
-                            child: Row(
-                            children: [
-                          
-                            Icon(Icons.delete,
-                            color: custom_color.appcolor,
-                            ),
-                               Padding(padding: EdgeInsets.only(left:10),
-                               child: Center(child: Text('Delete',style: TextStyle(fontSize: 16),
-                               
-                               )),
-                               
-                               ),
-                      
-                        ],
-                      ),
-                     
-                      onTap: () {
-                         showDialog(context: context, builder: (context)=>AlertDialog(
-                      
-                            actions: [
-                             
-                              SizedBox(height: screenHeight*0.02,),
-                               Center(child: Container(child: Text('DELETE PRODUCT',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),))),
-                               SizedBox(height: screenHeight*0.02,),
-                               Container(
-                                child: Text('Are you sure you want to delete the Medicine Details?',style: TextStyle(fontSize: 16),),
-                               ),
-                                SizedBox(height: screenHeight*0.02,),
-                               Container(
-                                child: Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Container(
-                                      child: ElevatedButton(
-                                         style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        
-                      )
-                      
-                    ),
-                                        onPressed: (){
-                                         Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
-                                        }, child: Text('Cancel' ,style: TextStyle(fontSize: 20,color: Colors.white),)),
-                                    ),
-                                    Container(
-                                      child: ElevatedButton(
-                                         style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        
-                      )
-                      
-                    ),
-                    
-                                        onPressed: ()async{
-                                          
-                                                 var value= {
-                                                  "id":data['id'],
-                                                   'is_delete':delete,
-                                                 };
-                                                 var list = await PatientApi()
-                                          .Deletemedicine( accesstoken, value);
-                                      if (list['message'] ==
-                                          "Deleted successfully") {
-                                        NigDocToast().showSuccessToast(
-                                            'Deleted successfully');
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => MedicineList()));
-                                      } else {
-                                        NigDocToast()
-                                            .showErrorToast('Please TryAgain later');
-                                      }
-                                        }, child: Text('Confirm' ,style: TextStyle(fontSize: 20,color: Colors.white),)),
-                                    ),
-                                    
-                                  ],
+                      Center(child: 
+                      Container(
+                        height: screenHeight * 0.06,
+                        width: screenWidth*0.95,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border:
+                                Border.all(color: custom_color.appcolor,),
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                        child: Row(
+                          children: [
+                            // Container(
+                            //     width: screenWidth * 0.1,
+                            //     height: screenHeight,
+                            //     child: Icon(Icons.search,
+                            //         color: custom_color.appcolor,)),
+                            Container(
+                              width: screenWidth * 0.65,
+                              child: TextField(
+                                controller: searchText,
+                                onChanged: (text) {
+                                  print(text);
+                            filterItems(text);
+                                  this.setState(() {});
+                                  // var list = ProductListItem;
+                                    // searchList = medicineList.where((element) {
+                                    //   var treatList = element['name'].toString().toLowerCase();
+                                    //   return treatList.contains(text.toLowerCase());
+                                    //   // return true;
+                                    // }).toList();
+                                    // this.setState(() {});
+                                },
+                                decoration: new InputDecoration(
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  fillColor: Colors.white,
+                                  hintText: 'Search Medicine List Here...',
                                 ),
-                               )
-                            ]
-                         ));
-                      }
-                                          
-                      ),
-                      // PopupMenuItem(child: Text('Cancel'),
-                      // onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder:(context)=>MedicineList()));
-                      //            },
-                                          
-                      //               ),
-                      ],            
-                                 ),
+                              ),
+                            ),
+                            searchText.text.isNotEmpty
+                                ? Container(
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.close,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          searchText.clear();
+                                          filterItems(searchText.text);
+                                          searchList='';
+                                        });
+                                      },
+                                    ))
+                                : Container(),
+                                 Container(
+                                width: screenWidth * 0.18,
+                                height: screenHeight,
+                                child: Icon(Icons.search,
+                                    color: custom_color.appcolor,)),
+                          ],
+                        ),
+                      ),),
+                            
+                            
+                          // SizedBox(height: screenHeight*0.01),
+                         
+                            
+                          Helper().isvalidElement(medicine_List) && medicine_List.length > 0 ?
+                           Container(
+                            height:screenHeight * 0.85,
+                            
+                                     
+                           width: screenWidth,
+                            padding:EdgeInsets.all(5),
+                            child: 
+                            ListView.builder(
+                              shrinkWrap: true,
+                              // physics: NeverScrollableScrollPhysics(),
+                              itemCount: medicine_List.length,
+                              itemBuilder: (BuildContext context, int index){
+                                list=index+1;
+                                var data=medicine_List[index];
+                                return Container(
+                                  child: Column(
+                                    children: [
+                                      Card(
+                                        color: index % 2 == 0
+                                                      ?custom_color.lightcolor
+                                                      : Colors.white,
+                                        child: ListTile(
+                                          title: SizedBox(child: Text('${data['name']}')),
+                                          subtitle: Text('₹  ${data['mrp']}'),
+                                          leading: Padding(
+                                            padding: const EdgeInsets.only(top:3.0),
+                                            child: Text('$list'),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                              })
-                               ):Container(child:
-                                Text('No Data Found')
-                                )
-                                
+                            
+                  
+                             trailing: PopupMenuButton(itemBuilder: (context)=>
+                    [
+                    PopupMenuItem(
+                      child: Row(
+                      children: [
+                        
+                          Icon(Icons.edit,
+                          color: custom_color.appcolor,
+                          ),
+                             Padding(padding: EdgeInsets.only(left:10),
+                             child: Center(child: Text('Edit',style: TextStyle(fontSize: 16),)),),
+                  
                       ],
                     ),
+                   
+                    onTap: () {
+                      if(commonmedicine == 'YES'){
+                     Navigator.push(
+                     context, MaterialPageRoute(builder: (context)=> Edit_MedicineList(selected_medicine :data,)));
+                      }else{
+                                  
+                      
+                    data2 = {
+                          medicine_Controller.text = data['name'].toString(),
+                          Alternative_Controller.text = data['aname'].toString(),
+                          selected_item= data['pattern'].toString(),
+                                  
+                         };
+                   showDialog(context: context, builder: (context)=>AlertDialog(
+                    
+                          actions: [
+                         
+                            Padding(padding: EdgeInsets.all(10)),
+                  
+                            Container(
+                              
+                              height: screenHeight*0.04,
+                              width:screenWidth*0.8,
+                            ),
+                            TextFormField(
+                    controller: medicine_Controller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      
+                      labelText: "Medicine Name "
+                    ),
+                  
+                                  ),
+                  
+                                   SizedBox(height: screenHeight*0.02,),
+                                   TextFormField(
+                  controller: Alternative_Controller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      
+                      labelText: "Alternative Medicine"
+                    ),
+                   
+                     ),
+                     SizedBox(height: screenHeight*0.02,),
+                     Padding(
+                     padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                    //padding: const EdgeInsets.all(20),
+                    child: Container(
+                      height: screenHeight * 0.07,
+                      width: screenWidth * 0.96,
+                      
+                      decoration: BoxDecoration(border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5.0)
+                          // border: OutlineInputBorder()
+                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        
+                        child: Center(
+                          child: DropdownButtonFormField(
+                          
+                            decoration: InputDecoration.collapsed(hintText: ''),
+                            isExpanded: true,
+                            hint: Padding(
+                           
+                            padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
+                              child: Text(
+                                'Pattern Type ',
+                               
+                              ),
+                              
+                            ),
+                           
+                            onChanged: (selected) {
+                              selected_item=selected;
+                              setState(() {
+                               
+                              });
+                            },
+                            items: item.map<DropdownMenuItem<String>>((item) {
+                              return new DropdownMenuItem(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+                                  child: new Text(item,style: TextStyle(fontSize: 15),),
+                                ),
+                                value: item.toString(),
+                              );
+                            }).toList(),
+                          ),
+                          
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: screenHeight*0.02,),
+                   Container(
+                                // width: screenWidth*0.49,
+                                child: TextField(
+                                   controller: expdatecontroller,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  fillColor: Colors.white,
+                                  //filled: true,
+                                  prefixIcon: Icon(Icons.calendar_today,color: custom_color.appcolor,),
+                        
+                                  labelText: "Exp Date"
+                                ),
+                        
+                                readOnly: true,
+                                onTap: (() {
+                                  _selectDate();
+                                }),
+                                
+                                ),
+                              ),
+                  SizedBox(height: screenHeight*0.04,),
+                  Row(
+                  children: [
+                    SizedBox(width: screenWidth*0.05,),
+                    ElevatedButton( 
+                     
+                     style: ButtonStyle(
+                         backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                                          
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          
+                                        )
+                                        
+                                      ),
+                    child:Text('Cancel',
+                    style: TextStyle(fontSize: 20,color: Colors.white),),
+                    onPressed: (() {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                    }),),
+                    SizedBox(width: screenWidth*0.05,),
+                    ElevatedButton( 
+                    style: ButtonStyle(
+                           backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                                          
+                                          RoundedRectangleBorder(
+                     borderRadius: BorderRadius.circular(10),  
+                                          ),
+                                          
+                                        )
+                                        
+                                      ),
+                      child:Text('Update',
+                      style: TextStyle(fontSize: 20,color: Colors.white),),
+                      onPressed: ()async {
+                        if(medicine_Controller.text.isEmpty){
+                          NigDocToast().showErrorToast('Please Enter Medicine Nmae');
+                                      
+                        }else if(Alternative_Controller.text.isEmpty){
+                          NigDocToast().showErrorToast('Enter The Alter Medicine');
+                                      
+                        }
+                        else if(selected_item==null){
+                          NigDocToast().showErrorToast('Select Pattern Type');
+                        }else{
+                          var items={
+                              "id":data['id'],
+                              "name":medicine_Controller.text.toString(),
+                              "aname":Alternative_Controller.text.toString(),
+                              "pattern":selected_item.toString(),
+                              "exp_date":expdatecontroller.text.toString(),
+                          };
+                          var list = await PatientApi()
+                                     .Editmedicine( accesstoken, items);
+                                 if (list['message'] ==
+                                     "updated successfully") {
+                                   NigDocToast().showSuccessToast(
+                                       'updated successfully');
+                                   Navigator.push(
+                                       context,
+                                       MaterialPageRoute(
+                                           builder: (context) => MedicineList()));
+                                 } else {
+                                   NigDocToast()
+                                       .showErrorToast('Please TryAgain later');
+                                 }
+                         // Helper().isvalidElement(data);
+                         //   print(data);
+                        }
+                       
+                      }),
+                     
+                  
+                  //      Padding(
+                  //        padding: const EdgeInsets.only(top: 0,left: 30,right:10),
+                  //        child: ElevatedButton( 
+                          
+                  //         style: ButtonStyle(
+                  //             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                  //             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                      
+                  //     RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(10),
+                  //     ),
+                      
+                  //   )
+                    
+                  // ),
+                  //        child:Text('Cancel',
+                  //        style: TextStyle(fontSize: 20,color: Colors.white),),
+                  //        onPressed: (() {
+                  //        Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                  //        }),),
+                  //      ),
+                       SizedBox(height: screenHeight*0.04,),
+                   ],
+                                   ),
+                  
+                   ],
+                  
+                   ));
+                  
+                      }
+                    }
+                                        
+                       ),
+                                  
+                    PopupMenuItem(
+                          child: Row(
+                          children: [
+                        
+                          Icon(Icons.delete,
+                          color: custom_color.appcolor,
+                          ),
+                             Padding(padding: EdgeInsets.only(left:10),
+                             child: Center(child: Text('Delete',style: TextStyle(fontSize: 16),
+                             
+                             )),
+                             
+                             ),
+                    
+                      ],
+                    ),
+                   
+                    onTap: () {
+                       showDialog(context: context, builder: (context)=>AlertDialog(
+                    
+                          actions: [
+                           
+                            SizedBox(height: screenHeight*0.02,),
+                             Center(child: Container(child: Text('DELETE PRODUCT',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),))),
+                             SizedBox(height: screenHeight*0.02,),
+                             Container(
+                              child: Text('Are you sure you want to delete the Medicine Details?',style: TextStyle(fontSize: 16),),
+                             ),
+                              SizedBox(height: screenHeight*0.02,),
+                             Container(
+                              child: Row(
+                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    child: ElevatedButton(
+                                       style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                      
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      
+                    )
+                    
+                  ),
+                                      onPressed: (){
+                                       Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                                      }, child: Text('Cancel' ,style: TextStyle(fontSize: 20,color: Colors.white),)),
+                                  ),
+                                  Container(
+                                    child: ElevatedButton(
+                                       style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                      
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      
+                    )
+                    
+                  ),
+                  
+                                      onPressed: ()async{
+                                        
+                                               var value= {
+                                                "id":data['id'],
+                                                 'is_delete':delete,
+                                               };
+                                               var list = await PatientApi()
+                                        .Deletemedicine( accesstoken, value);
+                                    if (list['message'] ==
+                                        "Deleted successfully") {
+                                      NigDocToast().showSuccessToast(
+                                          'Deleted successfully');
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => MedicineList()));
+                                    } else {
+                                      NigDocToast()
+                                          .showErrorToast('Please TryAgain later');
+                                    }
+                                      }, child: Text('Confirm' ,style: TextStyle(fontSize: 20,color: Colors.white),)),
+                                  ),
+                                  
+                                ],
+                              ),
+                             )
+                          ]
+                       ));
+                    }
+                                        
+                    ),
+                    // PopupMenuItem(child: Text('Cancel'),
+                    // onTap: () {
+                    // Navigator.push(context, MaterialPageRoute(builder:(context)=>MedicineList()));
+                    //            },
+                                        
+                    //               ),
+                    ],            
+                               ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                            })
+                             ):Container(child:
+                              Text('No Data Found')
+                              )
+                              
+                    ],
                   ),
                 ),
                      ],
@@ -798,6 +700,7 @@ var delete = 'yes';
         MedicineLoader=true;
         valid=true;
         isLoading=true;
+        filterItems(searchText.text);
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
@@ -816,6 +719,7 @@ var delete = 'yes';
       setState(() {
         MediNameList = List['list'];
         isLoading=true;
+        
         // var values = MediAndLabNameList;
       });
       // TreatmentList = List['list'];
@@ -835,4 +739,26 @@ var delete = 'yes';
        });
       }
     }
+    void filterItems(String text) {
+    // setState(() {
+    if (text.isEmpty) {
+      setState(() {
+        medicine_List = medicineList;
+      });
+    } 
+    else if (text.length >= 3) {
+      setState(() {
+        medicine_List = medicineList.where((item) =>
+            item['name']
+                .toString()
+                .toLowerCase()
+                .contains(text.toLowerCase()),
+            // item['phone']
+            //     .toString()
+            //     .toLowerCase()
+            //     .contains(text.toLowerCase())
+                ).toList();
+      });
+    }
+  }
 }

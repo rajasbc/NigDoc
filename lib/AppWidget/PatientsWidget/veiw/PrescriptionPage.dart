@@ -3286,9 +3286,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
             controller: textEditingController,
             focusNode: focusNode,
                  decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.search,color: custom_color.appcolor,),
                   hintText: 'Search Patient Name',
                   
-                  prefixIcon: const Icon(Icons.search),
+                  // suffixIcon: const Icon(Icons.search,color: custom_color.appcolor,),
                   
                   
                   enabledBorder: OutlineInputBorder(
@@ -3559,7 +3560,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
+                suffixIcon: Icon(Icons.search,color: custom_color.appcolor,),
                 hintText: ' Search Lab Name'),
             onFieldSubmitted: (String value) {
               onFieldSubmitted();
@@ -3685,7 +3686,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
+                suffixIcon: Icon(Icons.search,color: custom_color.appcolor,),
                 hintText: ' Search Test Name'),
             onFieldSubmitted: (String value) {
               onFieldSubmitted();
@@ -3805,7 +3806,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
+                suffixIcon: Icon(Icons.search,color: custom_color.appcolor,),
                 hintText: ' Search pharmacy Name'),
             onFieldSubmitted: (String value) {
               onFieldSubmitted();
@@ -4052,7 +4053,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
-                prefixIcon: Icon(Icons.search),
+                suffixIcon: Icon(Icons.search,color: custom_color.appcolor,),
                 hintText: ' Search Injection Name'),
             onFieldSubmitted: (String value) {
               onFieldSubmitted();

@@ -69,7 +69,7 @@ class _Edit_ConfiurationState extends State<Edit_Confiuration> {
   
   var  clinicconfig;
   bool isloading=false;
-
+  var data;
 @override
 void initState(){
   accesstoken=storage.getItem('userResponse')['access_token'];
@@ -1215,7 +1215,7 @@ void initState(){
                      )
                      
                    ),
-                    onPressed: (){
+                    onPressed: () async {
                                  if(prescriptionController.text.isEmpty){
                     NigDocToast().showErrorToast('Enter Prescription Prefix');
                                  }else if(patientprefixController.text.isEmpty){
@@ -1229,19 +1229,50 @@ void initState(){
                                  }else if(feesController.text.isEmpty){
                     NigDocToast().showErrorToast('Enter Your Fees');
                                  }else{
-                    var data={
-                      "prescription":prescriptionController.text.toString(),
-                       "patient":patientprefixController.text.toString(),
-                        "call token":calltokenController.text.toString(),
-                         "visit":visittokenController.text.toString(),
-                          "low quality":lowqualityController.text.toString(),
-                           "fees":feesController.text.toString(),
+                    var item={
+                      "id":data[0]['id'].toString(),
+                      "bill_prefix":prescriptionController.text.toString(),
+                      "patient_prefix":patientprefixController.text.toString(),
+                      "call_tkn":calltokenController.text.toString(),
+                      "visit_tkn":visittokenController.text.toString(),
+                      "low_quantity":lowqualityController.text.toString(),
+                      "required_lablink":Helper().isvalidElement(_lablinkSelected)&& _lablinkSelected == 1 ?"yes":"no",
+                      "required_blood_group":Helper().isvalidElement(_bloodSelected)&& _bloodSelected == 1 ?"yes":"no",
+                      "required_referred":Helper().isvalidElement(_refferedSelected)&& _refferedSelected == 1 ?"yes":"no",
+                      "required_bmi":Helper().isvalidElement(_bmiSelected)&& _bmiSelected == 1 ?"yes":"no",
+                      "required_height":Helper().isvalidElement(_heightSelected)&& _heightSelected == 1 ?"yes":"no",
+                      "required_weightlink":Helper().isvalidElement(_weightSelected)&& _weightSelected == 1 ?"yes":"no",
+                      "required_sugar":Helper().isvalidElement(_sugarSelected)&& _sugarSelected == 1 ?"yes":"no",
+                      "required_pulse":Helper().isvalidElement(_pulseSelected)&& _pulseSelected == 1 ?"yes":"no",
+                      "required_bplink":Helper().isvalidElement(_bpSelected)&& _bpSelected == 1 ?"yes":"no",
+                      "required_temp":Helper().isvalidElement(_tempSelected)&& _tempSelected == 1 ?"yes":"no",
+                      "required_sp":Helper().isvalidElement(_spo2Selected)&& _spo2Selected == 1 ?"yes":"no",
+                      "medicine_price":Helper().isvalidElement(_medipriceSelected)&& _medipriceSelected == 1 ?"yes":"no",
+                      "pattern_modal":Helper().isvalidElement(_patternSelected)&& _patternSelected == 1 ?"yes":"no",
+                      "expenses":Helper().isvalidElement(_expensesSelected)&& _expensesSelected == 1 ?"yes":"no",
+                      "appoinment":Helper().isvalidElement(_appointmentsSelected)&& _appointmentsSelected == 1 ?"yes":"no",
+                      "required_dob":Helper().isvalidElement(_dobSelected)&& _dobSelected == 1 ?"yes":"no",
+                      "required_mail":Helper().isvalidElement(_emailSelected)&& _emailSelected == 1 ?"yes":"no",
+                      "required_receipt":Helper().isvalidElement(_recptformtSelected)&& _recptformtSelected == 1 ?"yes":"no",
+                      "fees":feesController.text.toString(),
                    
                    
                    
                     };
-                    Helper().isvalidElement(data);
-                    print(data);
+                       var list = await ShopApi()
+                                          .Editclinic_config( accesstoken, item);
+                                      if (list['message'] ==
+                                          "updated successfully") {
+                                        NigDocToast().showSuccessToast(
+                                            'updated successfully');
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => ClinicConfig()));
+                                      } else {
+                                        NigDocToast()
+                                            .showErrorToast('Please TryAgain later');
+                                      }
                                  }
                                
                    
@@ -1278,7 +1309,7 @@ void initState(){
         clinicconfig['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
-      var data = clinicconfig['list'];
+       data = clinicconfig['list'];
 
       //  storage.setItem('diagnosisList', diagnosisList);
       prescriptionController.text = data[0]['bill_prefix'].toString();

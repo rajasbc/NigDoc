@@ -76,7 +76,7 @@ TextEditingController Treatmentcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    Treatment_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: treatmentList;
+    // Treatment_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: treatmentList;
     double screenHeight = MediaQuery.of(context).size.height - 50;
     double screenWidth = MediaQuery.of(context).size.width;
       return new WillPopScope(
@@ -138,26 +138,26 @@ TextEditingController Treatmentcontroller = TextEditingController();
                       borderRadius: BorderRadius.all(Radius.circular(0))),
                   child: Row(
                     children: [
-                      Container(
-                          width: screenWidth * 0.1,
-                          height: screenHeight,
-                          child: Icon(Icons.search,
-                              color: custom_color.appcolor)),
+                      // Container(
+                      //     width: screenWidth * 0.1,
+                      //     height: screenHeight,
+                      //     child: Icon(Icons.search,
+                      //         color: custom_color.appcolor)),
                       Container(
                         width: screenWidth * 0.65,
                         child: TextField(
                           controller: searchText,
                           onChanged: (text) {
                             print(text);
-
+                            filterItems(text);
                             this.setState(() {});
                             // var list = ProductListItem;
-                              searchList = treatmentList.where((element) {
-                                var treatList = element['treatment'].toString().toLowerCase();
-                                return treatList.contains(text.toLowerCase());
-                                // return true;
-                              }).toList();
-                              this.setState(() {});
+                              // searchList = treatmentList.where((element) {
+                              //   var treatList = element['treatment'].toString().toLowerCase();
+                              //   return treatList.contains(text.toLowerCase());
+                              //   // return true;
+                              // }).toList();
+                              // this.setState(() {});
                           },
                           decoration: new InputDecoration(
                             filled: true,
@@ -169,7 +169,7 @@ TextEditingController Treatmentcontroller = TextEditingController();
                       ),
                       searchText.text.isNotEmpty
                           ? Container(
-                              width: screenWidth * 0.1,
+                              width: screenWidth * 0.06,
                               height: screenHeight,
                               child: IconButton(
                                 icon: Icon(
@@ -178,12 +178,18 @@ TextEditingController Treatmentcontroller = TextEditingController();
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    searchText.text = '';
-                                    searchList='';
+                                    searchText.clear();
+                                    filterItems(searchText.text);
+                                    // searchList='';
                                   });
                                 },
                               ))
                           : Container(),
+                          Container(
+                          width: screenWidth * 0.18,
+                          height: screenHeight,
+                          child: Icon(Icons.search,
+                              color: custom_color.appcolor)),
                     ],
                   ),
                 ),),
@@ -193,7 +199,7 @@ TextEditingController Treatmentcontroller = TextEditingController();
 
                     Helper().isvalidElement(Treatment_List) && Treatment_List.length > 0 ?
                      Container(
-                      height:screenHeight * 0.86,
+                      height:screenHeight * 0.85,
                       
 
                      width: screenWidth,
@@ -212,11 +218,88 @@ TextEditingController Treatmentcontroller = TextEditingController();
                                   color: index % 2 == 0
                                                 ? custom_color.lightcolor
                                                 : Colors.white,
-                                  child: ListTile(
-                                    title: SizedBox(child: Text('${data['treatment']}')),
-                                    leading: Text('$list'),
-
-                                    trailing: PopupMenuButton(itemBuilder: (context)=>[
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      child: Row(
+                                                        children: [
+                                                          SizedBox(width: screenWidth*0.02,),
+                                           Text('($list)',style: TextStyle(fontWeight: FontWeight.bold),),
+                                                      SizedBox(width: screenWidth*0.03,),
+                                                          Column(
+                                                            children: [
+                                                              SizedBox(height: screenHeight*0.02,),
+                                                              Row(
+                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    // color: Colors.amber,
+                                                    width: screenWidth * 0.60,
+                                                    child: Row(
+                                                      children: [
+                                                        // Text(
+                                                        //   'Name : ',
+                                                        //   style: TextStyle(
+                                                        //       fontWeight: FontWeight.bold),
+                                                        // ),
+                                                        Text("${data['treatment'].toString().toUpperCase()}")
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // Container(
+                                                  //   // color: Colors.purple,
+                                                  //   width: screenWidth * 0.36,
+                                                  //   child: Row(
+                                                  //     children: [
+                                                  //       Text(
+                                                  //         'Phone :',
+                                                  //         style: TextStyle(
+                                                  //             fontWeight: FontWeight.bold),
+                                                  //       ),
+                                                  //       Text('${data['contact_no'].toString()}')
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              ),
+                                              SizedBox(height: screenHeight*0.01,),
+                                               Row(
+                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    // color: Colors.amber,
+                                                    width: screenWidth * 0.60,
+                                                    child: Row(
+                                                      children: [
+                                                        // Text(
+                                                        //   'Fees : ',
+                                                        //   style: TextStyle(
+                                                        //       fontWeight: FontWeight.bold),
+                                                        // ),
+                                                        Text("₹ ${data['fees'].toString().toUpperCase()}")
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // Container(
+                                                  //   // color: Colors.purple,
+                                                  //   width: screenWidth * 0.36,
+                                                  //   child: Row(
+                                                  //     children: [
+                                                  //       Text(
+                                                  //         'Phone :',
+                                                  //         style: TextStyle(
+                                                  //             fontWeight: FontWeight.bold),
+                                                  //       ),
+                                                  //       Text('${data['contact_no'].toString()}')
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              ),
+                                              SizedBox(height: screenHeight*0.02,),
+                                                            ],
+                                                          ),
+                                                          PopupMenuButton(itemBuilder: (context)=>[
                                       PopupMenuItem(child: Row(
                                               children: [
                                                 Icon(Icons.edit,color: custom_color.appcolor,),
@@ -228,246 +311,7 @@ TextEditingController Treatmentcontroller = TextEditingController();
                                                Navigator.push(
           context, MaterialPageRoute(builder: (context)=> Edittreatment(medicinelist:data),)
          );
-//                                               showDialog(context: context, builder:(context)=>AlertDialog(
-                                               
-//                                                actions: [
-//                                                  Padding(padding: EdgeInsets.all(10)),
-//                                                     Container(
-//                                                       height: screenHeight*0.04,
-//                                                       width: screenWidth*0.14,
-//                                                     ),
-                                                    
-//                                                                SizedBox(height: screenHeight*0.02,),
-//                 TextFormField(
-                 
-//                   controller: Treatmentcontroller,
-
-//                   decoration: InputDecoration(
-//                     border: OutlineInputBorder(),
-//                     labelText: 'Treatment Name'
-//                   ),
-//                 ),
-               
-//                 SizedBox(
-//                   height: screenHeight * 0.02,
-//                 ),
-                
-
-//                  Padding(
-//                    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-//                       //padding: const EdgeInsets.all(20.0),
-//                       child: Container(
-//                         height: screenHeight *0.07,
-//                         width: screenWidth * 0.96,
-//                         decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-//                         borderRadius: BorderRadius.circular(5.0)
-//                             // border: OutlineInputBorder()
-//                             ),
-//                         child: Padding(
-//                           padding: const EdgeInsets.all(10.0),
-//                           child: Center(
-//                             child: DropdownButtonFormField(
-                            
-//                               decoration: InputDecoration.collapsed(hintText: ''),
-//                               isExpanded: true,
-//                               hint: Padding(
-//                               padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
-//                                 child: Text(
-//                                   ' Medicine List*',
-                                 
-//                                 ),
-//                               ),
-                             
-//                               onChanged: (newvalue) {
-//                               //  medicineList=newvalue.toString();
-//                               medicinedropdow=newvalue.toString();
-//                                 setState(() {
-                                 
-//                                 });
-                             
-//                               },
-//                               items: title.map<DropdownMenuItem<String>>((item) {
-//                                 return new DropdownMenuItem(
-//                                   child: Padding(
-//                                     padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-//                                     child: new Text(item,style: TextStyle(fontSize: 15),),
-//                                   ),
-//                                   value: item.toString(),
-//                                 );
-//                               }).toList(),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                 SizedBox(
-//                   height: screenHeight * 0.02,
-//                 ),
-//                 Padding(
-//                    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-                  
-//                   child: Container(
-//                      height: screenHeight * 0.07,
-//                       width: screenWidth * 0.96,
-
-//                    decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-//                       borderRadius: BorderRadius.circular(5.0)
-                         
-//                           ),
-                  
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(10.0),
-//                       //padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-//                       child: Center(
-//                         child: DropdownButtonFormField(
-//                           decoration: InputDecoration.collapsed(hintText: ''),
-//                             isExpanded: true,
-//                             hint: Padding(
-                              
-//                               padding: const EdgeInsets.only(top: 0, left: 2, right: 0),
-//                               child: Text(
-//                                 ' Department*',
-                               
-//                               ),
-//                             ),
-                        
-//                             onChanged: (newvalue) {
-//                               departmentdropdown=newvalue.toString();
-//                               setState(() {
-                                
-//                               });
-//                             },
-                            
-//                             items: title2.map<DropdownMenuItem<String>>((item) {
-//                               return new DropdownMenuItem(
-//                                 child: Padding(
-//                                   padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-//                                   child: new Text(item,style: TextStyle(fontSize: 15),),
-//                                 ),
-//                                 value: item.toString(),
-//                               );
-//                             }).toList(),
-                      
-//                          ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-          
-//                 SizedBox(
-//                   height: screenHeight * 0.03,
-//                 ),
-          
-//                 TextFormField(
-//                   keyboardType: TextInputType.number,
-//                       autovalidateMode: AutovalidateMode.always,
-                  
-//                   controller: Feescontroller,
-
-//                   decoration: InputDecoration(
-//                     border: OutlineInputBorder(),
-//                     labelText: 'Fees'
-//                   ),
-//                 ),
-               
-//                 SizedBox(
-//                   height: screenHeight * 0.02,
-//                 ),
-
-//                 Row(
-//                       children: [
-
-//                         Padding(padding: EdgeInsets.only(left:20),
-//                         child: ElevatedButton(
-//                           // style: ElevatedButton.styleFrom(
-//                           //   backgroundColor: custom_color.appcolor,
-//                           // ),
-//                             style: ButtonStyle(
-//                             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-//                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-    
-//                             RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(10),
-       
-      
-//                             ),
-    
-//                             )
-  
-//                             ),
-//                            child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
-//                            onPressed: (() {
-//                          if (Treatmentcontroller.text.isEmpty) {
-                        
-//                         Fluttertoast.showToast(
-//                             msg: ' Enter Treatment Name',
-                           
-//                             textColor: Colors.black,
-//                             fontSize: 15.0);
-//                       } else if (medicinedropdow == null ||
-//                           medicinedropdow == "Select Medicine List *") {
-//                         Fluttertoast.showToast(
-//                             msg: 'Please Select Medicine List', fontSize: 15.0);
-//                       } else if (departmentdropdown == null ||
-//                           departmentdropdown == "Select Department *") {
-//                         Fluttertoast.showToast(
-//                             msg: 'Please Select Department', fontSize: 15.0);
-//                       } else if (Feescontroller.text.isEmpty) {
-//                         Fluttertoast.showToast(
-//                             msg: " Enter Fees", fontSize: 15.0);
-//                        }else {
-//                         var data = {
-//                           "treatmentname": Treatmentcontroller.text.toString(),
-//                           "medicine": medicinedropdow.toString(),
-//                           "Department": departmentdropdown.toString(),
-//                           "consult_fees": Feescontroller.text.toString(),
-//                           "description": ""
-//                         };
-//                       Helper().isvalidElement(data);
-                       
-//                         print(data);
-                       
-//                       }
-                             
-//                            }),
-//                            ),
-//                         ),
-
-//                         Padding(padding: EdgeInsets.only(left: 20),
-                        
-//                         child: ElevatedButton( 
-//                           // style: ElevatedButton.styleFrom(
-//                           //   backgroundColor: custom_color.appcolor,
-//                           // ),
-//                             style: ButtonStyle(
-//             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-//             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-    
-//             RoundedRectangleBorder(
-//            borderRadius: BorderRadius.circular(10),
-       
-      
-//     ),
-    
-//   )
-  
-// ),
-//                           child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
-
-//                           onPressed: (() {
-//                             Navigator.push(context, MaterialPageRoute(builder: (context)=>TreatmentList()));
-//                           }),
-                          
-//                           ),
-                          
-                          
-//                           ),
-//                       ],
-//                     ),
-
-//                                                ],
-
-//                                               ) );
+//                                          
                                             },
                                             ),
 
@@ -477,8 +321,42 @@ TextEditingController Treatmentcontroller = TextEditingController();
                                     ]
                                     
                                     ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                
+//                                   child: ListTile(
+//                                     // title: SizedBox(child: Text('${data['treatment']}')),
+                                    
+//                                     leading: Text('$list'),
+
+//                                     trailing: PopupMenuButton(itemBuilder: (context)=>[
+//                                       PopupMenuItem(child: Row(
+//                                               children: [
+//                                                 Icon(Icons.edit,color: custom_color.appcolor,),
+//                                                 Padding(padding: EdgeInsets.only(left: 10),
+//                                                 child: Text('Edit',style: TextStyle(fontSize: 16),),)
+//                                               ],
+//                                             ),
+//                                             onTap: () {
+//                                                Navigator.push(
+//           context, MaterialPageRoute(builder: (context)=> Edittreatment(medicinelist:data),)
+//          );
+// //                                          
+//                                             },
+//                                             ),
+
+                                            
+
+
+//                                     ]
+                                    
+//                                     ),
                      
-                                  ),
+//                                   ),
+                                   
                                 )
                               ],
                             ),
@@ -520,9 +398,32 @@ TextEditingController Treatmentcontroller = TextEditingController();
       setState(() {
         isLoading=true;
         treatmentList = List['list'];
+        filterItems(searchText.text);
       });
       // TreatmentList = List['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
+    }
+  }
+   void filterItems(String text) {
+    // setState(() {
+    if (text.isEmpty) {
+      setState(() {
+        Treatment_List = treatmentList;
+      });
+    } 
+    else if (text.length >= 3) {
+      setState(() {
+        Treatment_List = treatmentList.where((item) =>
+            item['treatment']
+                .toString()
+                .toLowerCase()
+                .contains(text.toLowerCase()),
+            // item['phone']
+            //     .toString()
+            //     .toLowerCase()
+            //     .contains(text.toLowerCase())
+                ).toList();
+      });
     }
   }
 }

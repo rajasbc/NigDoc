@@ -166,7 +166,7 @@ var data;
                  padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
                     //padding: const EdgeInsets.all(20),
                     child: Container(
-                      height: screenHeight * 0.07,
+                      height: screenHeight * 0.08,
                       width: screenWidth * 0.96,
                       
                       decoration: BoxDecoration(border: Border.all(color: Colors.grey),
@@ -178,12 +178,12 @@ var data;
                         
                         child: Center(
                           child: DropdownButtonFormField(
-                          
+                          menuMaxHeight: 300,
                             decoration: InputDecoration.collapsed(hintText: ''),
                             isExpanded: true,
                             hint: Padding(
                            
-                            padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
+                            padding: const EdgeInsets.only(top: 4, left: 2, right: 0,),
                               child: Text(
                                 'Pattern Type',
                                

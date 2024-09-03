@@ -143,7 +143,7 @@ var userResponse;
                         
                         child: Center(
                           child: DropdownButtonFormField(
-                          
+                          menuMaxHeight: 300,
                             decoration: InputDecoration.collapsed(hintText: ''),
                             isExpanded: true,
                             hint: Padding(
@@ -165,7 +165,7 @@ var userResponse;
                             items: item.map<DropdownMenuItem<String>>((item) {
                               return new DropdownMenuItem(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
+                                  padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
                                   child: new Text(item,style: TextStyle(fontSize: 15),),
                                 ),
                                 value: item.toString(),

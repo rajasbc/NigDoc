@@ -207,7 +207,7 @@ int()async{
 
                SizedBox(height:screenHeight*0.02),
                  TextFormField(
-                  keyboardType: TextInputType.number,
+                  // keyboardType: TextInputType.number,
                    decoration: const InputDecoration(
                      border: OutlineInputBorder(),
                      labelText: "Clinic Registation Number",
@@ -233,7 +233,7 @@ int()async{
                   SizedBox(height: screenHeight*0.02,),
 
                  TextFormField(
-                  keyboardType: TextInputType.number,
+                  // keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Shop GST No',

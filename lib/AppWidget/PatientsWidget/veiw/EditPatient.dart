@@ -10,6 +10,7 @@ import 'package:nigdoc/AppWidget/Medicine/AddMedicineList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PatientList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
+import 'package:nigdoc/AppWidget/StaffWidget/Referral/EditReferral.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
@@ -37,6 +38,8 @@ class Edit_PatientsState extends State<Edit_Patients> {
   int? _typeSelected = 1;
   String _typeVal = "";
 
+int? radioSelected = 1;
+  String radioVal = "";
   TextEditingController namecontroller = TextEditingController();
   TextEditingController mobilecontroller = TextEditingController();
   TextEditingController alternatemobilecontroller = TextEditingController();
@@ -118,14 +121,46 @@ class Edit_PatientsState extends State<Edit_Patients> {
   //   super.initState();
   //   referalcontroller.text = 'Self';
   // }
+  var item;
   @override
   void initState() {
     accesstoken = storage.getItem('userResponse')['access_token'];
     getdoctorlist();
-    var item= widget.selecteddata;
+     item= widget.selecteddata;
    // getpatientlist();
     namecontroller.text=item['customer_name'].toString();
+    mobilecontroller.text=item['phone'].toString();
     agecontroller.text=item['age'].toString();
+    dobcontroller.text=item['dob'].toString();
+    bloodgroupcontroller.text=item['blood_group'].toString();
+    bmicontroller.text=item['bmi'].toString();
+    heightcontroller.text=item['height'].toString();
+    weightcontroller.text=item['weight'].toString();
+    sugarcontroller.text=item['sugar'].toString();
+    bpcontroller.text=item['bp'].toString();
+    pulsecontroller.text=item['pulse'].toString();
+    temmpcontroller.text=item['temp'].toString();
+    spO2controller.text=item['spo'].toString();
+    emailcontroller.text=item['email'].toString();
+    areacontroller.text=item['area'].toString();
+    citycontroller.text=item['city'].toString();  
+    pincodecontroller.text=item['pincode'].toString();
+    reasoncontroller.text=item['Reason'].toString();
+    feescontroller.text=item['general_fees'].toString();
+    DoctorDropdownvalue=item['doctor_id'].toString();
+    // _typeVal=item['patient_type'].toString();
+    item['check_in_out_status'].toString() == "IN"
+          ? _typeSelected = 1
+          : _typeSelected = 2;
+    item['gender'].toString() == "Male"
+          ? _radioSelected = 1
+          : _radioSelected = 2; 
+          // :  _radioSelected = 2
+    item['vaccine_details'].toString() == "Yes"
+          ? _vacciSelected = 1
+          : _vacciSelected = 2;
+    
+
 
     // getdoctorlist();
     // TODO: implement initState
@@ -181,7 +216,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
                             onChanged: (value) {
                               setState(() {
                                 _typeSelected = value as int;
-                                _typeVal = 'IN';
+                                // _typeVal = 'IN';
                                 print(_typeVal);
                               });
                             },
@@ -215,7 +250,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
                       children: [
                         Container(
                           // color: Colors.red,
-                          width: screenWidth * 0.96,
+                          width: screenWidth * 0.95,
                           height: screenHeight * 0.07,
                           decoration:
                               BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
@@ -238,19 +273,19 @@ class Edit_PatientsState extends State<Edit_Patients> {
                                   setState(() {
                                     titleDropdownvalue = newValue!;
                                     if (titleDropdownvalue == 'Mr') {
-                                      _radioSelected = 1;
+                                      radioSelected = 1;
                                     } else if (titleDropdownvalue == 'Mrs') {
-                                      _radioSelected = 2;
+                                      radioSelected = 2;
                                     } else if (titleDropdownvalue == 'Miss') {
-                                      _radioSelected = 2;
+                                      radioSelected = 2;
                                     } else if (titleDropdownvalue == 'Ms') {
-                                      _radioSelected = 2;
+                                      radioSelected = 2;
                                     } else if (titleDropdownvalue == 'Master') {
-                                      _radioSelected = 1;
+                                      radioSelected = 1;
                                     } else if (titleDropdownvalue == 'Smt') {
-                                      _radioSelected = 3;
+                                      radioSelected = 3;
                                     } else if (titleDropdownvalue == 'Selvi') {
-                                      _radioSelected = 2;
+                                      radioSelected = 2;
                                     }
                                   });
                                 },
@@ -432,7 +467,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
                     controller: namecontroller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      label: Text('Patient Name'),
+                      label: Text('Patient Name *'),
                     ),
                    ),
                    ),
@@ -506,17 +541,17 @@ class Edit_PatientsState extends State<Edit_Patients> {
                           border: OutlineInputBorder(), labelText: 'Mobile Number *'),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                    child: TextField(
-                      controller: alternatemobilecontroller,
-                      maxLength: 10,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Alternate Mobile Number'),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                  //   child: TextField(
+                  //     controller: alternatemobilecontroller,
+                  //     maxLength: 10,
+                  //     keyboardType: TextInputType.phone,
+                  //     decoration: InputDecoration(
+                  //         border: OutlineInputBorder(),
+                  //         labelText: 'Alternate Mobile Number'),
+                  //   ),
+                  // ),
                   Padding(
                     padding:
                         const EdgeInsets.only(right: 8.0, left: 8.0, bottom: 8.0),
@@ -614,7 +649,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
                           child: TextField(
                             controller: bmicontroller,
               
-                            // keyboardType: TextInputType.none,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(), labelText: 'BMI'),
                           ),
@@ -735,7 +770,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
                           child: TextField(
                             controller: sugarcontroller,
               
-                            // keyboardType: TextInputType.none,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(), labelText: 'Sugar'),
                           ),
@@ -763,7 +798,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
                           child: TextField(
                             controller: bpcontroller,
               
-                            // keyboardType: TextInputType.none,
+                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(), labelText: 'Bp'),
                           ),
@@ -791,7 +826,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
                           child: TextField(
                             controller: pulsecontroller,
               
-                            // keyboardType: TextInputType.none,
+                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(), labelText: 'Pulse'),
                           ),
@@ -867,7 +902,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
                           child: TextField(
                             controller: spO2controller,
               
-                            // keyboardType: TextInputType.none,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(), labelText: 'SpO2'),
                           ),
@@ -968,26 +1003,26 @@ class Edit_PatientsState extends State<Edit_Patients> {
                             );
                           }).toList(),
                         ):DropdownButtonFormField(
-                                                                  // validator: (value) => validateDrops(value),
-                                                                  // isExpanded: true,
-                                                                  hint: Text(
-                                                                      'No Doctor List'),
-                                                                  // value:' _selectedState[i]',
-                                                                  onChanged:
-                                                                      (Pharmacy) {
-                                                                    setState(() {});
-                                                                  },
-                                                                  items: [].map<
-                                                                      DropdownMenuItem<
-                                                                          String>>((item) {
-                                                                    return new DropdownMenuItem(
-                                                                      child:
-                                                                          new Text(
-                                                                              ''),
-                                                                      value: '',
-                                                                    );
-                                                                  }).toList(),
-                                                                ),
+                           // validator: (value) => validateDrops(value),
+                           // isExpanded: true,
+                           hint: Text(
+                           'No Doctor List'),
+                           // value:' _selectedState[i]',
+                           onChanged:
+                           (Pharmacy) {
+                          setState(() {});
+                            },
+                           items: [].map<
+                           DropdownMenuItem<
+                            String>>((item) {
+                            return new DropdownMenuItem(
+                            child:
+                           new Text(
+                           ''),
+                            value: '',
+                             );
+                              }).toList(),
+                           ),
                       ),
                     ),
                   ),
@@ -1097,116 +1132,119 @@ class Edit_PatientsState extends State<Edit_Patients> {
                       )
                       
                     ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (namecontroller.text.isEmpty) {
                               NigDocToast().showErrorToast( 'Please Fill Your Name');
                               
                             } else if (mobilecontroller.text.length<10) {
                               NigDocToast().showErrorToast('Enter Mobile Number');
-                            } else if (alternatemobilecontroller.text.length < 10) {
-                              NigDocToast().showErrorToast('Enter Alternate Mobile Number');
-                            }else if(dobcontroller.text.isEmpty){
-                               NigDocToast().showErrorToast('Enter Your DOB');
+                            } else if (mobilecontroller.text.length < 10) {
+                              NigDocToast().showErrorToast('Enter Valid Mobile Number');
+                            // }else if(dobcontroller.text.isEmpty){
+                            //    NigDocToast().showErrorToast('Enter Your DOB');
                             } else if (agecontroller.text.isEmpty) {
                               NigDocToast().showErrorToast("Enter Your Age");
                     
-                            }else if(bloodgroupcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Your Blood Group');
+                            // }else if(bloodgroupcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Your Blood Group');
                     
-                            }else if(referalcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast("Enter Your Referal");    
+                            // }else if(referalcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast("Enter Your Referal");    
                     
-                            }else if(bmicontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('ENter Your BMI');  
+                            // }else if(bmicontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('ENter Your BMI');  
                     
-                            }else if(heightcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Your Height');  
+                            // }else if(heightcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Your Height');  
                     
-                            }else if (weightcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Your Weight');
-                            }else if(sugarcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Sugar');   
+                            // }else if (weightcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Your Weight');
+                            // }else if(sugarcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Sugar');   
                     
-                            }else if(bpcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Bp') ;
-                            }else if(pulsecontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Pulse');
-                            }else if(temmpcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Temparature');
-                            }else if(spo2unitcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Spo2');
-                            }else if(!emailcontroller.text.contains('@')||
-                                      !emailcontroller.text.contains('.')||
-                                      !emailcontroller.text.contains('com')){
-                                        NigDocToast().showErrorToast('Please Enter Your Email Id');
-                            }else if(areacontroller.text.isEmpty){
-                                        NigDocToast().showErrorToast('Enter Your Area');
-                            }else if(citycontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Your City');
-                            }else if(pincodecontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Your Pin Code');
+                            // }else if(bpcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Bp') ;
+                            // }else if(pulsecontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Pulse');
+                            // }else if(temmpcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Temparature');
+                            // }else if(spo2unitcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Spo2');
+                            // }else if(!emailcontroller.text.contains('@')||
+                            //           !emailcontroller.text.contains('.')||
+                            //           !emailcontroller.text.contains('com')){
+                            //             NigDocToast().showErrorToast('Please Enter Your Email Id');
+                            // }else if(areacontroller.text.isEmpty){
+                            //             NigDocToast().showErrorToast('Enter Your Area');
+                            // }else if(citycontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Your City');
+                            // }else if(pincodecontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Your Pin Code');
                             
                                                                                       
                             } else if (DoctorDropdownvalue=='Doctor'||DoctorDropdownvalue.isEmpty) {
-                              // Fluttertoast.showToast(
-                              //     msg: 'Please Select Doctor',
-                              //     toastLength: Toast.LENGTH_SHORT,
-                              //     gravity: ToastGravity.CENTER,
-                              //     timeInSecForIosWeb: 2,
-                              //     backgroundColor: Colors.red,
-                              //     textColor: Colors.white,
-                              //     fontSize: 15.0);
+                              
                               NigDocToast().showErrorToast('Please Select Doctor');
-                               }else if(consultcontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Your Consulting');
+                            //    }else if(consultcontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Your Consulting');
                     
-                               }else if(reasoncontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Your Reason');
+                            //    }else if(reasoncontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Your Reason');
                     
-                               }else if(feescontroller.text.isEmpty){
-                              NigDocToast().showErrorToast('Enter Fees');
+                            //    }else if(feescontroller.text.isEmpty){
+                            //   NigDocToast().showErrorToast('Enter Fees');
                             }else {
                               var patient_details = {
+                                "customer_id":item['customer_id'],
                                 "patient_type":Helper().isvalidElement(_typeSelected)&& _typeSelected == 1 ?"IN":"OUT",
-                                "patientName": namecontroller.text,
+                                "patientName": namecontroller.text.toString(),
                                 "title": titleDropdownvalue.toString(),
-                                "alt_phone": alternatemobilecontroller.text,
-                                "pincode": pincodecontroller.text,
-                                "emailId": emailcontroller.text,
-                                "mobileNo": mobilecontroller.text,
+                                "pincode": pincodecontroller.text.toString(),
+                                "emailId": emailcontroller.text.toString(),
+                                "mobileNo": mobilecontroller.text.toString(),
                                 "gender":Helper().isvalidElement(_radioSelected)&& _radioSelected == 1 ?"Male": _radioSelected==2 ? "Female":"other",
-                                "area": areacontroller.text,
-                                "city": citycontroller.text,
-                                "age": agecontroller.text,
-                                "sugar": sugarcontroller.text,
-                                "bp": bpcontroller.text,
-                                "pulse": pulsecontroller.text,
-                                "temp": temmpcontroller.text,
+                                "area": areacontroller.text.toString(),
+                                "city": citycontroller.text.toString(),
+                                "age": agecontroller.text.toString(),
+                                "sugar": sugarcontroller.text.toString(),
+                                "bp": bpcontroller.text.toString(),
+                                "pulse": pulsecontroller.text.toString(),
+                                "temp": temmpcontroller.text.toString(),
                                 "temp_type": tempunitDropdownvalue.toString(),
-                                "bmi": bmicontroller.text,
-                                "spo": spO2controller.text,
-                                "weight": weightcontroller.text,
+                                "bmi": bmicontroller.text.toString(),
+                                "spo": spO2controller.text.toString(),
+                                "weight": weightcontroller.text.toString(),
                                 "weight_type": weightunittDropdownvalue.toString(),
-                                "height": heightcontroller.text,
+                                "height": heightcontroller.text.toString(),
                                 "height_type": heightunitDropdownvalue.toString(),
-                                 "typical":"",
+                                // "typical":"",
                                 "vaccine": Helper().isvalidElement(_vacciSelected)&& _vacciSelected == 1 ?"Yes":"No",
-                                 "vaccine_info":"",
-                                   "Reason": reasoncontroller.text,
-                                "consulting_fees": consultcontroller.text,
-                               "father_name":"",
-                                 "mother_name":"",
-                                "general_fees": feescontroller.text,
-                                "blood_grp": bloodgroupcontroller.text,
-                                "dob": dobcontroller.text,
+                                // "vaccine_info":"",
+                                "Reason": reasoncontroller.text.toString(),
+                                // "consulting_fees": consultcontroller.text,
+                               
+                                "general_fees": feescontroller.text.toString(),
+                                "blood_grp": bloodgroupcontroller.text.toString(),
+                                "dob": dobcontroller.text.toString(),
                                 "doctor_id": DoctorDropdownvalue.toString(),
-                                "admit_date":"${(Helper().formateDate1(selectedDate))}",
+                                
+                               
                               };
-                              // add_patient(patient_details);
-                              // var list=patient_details;
-                        Helper().isvalidElement(patient_details);
-                        print(patient_details);
-                              // add_patient(patient_details);
+                               var list = await PatientApi()
+                                          .Editpatient( accesstoken, patient_details);
+                                      if (list['message'] ==
+                                          "updated successfully") {
+                                        NigDocToast().showSuccessToast(
+                                            'updated successfully');
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => PatientList()));
+                                      } else {
+                                        NigDocToast()
+                                            .showErrorToast('Please TryAgain later');
+                                      }
+                              
                             }
                           },
                           child: Text('Update',style:TextStyle(color:Colors.white,fontSize: 20))),

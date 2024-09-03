@@ -27,6 +27,9 @@ import 'package:nigdoc/AppWidget/VideoCall/join_screen.dart';
 import 'package:nigdoc/AppWidget/common/DeviceInfo.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import 'package:nigdoc/DischargeSummary/Dischargesummary.dart';
+import 'package:nigdoc/DischargeSummary/summary.dart';
+import 'package:nigdoc/Reports/report.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -269,16 +272,16 @@ Widget Appbar() {
                         title: "LOGOUT",
                         desc: "Are you sure you want to Logout?",
                         buttons: [
-                          DialogButton(
-                            child: Text(
-                              "YES",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            onPressed: () =>
-                                Helper().appLogoutCall(context, 'logout'),
-                            color: Color.fromRGBO(0, 179, 134, 1.0),
-                          ),
+                          // DialogButton(
+                          //   child: Text(
+                          //     "YES",
+                          //     style:
+                          //         TextStyle(color: Colors.white, fontSize: 20),
+                          //   ),
+                          //   onPressed: () =>
+                          //       Helper().appLogoutCall(context, 'logout'),
+                          //   color: Color.fromRGBO(0, 179, 134, 1.0),
+                          // ),
                           DialogButton(
                             child: Text(
                               " NO ",
@@ -290,7 +293,17 @@ Widget Appbar() {
                               Color.fromRGBO(116, 116, 191, 1.0),
                               Color.fromRGBO(52, 138, 199, 1.0)
                             ]),
-                          )
+                          ),
+                          DialogButton(
+                            child: Text(
+                              "YES",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () =>
+                                Helper().appLogoutCall(context, 'logout'),
+                            color: Color.fromRGBO(0, 179, 134, 1.0),
+                          ),
                         ],
                       ).show();
                     },
@@ -1284,7 +1297,111 @@ Widget Appbar() {
                                     ],
                                   ),
                                 ),
-                              )
+                              ),
+                              
+                              SizedBox(height: screenHeight*0.02,),
+
+                              InkWell(
+                                onTap: () {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) => Discharge_summery(),
+                                  //     ));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => dischargesummary(),
+                                      ));
+                                },
+                                child: Container(
+                                  width: screenWidth * 0.95,
+                                  height: screenHeight * 0.075,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '  Patient Discharge Summary',
+                                        style: TextStyle(
+                                          color: custom_color.appcolor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Icon(Icons.add,
+                                          size: 40, color: custom_color.appcolor),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        width: 3, color: custom_color.appcolor),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        spreadRadius: 4,
+                                        blurRadius: 4,
+                                        offset:
+                                            Offset(0, 1), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                               SizedBox(height: screenHeight*0.02,),
+                                InkWell(
+                                onTap: () {
+                              
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => report(),
+                                      ));
+                                },
+                                child: Container(
+                                  width: screenWidth * 0.95,
+                                  height: screenHeight * 0.075,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '  Reports',
+                                        style: TextStyle(
+                                          color: custom_color.appcolor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Icon(Icons.add,
+                                          size: 40, color: custom_color.appcolor),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        width: 3, color: custom_color.appcolor),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        spreadRadius: 4,
+                                        blurRadius: 4,
+                                        offset:
+                                            Offset(0, 1), 
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         )
