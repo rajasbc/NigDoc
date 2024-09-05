@@ -135,6 +135,7 @@ flutter:
     - assets/patient.png
     - assets/collectionreport.png
     - assets/depwise.png
+    - assets/doctorwise.png
 
 
 
