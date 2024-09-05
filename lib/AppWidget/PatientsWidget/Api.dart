@@ -678,4 +678,14 @@ Editpatient(access_token,data) async{
       return json.decode(response.body);
     }
   }
+    getdoctorWise(accesstoken, data) async {
+    String doctowiseurl = requestpath.base_url + requestpath.getDoctorwise;
+    var response = await http.post(Uri.parse(doctowiseurl),
+        body: jsonEncode(data), headers: _setHeaders(accesstoken));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
 }

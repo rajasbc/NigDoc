@@ -859,6 +859,7 @@ class _PatientsState extends State<Patients> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child:Helper().isvalidElement(DoctorList)&&DoctorList.length>0? DropdownButtonFormField(
+                       
                         // validator: (value) => validateDrops(value),
                         // isExpanded: true,
                         decoration: InputDecoration.collapsed(hintText: ''),
