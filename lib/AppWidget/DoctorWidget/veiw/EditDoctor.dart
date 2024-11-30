@@ -38,6 +38,11 @@ class _Edit_doctor extends State<Edit_doctor> {
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController department1controller = TextEditingController();
 
+  final FocusNode doctornameFocusNode = FocusNode();
+  final FocusNode disignationFocusNode = FocusNode();
+  final FocusNode professionsFocusNode = FocusNode();
+  final FocusNode mobileFocusNode = FocusNode();
+  final FocusNode addresssFocusNode = FocusNode();
 var add_User;
 var selected_level;
 
@@ -137,7 +142,13 @@ getdepartment();
       });
     }
   }
-
+  void dispose(){
+    doctornameFocusNode.dispose();
+    disignationFocusNode.dispose();
+    professionsFocusNode.dispose();
+    mobileFocusNode.dispose();
+    addresssFocusNode.dispose();
+  }
   @override
   Widget build(BuildContext context) {
      double screenHeight = MediaQuery.of(context).size.height;
@@ -231,9 +242,10 @@ getdepartment();
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller:staffnamecontroller,
+                      focusNode: doctornameFocusNode,
                      
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Staff Name '
+                          border: OutlineInputBorder(), labelText: 'Doctor Name '
                           ),
                           
                     ),
@@ -245,6 +257,7 @@ getdepartment();
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: designationcontroller,
+                      focusNode: disignationFocusNode,
                      
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Designation '
@@ -260,7 +273,7 @@ getdepartment();
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: Professionscontroller,
-                      
+                      focusNode: professionsFocusNode,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Professions '
                           ),
@@ -414,9 +427,11 @@ getdepartment();
                       keyboardType: TextInputType.phone,
                       autovalidateMode: AutovalidateMode.always,
                       controller: mobilecontroller,
-                    
+                    focusNode: mobileFocusNode,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Mobile No '),
+                          border: OutlineInputBorder(), labelText: 'Mobile No ',
+                          counterText: ""
+                          ),
                     ),
                   ),
                    SizedBox(height: screenHeight*0.01,),
@@ -429,7 +444,7 @@ getdepartment();
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: addresscontroller,
-                   
+                      focusNode: addresssFocusNode,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Address '
                           ),
@@ -538,14 +553,17 @@ getdepartment();
                                             NigDocToast().showErrorToast('Please Select Titel');
                                
                                            }else if(staffnamecontroller.text.isEmpty){
+                                            doctornameFocusNode.requestFocus();
                                           NigDocToast().showErrorToast('Please Enter Staff Name');
                               
                                             }
                                             else if(designationcontroller.text.isEmpty){
+                                              disignationFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Please Enter Designation');
                                
                                             }
                                             else if(Professionscontroller.text.isEmpty){
+                                              professionsFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Please Enter Professions');
                                
                                             }
@@ -564,10 +582,15 @@ getdepartment();
                                   //   NigDocToast().showErrorToast("Please Enter Your Email id");
                                   // }
                                             else if(mobilecontroller.text.isEmpty){
+                                              mobileFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Enter Mobile No');
-                               
+                                            }
+                                            else if(mobilecontroller.text.length<10){
+                                              mobileFocusNode.requestFocus();
+                                              NigDocToast().showErrorToast('Please Check The Mobile No');
                                             }
                                             else if (addresscontroller.text.isEmpty){
+                                              addresssFocusNode.requestFocus();
                                               NigDocToast().showErrorToast('Please Enter Address');
                                            
                                

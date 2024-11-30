@@ -4,24 +4,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Prescription/PrescriptionList.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import 'package:nigdoc/DischargeSummary/summary.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
 
-class Prescriptionprint extends StatefulWidget {
-  final select_print;
-  const Prescriptionprint({super.key, required, this.select_print});
+class Dischargesummeryprint extends StatefulWidget {
+  final select_discharge;
+  const Dischargesummeryprint({super.key,request, this.select_discharge});
 
   @override
-  State<Prescriptionprint> createState() => _PrescriptionprintState();
+  State<Dischargesummeryprint> createState() => _DischargesummeryprintState();
 }
 
-class _PrescriptionprintState extends State<Prescriptionprint> {
-  int? _printSelected;
-  String _printVal = "";
-
+class _DischargesummeryprintState extends State<Dischargesummeryprint> {
+  var accesstoken;
+  var userResponse;
+  var data;
+  var shop_id;
+  var id;
+  var categoryid;
+  var patientid;
+  var ID;
+  var patient_id;
   String _headerSelected = "yes";
-  String _headerval = "";
-  var reoportbillid;
   Future<void> _launchInBrowser(Uri url) async {
     if (!await launchUrl(
       url,
@@ -30,42 +35,34 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
       throw Exception('Could not launch $url');
     }
   }
-
-  var userResponse;
-  var accesstoken;
-  var data;
-  var shop_id;
   @override
   void initState() {
     init();
-
     super.initState();
-    //  initilzeMethod();
   }
 
   init() async {
-    // await storage.ready;
     userResponse = await storage.getItem('userResponse');
     accesstoken = await userResponse['access_token'];
-    data = widget.select_print;
+    data = widget.select_discharge;
     shop_id = userResponse['clinic_profile']['id'];
+    
     setState(() {});
   }
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return PopScope(
-        canPop: false,
+      canPop: false,
         onPopInvoked: (didPop) {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => Prescription_List()));
+              MaterialPageRoute(builder: (context) => Discharge_summery()));
         },
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              'Prescription Print',
+              'Discharge Summerys Print',
               style: TextStyle(color: Colors.white),
             ),
             leading: IconButton(
@@ -73,7 +70,7 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Prescription_List()));
+                          builder: (context) => Discharge_summery()));
                 },
                 icon: Icon(
                   Icons.arrow_back,
@@ -90,93 +87,12 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                   SizedBox(
                     height: screenHeight * 0.01,
                   ),
-                  Center(
-                    child: Container(
-                      child: Text(
-                        'Choose Size & Formet',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.01,
-                  ),
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       SizedBox(
                         width: screenWidth * 0.12,
                       ),
                       Container(
-                        // width: screenWidth * 0.50,
-                        width: screenWidth * 0.20,
-                        child: Text(
-                          'Print',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenWidth * 0.02,
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              width: screenWidth * 0.20,
-                              child: Row(
-                                children: [
-                                  Radio<int>(
-                                    value: 1,
-                                    groupValue: _printSelected,
-                                    activeColor: Colors.blue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _printSelected = value as int;
-                                        _printVal = 'A4';
-                                        print(_printVal);
-                                      });
-                                    },
-                                  ),
-                                  const Text("A4"),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  width: screenWidth * 0.18,
-                                  child: Radio(
-                                    value: 2,
-                                    groupValue: _printSelected,
-                                    activeColor: Colors.blue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _printSelected = value as int;
-                                        _printVal = 'A5';
-                                        print(_printVal);
-                                      });
-                                    },
-                                  ),
-                                ),
-                                const Text("A5"),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        width: screenWidth * 0.12,
-                      ),
-                      Container(
-                        // width: screenWidth * 0.50,
                         width: screenWidth * 0.20,
                         child: Text(
                           'Header',
@@ -189,7 +105,6 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                       ),
                       Container(
                         child: Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
                               width: screenWidth * 0.20,
@@ -202,7 +117,6 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                                     onChanged: (value) {
                                       setState(() {
                                         _headerSelected = value.toString();
-                                        //  _headerval = 'Yes';
                                       });
                                     },
                                   ),
@@ -210,7 +124,6 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                                 ],
                               ),
                             ),
-                            // SizedBox(width: screenWidth*0.01,),
                             Container(
                               child: Row(
                                 children: [
@@ -236,6 +149,17 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                         ),
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: screenHeight * 0.03,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(right: 65),
+                    child: Text(
+                      'Select Category Order To Print',
+                      style: TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   SizedBox(
                     height: screenHeight * 0.04,
@@ -265,7 +189,7 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Prescription_List()));
+                                    builder: (context) => Discharge_summery()));
                           }),
                         ),
                       ),
@@ -289,15 +213,19 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                           onPressed: (() {
-                            reoportbillid = data['id'].toString();
+                            id = data['id'].toString();
+                                categoryid = data['category_id'];
+                                patientid = data['patient_id'].toString();
                             Codec<String, String> stringToBase64 =
                                 utf8.fuse(base64);
-                            final encoded =
-                                base64.encode(utf8.encode(reoportbillid));
-                            _launchInBrowser(Uri.parse(
-                                'https://nigdoc.com/users/patient_checkup.php?pre=${encoded}&shop_id=${shop_id}&size=${Helper().isvalidElement(_printSelected) && _printSelected == 1 ? "A4" : "A5"}&header=${Helper().isvalidElement(_headerSelected) && _headerSelected == 1 ? "yes" : "no"}'));
-                            // var U = 'https://nigdoc.com/users/patient_checkup.php?pre=${encoded}&shop_id=${shop_id}&size=${Helper().isvalidElement(_printSelected)&& _printSelected == 1 ?"A4":"A5"}&header=${Helper().isvalidElement(_headerSelected)&& _headerSelected == 1 ?"yes":"no"}';
-                            //   print(U);
+                                 patient_id =
+                                base64.encode(utf8.encode(patientid));
+                                 ID =
+                                base64.encode(utf8.encode(id));
+                                _launchInBrowser(Uri.parse(
+                                'https://nigdoc.com/users/patient_summary_details_print.php?patient_id=${patient_id}&id=${ID}&order_cat_id=${categoryid}&shop_id=${shop_id}&header=${_headerSelected}'));
+                                // var u = 'https://nigdoc.com/users/patient_summary_details_print.php?patient_id=${patient_id}&id=${ID}&order_cat_id=${categoryid}&shop_id=${shop_id}&header=${_headerSelected}';
+                                // print(u);
                           }),
                          ),
                       ),
@@ -306,10 +234,8 @@ class _PrescriptionprintState extends State<Prescriptionprint> {
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-          )),
-        ));
+                ]))))
+        )
+    );
   }
 }

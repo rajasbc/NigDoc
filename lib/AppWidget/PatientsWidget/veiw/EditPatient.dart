@@ -15,12 +15,11 @@ import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 
 import '../../DoctorWidget/Api.dart';
-import '../../../AppWidget/common/Colors.dart'as custom_color;
-
+import '../../../AppWidget/common/Colors.dart' as custom_color;
 
 class Edit_Patients extends StatefulWidget {
- final selecteddata;
-  const Edit_Patients({super.key,required this.selecteddata});
+  final selecteddata;
+  const Edit_Patients({super.key, required this.selecteddata});
   //  final selecteddata;
 
   @override
@@ -38,7 +37,7 @@ class Edit_PatientsState extends State<Edit_Patients> {
   int? _typeSelected = 1;
   String _typeVal = "";
 
-int? radioSelected = 1;
+  int? radioSelected = 1;
   String radioVal = "";
   TextEditingController namecontroller = TextEditingController();
   TextEditingController mobilecontroller = TextEditingController();
@@ -67,14 +66,17 @@ int? radioSelected = 1;
   TextEditingController consultcontroller = TextEditingController();
   TextEditingController reasoncontroller = TextEditingController();
   TextEditingController feescontroller = TextEditingController();
+
+  final FocusNode mobileFocusNode = FocusNode();
+  final FocusNode ageFocusNode = FocusNode();
   bool loading = false;
-  bool isloading= false;
+  bool isloading = false;
 
   String titleDropdownvalue = 'Mr';
   String heightunitDropdownvalue = 'Ft';
   String weightunittDropdownvalue = 'Pounds';
   String tempunitDropdownvalue = '°F';
-   String DoctorDropdownvalue = 'Doctor';
+  String DoctorDropdownvalue = 'Doctor';
   var accesstoken;
   var title = [
     'Mr',
@@ -96,12 +98,10 @@ int? radioSelected = 1;
   var DoctorList;
   var selectedPatient;
   var PatientList1;
-  bool name=true;
+  bool name = true;
 
   DateTime currentDate = DateTime.now();
   DateTime selectedDate = DateTime.now();
-  
-  
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -126,69 +126,84 @@ int? radioSelected = 1;
   void initState() {
     accesstoken = storage.getItem('userResponse')['access_token'];
     getdoctorlist();
-     item= widget.selecteddata;
-   // getpatientlist();
-    namecontroller.text=item['customer_name'].toString();
-    mobilecontroller.text=item['phone'].toString();
-    agecontroller.text=item['age'].toString();
-    dobcontroller.text=item['dob'].toString();
-    bloodgroupcontroller.text=item['blood_group'].toString();
-    bmicontroller.text=item['bmi'].toString();
-    heightcontroller.text=item['height'].toString();
-    weightcontroller.text=item['weight'].toString();
-    sugarcontroller.text=item['sugar'].toString();
-    bpcontroller.text=item['bp'].toString();
-    pulsecontroller.text=item['pulse'].toString();
-    temmpcontroller.text=item['temp'].toString();
-    spO2controller.text=item['spo'].toString();
-    emailcontroller.text=item['email'].toString();
-    areacontroller.text=item['area'].toString();
-    citycontroller.text=item['city'].toString();  
-    pincodecontroller.text=item['pincode'].toString();
-    reasoncontroller.text=item['Reason'].toString();
-    feescontroller.text=item['general_fees'].toString();
-    DoctorDropdownvalue=item['doctor_id'].toString();
+    item = widget.selecteddata;
+    // getpatientlist();
+    namecontroller.text = item['customer_name'].toString();
+    mobilecontroller.text = item['phone'].toString();
+    agecontroller.text = item['age'].toString();
+    dobcontroller.text = item['dob'].toString();
+    bloodgroupcontroller.text = item['blood_group'].toString();
+    bmicontroller.text = item['bmi'].toString();
+    heightcontroller.text = item['height'].toString();
+    weightcontroller.text = item['weight'].toString();
+    sugarcontroller.text = item['sugar'].toString();
+    bpcontroller.text = item['bp'].toString();
+    pulsecontroller.text = item['pulse'].toString();
+    temmpcontroller.text = item['temp'].toString();
+    spO2controller.text = item['spo'].toString();
+    emailcontroller.text = item['email'].toString();
+    areacontroller.text = item['area'].toString();
+    citycontroller.text = item['city'].toString();
+    pincodecontroller.text = item['pincode'].toString();
+    reasoncontroller.text = item['Reason'].toString();
+    feescontroller.text = item['general_fees'].toString();
+    DoctorDropdownvalue = item['doctor_id'].toString();
     // _typeVal=item['patient_type'].toString();
     item['check_in_out_status'].toString() == "IN"
-          ? _typeSelected = 1
-          : _typeSelected = 2;
+        ? _typeSelected = 1
+        : _typeSelected = 2;
     item['gender'].toString() == "Male"
-          ? _radioSelected = 1
-          : _radioSelected = 2; 
-          // :  _radioSelected = 2
+        ? _radioSelected = 1
+        : _radioSelected = 2;
+    // :  _radioSelected = 2
     item['vaccine_details'].toString() == "Yes"
-          ? _vacciSelected = 1
-          : _vacciSelected = 2;
-    
-
+        ? _vacciSelected = 1
+        : _vacciSelected = 2;
 
     // getdoctorlist();
     // TODO: implement initState
     super.initState();
   }
 
+  void dispose() {
+    mobileFocusNode.dispose();
+    ageFocusNode.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
-    return WillPopScope(onWillPop: () async {
-         Navigator.push(
-          context, MaterialPageRoute(builder: (context)=> PatientList(),)
-         );
-         return true;
-        },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PatientList(),
+            ));
+        return true;
+      },
       child: Scaffold(
-         appBar: AppBar(title: Text('Edit Patient Details',
-              style: TextStyle(color: Colors.white),),
-              backgroundColor:custom_color.appcolor,
-              leading: IconButton(onPressed: (){
-                Navigator.push(
-              context, MaterialPageRoute(builder: (context)=> PatientList(),)
-             );
-              }, icon: Icon(Icons.arrow_back,
-              color: Colors.white,),),
-            
-              ),
+        appBar: AppBar(
+          title: Text(
+            'Edit Patient Details',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: custom_color.appcolor,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PatientList(),
+                  ));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
+        ),
         // appBar: AppBar(
         //   title: Text('Registration',style: TextStyle(color: Colors.white)),
         //   backgroundColor: custom_color.appcolor,
@@ -252,10 +267,11 @@ int? radioSelected = 1;
                           // color: Colors.red,
                           width: screenWidth * 0.95,
                           height: screenHeight * 0.07,
-                          decoration:
-                              BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
-                                  // border: OutlineInputBorder()
-                                  ),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.all(Radius.circular(5))
+                              // border: OutlineInputBorder()
+                              ),
                           child: DropdownButtonHideUnderline(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -300,7 +316,7 @@ int? radioSelected = 1;
                         //     padding: const EdgeInsets.all(8.0),
                         //     child: TextField(
                         //       controller: namecontroller,
-              
+
                         //       // keyboardType: TextInputType.none,
                         //       decoration: InputDecoration(
                         //           border: OutlineInputBorder(),
@@ -308,7 +324,6 @@ int? radioSelected = 1;
                         //     ),
                         //   ),
                         // ),
-                        
                       ],
                     ),
                   ),
@@ -316,7 +331,7 @@ int? radioSelected = 1;
                     height: 10,
                   ),
                   // name?
-          
+
                   // Padding(
                   //   padding: const EdgeInsets.all(8.0),
                   //   child: Autocomplete<List>(
@@ -397,7 +412,7 @@ int? radioSelected = 1;
                   //                                             // showAutoComplete = false;
                   //                                             selectedPatient = options.toList()[0][index];
                   //                                           });
-                                                           
+
                   //                                         },
                   //                                         child: Card(
                   //                                           color: Colors.grey,
@@ -435,7 +450,7 @@ int? radioSelected = 1;
                   //           padding: const EdgeInsets.all(8.0),
                   //           child: TextField(
                   //             controller: namecontroller,
-              
+
                   //             // keyboardType: TextInputType.none,
                   //             decoration: InputDecoration(
                   //                 border: OutlineInputBorder(),
@@ -445,32 +460,31 @@ int? radioSelected = 1;
                   //       ),
                   SizedBox(
                     width: screenWidth * 0.97,
-                   // child:renderAutoComplete1(screenWidth, screenHeight)
-                    ),
+                    // child:renderAutoComplete1(screenWidth, screenHeight)
+                  ),
 //  Padding(
 //                     padding:
 //                         const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
 //                     child: TextFormField(
 //                       autovalidateMode: AutovalidateMode.always,
 //                       controller:namecontroller,
-                     
+
 //                       decoration: InputDecoration(
 //                           border: OutlineInputBorder(), labelText: ''
 //                           ),
-                          
+
 //                     ),
 //                   ),
-                   Padding(padding: 
-                   EdgeInsets.all(8.0),
-
-                   child: TextFormField(
-                    controller: namecontroller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text('Patient Name *'),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: namecontroller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        label: Text('Patient Name *'),
+                      ),
                     ),
-                   ),
-                   ),
+                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -530,15 +544,17 @@ int? radioSelected = 1;
                       ),
                     ],
                   ),
-              
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: mobilecontroller,
+                      focusNode: mobileFocusNode,
                       maxLength: 10,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Mobile Number *'),
+                          border: OutlineInputBorder(),
+                          labelText: 'Mobile Number *'),
                     ),
                   ),
                   // Padding(
@@ -553,25 +569,26 @@ int? radioSelected = 1;
                   //   ),
                   // ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(right: 8.0, left: 8.0, bottom: 8.0),
+                    padding: const EdgeInsets.only(
+                        right: 8.0, left: 8.0, bottom: 8.0),
                     child: TextField(
                       // obscure/Text: true,
-                     // keyboardType: TextInputType.number,
+                      // keyboardType: TextInputType.number,
                       // maxLength: 3,
                       controller: dobcontroller,
-                      
-                     
+
                       decoration: InputDecoration(
-                        //labelText: 'D O B',
-                        border: OutlineInputBorder(),
-                        labelText: 'D O B',
-                        fillColor: Colors.white,
-                        prefixIcon: Icon(Icons.calendar_today,color: custom_color.appcolor,)
-                      ),
+                          //labelText: 'D O B',
+                          border: OutlineInputBorder(),
+                          labelText: 'D O B',
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(
+                            Icons.calendar_today,
+                            color: custom_color.appcolor,
+                          )),
 
                       readOnly: true,
-                      onTap: (){
+                      onTap: () {
                         _selectDate();
                       },
                     ),
@@ -579,40 +596,40 @@ int? radioSelected = 1;
 
                   //  Padding(
                   //    padding: const EdgeInsets.all(8.0),
-                   
+
                   //    child: TextField(
-                    
+
                   //     controller:dobcontroller,
                   //     decoration: InputDecoration(
-                        
+
                   //       border: OutlineInputBorder(),
-                        
+
                   //       labelText: 'DOB',
-                        
-                      
-                  //       filled: true, 
+
+                  //       filled: true,
                   //       prefixIcon: Icon(Icons.calendar_today,color:custom_color.appcolor,
                   //       ),
-                        
+
                   //       // enabledBorder: OutlineInputBorder(
                   //       //   borderSide: BorderSide.none ),
                   //       //   focusedBorder: OutlineInputBorder(
                   //       //     borderSide: BorderSide(color: Colors.white)
                   //       //   ),
-                      
+
                   //     ),
-                                       
+
                   //    readOnly: true,
                   //     onTap: (){
                   //      _selectDate();
                   //     },
-                      
+
                   //                      ),
                   //  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: agecontroller,
+                      focusNode: ageFocusNode,
                       maxLength: 3,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
@@ -623,10 +640,11 @@ int? radioSelected = 1;
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: bloodgroupcontroller,
-              
+
                       // keyboardType: TextInputType.none,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Blood Group'),
+                          border: OutlineInputBorder(),
+                          labelText: 'Blood Group'),
                     ),
                   ),
                   Padding(
@@ -634,10 +652,11 @@ int? radioSelected = 1;
                     child: TextFormField(
                       // initialValue: 'Self',
                       controller: referalcontroller,
-              
+
                       // keyboardType: TextInputType.none,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Reffered By'),
+                          border: OutlineInputBorder(),
+                          labelText: 'Reffered By'),
                     ),
                   ),
                   Row(
@@ -648,7 +667,6 @@ int? radioSelected = 1;
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: bmicontroller,
-              
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(), labelText: 'BMI'),
@@ -676,20 +694,21 @@ int? radioSelected = 1;
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: heightcontroller,
-              
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(), labelText: 'Height'),
+                                border: OutlineInputBorder(),
+                                labelText: 'Height'),
                           ),
                         ),
                       ),
                       Container(
                         width: screenWidth * 0.20,
                         height: screenHeight * 0.07,
-                        decoration:
-                            BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
-                                // border: OutlineInputBorder()
-                                ),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.all(Radius.circular(5))
+                            // border: OutlineInputBorder()
+                            ),
                         child: DropdownButtonHideUnderline(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -722,24 +741,25 @@ int? radioSelected = 1;
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: weightcontroller,
-              
-                             keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(), labelText: 'Weight'),
+                                border: OutlineInputBorder(),
+                                labelText: 'Weight'),
                           ),
                         ),
                       ),
                       Container(
                         width: screenWidth * 0.23,
                         height: screenHeight * 0.07,
-                        decoration:
-                            BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
-                                // border: OutlineInputBorder()
-                                ),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.all(Radius.circular(5))
+                            // border: OutlineInputBorder()
+                            ),
                         child: DropdownButtonHideUnderline(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8, bottom: 8, left: 1.5),
+                            padding: const EdgeInsets.only(
+                                top: 8, bottom: 8, left: 1.5),
                             child: DropdownButton(
                               value: weightunittDropdownvalue,
                               items: weightunit.map((String items) {
@@ -769,10 +789,10 @@ int? radioSelected = 1;
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: sugarcontroller,
-              
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(), labelText: 'Sugar'),
+                                border: OutlineInputBorder(),
+                                labelText: 'Sugar'),
                           ),
                         ),
                       ),
@@ -797,8 +817,7 @@ int? radioSelected = 1;
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: bpcontroller,
-              
-                             keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(), labelText: 'Bp'),
                           ),
@@ -825,10 +844,10 @@ int? radioSelected = 1;
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: pulsecontroller,
-              
-                             keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(), labelText: 'Pulse'),
+                                border: OutlineInputBorder(),
+                                labelText: 'Pulse'),
                           ),
                         ),
                       ),
@@ -853,8 +872,7 @@ int? radioSelected = 1;
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: temmpcontroller,
-              
-                             keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Temparature'),
@@ -864,14 +882,15 @@ int? radioSelected = 1;
                       Container(
                         width: screenWidth * 0.20,
                         height: screenHeight * 0.07,
-                        decoration:
-                            BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
-                                // border: OutlineInputBorder()
-                                ),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.all(Radius.circular(5))
+                            // border: OutlineInputBorder()
+                            ),
                         child: DropdownButtonHideUnderline(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8, bottom: 8, left: 1.5),
+                            padding: const EdgeInsets.only(
+                                top: 8, bottom: 8, left: 1.5),
                             child: DropdownButton(
                               value: tempunitDropdownvalue,
                               items: temp.map((String items) {
@@ -901,10 +920,10 @@ int? radioSelected = 1;
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: spO2controller,
-              
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(), labelText: 'SpO2'),
+                                border: OutlineInputBorder(),
+                                labelText: 'SpO2'),
                           ),
                         ),
                       ),
@@ -934,7 +953,7 @@ int? radioSelected = 1;
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: areacontroller,
-              
+
                       // keyboardType: TextInputType.none,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Area'),
@@ -944,7 +963,7 @@ int? radioSelected = 1;
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: citycontroller,
-              
+
                       // keyboardType: TextInputType.none,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'City'),
@@ -965,64 +984,66 @@ int? radioSelected = 1;
                     child: Container(
                       height: screenHeight * 0.07,
                       width: screenWidth * 0.95,
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.all(Radius.circular(5))
-                              // border: OutlineInputBorder()
-                              ),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.all(Radius.circular(5))
+                          // border: OutlineInputBorder()
+                          ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child:Helper().isvalidElement(DoctorList)&&DoctorList.length>0? DropdownButtonFormField(
-                          // validator: (value) => validateDrops(value),
-                          // isExpanded: true,
-                          decoration: InputDecoration.collapsed(hintText: ''),
-                          isExpanded: true,
-                          hint: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 0.0, left: 8, right: 8),
-                            child: Text(
-                              'Select Doctor *',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 112, 107, 107)),
-                            ),
-                          ),
-                          // value:' _selectedState[i]',
-                          onChanged: (selecteddoctor) {
-                            setState(() {
-                              DoctorDropdownvalue=selecteddoctor.toString();
-                              // selectedDoctor = selectedDoctor;
-                              // print("Stae value");
-                              // print(newValue);
-                              // _selectedState[i]= newValue;
-                              // getMyDistricts(newValue, i);
-                            });
-                          },
-                          items: DoctorList.map<DropdownMenuItem<String>>((item) {
-                            return new DropdownMenuItem(
-                              child: new Text(item['name'].toString()),
-                              value: item['id'].toString(),
-                            );
-                          }).toList(),
-                        ):DropdownButtonFormField(
-                           // validator: (value) => validateDrops(value),
-                           // isExpanded: true,
-                           hint: Text(
-                           'No Doctor List'),
-                           // value:' _selectedState[i]',
-                           onChanged:
-                           (Pharmacy) {
-                          setState(() {});
-                            },
-                           items: [].map<
-                           DropdownMenuItem<
-                            String>>((item) {
-                            return new DropdownMenuItem(
-                            child:
-                           new Text(
-                           ''),
-                            value: '',
-                             );
-                              }).toList(),
-                           ),
+                        child: Helper().isvalidElement(DoctorList) &&
+                                DoctorList.length > 0
+                            ? DropdownButtonFormField(
+                                // validator: (value) => validateDrops(value),
+                                // isExpanded: true,
+                                decoration:
+                                    InputDecoration.collapsed(hintText: ''),
+                                isExpanded: true,
+                                hint: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 0.0, left: 8, right: 8),
+                                  child: Text(
+                                    'Select Doctor *',
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 112, 107, 107)),
+                                  ),
+                                ),
+                                // value:' _selectedState[i]',
+                                onChanged: (selecteddoctor) {
+                                  setState(() {
+                                    DoctorDropdownvalue =
+                                        selecteddoctor.toString();
+                                    // selectedDoctor = selectedDoctor;
+                                    // print("Stae value");
+                                    // print(newValue);
+                                    // _selectedState[i]= newValue;
+                                    // getMyDistricts(newValue, i);
+                                  });
+                                },
+                                items: DoctorList.map<DropdownMenuItem<String>>(
+                                    (item) {
+                                  return new DropdownMenuItem(
+                                    child: new Text(item['name'].toString()),
+                                    value: item['id'].toString(),
+                                  );
+                                }).toList(),
+                              )
+                            : DropdownButtonFormField(
+                                // validator: (value) => validateDrops(value),
+                                // isExpanded: true,
+                                hint: Text('No Doctor List'),
+                                // value:' _selectedState[i]',
+                                onChanged: (Pharmacy) {
+                                  setState(() {});
+                                },
+                                items: [].map<DropdownMenuItem<String>>((item) {
+                                  return new DropdownMenuItem(
+                                    child: new Text(''),
+                                    value: '',
+                                  );
+                                }).toList(),
+                              ),
                       ),
                     ),
                   ),
@@ -1030,17 +1051,18 @@ int? radioSelected = 1;
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: consultcontroller,
-              
+
                       // keyboardType: TextInputType.none,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Consulting'),
+                          border: OutlineInputBorder(),
+                          labelText: 'Consulting'),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: reasoncontroller,
-              
+
                       // keyboardType: TextInputType.none,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Reason'),
@@ -1050,8 +1072,7 @@ int? radioSelected = 1;
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       controller: feescontroller,
-              
-                       keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Fees'),
                     ),
@@ -1065,8 +1086,8 @@ int? radioSelected = 1;
                       Container(
                         child: Text(
                           'Vaccination ?',
-                          style:
-                              TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
                         ),
                       ),
                       Container(
@@ -1115,94 +1136,105 @@ int? radioSelected = 1;
                   SizedBox(
                     height: 10,
                   ),
-                  Container(width: screenWidth,
+                  Container(
+                    width: screenWidth,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
-                         style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                           
-                          
-                        ),
-                        
-                      )
-                      
-                    ),
+                          style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all<Color>(
+                                  custom_color.appcolor),
+                              shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              )),
                           onPressed: () async {
                             if (namecontroller.text.isEmpty) {
-                              NigDocToast().showErrorToast( 'Please Fill Your Name');
-                              
-                            } else if (mobilecontroller.text.length<10) {
-                              NigDocToast().showErrorToast('Enter Mobile Number');
+                              NigDocToast()
+                                  .showErrorToast('Please Fill Your Name');
                             } else if (mobilecontroller.text.length < 10) {
-                              NigDocToast().showErrorToast('Enter Valid Mobile Number');
-                            // }else if(dobcontroller.text.isEmpty){
-                            //    NigDocToast().showErrorToast('Enter Your DOB');
+                              mobileFocusNode.requestFocus();
+                              NigDocToast()
+                                  .showErrorToast('Enter Mobile Number');
+                            } else if (mobilecontroller.text.length < 10) {
+                              mobileFocusNode.requestFocus();
+                              NigDocToast()
+                                  .showErrorToast('Enter Valid Mobile Number');
+                              // }else if(dobcontroller.text.isEmpty){
+                              //    NigDocToast().showErrorToast('Enter Your DOB');
                             } else if (agecontroller.text.isEmpty) {
+                              ageFocusNode.requestFocus();
                               NigDocToast().showErrorToast("Enter Your Age");
-                    
-                            // }else if(bloodgroupcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Your Blood Group');
-                    
-                            // }else if(referalcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast("Enter Your Referal");    
-                    
-                            // }else if(bmicontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('ENter Your BMI');  
-                    
-                            // }else if(heightcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Your Height');  
-                    
-                            // }else if (weightcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Your Weight');
-                            // }else if(sugarcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Sugar');   
-                    
-                            // }else if(bpcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Bp') ;
-                            // }else if(pulsecontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Pulse');
-                            // }else if(temmpcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Temparature');
-                            // }else if(spo2unitcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Spo2');
-                            // }else if(!emailcontroller.text.contains('@')||
-                            //           !emailcontroller.text.contains('.')||
-                            //           !emailcontroller.text.contains('com')){
-                            //             NigDocToast().showErrorToast('Please Enter Your Email Id');
-                            // }else if(areacontroller.text.isEmpty){
-                            //             NigDocToast().showErrorToast('Enter Your Area');
-                            // }else if(citycontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Your City');
-                            // }else if(pincodecontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Your Pin Code');
-                            
-                                                                                      
-                            } else if (DoctorDropdownvalue=='Doctor'||DoctorDropdownvalue.isEmpty) {
-                              
-                              NigDocToast().showErrorToast('Please Select Doctor');
-                            //    }else if(consultcontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Your Consulting');
-                    
-                            //    }else if(reasoncontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Your Reason');
-                    
-                            //    }else if(feescontroller.text.isEmpty){
-                            //   NigDocToast().showErrorToast('Enter Fees');
-                            }else {
+
+                              // }else if(bloodgroupcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Your Blood Group');
+
+                              // }else if(referalcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast("Enter Your Referal");
+
+                              // }else if(bmicontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('ENter Your BMI');
+
+                              // }else if(heightcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Your Height');
+
+                              // }else if (weightcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Your Weight');
+                              // }else if(sugarcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Sugar');
+
+                              // }else if(bpcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Bp') ;
+                              // }else if(pulsecontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Pulse');
+                              // }else if(temmpcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Temparature');
+                              // }else if(spo2unitcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Spo2');
+                              // }else if(!emailcontroller.text.contains('@')||
+                              //           !emailcontroller.text.contains('.')||
+                              //           !emailcontroller.text.contains('com')){
+                              //             NigDocToast().showErrorToast('Please Enter Your Email Id');
+                              // }else if(areacontroller.text.isEmpty){
+                              //             NigDocToast().showErrorToast('Enter Your Area');
+                              // }else if(citycontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Your City');
+                              // }else if(pincodecontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Your Pin Code');
+                            } else if (DoctorDropdownvalue == 'Doctor' ||
+                                DoctorDropdownvalue.isEmpty) {
+                              NigDocToast()
+                                  .showErrorToast('Please Select Doctor');
+                              //    }else if(consultcontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Your Consulting');
+
+                              //    }else if(reasoncontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Your Reason');
+
+                              //    }else if(feescontroller.text.isEmpty){
+                              //   NigDocToast().showErrorToast('Enter Fees');
+                            } else {
                               var patient_details = {
-                                "customer_id":item['customer_id'],
-                                "patient_type":Helper().isvalidElement(_typeSelected)&& _typeSelected == 1 ?"IN":"OUT",
+                                "customer_id": item['customer_id'],
+                                "patient_type":
+                                    Helper().isvalidElement(_typeSelected) &&
+                                            _typeSelected == 1
+                                        ? "IN"
+                                        : "OUT",
                                 "patientName": namecontroller.text.toString(),
                                 "title": titleDropdownvalue.toString(),
                                 "pincode": pincodecontroller.text.toString(),
                                 "emailId": emailcontroller.text.toString(),
                                 "mobileNo": mobilecontroller.text.toString(),
-                                "gender":Helper().isvalidElement(_radioSelected)&& _radioSelected == 1 ?"Male": _radioSelected==2 ? "Female":"other",
+                                "gender":
+                                    Helper().isvalidElement(_radioSelected) &&
+                                            _radioSelected == 1
+                                        ? "Male"
+                                        : _radioSelected == 2
+                                            ? "Female"
+                                            : "other",
                                 "area": areacontroller.text.toString(),
                                 "city": citycontroller.text.toString(),
                                 "age": agecontroller.text.toString(),
@@ -1214,61 +1246,66 @@ int? radioSelected = 1;
                                 "bmi": bmicontroller.text.toString(),
                                 "spo": spO2controller.text.toString(),
                                 "weight": weightcontroller.text.toString(),
-                                "weight_type": weightunittDropdownvalue.toString(),
+                                "weight_type":
+                                    weightunittDropdownvalue.toString(),
                                 "height": heightcontroller.text.toString(),
-                                "height_type": heightunitDropdownvalue.toString(),
+                                "height_type":
+                                    heightunitDropdownvalue.toString(),
                                 // "typical":"",
-                                "vaccine": Helper().isvalidElement(_vacciSelected)&& _vacciSelected == 1 ?"Yes":"No",
+                                "vaccine":
+                                    Helper().isvalidElement(_vacciSelected) &&
+                                            _vacciSelected == 1
+                                        ? "Yes"
+                                        : "No",
                                 // "vaccine_info":"",
                                 "Reason": reasoncontroller.text.toString(),
                                 // "consulting_fees": consultcontroller.text,
-                               
+
                                 "general_fees": feescontroller.text.toString(),
-                                "blood_grp": bloodgroupcontroller.text.toString(),
+                                "blood_grp":
+                                    bloodgroupcontroller.text.toString(),
                                 "dob": dobcontroller.text.toString(),
                                 "doctor_id": DoctorDropdownvalue.toString(),
-                                
-                               
                               };
-                               var list = await PatientApi()
-                                          .Editpatient( accesstoken, patient_details);
-                                      if (list['message'] ==
-                                          "updated successfully") {
-                                        NigDocToast().showSuccessToast(
-                                            'updated successfully');
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => PatientList()));
-                                      } else {
-                                        NigDocToast()
-                                            .showErrorToast('Please TryAgain later');
-                                      }
-                              
+                              var list = await PatientApi()
+                                  .Editpatient(accesstoken, patient_details);
+                              if (list['message'] == "updated successfully") {
+                                NigDocToast()
+                                    .showSuccessToast('updated successfully');
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PatientList()));
+                              } else {
+                                NigDocToast()
+                                    .showErrorToast('Please TryAgain later');
+                              }
                             }
                           },
-                          child: Text('Update',style:TextStyle(color:Colors.white,fontSize: 20))),
+                          child: Text('Update',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 20))),
                     ),
                   ),
-                      SizedBox(height: 20,)
+                  SizedBox(
+                    height: 20,
+                  )
                 ],
               ),
             ),
           ),
         ),
-           
       ),
     );
-    
   }
 
-  add_patient(patient_details)async{
+  add_patient(patient_details) async {
     this.setState(() {
       loading = true;
     });
-        var result = await PatientApi().add_patient(accesstoken, patient_details);
+    var result = await PatientApi().add_patient(accesstoken, patient_details);
 
-         if (Helper().isvalidElement(result) &&
+    if (Helper().isvalidElement(result) &&
         Helper().isvalidElement(result['status']) &&
         result['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
@@ -1289,9 +1326,8 @@ int? radioSelected = 1;
           context,
           MaterialPageRoute(builder: (context) => PrescriptionPage()),
         );
-      }else
-      {
-         Fluttertoast.showToast(
+      } else {
+        Fluttertoast.showToast(
             msg: 'Please Try Again Later',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
@@ -1309,9 +1345,8 @@ int? radioSelected = 1;
     });
   }
 
-   getdoctorlist() async {
-   
-   var doctorlist = await api().getdoctorlist(accesstoken);
+  getdoctorlist() async {
+    var doctorlist = await api().getdoctorlist(accesstoken);
     if (Helper().isvalidElement(doctorlist) &&
         Helper().isvalidElement(doctorlist['status']) &&
         doctorlist['status'] == 'Token is Expired') {
@@ -1324,7 +1359,8 @@ int? radioSelected = 1;
       });
     }
   }
-   getpatientlist() async {
+
+  getpatientlist() async {
     // this.setState(() {
     //   isloading = true;
     // });
@@ -1343,11 +1379,11 @@ int? radioSelected = 1;
     }
   }
 
-   renderAutoComplete(screenWidth, screenHeight) {
+  renderAutoComplete(screenWidth, screenHeight) {
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
-          return  Iterable<List>.empty();
+          return Iterable<List>.empty();
         } else {
           var matches = [];
           matches.addAll(PatientList1);
@@ -1368,7 +1404,7 @@ int? radioSelected = 1;
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 // prefix: Icon(Icons.search),
                 prefixIcon: Icon(Icons.search),
@@ -1388,7 +1424,7 @@ int? radioSelected = 1;
               color: Colors.white,
               child: ListView.builder(
                 shrinkWrap: true,
-                padding:  EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 itemCount: options.toList()[0].length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.toList()[0].elementAt(index);
@@ -1408,10 +1444,10 @@ int? radioSelected = 1;
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                                 '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
-                                style:  TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.black)),
                           ),
                           // Divider(
                           //   thickness: 1,
@@ -1428,16 +1464,16 @@ int? radioSelected = 1;
       },
     );
   }
-   renderAutoComplete1(screenWidth, screenHeight) {
+
+  renderAutoComplete1(screenWidth, screenHeight) {
     return Autocomplete<List>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         setState(() {
-          namecontroller.text=textEditingValue.text;
-          
+          namecontroller.text = textEditingValue.text;
         });
 
         if (textEditingValue.text == '') {
-          return  const Iterable<List>.empty();
+          return const Iterable<List>.empty();
         } else {
           var matches = [];
           matches.addAll(PatientList1);
@@ -1458,29 +1494,25 @@ int? radioSelected = 1;
         return TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
-                 decoration: InputDecoration(
-                  hintText: 'Search Patient Name',
-                  
-                  prefixIcon: const Icon(Icons.search),
-                  
-                  
-                  enabledBorder: OutlineInputBorder(
-                    
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: custom_color.appcolor,
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: custom_color.appcolor,
-                      width: 1.0,
-                    ),
-                  ),
+            decoration: InputDecoration(
+              hintText: 'Search Patient Name',
+              prefixIcon: const Icon(Icons.search),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(
+                  color: custom_color.appcolor,
+                  width: 1.0,
                 ),
-            
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(
+                  color: custom_color.appcolor,
+                  width: 1.0,
+                ),
+              ),
+            ),
+
             // decoration:  InputDecoration(
             //     border: OutlineInputBorder(),
             //     // prefix: Icon(Icons.search),
@@ -1492,75 +1524,77 @@ int? radioSelected = 1;
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<List> onSelected, Iterable<List> options) {
-        return options.toList()[0].isNotEmpty ?
-         Align(
-          alignment: Alignment.topCenter,
-          child: Material(
-            child: SizedBox(
-              width: screenWidth * 0.9,
-              // height: screenHeight * 0.8,
-              // color:Colors.transparent,
-              // color: Colors.white,
-              child: Card(
-                 color: Colors.transparent,
+        return options.toList()[0].isNotEmpty
+            ? Align(
+                alignment: Alignment.topCenter,
+                child: Material(
+                  child: SizedBox(
+                    width: screenWidth * 0.9,
+                    // height: screenHeight * 0.8,
+                    // color:Colors.transparent,
+                    // color: Colors.white,
+                    child: Card(
+                      color: Colors.transparent,
                       elevation: 30,
-                child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-             
-                  child: Column(
-                    children: [
-                     
-                
-                      ListView.builder(
-                        shrinkWrap: true,
-                        padding:  const EdgeInsets.all(5.0),
-                        itemCount: options.toList()[0].length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          
-                          final option = options.toList()[0].elementAt(index);
-                          return  GestureDetector(
-                                                        onTap: () {
-                                                          storage.setItem(
-                                                              'selectedcustomer', options.toList()[0][index]);
-                                                               Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => PrescriptionPage()),
-                                          );
-                                                          setState(() {
-                                                            // showAutoComplete = false;
-                                                            selectedPatient = options.toList()[0][index];
-                                                          });
-                                                         
-                                                        },
-                                                        child: Card(
-                                                          color: Colors.grey,
-                                                          // color: custom_color.app_color,
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Padding(
-                                    padding:  EdgeInsets.all(8.0),
-                                    child: Text(
-                                        '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
-                                        style:  TextStyle(color: Colors.black)),
-                                                              ),
-                                                              // Divider(
-                                                              //   thickness: 1,
-                                                              // )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                        },
+                      child: SingleChildScrollView(
+                        physics: const ClampingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(5.0),
+                              itemCount: options.toList()[0].length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                final option =
+                                    options.toList()[0].elementAt(index);
+                                return GestureDetector(
+                                  onTap: () {
+                                    storage.setItem('selectedcustomer',
+                                        options.toList()[0][index]);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PrescriptionPage()),
+                                    );
+                                    setState(() {
+                                      // showAutoComplete = false;
+                                      selectedPatient =
+                                          options.toList()[0][index];
+                                    });
+                                  },
+                                  child: Card(
+                                    color: Colors.grey,
+                                    // color: custom_color.app_color,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                              '${options.toList()[0][index]['customer_name'].toString()} , ${options.toList()[0][index]['phone'].toString()}',
+                                              style: TextStyle(
+                                                  color: Colors.black)),
+                                        ),
+                                        // Divider(
+                                        //   thickness: 1,
+                                        // )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-        ):Align(
+              )
+            : Align(
                 alignment: Alignment.topCenter,
                 child: Material(
                   child: Container(
@@ -1593,17 +1627,17 @@ int? radioSelected = 1;
     );
   }
 
-   Future<void>_selectDate() async {
-      DateTime? _picked =  await showDatePicker(
-        context: context,
+  Future<void> _selectDate() async {
+    DateTime? _picked = await showDatePicker(
+      context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1980), 
+      firstDate: DateTime(1980),
       lastDate: DateTime.now(),
-      );
-      if(_picked != null){
-       setState(() {
-         dobcontroller.text=_picked.toString().split(" ")[0];
-       });
-      }
+    );
+    if (_picked != null) {
+      setState(() {
+        dobcontroller.text = _picked.toString().split(" ")[0];
+      });
     }
+  }
 }

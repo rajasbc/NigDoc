@@ -37,6 +37,14 @@ class _Edit_staff extends State<Edit_staff> {
     TextEditingController usernamecontroller = TextEditingController();
     TextEditingController department1controller = TextEditingController();
 
+    final FocusNode staffnameFocusNode = FocusNode();
+final FocusNode designationFocusNode = FocusNode();
+final FocusNode professionsFocusNode = FocusNode();
+final FocusNode emailFocusNode = FocusNode();
+final FocusNode mobileFocusNode = FocusNode();
+final FocusNode addressFocusNode = FocusNode();
+final FocusNode passwordFocusNode = FocusNode();
+final FocusNode confirmpassFocusNode = FocusNode();
 var add_User;
 var selected_level;
 
@@ -108,11 +116,9 @@ var selectedTest;
       emailcontroller.text = data['email'].toString();
       mobilecontroller.text = data['contact_no'].toString();
       addresscontroller.text = data['address'].toString();
-
       dep = data["department"];
       departmentdropdown = data["department_name"];
       department1controller.text = data["department_name"];
-
       // userlevelcontroller.text = data['user_type'].toString();
       // userlevelcontroller.text = data['user_type'].toString();
     });
@@ -131,7 +137,16 @@ var selectedTest;
       });
     }
   }
-
+  void dispose(){
+    staffnameFocusNode.dispose();
+    designationFocusNode.dispose();
+    professionsFocusNode.dispose();
+    emailFocusNode.dispose();
+    mobileFocusNode.dispose();
+    addressFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmpassFocusNode.dispose();
+  }
   @override
   Widget build(BuildContext context) {
      double screenHeight = MediaQuery.of(context).size.height;
@@ -173,7 +188,7 @@ var selectedTest;
                  padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
                     //padding: const EdgeInsets.all(20.0),
                     child: Container(
-                      height: screenHeight * 0.07,
+                      height: screenHeight * 0.06,
                       width: screenWidth * 0.96,
                       decoration: BoxDecoration(border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(5.0)
@@ -183,7 +198,6 @@ var selectedTest;
                         padding: const EdgeInsets.all(10.0),
                         child: Center(
                           child: DropdownButtonFormField(
-                          
                             decoration: InputDecoration.collapsed(hintText: ''),
                             isExpanded: true,
                             hint: Padding(
@@ -191,14 +205,11 @@ var selectedTest;
                               child: Text(
                                 // 'Title ',
                                 '${data['title']}'
-                               
                               ),
                             ),
-                           
                             onChanged: (selectedstaffs) {
                               selected_level=selectedstaffs;
                               setState(() {
-                               
                               });
                             },
                             items: title.map<DropdownMenuItem<String>>((item) {
@@ -225,9 +236,10 @@ var selectedTest;
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller:staffnamecontroller,
+                      focusNode: staffnameFocusNode,
                      
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Staff Name '
+                          border: OutlineInputBorder(), labelText: 'Staff Name*'
                           ),
                           
                     ),
@@ -239,9 +251,9 @@ var selectedTest;
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: designationcontroller,
-                     
+                     focusNode: designationFocusNode,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Designation '
+                          border: OutlineInputBorder(), labelText: 'Designation*'
                           ),
                           
                     ),
@@ -254,6 +266,7 @@ var selectedTest;
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: Professionscontroller,
+                      focusNode: professionsFocusNode,
                       
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Professions '
@@ -326,17 +339,17 @@ var selectedTest;
                     : renderPatientAutoComplete(screenHeight, screenWidth)
                 // : renderTesttListWidget(screenHeight, screenWidth)
                 ),
-                      SizedBox(height: screenHeight*0.02),
+                      SizedBox(height: screenHeight*0.01),
                       department_List.length>0?renderTesttListWidget(screenHeight, screenWidth):Container(),
          
                       // SizedBox(height: screenHeight*0.02,),    
-                    SizedBox(height: screenHeight*0.02,),
+                    SizedBox(height: screenHeight*0.01),
 
                    Padding(
                    // padding: const EdgeInsets.all(8.0),
                    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
                     child: Container(
-                      height: screenHeight * 0.07,
+                      height: screenHeight * 0.06,
                       width: screenWidth * 0.96,
                       decoration: BoxDecoration(border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(5.0)
@@ -410,9 +423,12 @@ var selectedTest;
                       keyboardType: TextInputType.phone,
                       autovalidateMode: AutovalidateMode.always,
                       controller: mobilecontroller,
+                      focusNode: mobileFocusNode,
                     
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Mobile No '),
+                          border: OutlineInputBorder(), labelText: 'Mobile No ',
+                          counterText: "",
+                          ),
                     ),
                   ),
                    SizedBox(height: screenHeight*0.01,),
@@ -425,6 +441,7 @@ var selectedTest;
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: addresscontroller,
+                      focusNode: addressFocusNode,
                    
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Address '
@@ -535,14 +552,17 @@ var selectedTest;
                                             NigDocToast().showErrorToast('Please Select Titel');
                                
                                            }else if(staffnamecontroller.text.isEmpty){
+                                              staffnameFocusNode.requestFocus();
                                           NigDocToast().showErrorToast('Please Enter Staff Name');
                               
                                             }
                                             else if(designationcontroller.text.isEmpty){
+                                                designationFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Please Enter Designation');
                                
                                             }
                                             else if(Professionscontroller.text.isEmpty){
+                                                professionsFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Please Enter Professions');
                                
                                             }
@@ -561,10 +581,14 @@ var selectedTest;
                                   //   NigDocToast().showErrorToast("Please Enter Your Email id");
                                   // }
                                             else if(mobilecontroller.text.isEmpty){
+                                                mobileFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Enter Mobile No');
-                               
+                                            }else if(mobilecontroller.text.length<10){
+                                                mobileFocusNode.requestFocus();
+                                        NigDocToast().showErrorToast('Please Check The Mobile No');
                                             }
                                             else if (addresscontroller.text.isEmpty){
+                                                addressFocusNode.requestFocus();
                                               NigDocToast().showErrorToast('Please Enter Address');
                                            
                                
@@ -786,7 +810,7 @@ var selectedTest;
             FocusNode focusNode,
             VoidCallback onFieldSubmitted) {
           return Container(
-            height: screenHeight * 0.07,
+            height: screenHeight * 0.06,
             width: screenWidth * 0.95,
             decoration: BoxDecoration(
               // color: Colors.white,

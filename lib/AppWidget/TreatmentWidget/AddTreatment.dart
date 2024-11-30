@@ -6,6 +6,7 @@ import 'package:nigdoc/AppWidget/Common/utils.dart';
 import 'package:nigdoc/AppWidget/Medicine/AddMedicineList.dart';
 import 'package:nigdoc/AppWidget/Medicine/MedicineList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
 import 'package:nigdoc/AppWidget/TreatmentWidget/treatment.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
@@ -29,6 +30,7 @@ class _AddTretmentState extends State<AddTretment> {
   var SelectedPharmacy;
   List medicineList=[];
   List departmentListList =[];
+  var tredata;
   var Depaartment;
   // String? selectedValue;
   var userResponse;
@@ -40,11 +42,13 @@ class _AddTretmentState extends State<AddTretment> {
   TextEditingController medicinecontroller = TextEditingController();
   TextEditingController Departmentcontroller = TextEditingController();
   TextEditingController Feescontroller = TextEditingController();
-  
+  final FocusNode treatmentFocusNode = FocusNode();
+  final FocusNode feesFocusNode = FocusNode();
 @override
   void initState() {
      userResponse = storage.getItem('userResponse');
     accesstoken=userResponse['access_token'];
+    tredata = storage.getItem('tre');
     getdepartmentList();
     getMedicineList();
 
@@ -85,6 +89,10 @@ class _AddTretmentState extends State<AddTretment> {
       //  storage.setItem('diagnosisList', diagnosisList);
     }
   }
+  void dispose(){
+    treatmentFocusNode.dispose();
+    feesFocusNode.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -92,10 +100,16 @@ class _AddTretmentState extends State<AddTretment> {
  return  PopScope(
        canPop:false,
        onPopInvoked:(bool didpop) {
+        if(tredata =='treatment'){
          Navigator.push(
           context, MaterialPageRoute(builder: (context)=> TreatmentList(),)
          );
-         
+        }else if(tredata =='treatment1'){
+          Navigator.push(
+          context, MaterialPageRoute(builder: (context)=> PrescriptionPage(),)
+         );
+        }
+
         },
     child: Scaffold(
       appBar: AppBar(
@@ -106,11 +120,20 @@ class _AddTretmentState extends State<AddTretment> {
         backgroundColor: custom_color.appcolor,
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TreatmentList(),
-                ));
+            if(tredata =='treatment'){
+         Navigator.push(
+          context, MaterialPageRoute(builder: (context)=> TreatmentList(),)
+         );
+        }else if(tredata =='treatment1'){
+          Navigator.push(
+          context, MaterialPageRoute(builder: (context)=> PrescriptionPage(),)
+         );
+        }
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => TreatmentList(),
+            //     ));
           },
           icon: Icon(
             Icons.arrow_back,
@@ -131,6 +154,7 @@ class _AddTretmentState extends State<AddTretment> {
                 TextFormField(
                   
                   controller: Treatmentcontroller,
+                  focusNode: treatmentFocusNode,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Treatment Name'
@@ -236,6 +260,7 @@ class _AddTretmentState extends State<AddTretment> {
                 TextFormField(
                   keyboardType: TextInputType.number,
                      controller: Feescontroller,
+                     focusNode: feesFocusNode,
                       autovalidateMode: AutovalidateMode.always,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -278,12 +303,14 @@ class _AddTretmentState extends State<AddTretment> {
                       ),
                       onPressed: () async {
                         if (Treatmentcontroller.text.isEmpty) {
+                          treatmentFocusNode.requestFocus();
                           NigDocToast().showErrorToast('Enter Treatment Name');
                         } else if (Medicine_List.length == 0) {
                           NigDocToast().showErrorToast('Please Select Medicine List');
                         } else if (departmentdropdown == "Select Department *") {
                           NigDocToast().showErrorToast('Please Select Department');
                         } else if (Feescontroller.text.isEmpty) {
+                          feesFocusNode.requestFocus();
                           NigDocToast().showErrorToast('Enter Fees');
                          }else {
                           var data = {
@@ -297,10 +324,19 @@ class _AddTretmentState extends State<AddTretment> {
                                     "Add Treatment successfully") {
                                   NigDocToast().showSuccessToast(
                                       'Treatment Add successfully');
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => TreatmentList()));
+                              if (tredata == 'treatment') {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TreatmentList()));
+                              }
+                              else if(tredata =='treatment1'){
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PrescriptionPage(),
+                                    ));
+                              }
                                 } else {
                                   NigDocToast()
                                       .showErrorToast('Please TryAgain later');

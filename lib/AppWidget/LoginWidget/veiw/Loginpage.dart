@@ -16,6 +16,7 @@ import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 // import 'package:nigdoc/AppWidget/LoginWidget/veiw/onBoard.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/main.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Common/colors.dart' as Customcolor;
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -40,6 +41,8 @@ class _LoginpageState extends State<Loginpage> {
   bool showPassword = false;
   bool isloading = false;
   late SharedPreferences pref;
+  String shop_id = '';
+
 
   @override
   void initState() {
@@ -67,13 +70,17 @@ class _LoginpageState extends State<Loginpage> {
           exit(0);
         },
       child: Scaffold(
-        backgroundColor: Customcolor.appcolor,
+        backgroundColor: Colors.white,
         // appBar: AppBar(title: Text('Login'),),
         body: SafeArea(
           child: Container(
             child: SingleChildScrollView(
+              // physics: NeverScrollableScrollPhysics(),
               child: Column(
                 children: [
+                  Container(
+                      height: 1,
+                    ),
                   // Container(height:screenHeight*0.05 ,color: Color.fromARGB(255, 241, 239, 239),),
                   // SizedBox(height: 20,),
                   Container(
@@ -139,7 +146,7 @@ class _LoginpageState extends State<Loginpage> {
                                   contentPadding: const EdgeInsets.only(
                                       left: 14.0, bottom: 8.0, top: 8.0),
                                   border: InputBorder.none,
-                                  hintText: 'Enter your email address',
+                                  hintText: 'Enter your Email',
                                 ),
                               ),
                             ),
@@ -183,7 +190,7 @@ class _LoginpageState extends State<Loginpage> {
                                         contentPadding: const EdgeInsets.only(
                                             left: 14.0, bottom: 8.0, top: 10.0),
                                         border: InputBorder.none,
-                                        hintText: '***********',
+                                        hintText: 'Enter Your Password',
                                       ),
                                     ),
                                   ),
@@ -342,7 +349,13 @@ class _LoginpageState extends State<Loginpage> {
                                             textColor: Colors.white,
                                             fontSize: 15.0);
                                       } else {
-                                        if (logindata['access_token'] != null) {
+                                        if (logindata['access_token'] != null &&
+                                    logindata['is_active'] != 'Active') {
+                                  var medi_profile = logindata['clinic_profile'];
+                                  shop_id = medi_profile['id'].toString();
+                                  AlertBox();
+                                }
+                                      else if (logindata['access_token'] != null) {
                                           Emailcontroller.text = '';
                                           passwordcontroller.text = '';
                                           // await storeBox?.put('userResponse', user_data);
@@ -714,5 +727,49 @@ class _LoginpageState extends State<Loginpage> {
     setState(() {
       showPassword = !showPassword;
     });
+  }
+  
+  var alertStyle = AlertStyle(
+    animationType: AnimationType.fromBottom,
+    isCloseButton: false,
+    isOverlayTapDismiss: true,
+    descStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+    descTextAlign: TextAlign.center,
+    animationDuration: const Duration(milliseconds: 400),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0),
+      side: const BorderSide(
+        color: Colors.white,
+      ),
+    ),
+    titleStyle: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: Colors.blue[400],
+    ),
+    alertAlignment: Alignment.center,
+  );
+  AlertBox() {
+    Alert(
+      context: context,
+      style: alertStyle,
+      title: " Alert !",
+     
+
+      desc:
+          "You doesn't Have any Plans Active.\n Please check and activate your plan.",
+      buttons: [
+        DialogButton(
+          onPressed: () async {
+            Navigator.pop(context);
+          },
+          color: custom_color.error_color,
+          radius: BorderRadius.circular(10.0),
+          child: const Text(
+            "Close",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+        ),
+      ],
+    ).show();
   }
 }

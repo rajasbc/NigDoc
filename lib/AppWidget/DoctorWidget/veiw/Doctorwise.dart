@@ -410,6 +410,19 @@ var title =[
                                                     Container(
                                                       // color: Colors.purple,
                                                       width: screenWidth * 0.43,
+                                                      // child: Row(
+                                                      //   children: [
+                                                        
+                                                      //     Text('Email : ${data['email'].toString()}')
+                                                      //   ],
+                                                      // ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: screenHeight*0.01),
+                                                Container(
+                                                      // color: Colors.purple,
+                                                      width: screenWidth * 0.80,
                                                       child: Row(
                                                         children: [
                                                         
@@ -417,8 +430,6 @@ var title =[
                                                         ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
                                                 SizedBox(height: screenHeight*0.01,),
                                                 // Container(
                                                 //   // color: Colors.amber,

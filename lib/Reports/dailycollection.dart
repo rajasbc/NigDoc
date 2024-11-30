@@ -4,7 +4,7 @@ import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/Reports/report.dart';
-import '../../AppWidget/common/Colors.dart'as custom_color;
+import '../../AppWidget/common/Colors.dart' as custom_color;
 
 class dailycollection extends StatefulWidget {
   const dailycollection({super.key});
@@ -16,14 +16,14 @@ class dailycollection extends StatefulWidget {
 class _dailycollectionState extends State<dailycollection> {
   TextEditingController fromdateInputController = TextEditingController();
   TextEditingController todateInputController = TextEditingController();
-  var list=0;
+  var list = 0;
   var userResponse;
   var accesstoken;
   bool isLoading = true;
   @override
   void initState() {
     userResponse = storage.getItem('userResponse');
-    accesstoken=userResponse['access_token'];
+    accesstoken = userResponse['access_token'];
     fromdateInputController.text = Helper().getCurrentDate();
     todateInputController.text = Helper().getCurrentDate();
 
@@ -31,10 +31,11 @@ class _dailycollectionState extends State<dailycollection> {
     // TODO: implement initState
     super.initState();
   }
+
   List reportList = [];
 
-   final DateFormate = "yyyy-MM-dd";
-   DateTime currentDate = DateTime.now();
+  final DateFormate = "yyyy-MM-dd";
+  DateTime currentDate = DateTime.now();
   Future<void> selectDate(BuildContext context, data) async {
     var checkfield = data;
     // print(data);
@@ -45,8 +46,8 @@ class _dailycollectionState extends State<dailycollection> {
             data: Theme.of(context).copyWith(
               colorScheme: ColorScheme.light(
                 primary: custom_color.appcolor,
-                onPrimary: Colors.white, 
-                onSurface: custom_color.appcolor, 
+                onPrimary: Colors.white,
+                onSurface: custom_color.appcolor,
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
@@ -58,8 +59,10 @@ class _dailycollectionState extends State<dailycollection> {
           );
         },
         initialDate: currentDate,
-        firstDate: DateTime(DateTime.now().year-3, DateTime.now().month, DateTime.now().day),
-        lastDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
+        firstDate: DateTime(
+            DateTime.now().year - 3, DateTime.now().month, DateTime.now().day),
+        lastDate: DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day));
 
     if (pickedDate != null && pickedDate != currentDate)
       setState(() {
@@ -69,40 +72,38 @@ class _dailycollectionState extends State<dailycollection> {
       // var formatter = new DateFormat('dd-MM-yyyy');
       fromdateInputController.text =
           DateFormat(DateFormate).format(pickedDate!);
-getdailyreportList();
+      getdailyreportList();
       // fromdateInputController.text = pickedDate.toString().split(' ')[0];
       // getsummaryList();
       // get();
       // getdoctorlist();
     } else {
       todateInputController.text = DateFormat(DateFormate).format(pickedDate!);
-     getdailyreportList();
+      getdailyreportList();
       // getsummaryList();
       // get();
       // getdoctorlist();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-     Map<String, String> data = {
-      'date': '',
-      'patient_name':''
-      
-    };
+    Map<String, String> data = {'date': '', 'patient_name': ''};
     return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>report()));
-      },
-      child: Scaffold(
-        appBar: AppBar(
+        canPop: false,
+        onPopInvoked: (didPop) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => report()));
+        },
+        child: Scaffold(
+          appBar: AppBar(
             title: Text(
               'Daily Collection',
               style: TextStyle(color: Colors.white),
             ),
-            backgroundColor:custom_color.appcolor,
+            backgroundColor: custom_color.appcolor,
             leading: IconButton(
               onPressed: () {
                 Navigator.push(
@@ -118,234 +119,290 @@ getdailyreportList();
             ),
           ),
           body: SafeArea(
-            
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: Column(
-                    children: [
-                      SizedBox(height: screenHeight*0.01),
-                      Container(
-                        width: screenWidth,
-                        height: screenHeight * 0.06,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: screenWidth * 0.45,
-                              child: TextFormField(
+              child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: Column(
+                  children: [
+                    SizedBox(height: screenHeight * 0.01),
+                    Container(
+                      width: screenWidth,
+                      height: screenHeight * 0.06,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: screenWidth * 0.45,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: 'From',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                labelText: 'From',
+                                suffixIcon: Icon(
+                                  Icons.date_range,
+                                  color: custom_color.appcolor,
+                                ),
+                              ),
+                              controller: fromdateInputController,
+                              readOnly: true,
+                              onTap: () async {
+                                selectDate(context, 'from');
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: screenWidth * 0.45,
+                            child: TextFormField(
                                 decoration: InputDecoration(
-                                  hintText: 'From',
+                                  hintText: 'To',
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8)),
-                                  labelText: 'From',
+                                  labelText: 'To',
                                   suffixIcon: Icon(
                                     Icons.date_range,
                                     color: custom_color.appcolor,
                                   ),
                                 ),
-                                controller: fromdateInputController,
+                                controller: todateInputController,
                                 readOnly: true,
                                 onTap: () async {
-                                  selectDate(context, 'from');
-                                },
-                              ),
-                            ),
-                            Container(
-                              width: screenWidth * 0.45,
-                              child: TextFormField(
-                                  decoration: InputDecoration(
-                                    hintText: 'To',
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8)),
-                                    labelText: 'To',
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      color: custom_color.appcolor,
-                                    ),
-                                  ),
-                                  controller: todateInputController,
-                                  readOnly: true,
-                                  onTap: () async {
-                                    selectDate(context, 'to');
-                                  }),
-                            ),
-                          ],
-                        ),
+                                  selectDate(context, 'to');
+                                }),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: screenHeight*0.02,),
-                       isLoading?Helper().isvalidElement(reportList) && reportList.length > 0 ?
-                     Container(
-                      height:screenHeight * 0.80,
-                      
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.02,
+                    ),
+                    isLoading
+                        ? Helper().isvalidElement(reportList) &&
+                                reportList.length > 0
+                            ? Container(
+                                height: screenHeight * 0.80,
 
-                    //  width: screenWidth,
-                      // padding:EdgeInsets.all(15),
-                      child: 
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: reportList.length,
-                        // itemCount: 10,
-                        itemBuilder: (BuildContext context, int index){
-                          list=index+1;
-                          var data=reportList[index];
-                          return Container(
-                            child: Column(
-                              children: [
-                                Card(
-                                  color: index % 2 == 0
-                                                ? custom_color.lightcolor
-                                                : Colors.white,
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      child: Row(
-                                                        children: [
-                                                          SizedBox(width: screenWidth*0.01,),
-                                                          // Text('1'),
-                                           Text('($list)',style: TextStyle(fontWeight: FontWeight.bold),),
-                                                      SizedBox(width: screenWidth*0.02,),
-                                                          Column(
-                                                            children: [
-                                                              SizedBox(height: screenHeight*0.02,),
-                                                              Row(
-                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //  width: screenWidth,
+                                // padding:EdgeInsets.all(15),
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: reportList.length,
+                                    // itemCount: 10,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      list = index + 1;
+                                      var data = reportList[index];
+                                      return Container(
+                                        child: Column(
+                                          children: [
+                                            Card(
+                                              color: index % 2 == 0
+                                                  ? custom_color.lightcolor
+                                                  : Colors.white,
+                                              child: Column(
                                                 children: [
                                                   Container(
-                                                    // color: Colors.amber,
-                                                    width: screenWidth * 0.40,
                                                     child: Row(
                                                       children: [
-                                                       
-                                                        Text("Date : ${data['date'].substring(0 ,10)}")
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    // color: Colors.purple,
-                                                    width: screenWidth * 0.46,
-                                                    child: Row(
-                                                      children: [
-                                                      
-                                                        Text('Pat Name : ${data['patient_name']}')
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: screenHeight*0.01,),
-                                               Row(
-                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    // color: Colors.amber,
-                                                    width: screenWidth * 0.40,
-                                                    child: Row(
-                                                      children: [
-                                                       
-                                                        Text("Doctor : ${data['doctor_name'].toString().toUpperCase()}")
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    // color: Colors.purple,
-                                                    width: screenWidth * 0.46,
-                                                    child: Row(
-                                                      children: [
-                                                       
-                                                        Text('Fees : ${data['fees'].toString()}')
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: screenHeight*0.01,),
-                                              Row(
-                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    // color: Colors.amber,
-                                                    width: screenWidth * 0.40,
-                                                    child: Row(
-                                                      children: [
-                                                      
-                                                        Text("Pre Amt : ${data['pre_amount'].toString()}")
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    // color: Colors.purple,
-                                                    width: screenWidth * 0.46,
-                                                    child: Row(
-                                                      children: [
-                                                      
-                                                        Text('Total Fees : ${data['total_fees'].toString()}')
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: screenHeight*0.01,),
-                                              Row(
-                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    // color: Colors.amber,
-                                                    width: screenWidth * 0.40,
-                                                    child: Row(
-                                                      children: [
-                                                      
-                                                        Text("Paid : ${data['paid'].toString().toUpperCase()}")
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    // color: Colors.purple,
-                                                    width: screenWidth * 0.46,
-                                                    child: Row(
-                                                      children: [
-                                                      
-                                                        Text('Discount : ${data['discount'].toString()}')
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: screenHeight*0.01,),
-                                              Row(
-                                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    // color: Colors.amber,
-                                                    width: screenWidth * 0.85,
-                                                    child: Row(
-                                                      children: [
-                                                        
-                                                        Text("Balance : ${data['balance'].toString()}")
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  // Container(
-                                                  //   color: Colors.purple,
-                                                  //   width: screenWidth * 0.44,
-                                                  //   child: Row(
-                                                  //     children: [
-                                                  //       Text(
-                                                  //         'Fees :',
-                                                  //         style: TextStyle(
-                                                  //             fontWeight: FontWeight.bold),
-                                                  //       ),
-                                                  //       // Text('${data['contact_no'].toString()}')
-                                                  //     ],
-                                                  //   ),
-                                                  // ),
-                                                ],
-                                              ),
-                                              SizedBox(height: screenHeight*0.01,),
-                                                            ],
-                                                          ),
-                                                          
+                                                        SizedBox(
+                                                          width: screenWidth *
+                                                              0.01,
+                                                        ),
+                                                        // Text('1'),
+                                                        Text(
+                                                          '($list)',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        SizedBox(
+                                                          width: screenWidth *
+                                                              0.02,
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            SizedBox(
+                                                              height:
+                                                                  screenHeight *
+                                                                      0.02,
+                                                            ),
+                                                            Row(
+                                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                  // color: Colors.amber,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.40,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          "Date : ${data['date'].substring(0, 10)}")
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  // color: Colors.purple,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.46,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          'Name : ${data['patient_name']}')
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  screenHeight *
+                                                                      0.01,
+                                                            ),
+                                                            Row(
+                                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                  // color: Colors.amber,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.40,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          "Doctor : ${data['doctor_name'].toString().toUpperCase()}")
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  // color: Colors.purple,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.46,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          'Fees : ${data['fees'].toString()}')
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  screenHeight *
+                                                                      0.01,
+                                                            ),
+                                                            Row(
+                                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                  // color: Colors.amber,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.40,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          "Pre Amt : ${data['pre_amount'].toString()}")
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  // color: Colors.purple,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.46,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          'Total Fees : ${data['total_fees'].toString()}')
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  screenHeight *
+                                                                      0.01,
+                                                            ),
+                                                            Row(
+                                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                  // color: Colors.amber,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.40,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          "Paid : ${data['paid'].toString().toUpperCase()}")
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  // color: Colors.purple,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.46,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          'Discount : ${data['discount'].toString()}')
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  screenHeight *
+                                                                      0.01,
+                                                            ),
+                                                            Row(
+                                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                  // color: Colors.amber,
+                                                                  width:
+                                                                      screenWidth *
+                                                                          0.85,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                          "Balance : ${data['balance'].toString()}")
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                // Container(
+                                                                //   color: Colors.purple,
+                                                                //   width: screenWidth * 0.44,
+                                                                //   child: Row(
+                                                                //     children: [
+                                                                //       Text(
+                                                                //         'Fees :',
+                                                                //         style: TextStyle(
+                                                                //             fontWeight: FontWeight.bold),
+                                                                //       ),
+                                                                //       // Text('${data['contact_no'].toString()}')
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  screenHeight *
+                                                                      0.01,
+                                                            ),
+                                                          ],
+                                                        ),
+
 //                                                           PopupMenuButton(itemBuilder: (context)=>[
 //                                       PopupMenuItem(child: Row(
 //                                               children: [
@@ -358,25 +415,22 @@ getdailyreportList();
 //           //                                      Navigator.push(
 //           // context, MaterialPageRoute(builder: (context)=> Edittreatment(medicinelist:data),)
 //         //  );
-// //                                          
+// //
 //                                             },
 //                                             ),
 
-                                            
-
-
 //                                     ]
-                                    
+
 //                                     ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                                
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+
 //                                   child: ListTile(
 //                                     // title: SizedBox(child: Text('${data['treatment']}')),
-                                    
+
 //                                     leading: Text('$list'),
 
 //                                     trailing: PopupMenuButton(itemBuilder: (context)=>[
@@ -391,46 +445,39 @@ getdailyreportList();
 //                                                Navigator.push(
 //           context, MaterialPageRoute(builder: (context)=> Edittreatment(medicinelist:data),)
 //          );
-// //                                          
+// //
 //                                             },
 //                                             ),
 
-                                            
-
-
 //                                     ]
-                                    
+
 //                                     ),
-                     
+
 //                                   ),
-                                   
-                                )
-                              ],
-                            ),
-                            
-                          );
-                          
-                      }),
-                      
-                       )
-                       
-                       :Container(child:
-            Text('No Data Found')
-          ):Container(child: SpinLoader(),)
-                    ],
-                  ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                              )
+                            : Container(child: Text('No Data Found'))
+                        : Container(
+                            child: SpinLoader(),
+                          )
+                  ],
                 ),
               ),
-            )),
-      ));
+            ),
+          )),
+        ));
   }
+
   getdailyreportList() async {
     // var formatter = new DateFormat('yyyy-MM-dd');
     isLoading = false;
     var data = {
       "from_date": fromdateInputController.text.toString(),
       "to_date": todateInputController.text.toString(),
-     
     };
     // this.setState(() {
     //   isLoading = true;

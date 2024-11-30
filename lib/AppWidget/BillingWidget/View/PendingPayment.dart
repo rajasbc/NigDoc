@@ -18,6 +18,7 @@ class PendingPayment extends StatefulWidget {
 class _PendingPaymentState extends State<PendingPayment> {
   final LocalStorage storage = new LocalStorage('doctor_store');
   TextEditingController receivedController = TextEditingController();
+  final FocusNode receivedFocusNode = FocusNode();
   var p_name;
   var total_amount;
   var discount;
@@ -61,7 +62,7 @@ class _PendingPaymentState extends State<PendingPayment> {
       total_amount = payment['grand_total'].toString();
       discount = payment['discount'].toString();
       test_bill_amount = payment['balance'].toString();
-      paid = payment['paid'].toString();
+      paid = payment['advance'].toString();
       bill_id = payment['id'].toString();
       remain_balance= double.parse(test_bill_amount);
     });
@@ -69,7 +70,9 @@ class _PendingPaymentState extends State<PendingPayment> {
       
     });
   }
-
+  void dispose(){
+    receivedFocusNode.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -179,7 +182,7 @@ class _PendingPaymentState extends State<PendingPayment> {
         children: [
           SizedBox(
             width: screenWidth,
-            height: screenHeight * 0.15,
+            height: screenHeight * 0.10,
             // color: Colors.amber,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -248,7 +251,7 @@ class _PendingPaymentState extends State<PendingPayment> {
             ),
           ),
           Container(
-            height: screenHeight * 0.07,
+            height: screenHeight * 0.05,
             width: screenWidth,
             color: appcolor,
             child: const Align(
@@ -268,7 +271,7 @@ class _PendingPaymentState extends State<PendingPayment> {
           ),
           SizedBox(
             width: screenWidth,
-            height: screenHeight * 0.17,
+            height: screenHeight * 0.19,
             // color: Colors.amber,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -311,7 +314,9 @@ class _PendingPaymentState extends State<PendingPayment> {
                       SizedBox(
                         width: screenWidth * 0.3,
                         child: Text(
-                          '$discount',
+                          // '${ Helper().isvalidElement(discount) ? discount : '0'}',
+                          '${Helper().isvalidElement(discount) && discount != "" ? discount : '0'}',
+                          // '$discount',
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),
@@ -319,6 +324,33 @@ class _PendingPaymentState extends State<PendingPayment> {
                     ],
                   ),
                 ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: screenWidth * 0.5,
+                        child: const Text(
+                          'Paid: ',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+
+                      SizedBox(
+                        width: screenWidth * 0.3,
+                        child: Text(
+                          '${ Helper().isvalidElement(paid) ? paid : '0'}',
+                          // '$discount',
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      // Text('Bill Date :'),
+                    ],
+                  ),
+                ),
+
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -345,7 +377,7 @@ class _PendingPaymentState extends State<PendingPayment> {
             ),
           ),
           Container(
-            height: screenHeight * 0.07,
+            height: screenHeight * 0.05,
             width: screenWidth,
             color: appcolor,
             child: const Align(
@@ -365,7 +397,7 @@ class _PendingPaymentState extends State<PendingPayment> {
           ),
           SizedBox(
             width: screenWidth,
-            height: screenHeight * 0.3,
+            // height: screenHeight * 0.3 ,
             // color: Colors.amber,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -412,6 +444,7 @@ class _PendingPaymentState extends State<PendingPayment> {
                             height: screenHeight * 0.07,
                             width: screenWidth * 0.3,
                             child: DropdownButtonFormField(
+                              menuMaxHeight: 200,
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -497,6 +530,7 @@ class _PendingPaymentState extends State<PendingPayment> {
                               filled: true,
                             ),
                             controller: receivedController,
+                            focusNode: receivedFocusNode,
                           ),
                         ),
                       ),
@@ -537,7 +571,7 @@ class _PendingPaymentState extends State<PendingPayment> {
                 // border: Border.all(color: Colors.blueAccent),
                 borderRadius: const BorderRadius.all(Radius.circular(5))),
             width: screenWidth * 0.9,
-            height: screenHeight * 0.06,
+            height: screenHeight * 0.05,
             child: TextButton(
                 onPressed: () async {
                  pendingPaybill();
@@ -576,6 +610,7 @@ class _PendingPaymentState extends State<PendingPayment> {
 
   pendingPaybill() async {
     if (receivedController.text.isEmpty) {
+                          receivedFocusNode.requestFocus();
       Fluttertoast.showToast(
                       msg: 'Please enter the amount',
                       toastLength: Toast.LENGTH_SHORT,

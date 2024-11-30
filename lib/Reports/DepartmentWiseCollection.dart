@@ -16,10 +16,12 @@ class Departmentcollection extends StatefulWidget {
 class _DepartmentcollectionState extends State<Departmentcollection> {
   TextEditingController fromdateInputController = TextEditingController();
   TextEditingController todateInputController = TextEditingController();
+  TextEditingController searchText = TextEditingController();
   var list=0;
   var userResponse;
   var accesstoken;
   bool isLoading = true;
+  var searchList;
   @override
   void initState() {
     userResponse = storage.getItem('userResponse');
@@ -32,6 +34,7 @@ class _DepartmentcollectionState extends State<Departmentcollection> {
     super.initState();
   }
   List depList = [];
+   List depList1 = [];
 
    final DateFormate = "yyyy-MM-dd";
    DateTime currentDate = DateTime.now();
@@ -84,12 +87,15 @@ class _DepartmentcollectionState extends State<Departmentcollection> {
   }
   @override
   Widget build(BuildContext context) {
+    depList1 =
+        Helper().isvalidElement(searchList) && searchText.text.isNotEmpty
+            ? searchList
+            : depList;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
      Map<String, String> data = {
       'date': '',
       'patient_name':''
-      
     };
     return PopScope(
       canPop: false,
@@ -174,87 +180,240 @@ class _DepartmentcollectionState extends State<Departmentcollection> {
                           ],
                         ),
                       ),
-                      SizedBox(height: screenHeight*0.02,),
-                       isLoading?Helper().isvalidElement(depList) && depList.length > 0 ?
+                      SizedBox(height: screenHeight*0.02),
+                      // Center(
+                      //       child: Container(
+                      //         height: screenHeight * 0.06,
+                      //         width: screenWidth,
+                      //         decoration: BoxDecoration(
+                      //             // color: Colors.white,
+                      //             border:
+                      //                 Border.all(color: custom_color.appcolor),
+                      //             borderRadius:
+                      //                 BorderRadius.all(Radius.circular(4))),
+                      //         child: Row(
+                      //           children: [
+                      //             Container(
+                      //                 width: screenWidth * 0.1,
+                      //                 height: screenHeight,
+                      //                 child: Icon(Icons.search,
+                      //                     color: custom_color.appcolor)),
+                      //             Container(
+                      //               width: screenWidth * 0.71,
+                      //               child: TextField(
+                      //                 controller: searchText,
+                      //                 onChanged: (text) {
+                      //                   // Ensure the input is at least 3 characters long before filtering
+                      //                   if (text.length >= 3) {
+                      //                     setState(() {
+                      //                       searchList =
+                      //                           depList.where((element) {
+                      //                         var groupList1 =
+                      //                             element['dep_name']
+                      //                                 .toString()
+                      //                                 .toLowerCase();
+                      //                         return groupList1
+                      //                             .contains(text.toLowerCase());
+                      //                       }).toList();
+                      //                     });
+                      //                   } else {
+                      //                     setState(() {
+                      //                       searchList = [];
+                      //                     });
+                      //                   }
+                      //                 },
+                      //                 decoration: InputDecoration(
+                      //                   // filled: true,
+                      //                   border: InputBorder.none,
+                      //                   // fillColor: Colors.white,
+                      //                   hintText:
+                      //                       'Search Department List Here...',
+                      //                 ),
+                      //               ),
+                      //             ),
+
+                      //             searchText.text.isNotEmpty
+                      //                 ? Container(
+                      //                     width: screenWidth * 0.06,
+                      //                     height: screenHeight,
+                      //                     child: IconButton(
+                      //                       icon: Icon(
+                      //                         Icons.close,
+                      //                         color: Colors.red,
+                      //                       ),
+                      //                       onPressed: () {
+                      //                         setState(() {
+                      //                           searchText.text = '';
+                      //                           searchList = '';
+                      //                         });
+                      //                       },
+                      //                     ))
+                      //                 : Container(),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      // SizedBox(height: screenHeight*0.02),
+                      //  isLoading?Helper().isvalidElement(depList1) && depList1.length > 0 ?
                      Container(
-                      height:screenHeight * 0.80,
+                      height:screenHeight,
                       child: 
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: depList.length,
-                        // itemCount: 10,
-                        itemBuilder: (BuildContext context, int index){
-                          list=index+1;
-                          var data=depList[index];
-                          return Container(
-                            child: Column(
-                              children: [
-                                Card(
-                                  color: index % 2 == 0
-                                                ? custom_color.lightcolor
-                                                : Colors.white,
-                                                child: ListTile(
-                                    leading: Text('$list',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
-                                    title: SizedBox(child: Text('Department Name : ${data['dep_name']}',style: TextStyle(fontWeight: FontWeight.bold))),
-                                    // subtitle: SizedBox(child: Text('Total Fees : ${data['total_fees']}')),
-                                    // trailing:SizedBox(child: Text('Paid : ${data['paid']}')),
-                                    
-                                    subtitle: Column(
-                                      children: [
-                                        Container(
-                                          width: screenWidth*0.77,
-                                          child: Text('Total Fees : ${data['total_fees']}',style: TextStyle(fontWeight: FontWeight.bold),)),
-                                          SizedBox(height: screenHeight*0.01,),
-                                        Container(
-                                           width: screenWidth*0.77,
-                                          child: Text('Paid : ${data['paid']}',style: TextStyle(fontWeight: FontWeight.bold))),
-                                          SizedBox(height: screenHeight*0.01,),
-                                        Container(
-                                           width: screenWidth*0.77,
-                                          child: Text('Balance : ${data['balance']}',style: TextStyle(fontWeight: FontWeight.bold)))
-                                      ],
+                      Column(
+                        children: [
+                             Container(
+                              height: screenHeight * 0.06,
+                              width: screenWidth,
+                              decoration: BoxDecoration(
+                                  // color: Colors.white,
+                                  border:
+                                      Border.all(color: custom_color.appcolor),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4))),
+                              child: Row(
+                                children: [
+                                  Container(
+                                      width: screenWidth * 0.1,
+                                      height: screenHeight,
+                                      child: Icon(Icons.search,
+                                          color: custom_color.appcolor)),
+                                  Container(
+                                    width: screenWidth * 0.71,
+                                    child: TextField(
+                                      controller: searchText,
+                                      onChanged: (text) {
+                                        // Ensure the input is at least 3 characters long before filtering
+                                        if (text.length >= 3) {
+                                          setState(() {
+                                            searchList =
+                                                depList.where((element) {
+                                              var groupList1 =
+                                                  element['dep_name']
+                                                      .toString()
+                                                      .toLowerCase();
+                                              return groupList1
+                                                  .contains(text.toLowerCase());
+                                            }).toList();
+                                          });
+                                        } else {
+                                          setState(() {
+                                            searchList = [];
+                                          });
+                                        }
+                                      },
+                                      decoration: InputDecoration(
+                                        // filled: true,
+                                        border: InputBorder.none,
+                                        // fillColor: Colors.white,
+                                        hintText:
+                                            'Search Department Name Here...',
+                                      ),
                                     ),
-                                    
-                                    
-
-        //                             trailing: PopupMenuButton(itemBuilder: (context)=>[
-        //                               PopupMenuItem(child: Row(
-        //                                       children: [
-        //                                         Icon(Icons.edit,color: custom_color.appcolor,),
-        //                                         Padding(padding: EdgeInsets.only(left: 10),
-        //                                         child: Text('Edit',style: TextStyle(fontSize: 16),),)
-        //                                       ],
-        //                                     ),
-        //                                     onTap: () {
-        //                                        Navigator.push(
-        //   context, MaterialPageRoute(builder: (context)=> Edittreatment(medicinelist:data),)
-        //  );
-                                        
-        //                                     },
-        //                                     ),
-
-                                            
-
-
-        //                             ]
-                                    
-        //                             ),
-                     
                                   ),
-                                   
-                                )
-                              ],
-                            ),
-                            
-                          );
+
+                                  searchText.text.isNotEmpty
+                                      ? Container(
+                                          width: screenWidth * 0.06,
+                                          height: screenHeight,
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                searchText.text = '';
+                                                searchList = '';
+                                              });
+                                            },
+                                          ))
+                                      : Container(),
+                                ],
+                              ),
                           
-                      }),
+                          ),
+                       isLoading?Helper().isvalidElement(depList1) && depList1.length > 0 ?
+                          Container(
+                              height: screenHeight * 0.80,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: depList1.length,
+                              // itemCount: 10,
+                              itemBuilder: (BuildContext context, int index){
+                                list=index+1;
+                                var data=depList1[index];
+                                return Container(
+                                  child: Column(
+                                    children: [
+                                      Card(
+                                        color: index % 2 == 0
+                                                      ? custom_color.lightcolor
+                                                      : Colors.white,
+                                                      child: ListTile(
+                                          leading: Text('$list',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
+                                          title: SizedBox(child: Text('Department Name : ${data['dep_name']}',style: TextStyle(fontWeight: FontWeight.bold))),
+                                          // subtitle: SizedBox(child: Text('Total Fees : ${data['total_fees']}')),
+                                          // trailing:SizedBox(child: Text('Paid : ${data['paid']}')),
+                                          
+                                          subtitle: Column(
+                                            children: [
+                                              Container(
+                                                width: screenWidth*0.77,
+                                                child: Text('Total Fees : ${data['total_fees']}',style: TextStyle(fontWeight: FontWeight.bold),)),
+                                                // SizedBox(height: screenHeight*0.01,),
+                                              Container(
+                                                 width: screenWidth*0.77,
+                                                child: Text('Paid : ${data['paid']}',style: TextStyle(fontWeight: FontWeight.bold))),
+                                                // SizedBox(height: screenHeight*0.01,),
+                                              Container(
+                                                 width: screenWidth*0.77,
+                                                child: Text('Balance : ${data['balance']}',style: TextStyle(fontWeight: FontWeight.bold)))
+                                            ],
+                                          ),
+                                          
+                                          
+                            
+                                    //                             trailing: PopupMenuButton(itemBuilder: (context)=>[
+                                    //                               PopupMenuItem(child: Row(
+                                    //                                       children: [
+                                    //                                         Icon(Icons.edit,color: custom_color.appcolor,),
+                                    //                                         Padding(padding: EdgeInsets.only(left: 10),
+                                    //                                         child: Text('Edit',style: TextStyle(fontSize: 16),),)
+                                    //                                       ],
+                                    //                                     ),
+                                    //                                     onTap: () {
+                                    //                                        Navigator.push(
+                                    //   context, MaterialPageRoute(builder: (context)=> Edittreatment(medicinelist:data),)
+                                    //  );
+                                              
+                                    //                                     },
+                                    //                                     ),
+                            
+                                                  
+                            
+                            
+                                    //                             ]
+                                          
+                                    //                             ),
+                                                 
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  
+                                );
+                                
+                            }),
+                          ):Container(child:
+            Text('No Data Found')
+          ):Container(child: SpinLoader(),)
+                        ],
+                      ),
                       
                        )
                        
-                       :Container(child:
-            Text('No Data Found')
-          ):Container(child: SpinLoader(),)
+          //              :Container(child:
+          //   Text('No Data Found')
+          // ):Container(child: SpinLoader(),)
                     ],
                   ),
                 ),

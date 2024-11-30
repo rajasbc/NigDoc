@@ -18,7 +18,7 @@ class Pendingbilllist extends StatefulWidget {
 
 class _PendingbilllistState extends State<Pendingbilllist> {
   final LocalStorage storage = new LocalStorage('doctor_store');
-  final DateFormate = "dd-MM-yyyy";
+  final DateFormate = "yyyy-MM-dd";
   TextEditingController fromdateInputController = TextEditingController();
   TextEditingController todateInputController = TextEditingController();
 
@@ -317,6 +317,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                                                                 .spaceBetween,
                                                         children: [
                                                           Container(
+                                                            padding: EdgeInsets.only(left: 5),
                                                             child: Row(
                                                               children: [
                                                                 Text(
@@ -327,7 +328,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
                                                                   //         color: Color.fromARGB(255, 54, 50, 50)),
                                                                 ),
                                                                 Text(
-                                                                    '${data['discount'].toString()}')
+                                                                        '${Helper().isvalidElement(data) && Helper().isvalidElement(data['discount']) && data['discount'] != "" ? data['discount'] : '0'}')
                                                               ],
                                                             ),
                                                           ),

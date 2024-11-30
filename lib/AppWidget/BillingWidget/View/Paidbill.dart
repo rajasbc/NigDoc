@@ -289,7 +289,7 @@ class _paidbilllistState extends State<paidbilllist> {
                                                         child: Row(
                                                           children: [
                                                             Text(
-                                                              'Fess :',
+                                                              'Fees :',
                                                               // style: TextStyle(
                                                               //     fontWeight:
                                                               //         FontWeight.bold,color: Color.fromARGB(255, 54, 50, 50)),
@@ -335,7 +335,9 @@ class _paidbilllistState extends State<paidbilllist> {
                                                               //         FontWeight.bold,color: Color.fromARGB(255, 54, 50, 50)),
                                                             ),
                                                             Text(
-                                                                '${data['discount'].toString()}')
+                                                                // '${data['discount'].toString()}'
+                                                                '${Helper().isvalidElement(data) && Helper().isvalidElement(data['discount']) && data['discount'] != "" ? data['discount'] : '0'}'
+                                                                )
                                                           ],
                                                         ),
                                                       ),

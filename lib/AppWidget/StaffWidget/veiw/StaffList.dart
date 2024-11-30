@@ -91,12 +91,12 @@ var user = [
                 child: Column(
                   children: [
                     // Text('data'),
-                    SizedBox(height: screenHeight*0.02,),
+                    SizedBox(height: screenHeight*0.01),
                     Container(
-                      height: screenHeight * 0.07,
+                      height: screenHeight * 0.05,
                       width: screenWidth * 0.96,
                       decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0)
+                      // borderRadius: BorderRadius.circular(5.0)
                          
                           ),
                       child: Padding(
@@ -140,7 +140,7 @@ var user = [
                         ),
                       ),
                     ),
-                     SizedBox(height: screenHeight*0.02,),
+                    //  SizedBox(height: screenHeight*0.02,),
                     Container(
                       height: screenHeight*0.80,
                       child: Helper().isvalidElement(test_List) &&
@@ -312,7 +312,8 @@ var user = [
                                 
                               ),
                                                   onPressed: (){
-                                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>StaffList()));
+                                                  //  Navigator.push(context, MaterialPageRoute(builder: (context)=>StaffList()));
+                                                                                                    Navigator.pop(context);
                                                   }, child: Text('NO' ,style: TextStyle(fontSize: 20,color: Colors.white),)),
                                               ),
                                               Container(

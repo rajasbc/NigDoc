@@ -30,6 +30,9 @@ class _AddsummaryState extends State<Addsummary> {
   TextEditingController summarycomtroller = TextEditingController();
   TextEditingController grandtotalcomtroller = TextEditingController();
   TextEditingController totalqtycomtroller = TextEditingController();
+  final FocusNode descriptionFocusNode = FocusNode();
+  final FocusNode rateFocusNode = FocusNode();
+  final FocusNode qtyFocusNode = FocusNode();
   bool isloading = false;
   var selected_item;
   var title={
@@ -119,6 +122,11 @@ class _AddsummaryState extends State<Addsummary> {
   //     // getdoctorlist();
   //   }
   // }
+  dispose(){
+    descriptionFocusNode.dispose();
+    rateFocusNode.dispose();
+    qtyFocusNode.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -431,6 +439,7 @@ class _AddsummaryState extends State<Addsummary> {
                         // width: ScreenWidth * 0.69,
                         child: CategoryListItem.length > 0
                             ? DropdownButtonFormField(
+                              menuMaxHeight: 300,
                                 //decoration: InputDecoration.collapsed(hintText: ''),
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
@@ -453,6 +462,7 @@ class _AddsummaryState extends State<Addsummary> {
                                 }).toList(),
                               )
                             : DropdownButtonFormField(
+                              menuMaxHeight: 300,
                                 //decoration: InputDecoration.collapsed(hintText: ''),
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
@@ -478,6 +488,7 @@ class _AddsummaryState extends State<Addsummary> {
                         // width: ScreenWidth * 0.69,
                         child: Subcategory_List.length > 0
                             ? DropdownButtonFormField(
+                              menuMaxHeight: 300,
                                 //decoration: InputDecoration.collapsed(hintText: ''),
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
@@ -503,6 +514,7 @@ class _AddsummaryState extends State<Addsummary> {
                                 }).toList(),
                               )
                             : DropdownButtonFormField(
+                              menuMaxHeight: 300,
                                 //decoration: InputDecoration.collapsed(hintText: ''),
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
@@ -526,6 +538,7 @@ class _AddsummaryState extends State<Addsummary> {
                    SizedBox(height: screenHeight*0.02,),
                    TextFormField(
                     controller: descriptioncontroller,
+                    focusNode: descriptionFocusNode,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Description *',
@@ -534,6 +547,7 @@ class _AddsummaryState extends State<Addsummary> {
                   SizedBox(height: screenHeight*0.02,),
                    TextFormField(
                     controller: ratecontroller,
+                    focusNode: rateFocusNode,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -547,6 +561,7 @@ class _AddsummaryState extends State<Addsummary> {
                    SizedBox(height: screenHeight*0.02,),
                   TextFormField(
                     controller: qtycontroller,
+                    focusNode: qtyFocusNode,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -764,7 +779,7 @@ class _AddsummaryState extends State<Addsummary> {
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: 'Final AMount'
+                                    labelText: 'Final Amount'
                                   ),
                                 ),
                               )
@@ -916,7 +931,10 @@ class _AddsummaryState extends State<Addsummary> {
 
         if (textEditingValue.text == '') {
           return  const Iterable<List>.empty();
-        } else {
+        } else if(textEditingValue.text.length <3){
+          return  const Iterable<List>.empty();
+        }
+         else {
           var matches = [];
           matches.addAll(PatientList);
           matches.retainWhere((s) {
@@ -983,7 +1001,7 @@ class _AddsummaryState extends State<Addsummary> {
           alignment: Alignment.topLeft,
           child: Material(
             child: SizedBox(
-              width: screenWidth ,
+              width: screenWidth*0.70 ,
               // height: screenHeight * 0.8,
               // color:Colors.transparent,
               // color: Colors.white,
@@ -1016,21 +1034,25 @@ class _AddsummaryState extends State<Addsummary> {
                                     });
                                   },
                                   child: Card(
-                                    color: Colors.grey,
-                                    // color: custom_color.app_color,
+                                    // color: Colors.grey,
+                                    color: custom_color.appcolor,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                     Padding(
                                     padding:  EdgeInsets.all(5),
-                                    child: Text(
-                                        '${options.toList()[0][index]['customer_name'].toString()}',
-                                        style:  TextStyle(color: Colors.black)),
+                                    child: Center(
+                                      child: Text(
+                                          '${options.toList()[0][index]['customer_name'].toString()}',
+                                          style:  TextStyle(color: Colors.white)),
+                                    ),
                                                               ),
-                                                              Text(
-                                        ' ${options.toList()[0][index]['phone'].toString()}',
-                                        style:  TextStyle(color: Colors.black)),
+                                                              Center(
+                                                                child: Text(
+                                                                                                        ' ${options.toList()[0][index]['phone'].toString()}',
+                                                                                                        style:  TextStyle(color: Colors.white)),
+                                                              ),
                                                               // Divider(
                                                               //   thickness: 1,
                                                               // )
@@ -1086,7 +1108,10 @@ class _AddsummaryState extends State<Addsummary> {
 
         if (textEditingValue.text == '') {
           return  const Iterable<List>.empty();
-        } else {
+        }else if(textEditingValue.text.length <3){
+          return  const Iterable<List>.empty();
+        }
+         else {
           var matches = [];
           matches.addAll(groupList);
           matches.retainWhere((s) {
@@ -1146,7 +1171,7 @@ class _AddsummaryState extends State<Addsummary> {
           alignment: Alignment.topLeft,
           child: Material(
             child: SizedBox(
-              width: screenWidth ,
+              width: screenWidth*0.70,
               // height: screenHeight * 0.8,
               // color:Colors.transparent,
               // color: Colors.white,
@@ -1179,17 +1204,19 @@ class _AddsummaryState extends State<Addsummary> {
                                     });
                                   },
                                   child: Card(
-                                    color: Colors.grey,
-                                    // color: custom_color.app_color,
+                                    // color: Colors.grey,
+                                    color: custom_color.appcolor,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                     Padding(
                                     padding:  EdgeInsets.all(8.0),
-                                    child: Text(
-                                        '${options1.toList()[0][index]['group_name'].toString()}',
-                                        style:  TextStyle(color: Colors.black)),
+                                    child: Center(
+                                      child: Text(
+                                          '${options1.toList()[0][index]['group_name'].toString()}',
+                                          style:  TextStyle(color: Colors.white)),
+                                    ),
                                                               ),
                                                               // Divider(
                                                               //   thickness: 1,
@@ -1278,18 +1305,18 @@ class _AddsummaryState extends State<Addsummary> {
   Add(){
 if(selectedPatient == null){
     NigDocToast().showErrorToast('Select Patient');
-
   }
-  else if(select_Category == null){
-    NigDocToast().showErrorToast('Select Category');
-
+  else if(descriptioncontroller.text.isEmpty){
+    descriptionFocusNode.requestFocus();
+    NigDocToast().showErrorToast('Enter Description');
   }
-   else if(select_subCategory == null){
-    NigDocToast().showErrorToast('Select SubCategory');
-
+   else if(ratecontroller.text.isEmpty){
+    rateFocusNode.requestFocus();
+    NigDocToast().showErrorToast('Enter Rate');
   }
-  else if(selectedgroup == null){
-    NigDocToast().showErrorToast('Select Group');
+  else if(qtycontroller.text.isEmpty){
+    qtyFocusNode.requestFocus();
+    NigDocToast().showErrorToast('Enter Qty');
 
   }
   
@@ -1297,17 +1324,16 @@ if(selectedPatient == null){
     var data={
         'patient_id':selectedPatient['cid'].toString(),
         'patient_name':selectedPatient['customer_name'].toString(),
-        'group_name':selectedgroup['group_name'].toString(),
-        'group_id':selectedgroup['id'].toString(),
-        'category_name':select_Category['category_name'].toString(),
-        'category_id':select_Category['id'].toString(),
-        'sub_category_name':select_subCategory['subcategory_name'].toString(),
-        'sub_category_id':select_subCategory['id'].toString(),
+        'group_name': Helper().isvalidElement(selectedgroup)?selectedgroup['group_name'].toString():" ",
+        'group_id': Helper().isvalidElement(selectedgroup)? selectedgroup['id'].toString():" ",
+        'category_name': Helper().isvalidElement(select_Category)? select_Category['category_name'].toString():" ",
+        'category_id': Helper().isvalidElement(select_Category)? select_Category['id'].toString():" ",
+        'sub_category_name': Helper().isvalidElement(select_subCategory)? select_subCategory['subcategory_name'].toString():" ",
+        'sub_category_id': Helper().isvalidElement(select_subCategory)? select_subCategory['id'].toString():" ",
         'description':descriptioncontroller.text.toString(),
         'rate':ratecontroller.text.toString(),
         'qty':qtycontroller.text.toString(),
         'total':totalcontroller.text.toString(),
-
       };
 
       item.add(data);

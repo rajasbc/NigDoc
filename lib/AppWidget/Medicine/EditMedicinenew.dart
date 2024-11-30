@@ -69,6 +69,11 @@ TextEditingController eachstrippricecontroller = TextEditingController();
 TextEditingController eachqtypricecontroller = TextEditingController();
 TextEditingController totalpricecontroller = TextEditingController();
 TextEditingController expdatecontroller = TextEditingController();
+final FocusNode medicineFocusNode = FocusNode();
+final FocusNode alternativeForcusNode = FocusNode();
+final FocusNode stripFocusNode = FocusNode();
+final FocusNode qtyFocusNode = FocusNode();
+final FocusNode eachstripFocusNode = FocusNode();
 var data;
 @override
   void initState(){
@@ -99,6 +104,13 @@ var data;
     });
 
    
+  }
+  void dispose(){
+    medicineFocusNode.dispose();
+    alternativeForcusNode.dispose();
+    stripFocusNode.dispose();
+    qtyFocusNode.dispose();
+    eachstripFocusNode.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -137,6 +149,7 @@ var data;
                 SizedBox(height: screenHeight*0.02,),
                    TextFormField(
                     controller: medicine_Controller,
+                    focusNode: medicineFocusNode,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -150,6 +163,7 @@ var data;
                   SizedBox(height: screenHeight*0.02,),
                  TextFormField(
                   controller: Alternative_Controller,
+                  focusNode: alternativeForcusNode,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -215,6 +229,7 @@ var data;
                    SizedBox(height: screenHeight*0.02,),
                    TextFormField(
                     controller: stripcontroller,
+                    focusNode: stripFocusNode,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -234,6 +249,7 @@ var data;
                    
                    TextFormField(
                     controller: qtycontroller,
+                    focusNode: qtyFocusNode,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -265,6 +281,7 @@ var data;
                    TextFormField(
                     keyboardType: TextInputType.number,
                     controller: eachstrippricecontroller,
+                    focusNode: eachstripFocusNode,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -358,19 +375,24 @@ var data;
                         
                         onPressed: ()async{
                                   if(medicine_Controller.text.isEmpty){
+                                  medicineFocusNode.requestFocus();
                                     NigDocToast().showErrorToast('Please Enter Medicine Nmae');
                       
                                   }else if(Alternative_Controller.text.isEmpty){
+                                  alternativeForcusNode.requestFocus();
                                     NigDocToast().showErrorToast('Enter Alternattive Medicine');
                       
                                   }
                                   else if(stripcontroller.text.isEmpty){
+                                  stripFocusNode.requestFocus();
                                     NigDocToast().showErrorToast('Enter Strip');
                       
                                     }else if(qtycontroller.text.isEmpty){
+                                    qtyFocusNode.requestFocus();
                                     NigDocToast().showErrorToast('Enter your Qty');
                                     
                                    } else if(eachstrippricecontroller.text.isEmpty){
+                                   eachstripFocusNode.requestFocus();
                                     NigDocToast().showErrorToast('Enter Strip Price');
                                 //  } else if(selected_item==null){
                                 //     NigDocToast().showErrorToast('Select Pattern Type');

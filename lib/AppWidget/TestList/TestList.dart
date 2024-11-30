@@ -23,7 +23,8 @@ class _TestListState extends State<TestList> {
    TextEditingController testnamecontroller=TextEditingController();
    TextEditingController testamountcontroller=TextEditingController();
 
-  
+  final FocusNode testnameFocusNode = FocusNode();
+  final FocusNode testamountFocusNode = FocusNode();
    String medicineDropdownvalue="empty";
 
 
@@ -55,7 +56,10 @@ class _TestListState extends State<TestList> {
     // TODO: implement initState
     super.initState();
   }
-
+  void dispose(){
+    testnameFocusNode.dispose();
+    testamountFocusNode.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     // test_List=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: testList;
@@ -230,6 +234,7 @@ class _TestListState extends State<TestList> {
                                   
                                                TextFormField(
                                                controller: testnamecontroller,
+                                               focusNode: testnameFocusNode,
                                                decoration: InputDecoration(
                                                border: OutlineInputBorder(),
                                                labelText: 'Test Name',
@@ -238,6 +243,7 @@ class _TestListState extends State<TestList> {
                                                 SizedBox(height: screenHeight*0.02,),
                                                  TextFormField(
                                                controller: testamountcontroller,
+                                               focusNode: testamountFocusNode,
                                                keyboardType: TextInputType.number,
                                                decoration: InputDecoration(
                                                border: OutlineInputBorder(),
@@ -266,7 +272,8 @@ class _TestListState extends State<TestList> {
                                child:Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 20),),
                                   
                                onPressed: (() {
-                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>TestList()));
+                                //  Navigator.push(context, MaterialPageRoute(builder: (context)=>TestList()));
+                                Navigator.pop(context);
                                }),
                                
                                ),
@@ -291,8 +298,10 @@ class _TestListState extends State<TestList> {
                                 child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                                 onPressed: (() async{
                                        if(testnamecontroller.text.isEmpty){
+                                        testnameFocusNode.requestFocus();
                                                       NigDocToast().showErrorToast('Enter Test Name');
                                                      }else if(testamountcontroller.text.isEmpty){
+                                                      testamountFocusNode.requestFocus();
                                                        NigDocToast().showErrorToast('Enter Test Amount');
                                                      }
                                                      

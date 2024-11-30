@@ -58,6 +58,8 @@ class _PatientsState extends State<Patients> {
   TextEditingController consultcontroller = TextEditingController();
   TextEditingController reasoncontroller = TextEditingController();
   TextEditingController feescontroller = TextEditingController();
+  final FocusNode mobileFocusNode = FocusNode();
+  final FocusNode ageFocusNode = FocusNode();
   bool loading = false;
   bool isloading= false;
 
@@ -120,7 +122,10 @@ class _PatientsState extends State<Patients> {
     // TODO: implement initState
     super.initState();
   }
-
+  void dispose(){
+    mobileFocusNode.dispose();
+    ageFocusNode.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
@@ -463,10 +468,13 @@ class _PatientsState extends State<Patients> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: mobilecontroller,
+                    focusNode: mobileFocusNode,
                     maxLength: 10,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Mobile Number *'),
+                        border: OutlineInputBorder(), labelText: 'Mobile Number *',
+                    counterText: "",
+                        ),
                   ),
                 ),
                 Padding(
@@ -501,6 +509,7 @@ class _PatientsState extends State<Patients> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: agecontroller,
+                    focusNode: ageFocusNode,
                     maxLength: 3,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
@@ -1031,6 +1040,7 @@ class _PatientsState extends State<Patients> {
                                 textColor: Colors.white,
                                 fontSize: 15.0);
                           } else if (mobilecontroller.text.isEmpty) {
+                            mobileFocusNode.requestFocus();
                             Fluttertoast.showToast(
                                 msg: 'Enter Mobile Number',
                                 toastLength: Toast.LENGTH_SHORT,
@@ -1040,6 +1050,7 @@ class _PatientsState extends State<Patients> {
                                 textColor: Colors.white,
                                 fontSize: 15.0);
                           } else if (mobilecontroller.text.length < 10) {
+                            mobileFocusNode.requestFocus();
                             Fluttertoast.showToast(
                                 msg: 'Enter Valid Mobile Number',
                                 toastLength: Toast.LENGTH_SHORT,
@@ -1049,6 +1060,7 @@ class _PatientsState extends State<Patients> {
                                 textColor: Colors.white,
                                 fontSize: 15.0);
                           } else if (agecontroller.text.isEmpty) {
+                            ageFocusNode.requestFocus();
                             Fluttertoast.showToast(
                                 msg: 'Enter Your Age',
                                 toastLength: Toast.LENGTH_SHORT,

@@ -19,9 +19,12 @@ import 'package:nigdoc/AppWidget/Notification/AppoinmentList.dart';
 import 'package:nigdoc/AppWidget/Notification/NotificationPage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PatientList.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Patients.dart';
+import 'package:nigdoc/AppWidget/PatientsWidget/veiw/Physiotherapy_addPrescription.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/veiw/PrescriptionPage.dart';
+// import 'package:nigdoc/AppWidget/PatientsWidget/veiw/body.dart';
 import 'package:nigdoc/AppWidget/PharmacyLink/PharmacyList.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
+import 'package:nigdoc/AppWidget/Shop/Api.dart';
 import 'package:nigdoc/AppWidget/TestList/TestList.dart';
 import 'package:nigdoc/AppWidget/VideoCall/join_screen.dart';
 import 'package:nigdoc/AppWidget/common/DeviceInfo.dart';
@@ -58,9 +61,11 @@ class _DashState extends State<Dash> {
   var accesstoken;
   var DashboardList;
   String notification = 'Waiting for notification';
-   var build_app_version = null;
+  var build_app_version = null;
   var api_app_version = null;
-
+  var clinicconfig;
+  var Config;
+  var config;
   @override
   void initState() {
     // getvalue();
@@ -78,7 +83,7 @@ class _DashState extends State<Dash> {
     await getvalue();
     await getFcmToken();
     appVersion();
-   
+    getclinicconfig();
   }
 
   getvalue() async {
@@ -200,25 +205,26 @@ class _DashState extends State<Dash> {
       MaterialPageRoute(builder: (context) => const NotificationPage()),
     );
   }
-Widget Appbar() {
+
+  Widget Appbar() {
     return Container(
-     color: custom_color.appcolor,
+      color: custom_color.appcolor,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-              Padding(
-                  padding: const EdgeInsets.only(left: 0.0),
-                  child: Text(
-                    'NigDoc',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.42),
-                  ),
-                ),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0),
+              child: Text(
+                'NigDoc',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.42),
+              ),
+            ),
             Row(
               children: [
                 // InkWell(
@@ -234,8 +240,8 @@ Widget Appbar() {
                 //     );
                 //   },
                 // ),
-              
-                 IconButton(
+
+                IconButton(
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -243,8 +249,11 @@ Widget Appbar() {
                             builder: (context) => JoinScreen(),
                           ));
                     },
-                    icon: Icon(FontAwesome5.video,color: Colors.white,)),
-                     
+                    icon: Icon(
+                      FontAwesome5.video,
+                      color: Colors.white,
+                    )),
+
                 IconButton(
                     onPressed: () {
                       Navigator.push(
@@ -253,7 +262,7 @@ Widget Appbar() {
                             builder: (context) => AppointmentList(),
                           ));
                     },
-                    icon: Icon(FontAwesome5.plus_circle,color: Colors.white)),
+                    icon: Icon(FontAwesome5.plus_circle, color: Colors.white)),
                 IconButton(
                     onPressed: () {
                       Navigator.push(
@@ -262,7 +271,10 @@ Widget Appbar() {
                             builder: (context) => NotificationPage(),
                           ));
                     },
-                    icon: Icon(FontAwesome5.bell,color: Colors.white,)),
+                    icon: Icon(
+                      FontAwesome5.bell,
+                      color: Colors.white,
+                    )),
                 IconButton(
                     onPressed: () {
                       Alert(
@@ -307,7 +319,10 @@ Widget Appbar() {
                         ],
                       ).show();
                     },
-                    icon: Icon(Icons.logout,color: Colors.white,)),
+                    icon: Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    )),
               ],
             ),
           ],
@@ -315,6 +330,7 @@ Widget Appbar() {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -324,10 +340,9 @@ Widget Appbar() {
         exit(0);
       },
       child: Scaffold(
-       
         // appBar: AppBar(
         //   automaticallyImplyLeading: false,
-         
+
         //   title: const Text(
         //     'NigDoc',
         //     style: TextStyle(
@@ -335,9 +350,9 @@ Widget Appbar() {
         //         fontWeight: FontWeight.bold,
         //         letterSpacing: 1.5),
         //   ),
-         
-          backgroundColor: custom_color.appcolor,
-         
+
+        backgroundColor: custom_color.appcolor,
+
         //   actions: [
         //     Row(
         //       children: [
@@ -350,7 +365,7 @@ Widget Appbar() {
         //                   ));
         //             },
         //             icon: Icon(FontAwesome5.video,color: Colors.white,)),
-                     
+
         //         IconButton(
         //             onPressed: () {
         //               Navigator.push(
@@ -411,10 +426,9 @@ Widget Appbar() {
         // ),
         body: SafeArea(
           child: Container(
-            height:screenHeight,
+            height: screenHeight,
             width: screenWidth,
             color: Colors.white,
-          
             child: Column(
               children: [
                 Appbar(),
@@ -426,7 +440,7 @@ Widget Appbar() {
                           width: screenWidth,
                           color: custom_color.lightcolor,
                           child: Container(
-                            height: screenHeight * 0.25,
+                            height: screenHeight * 0.20,
                             decoration: BoxDecoration(),
                             width: MediaQuery.of(context).size.width,
                             child: CarouselSlider.builder(
@@ -453,9 +467,9 @@ Widget Appbar() {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              SizedBox(
-                                height: 5,
-                              ),
+                              // SizedBox(
+                              //   height: 5,
+                              // ),
                               Container(
                                 child: Row(
                                   children: [
@@ -473,7 +487,7 @@ Widget Appbar() {
                                         ],
                                       ),
                                     ),
-                  
+
                                     // Text(
                                     //   "Monthly Report",
                                     //   style: TextStyle(
@@ -482,20 +496,21 @@ Widget Appbar() {
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
+                              // SizedBox(
+                              //   height: 5,
+                              // ),
                               Container(
-                                height: screenHeight * 0.192,
+                                height: screenHeight * 0.150,
                                 child: ListView(
                                   scrollDirection: Axis.horizontal,
                                   children: <Widget>[
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: screenWidth * 0.40,
+                                        width: screenWidth * 0.30,
                                         // height: screenHeight * 0.07,
-                                        decoration: Helper().ContainerShowdow(0, 'no'),
+                                        decoration:
+                                            Helper().ContainerShowdow(0, 'no'),
                                         padding: const EdgeInsets.all(10),
                                         child: Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -508,9 +523,11 @@ Widget Appbar() {
                                                 child: Text(
                                                   'Patient Count',
                                                   style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.blue,
-                                                      fontWeight: FontWeight.bold),
+                                                      fontSize: 15,
+                                                      color:
+                                                          custom_color.appcolor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
                                               Container(
@@ -527,10 +544,12 @@ Widget Appbar() {
                                                           ? Text(
                                                               '  ${DashboardList['Patient_count'].toString()}',
                                                               style: TextStyle(
-                                                                  color: Colors.amber,
+                                                                  color: Colors
+                                                                      .amber,
                                                                   fontSize: 22,
                                                                   fontWeight:
-                                                                      FontWeight.bold),
+                                                                      FontWeight
+                                                                          .bold),
                                                             )
                                                           : SpinLoader()
                                                       // Text('0',
@@ -548,9 +567,10 @@ Widget Appbar() {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: screenWidth * 0.4,
+                                        width: screenWidth * 0.3,
                                         height: screenHeight * 0.1,
-                                        decoration: Helper().ContainerShowdow(0, 'no'),
+                                        decoration:
+                                            Helper().ContainerShowdow(0, 'no'),
                                         padding: const EdgeInsets.all(10),
                                         child: Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -563,9 +583,12 @@ Widget Appbar() {
                                                 child: Text(
                                                   'Prescription Count',
                                                   style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.blue,
-                                                      fontWeight: FontWeight.bold),
+                                                      fontSize: 15,
+                                                      // color: Colors.blue,
+                                                      color:
+                                                          custom_color.appcolor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
                                               Container(
@@ -582,10 +605,12 @@ Widget Appbar() {
                                                           ? Text(
                                                               '  ${DashboardList['prescription_count'].toString()}',
                                                               style: TextStyle(
-                                                                  color: Colors.amber,
+                                                                  color: Colors
+                                                                      .amber,
                                                                   fontSize: 22,
                                                                   fontWeight:
-                                                                      FontWeight.bold),
+                                                                      FontWeight
+                                                                          .bold),
                                                             )
                                                           : SpinLoader()
                                                       // Text('0',
@@ -603,9 +628,10 @@ Widget Appbar() {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: screenWidth * 0.4,
+                                        width: screenWidth * 0.3,
                                         height: screenHeight * 0.1,
-                                        decoration: Helper().ContainerShowdow(0, 'no'),
+                                        decoration:
+                                            Helper().ContainerShowdow(0, 'no'),
                                         padding: const EdgeInsets.all(10),
                                         child: Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -618,9 +644,12 @@ Widget Appbar() {
                                                 child: Text(
                                                   'Appointment Count',
                                                   style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.blue,
-                                                      fontWeight: FontWeight.bold),
+                                                      fontSize: 15,
+                                                      // color: Colors.blue,
+                                                      color:
+                                                          custom_color.appcolor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
                                               Container(
@@ -637,10 +666,12 @@ Widget Appbar() {
                                                           ? Text(
                                                               '  ${DashboardList['appointment_list'].toString()}',
                                                               style: TextStyle(
-                                                                  color: Colors.amber,
+                                                                  color: Colors
+                                                                      .amber,
                                                                   fontSize: 22,
                                                                   fontWeight:
-                                                                      FontWeight.bold),
+                                                                      FontWeight
+                                                                          .bold),
                                                             )
                                                           : SpinLoader()
                                                       // Text('0',
@@ -658,9 +689,10 @@ Widget Appbar() {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: screenWidth * 0.4,
+                                        width: screenWidth * 0.3,
                                         height: screenHeight * 0.1,
-                                        decoration: Helper().ContainerShowdow(0, 'no'),
+                                        decoration:
+                                            Helper().ContainerShowdow(0, 'no'),
                                         padding: const EdgeInsets.all(10),
                                         child: Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -674,9 +706,12 @@ Widget Appbar() {
                                                 child: Text(
                                                   'Pending Appointment Count',
                                                   style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.blue,
-                                                      fontWeight: FontWeight.bold),
+                                                      fontSize: 15,
+                                                      // color: Colors.blue,
+                                                      color:
+                                                          custom_color.appcolor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
                                               Container(
@@ -693,10 +728,12 @@ Widget Appbar() {
                                                           ? Text(
                                                               '  ${DashboardList['pending_appoint'].toString()}',
                                                               style: TextStyle(
-                                                                  color: Colors.amber,
+                                                                  color: Colors
+                                                                      .amber,
                                                                   fontSize: 22,
                                                                   fontWeight:
-                                                                      FontWeight.bold),
+                                                                      FontWeight
+                                                                          .bold),
                                                             )
                                                           : SpinLoader()
                                                       // Text('0',
@@ -714,9 +751,9 @@ Widget Appbar() {
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              // SizedBox(
+                              //   height: 10,
+                              // ),
                               Container(
                                 child: Row(
                                   children: [
@@ -732,35 +769,47 @@ Widget Appbar() {
                                 ),
                               ),
                               SizedBox(
-                                height: 10,
+                                height: 5,
                               ),
                               Container(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     InkWell(
                                       child: Container(
-                                        height: screenHeight * 0.1567,
-                                        width: screenWidth * 0.25,
+                                        // height: screenHeight * 0.1500,
+                                        width: screenWidth * 0.30,
                                         child: Column(
                                           children: [
                                             Padding(
-                                                padding: const EdgeInsets.only(top: 8),
+                                                padding: const EdgeInsets.only(
+                                                    top: 8),
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                    color: custom_color.appcolor,
+                                                    color:
+                                                        custom_color.appcolor,
                                                     // border: width != 0 ?
                                                     // Border.all(width: 2, color:custom_color.app_color1 )
                                                     // : Border(),
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft: Radius.circular(10),
-                                                        topRight: Radius.circular(10),
-                                                        bottomLeft: Radius.circular(10),
-                                                        bottomRight: Radius.circular(10)),
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    10),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    10)),
                                                     boxShadow: [
                                                       BoxShadow(
-                                                        color:
-                                                            Colors.grey.withOpacity(0.2),
+                                                        color: Colors.grey
+                                                            .withOpacity(0.2),
                                                         spreadRadius: 4,
                                                         blurRadius: 4,
                                                         offset: Offset(0,
@@ -769,12 +818,15 @@ Widget Appbar() {
                                                     ],
                                                   ),
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Text(
                                                       'Pending',
                                                       style: TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight: FontWeight.bold),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                 )),
@@ -782,14 +834,17 @@ Widget Appbar() {
                                               // color: Colors.amber,
                                               height: screenHeight * 0.1,
                                               child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Image.asset('assets/pending.png'),
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Image.asset(
+                                                    'assets/pending.png'),
                                               ),
                                             )
                                           ],
                                         ),
                                         decoration: BoxDecoration(
-                                          color: custom_color.lightcolor,
+                                          // color: custom_color.lightcolor,
+                                          color: Colors.white,
                                           // border: width != 0 ?
                                           // Border.all(width: 2, color:custom_color.app_color1 )
                                           // : Border(),
@@ -800,11 +855,12 @@ Widget Appbar() {
                                               bottomRight: Radius.circular(10)),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
                                               spreadRadius: 4,
                                               blurRadius: 4,
-                                              offset: Offset(
-                                                  0, 1), // changes position of shadow
+                                              offset: Offset(0,
+                                                  1), // changes position of shadow
                                             ),
                                           ],
                                         ),
@@ -813,33 +869,45 @@ Widget Appbar() {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => Pendingbilllist(),
+                                              builder: (context) =>
+                                                  Pendingbilllist(),
                                             ));
                                       },
                                     ),
                                     InkWell(
                                       child: Container(
-                                        height: screenHeight * 0.1567,
-                                        width: screenWidth * 0.25,
+                                        // height: screenHeight * 0.1567,
+                                        width: screenWidth * 0.30,
                                         child: Column(
                                           children: [
                                             Padding(
-                                                padding: const EdgeInsets.only(top: 8),
+                                                padding: const EdgeInsets.only(
+                                                    top: 8),
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                    color: custom_color.appcolor,
+                                                    color:
+                                                        custom_color.appcolor,
                                                     // border: width != 0 ?
                                                     // Border.all(width: 2, color:custom_color.app_color1 )
                                                     // : Border(),
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft: Radius.circular(10),
-                                                        topRight: Radius.circular(10),
-                                                        bottomLeft: Radius.circular(10),
-                                                        bottomRight: Radius.circular(10)),
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    10),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    10)),
                                                     boxShadow: [
                                                       BoxShadow(
-                                                        color:
-                                                            Colors.grey.withOpacity(0.2),
+                                                        color: Colors.grey
+                                                            .withOpacity(0.2),
                                                         spreadRadius: 4,
                                                         blurRadius: 4,
                                                         offset: Offset(0,
@@ -848,12 +916,15 @@ Widget Appbar() {
                                                     ],
                                                   ),
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Text(
                                                       '  Paid  ',
                                                       style: TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight: FontWeight.bold),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                 )),
@@ -861,14 +932,17 @@ Widget Appbar() {
                                               // color: Colors.amber,
                                               height: screenHeight * 0.1,
                                               child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Image.asset('assets/paid.png'),
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Image.asset(
+                                                    'assets/paid.png'),
                                               ),
                                             )
                                           ],
                                         ),
                                         decoration: BoxDecoration(
-                                          color: custom_color.lightcolor,
+                                          // color: custom_color.lightcolor,
+                                          color: Colors.white,
                                           // border: width != 0 ?
                                           // Border.all(width: 2, color:custom_color.app_color1 )
                                           // : Border(),
@@ -879,11 +953,12 @@ Widget Appbar() {
                                               bottomRight: Radius.circular(10)),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
                                               spreadRadius: 4,
                                               blurRadius: 4,
-                                              offset: Offset(
-                                                  0, 1), // changes position of shadow
+                                              offset: Offset(0,
+                                                  1), // changes position of shadow
                                             ),
                                           ],
                                         ),
@@ -892,33 +967,45 @@ Widget Appbar() {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => paidbilllist(),
+                                              builder: (context) =>
+                                                  paidbilllist(),
                                             ));
                                       },
                                     ),
                                     InkWell(
                                       child: Container(
-                                        height: screenHeight * 0.1567,
-                                        width: screenWidth * 0.25,
+                                        // height: screenHeight * 0.1567,
+                                        width: screenWidth * 0.30,
                                         child: Column(
                                           children: [
                                             Padding(
-                                                padding: const EdgeInsets.only(top: 8),
+                                                padding: const EdgeInsets.only(
+                                                    top: 8),
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                    color: custom_color.appcolor,
+                                                    color:
+                                                        custom_color.appcolor,
                                                     // border: width != 0 ?
                                                     // Border.all(width: 2, color:custom_color.app_color1 )
                                                     // : Border(),
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft: Radius.circular(10),
-                                                        topRight: Radius.circular(10),
-                                                        bottomLeft: Radius.circular(10),
-                                                        bottomRight: Radius.circular(10)),
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    10),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    10)),
                                                     boxShadow: [
                                                       BoxShadow(
-                                                        color:
-                                                            Colors.grey.withOpacity(0.2),
+                                                        color: Colors.grey
+                                                            .withOpacity(0.2),
                                                         spreadRadius: 4,
                                                         blurRadius: 4,
                                                         offset: Offset(0,
@@ -927,12 +1014,15 @@ Widget Appbar() {
                                                     ],
                                                   ),
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Text(
                                                       'Cancel',
                                                       style: TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight: FontWeight.bold),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                 )),
@@ -940,14 +1030,17 @@ Widget Appbar() {
                                               // color: Colors.amber,
                                               height: screenHeight * 0.1,
                                               child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Image.asset('assets/cancel.png'),
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Image.asset(
+                                                    'assets/cancel.png'),
                                               ),
                                             )
                                           ],
                                         ),
                                         decoration: BoxDecoration(
-                                          color: custom_color.lightcolor,
+                                          // color: custom_color.lightcolor,
+                                          color: Colors.white,
                                           // border: width != 0 ?
                                           // Border.all(width: 2, color:custom_color.app_color1 )
                                           // : Border(),
@@ -958,11 +1051,12 @@ Widget Appbar() {
                                               bottomRight: Radius.circular(10)),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
                                               spreadRadius: 4,
                                               blurRadius: 4,
-                                              offset: Offset(
-                                                  0, 1), // changes position of shadow
+                                              offset: Offset(0,
+                                                  1), // changes position of shadow
                                             ),
                                           ],
                                         ),
@@ -971,11 +1065,12 @@ Widget Appbar() {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => Cancelledbill(),
+                                              builder: (context) =>
+                                                  Cancelledbill(),
                                             ));
                                       },
                                     ),
-                  
+
                                     // Text(
                                     //   "Collection",
                                     //   style: TextStyle(
@@ -1002,7 +1097,7 @@ Widget Appbar() {
                                 ),
                               ),
                               SizedBox(
-                                height: 15,
+                                height: 10,
                               ),
                               //  Container(
                               //   child: Row(
@@ -1242,7 +1337,7 @@ Widget Appbar() {
                               //               ));
                               //         },
                               //       ),
-                  
+
                               //       // Text(
                               //       //   "Collection",
                               //       //   style: TextStyle(
@@ -1253,34 +1348,49 @@ Widget Appbar() {
                               // ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => PrescriptionPage(),
-                                      ));
+                                  // if (Config == 'NO') {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PrescriptionPage(),
+                                        ));
+                                  // } else {
+                                  //   Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             PhysiotherapyAddprescription(),
+                                  //       ));
+                                  // }
                                 },
                                 child: Container(
                                   width: screenWidth * 0.95,
-                                  height: screenHeight * 0.075,
+                                  height: screenHeight * 0.060,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         '  Add New Prescription',
                                         style: TextStyle(
                                           color: custom_color.appcolor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                          fontSize: 15,
                                         ),
                                       ),
-                                      Icon(Icons.add,
-                                          size: 40, color: custom_color.appcolor),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(Icons.add,
+                                            size: 20,
+                                            color: custom_color.appcolor),
+                                      ),
                                     ],
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border.all(
-                                        width: 3, color: custom_color.appcolor),
+                                        width: 1, color: custom_color.appcolor),
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10),
@@ -1291,15 +1401,15 @@ Widget Appbar() {
                                         color: Colors.grey.withOpacity(0.2),
                                         spreadRadius: 4,
                                         blurRadius: 4,
-                                        offset:
-                                            Offset(0, 1), // changes position of shadow
+                                        offset: Offset(
+                                            0, 1), // changes position of shadow
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              
-                              SizedBox(height: screenHeight*0.02,),
+
+                              SizedBox(height: screenHeight * 0.01),
 
                               InkWell(
                                 onTap: () {
@@ -1311,31 +1421,37 @@ Widget Appbar() {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => dischargesummary(),
+                                        builder: (context) =>
+                                            dischargesummary(),
                                       ));
                                 },
                                 child: Container(
                                   width: screenWidth * 0.95,
-                                  height: screenHeight * 0.075,
+                                  height: screenHeight * 0.060,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         '  Patient Discharge Summary',
                                         style: TextStyle(
                                           color: custom_color.appcolor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                          fontSize: 15,
                                         ),
                                       ),
-                                      Icon(Icons.summarize,
-                                          size: 40, color: custom_color.appcolor),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(Icons.summarize,
+                                            size: 20,
+                                            color: custom_color.appcolor),
+                                      ),
                                     ],
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border.all(
-                                        width: 3, color: custom_color.appcolor),
+                                        width: 1, color: custom_color.appcolor),
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10),
@@ -1346,17 +1462,16 @@ Widget Appbar() {
                                         color: Colors.grey.withOpacity(0.2),
                                         spreadRadius: 4,
                                         blurRadius: 4,
-                                        offset:
-                                            Offset(0, 1), // changes position of shadow
+                                        offset: Offset(
+                                            0, 1), // changes position of shadow
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                               SizedBox(height: screenHeight*0.02,),
-                                InkWell(
+                              SizedBox(height: screenHeight * 0.01),
+                              InkWell(
                                 onTap: () {
-                              
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -1365,26 +1480,31 @@ Widget Appbar() {
                                 },
                                 child: Container(
                                   width: screenWidth * 0.95,
-                                  height: screenHeight * 0.075,
+                                  height: screenHeight * 0.060,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         '  Reports',
                                         style: TextStyle(
                                           color: custom_color.appcolor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                          fontSize: 15,
                                         ),
                                       ),
-                                      Icon(Icons.report,
-                                          size: 40, color: custom_color.appcolor),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(Icons.summarize_outlined,
+                                            size: 20,
+                                            color: custom_color.appcolor),
+                                      ),
                                     ],
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border.all(
-                                        width: 3, color: custom_color.appcolor),
+                                        width: 1, color: custom_color.appcolor),
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10),
@@ -1395,8 +1515,7 @@ Widget Appbar() {
                                         color: Colors.grey.withOpacity(0.2),
                                         spreadRadius: 4,
                                         blurRadius: 4,
-                                        offset:
-                                            Offset(0, 1), 
+                                        offset: Offset(0, 1),
                                       ),
                                     ],
                                   ),
@@ -1602,7 +1721,7 @@ Widget Appbar() {
     ),
     alertAlignment: Alignment.center,
   );
- appVersion() async {
+  appVersion() async {
     var api_ver = await DashboardApi().appVersionCheck();
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     //String appName = packageInfo.appName;
@@ -1663,5 +1782,17 @@ Widget Appbar() {
         }
       },
     ).show();
+  }
+
+  getclinicconfig() async {
+    clinicconfig = await ShopApi().getclinicconfig(accesstoken);
+    if (Helper().isvalidElement(clinicconfig) &&
+        Helper().isvalidElement(clinicconfig['status']) &&
+        clinicconfig['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      config = clinicconfig['list'];
+      Config = config[0]['physiothraphy'];
+    }
   }
 }

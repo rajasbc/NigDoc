@@ -8,6 +8,7 @@ import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/DischargeSummary/Addsummary.dart';
 import 'package:nigdoc/DischargeSummary/Dischargesummary.dart';
+import 'package:nigdoc/DischargeSummary/DischargesummeryPrint.dart';
 import '../../AppWidget/common/Colors.dart'as custom_color;
 
 
@@ -185,446 +186,142 @@ class _Discharge_summeryState extends State<Discharge_summery> {
                   height: screenHeight*0.80,
                    child: Padding(
                      padding: const EdgeInsets.all(5.0),
-                     child: ListView.builder(
-                       shrinkWrap: true,
-                       itemCount: summaryList.length,
-                       //  itemCount: 1,
-                       itemBuilder: (BuildContext context, int index) {
-                         var data=summaryList[index];
-                         return Center(
-                           child: Padding(
-                             padding: const EdgeInsets.all(0.0),
-                             child: Container(
-                               color: index % 2 == 0
-                                   ? custom_color.lightcolor
-                                   : Colors.white,
-                               width: screenWidth,
-                               height: screenHeight * 0.07,
-                              // width: screenWidth * 0.90,
-                               // decoration:
-                               //     BoxDecoration(border: Border.all(color: Colors.grey)),
-                               child: Padding(
-                                 padding: const EdgeInsets.all(2.0),
-                                 child: Row(
-                                   children: [
-                                     Container(
-                                       width: screenWidth*0.96,
-                                       // color: Colors.red,
-                                       child: Column(
+                     child: Column(
+                       children: [
+                         Container(
+                          height: screenHeight*0.78,
+                           child: ListView.builder(
+                             shrinkWrap: true,
+                             itemCount: summaryList.length,
+                             itemBuilder: (BuildContext context, int index) {
+                               var data=summaryList[index];
+                               return Center(
+                                 child: Padding(
+                                   padding: const EdgeInsets.all(0.0),
+                                   child: Container(
+                                     color: index % 2 == 0
+                                         ? custom_color.lightcolor
+                                         : Colors.white,
+                                     width: screenWidth,
+                                     height: screenHeight * 0.07,
+                                     child: Padding(
+                                       padding: const EdgeInsets.all(2.0),
+                                       child: Row(
                                          children: [
-                                          //  Padding(
-                                          //    padding: const EdgeInsets.all(0.0),
-                                          //    child: Row(
-                                          //      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          //      children: [
-                                          //        Container(
-                                          //          // color: Colors.amber,
-                                          //          width: screenWidth * 0.37,
-                                          //          height: screenWidth*0.07,
-                                          //          child: Row(
-                                          //            children: [
-                                          //              Text(
-                                          //                // 'Name : ',
-                                          //                'Pre Id : ${data['patient_no']}',
-                                          //                style: TextStyle(
-                                          //                    fontWeight:
-                                          //                        FontWeight.bold),
-                                          //              ),
-                                                     
-                                          //            ],
-                                          //          ),
-                                          //        ),
-                                          //        Container(
-                                          //           width: screenWidth * 0.38,
-                                          //          child: Row(
-                                          //            children: [
-                                          //              Text(
-                                          //                'Date : ${data['date'].substring(0 ,10)}',
-                                          //                // 'Date : ${data['setdate']}',
-                                          //                style: TextStyle(
-                                          //                    fontWeight:
-                                          //                        FontWeight.bold),
-                                          //              ),
-                                          //            ],
-                                          //          ),
-                                          //        ),
-                                          //      ],
-                                          //    ),
-                                          //  ),
-                                           Padding(
-                                             padding: const EdgeInsets.all(0.0),
-                                             child: Row(
-                                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                           Container(
+                                             width: screenWidth*0.85,
+                                             child: Column(
                                                children: [
-                                                //  Container(
-                                                //   // color: Colors.amber,
-                                                //     width: screenWidth * 0.37,
-                                                //    child: Row(
-                                                //      children: [
-                                                //        Text(
-                                                //          'Dr.Name : ${data['dr_name']== null ? '':data['dr_name'].toString()}',
-                                                //          // 'Date : ${data['setdate']}',
-                                                //          style: TextStyle(
-                                                //              fontWeight:
-                                                //                  FontWeight.bold),
-                                                //        ),
-                                                //      ],
-                                                //    ),
-                                                //  ),
-                                                 Container(
-                                                  // color: Colors.purple,
-                                                   width: screenWidth * 0.44,
+                                                 Padding(
+                                                   padding: const EdgeInsets.all(0.0),
                                                    child: Row(
                                                      children: [
-                                                       Text(
-                                                         'Name : ${data['customer_name'].toString()}',
-                                                         // 'Dr Name : ${data['doc_name'] == null ? data['username'] : data['doc_name']}',
-                                                         style: TextStyle(
-                                                             fontWeight:
-                                                                 FontWeight.bold),
+                                                       Container(
+                                                         width: screenWidth * 0.40,
+                                                         child: Row(
+                                                           children: [
+                                                             Text(
+                                                               'Name : ${data['customer_name'].toString()}',
+                                                               style: TextStyle(
+                                                                   fontWeight:
+                                                                       FontWeight.bold),
+                                                             ),
+                                                           ],
+                                                         ),
+                                                       ),
+                                                        Container(
+                                                          width: screenWidth * 0.40,
+                                                         child: Row(
+                                                           children: [
+                                                             Text(
+                                                               'Mobile No : ${data['phone'].toString()}',
+                                                               style: TextStyle(
+                                                                   fontWeight:
+                                                                       FontWeight.bold),
+                                                             ),
+                                                           ],
+                                                         ),
                                                        ),
                                                      ],
                                                    ),
                                                  ),
-                                                  Container(
-                                                    width: screenWidth * 0.45,
+                                                SizedBox(height: screenHeight*0.01,),
+                                                 Padding(
+                                                   padding: const EdgeInsets.all(0.0),
                                                    child: Row(
                                                      children: [
-                                                       
-                                                       Text(
-                                                         // '',
-                                                         'Mobile No : ${data['phone'].toString()}',
-                                                         style: TextStyle(
-                                                             fontWeight:
-                                                                 FontWeight.bold),
+                                                       Container(
+                                                         width: screenWidth * 0.38,
+                                                         child: Row(
+                                                           children: [
+                                                             Text(
+                                                               'Total Amount : ${data['grand_total']}',
+                                                               style: TextStyle(
+                                                                   fontWeight:
+                                                                       FontWeight.bold),
+                                                             ),
+                                                           ],
+                                                         ),
                                                        ),
                                                      ],
                                                    ),
                                                  ),
-                                                 
                                                ],
                                              ),
                                            ),
-                 SizedBox(height: screenHeight*0.01,),
-                                           Padding(
-                                             padding: const EdgeInsets.all(0.0),
-                                             child: Row(
-                                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                               children: [
-                                                //  Container(
-                                                //     width: screenWidth * 0.37,
-                                                //    child: Row(
-                                                //      children: [
-                                                       
-                                                //        Text(
-                                                //          // '',
-                                                //          'Mobile No : ${data['phone'].toString()}',
-                                                //          style: TextStyle(
-                                                //              fontWeight:
-                                                //                  FontWeight.bold),
-                                                //        ),
-                                                //      ],
-                                                //    ),
-                                                //  ),
-                                                 Container(
-                                                   width: screenWidth * 0.38,
-                                                   child: Row(
-                                                     children: [
-                                                       Text(
-                                                         // 'sdrty',
-                                                         'Total Amount : ${data['grand_total']}',
-                                                         style: TextStyle(
-                                                             fontWeight:
-                                                                 FontWeight.bold),
-                                                       ),
-                                                     ],
-                                                   ),
-                                                 ),
-                                                
-                                               ],
-                                             ),
+
+                                           Container(
+                                            width: screenWidth*0.10,
+                                             child: Column(
+                                                        children: [
+                                                          PopupMenuButton(
+                                                              itemBuilder:
+                                                                  (context) => [
+                                                                        PopupMenuItem(
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              Icon(
+                                                                                Icons.print,
+                                                                                color: custom_color.appcolor,
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: EdgeInsets.only(left: 10),
+                                                                                child: Text(
+                                                                                  'Print',
+                                                                                  style: TextStyle(fontSize: 16),
+                                                                                ),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                          onTap:
+                                                                              () {
+                                                                                Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: (context) => Dischargesummeryprint(select_discharge :data)));
+                                                                              },
+                                                                        ),
+                                                                      ]),
+                                                        ],
+                                                      ),
                                            ),
-                                          
-                                          
-                 
+
                                          ],
                                        ),
                                      ),
-                 
-                //                      Column(
-                //                        children: [
-                //                          PopupMenuButton(itemBuilder: (context)=>[
-                //                            PopupMenuItem(child: Row(
-                //                                    children: [
-                //                                      Icon(Icons.view_agenda,color: custom_color.appcolor,),
-                //                                      Padding(padding: EdgeInsets.only(left: 10),
-                //                                      child: Text('View',style: TextStyle(fontSize: 16),),)
-                //                                    ],
-                                         
-                                                   
-                //                                  ),
-                //                                  onTap: (){
-                //                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>PrescriptionDetails(select_prescription : data)));
-                //                                  },
-                //  //                                 onTap: () {
-                //  //                                 showDialog ( context: context,
-                //  // builder: (_) => AlertDialog(
-                //  //       backgroundColor: Colors.white,
-                //  //       surfaceTintColor: Colors.white,
-                //  //       insetPadding: EdgeInsets.all(5.0),
-                //  //       // contentPadding: EdgeInsets.zero,
-                //  //       clipBehavior: Clip.antiAliasWithSaveLayer,
-                //  //       shape: RoundedRectangleBorder(
-                //  //           borderRadius:
-                //  //               BorderRadius.all(Radius.circular(15.0))),
-                //  //       content: Builder(
-                //  //         builder: (context) {
-                //  //           // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                //  //           var height = MediaQuery.of(context).size.height;
-                //  //           var width = MediaQuery.of(context).size.width;
-                //  //           return Container(
-                //  //             color: Colors.white,
-                //  //             // height: height - 200,
-                //  //             width: width,
-                //  //             child: SingleChildScrollView(
-                //  //               physics: const BouncingScrollPhysics(),
-                //  //               child: Container(
-                //  //                 child: Column(
-                //  //                   children: [
-                //  //                     // Text('Add New Customer'),
-                //  //                      Text('Prescription Details ',
-                //  //                                 style: TextStyle(
-                //  //                                   fontSize: 20,
-                //  //                                     fontWeight:
-                //  //                                         FontWeight.bold)),
-                 
-                //  //                     SizedBox(
-                //  //                       height: 5,
-                //  //                     ),
-                //  //                      ListView.builder(
-                //  //                                             shrinkWrap: true,
-                //  //                                             physics: NeverScrollableScrollPhysics(),
-                //  //                                             itemCount: 1,
-                //  //                                             itemBuilder: (BuildContext context, int index){
-                 
-                //  //                                               return Center(
-                //  //                                                 child:Container(
-                //  //                                                   height: 122,
-                //  //                                                   width: 500,
-                //  //                                                   color: index % 2 == 0
-                //  //                                                   ? custom_color.lightcolor
-                //  //                                                   : Colors.white,
-                //  //                      child: Row(
-                //  //                      children: [
-                //  //                      Container(
-                //  //                       width: screenWidth*0.75,
-                //  //                       // color: Colors.red,
-                //  //                       child: Column(
-                //  //                         children: [
-                //  //                           Padding(
-                //  //                             padding: const EdgeInsets.all(0.0),
-                //  //                             child: Row(
-                //  //                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //  //                               children: [
-                //  //                                 Container(
-                //  //                                   // color: Colors.amber,
-                //  //                                   width: screenWidth * 0.45,
-                //  //                                   height: screenWidth*0.07,
-                //  //                                   child: Row(
-                //  //                                     children: [
-                //  //                                       Text(
-                //  //                                         'Pre Date :',
-                //  //                                         style: TextStyle(
-                //  //                                             fontWeight:
-                //  //                                                 FontWeight.bold),
-                //  //                                       ),
-                                                     
-                //  //                                     ],
-                //  //                                   ),
-                //  //                                 ),
-                //  //                                 Container(
-                //  //                                   //  width: screenWidth * 0.35,
-                //  //                                   child: Row(
-                //  //                                     children: [
-                //  //                                       Text(
-                //  //                                         'Dr Name :',
-                //  //                                         style: TextStyle(
-                //  //                                             fontWeight:
-                //  //                                                 FontWeight.bold),
-                //  //                                       ),
-                //  //                                     ],
-                //  //                                   ),
-                //  //                                 ),
-                //  //                               ],
-                //  //                             ),
-                //  //                           ),
-                //  //                           Padding(
-                //  //                             padding: const EdgeInsets.all(0.0),
-                //  //                             child: Row(
-                //  //                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //  //                               children: [
-                //  //                                 Container(
-                //  //                                   width: screenWidth * 0.45,
-                //  //                                   child: Row(
-                //  //                                     children: [
-                //  //                                       Text(
-                //  //                                         'Ref Name :',
-                //  //                                         style: TextStyle(
-                //  //                                             fontWeight:
-                //  //                                                 FontWeight.bold),
-                //  //                                       ),
-                //  //                                     ],
-                //  //                                   ),
-                //  //                                 ),
-                //  //                                 Container(
-                //  //                                   //  width: screenWidth * 0.35,
-                //  //                                   child: Row(
-                //  //                                     children: [
-                //  //                                       Text(
-                //  //                                         'Med Name:',
-                //  //                                         style: TextStyle(
-                //  //                                             fontWeight:
-                //  //                                                 FontWeight.bold),
-                //  //                                       ),
-                //  //                                     ],
-                //  //                                   ),
-                //  //                                 )
-                //  //                               ],
-                //  //                             ),
-                //  //                           ),
-                 
-                //  //                           Padding(
-                //  //                             padding: const EdgeInsets.all(0.0),
-                //  //                             child: Row(
-                //  //                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //  //                               children: [
-                //  //                                 Container(
-                //  //                                   width: screenWidth * 0.45,
-                //  //                                   child: Row(
-                //  //                                     children: [
-                //  //                                       Text(
-                //  //                                         'No.Of.Date :',
-                //  //                                         style: TextStyle(
-                //  //                                             fontWeight:
-                //  //                                                 FontWeight.bold),
-                //  //                                       ),
-                //  //                                     ],
-                //  //                                   ),
-                //  //                                 ),
-                //  //                                 Container(
-                //  //                                   width: screenWidth * 0.30,
-                //  //                                   child: Row(
-                //  //                                     children: [
-                //  //                                       Text(
-                //  //                                         'Method :',
-                //  //                                         style: TextStyle(
-                //  //                                             fontWeight:
-                //  //                                                 FontWeight.bold),
-                //  //                                       ),
-                //  //                                     ],
-                //  //                                   ),
-                //  //                                 ),
-                //  //                               ],
-                //  //                             ),
-                //  //                           ),
-                //  //                           Padding(
-                //  //                             padding: const EdgeInsets.all(0.0),
-                //  //                             child: Row(
-                //  //                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //  //                               children: [
-                //  //                                 Container(
-                //  //                                   width: screenWidth * 0.45,
-                //  //                                   child: Row(
-                //  //                                     children: [
-                //  //                                       Text(
-                //  //                                         ' Before/After Food :',
-                //  //                                         style: TextStyle(
-                //  //                                             fontWeight:
-                //  //                                                 FontWeight.bold),
-                //  //                                       ),
-                //  //                                     ],
-                //  //                                   ),
-                //  //                                 ),
-                                                
-                //  //                               ],
-                //  //                             ),
-                //  //                           ),
-                 
-                                          
-                                          
-                 
-                //  //                         ],
-                //  //                       ),
-                //  //                     ),
-                //  //                          ],
-                //  //                    ),
-                 
-                                             
-                                                             
-                                                                 
-                //  //                                               ),
-                                                               
-                //  //                                               );
-                                                               
-                //  //                                               }
-                //  //                                               )
-                                 
-                //  //                   ],
-                //  //                 ),
-                //  //               ),
-                //  //             ),
-                //  //           );
-                //  //         },
-                //  //       ),
-                //  //       ));
-                                  
-                //  //                                 },
-                                                 
-                //                                  ),
-                                                  
-                //                                   PopupMenuItem(child: Row(
-                //                                    children: [
-                //                                      Icon(Icons.cancel,color: custom_color.appcolor,),
-                //                                      Padding(padding: EdgeInsets.only(left: 10),
-                //                                      child: Text('Cancel',style: TextStyle(fontSize: 16),),)
-                //                                    ],
-                                         
-                                                   
-                //                                  ),
-                //                                  onTap: () {
-                //                                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>Prescription_List()));
-                //                                  },
-                                                 
-                //                                  )
-                //                          ]),
-                 
-                                   
-                //                        ],
-                 
-                //                      ),
-                 
-                                    
-                                   ],
+                                   ),
                                  ),
-                               ),
-                             ),
-                        
+                               );
+                             },
                            ),
-                           
-                         );
-                        
-                       },
-                 
-                       
+                         ),
+                       ],
                      ),
-                 
                    ),
-             //  )
                  ):Container(child: Text('no data'),)
                ],
              ),
            ),
-           
          ),
         floatingActionButton: FloatingActionButton(
           onPressed: (() {

@@ -31,6 +31,9 @@ class _Add_referralListState extends State<Add_referralList> {
   TextEditingController date_of_anniversarycontroller =TextEditingController();
   TextEditingController organizationcontroller =TextEditingController();
   TextEditingController Passwordcontroller = TextEditingController();
+  final FocusNode referralnameFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode organizationFocusNode = FocusNode();
   var selected_item;
   var title={
        "Mr",
@@ -57,6 +60,11 @@ bool _passwordVisible = true;
     //subcategory = await storage.getItem('list');
 
    
+  }
+  void dispose(){
+    referralnameFocusNode.dispose();
+    emailFocusNode.dispose();
+    organizationFocusNode.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -137,7 +145,7 @@ bool _passwordVisible = true;
              Padding(padding: EdgeInsets.all(8.0),
              child: TextFormField(
               controller: Referral_Namecontroller,
-          
+              focusNode: referralnameFocusNode,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Referral Name *",
@@ -154,6 +162,7 @@ bool _passwordVisible = true;
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Mobile Number",
+                counterText: ""
               ),
              ),
              
@@ -163,6 +172,7 @@ bool _passwordVisible = true;
                padding: const EdgeInsets.all(8.0),
                child: TextFormField(
                 controller: Emailcontroller,
+                focusNode: emailFocusNode,
                 decoration: InputDecoration(
                   
                   border: OutlineInputBorder(),
@@ -170,7 +180,7 @@ bool _passwordVisible = true;
                 ),
                ),
              ),
-             SizedBox(height: screenHeight*0.01,),
+            //  SizedBox(height: screenHeight*0.01,),
             //   Padding(
             //    padding: const EdgeInsets.all(8.0),
             //    child: TextFormField(
@@ -314,6 +324,7 @@ bool _passwordVisible = true;
                Padding(padding: EdgeInsets.all(8.0),
                child: TextFormField(
                 controller: organizationcontroller,
+                focusNode: organizationFocusNode,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: "Organization *"
@@ -347,6 +358,7 @@ bool _passwordVisible = true;
                         NigDocToast().showErrorToast("Select Your Title");
                    
                       }else if(Referral_Namecontroller.text.isEmpty){
+                        referralnameFocusNode.requestFocus();
                         NigDocToast().showErrorToast("Enter Referral Name");
                    
                       // }else if(mobilecontroller.text.isEmpty){
@@ -356,6 +368,7 @@ bool _passwordVisible = true;
                                    .contains('@') ||
                                    !Emailcontroller.text.contains('.') ||
                                    !Emailcontroller.text.contains('com')) {
+                                    emailFocusNode.requestFocus();
                                    NigDocToast().showErrorToast("Please Enter Your Email id");
                                   
                    
@@ -375,6 +388,7 @@ bool _passwordVisible = true;
                       //   NigDocToast().showErrorToast("Enter Your Annivesary Date");
                    
                       }else if(organizationcontroller.text.isEmpty){
+                        organizationFocusNode.requestFocus();
                         NigDocToast().showErrorToast("Enter organization ");
                       }else{
                            var data= {

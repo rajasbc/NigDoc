@@ -19,6 +19,8 @@ class Add_TestList extends StatefulWidget {
 class _Add_TestListState extends State<Add_TestList> {
    TextEditingController testnamecontroller =TextEditingController();
    TextEditingController testamountcontroller = TextEditingController();
+   final FocusNode testnameFocusNode = FocusNode();
+   final FocusNode testamountFocusNode = FocusNode();
  //bool isloading=false;
  var accesstoken;
  void initState() {
@@ -32,6 +34,10 @@ class _Add_TestListState extends State<Add_TestList> {
   
 
    
+  }
+  void dispose(){
+    testnameFocusNode.dispose();
+    testamountFocusNode.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -70,6 +76,7 @@ class _Add_TestListState extends State<Add_TestList> {
                    
                    child: TextFormField(
               controller: testnamecontroller,
+              focusNode: testnameFocusNode,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Test Name",
@@ -84,6 +91,7 @@ class _Add_TestListState extends State<Add_TestList> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       controller: testamountcontroller,
+                      focusNode: testamountFocusNode,
                        decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Test Amount',
@@ -141,9 +149,11 @@ class _Add_TestListState extends State<Add_TestList> {
                            child: Text('Submit',style: TextStyle(color: Colors.white,fontSize: 20),),
                            onPressed: (()async {
                              if(testnamecontroller.text.isEmpty){
+                              testnameFocusNode.requestFocus();
                               NigDocToast().showErrorToast('Enter Your Test Name');
 
                              }else if(testamountcontroller.text.isEmpty){
+                              testamountFocusNode.requestFocus();
                               NigDocToast().showErrorToast('Enter Test Amount ');
 
                              }else{

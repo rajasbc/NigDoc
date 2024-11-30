@@ -564,7 +564,8 @@ var delete = 'yes';
                     
                   ),
                                       onPressed: (){
-                                       Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                                      Navigator.pop(context);
                                       }, child: Text('Cancel' ,style: TextStyle(fontSize: 20,color: Colors.white),)),
                                   ),
                                   Container(

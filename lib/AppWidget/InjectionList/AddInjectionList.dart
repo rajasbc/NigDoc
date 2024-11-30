@@ -21,6 +21,10 @@ class _Add_injectionState extends State<Add_injection> {
   TextEditingController injectionamountcontroller = TextEditingController();
   TextEditingController injectionqtycontroller = TextEditingController();
   TextEditingController expdatecontroller = TextEditingController();
+  final FocusNode injectionnameFocusNode = FocusNode();
+  final FocusNode injectionamountFocusNode = FocusNode();
+  final FocusNode injectionqtyFocusNode = FocusNode();
+  final FocusNode expdateFocusNode = FocusNode();
   var userResponse;
   var accesstoken;
   @override
@@ -38,6 +42,12 @@ class _Add_injectionState extends State<Add_injection> {
     //subcategory = await storage.getItem('list');
 
    
+  }
+  void dispose(){
+    injectionnameFocusNode.dispose();
+    injectionamountFocusNode.dispose();
+    injectionqtyFocusNode.dispose();
+    expdateFocusNode.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -114,6 +124,7 @@ class _Add_injectionState extends State<Add_injection> {
             children: [
               TextFormField(
                 controller: injectionnamecontroller,
+                focusNode: injectionnameFocusNode,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Injection Name *'
@@ -123,6 +134,7 @@ class _Add_injectionState extends State<Add_injection> {
             SizedBox(height: ScreenHeight*0.02,),
                TextFormField(
                 controller: injectionamountcontroller,
+                focusNode: injectionamountFocusNode,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -133,6 +145,7 @@ class _Add_injectionState extends State<Add_injection> {
                 SizedBox(height: ScreenHeight*0.02,),
                TextFormField(
                 controller: injectionqtycontroller,
+                focusNode: injectionqtyFocusNode,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -144,6 +157,7 @@ class _Add_injectionState extends State<Add_injection> {
                 // width: screenWidth*0.49,
                 child: TextField(
                    controller: expdatecontroller,
+                   focusNode: expdateFocusNode,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   fillColor: Colors.white,
@@ -189,20 +203,24 @@ class _Add_injectionState extends State<Add_injection> {
                      style: TextStyle(fontSize: 20,color: Colors.white),),
                      onPressed: (() async {
                        if(injectionnamecontroller.text.isEmpty){
+                        injectionnameFocusNode.requestFocus();
                         NigDocToast().showErrorToast(
                          "Please Enter Injection Name",
                        );
                        
                        }else if(injectionamountcontroller.text.isEmpty){
+                        injectionamountFocusNode.requestFocus();
                           NigDocToast().showErrorToast(
                          "Please Enter Injection Amount ",
                        );
                        }
                        else if(injectionqtycontroller.text.isEmpty){
+                        injectionqtyFocusNode.requestFocus();
                           NigDocToast().showErrorToast(
                          "Please Enter Injection Qty ",
                        );
                        }else if(expdatecontroller.text.isEmpty){
+                        expdateFocusNode.requestFocus();
                           NigDocToast().showErrorToast(
                          "Please Select Exp Date ",
                        );

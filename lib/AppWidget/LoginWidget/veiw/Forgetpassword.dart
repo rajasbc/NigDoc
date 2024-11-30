@@ -29,6 +29,9 @@ class _ForgotpasswordState extends State<Forgotpassword> {
   TextEditingController OTPController = TextEditingController();
   TextEditingController Mobilenocontroller = TextEditingController();
   // TextEditingController OTPController = TextEditingController();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode confirmFocusNode = FocusNode();
   late Timer timer;
   int start = 60;
   bool loding = false;
@@ -38,44 +41,48 @@ class _ForgotpasswordState extends State<Forgotpassword> {
   bool showconpassword = true;
   var enter_otp;
   var Otp;
+  void dispose() {
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmFocusNode.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return PopScope(
-        canPop: false,
-        onPopInvoked: (bool didPop) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Loginpage()));
-        },
-        child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: appcolor,
-              title: Text(
-                'Forgot Password',
-                style: TextStyle(color: Colors.white),
-              ),
-              leading: IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Loginpage()));
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  )),
-            ),
-            body: SafeArea(
-                child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                        child: SingleChildScrollView(
-                            child: Column(children: [
-                      !loding ? email(screenHeight, screenWidth) : Container(),
-                      OTP ? otp(screenHeight, screenWidth) : Container(),
-                      password
-                          ? Password(screenHeight, screenWidth) : Container(),
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Loginpage()));
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: appcolor,
+          title: Text(
+            'Forgot Password',
+            style: TextStyle(color: Colors.white),
+          ),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Loginpage()));
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              )),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  !loding ? email(screenHeight, screenWidth) : Container(),
+                  OTP ? otp(screenHeight, screenWidth) : Container(),
+                  password ? Password(screenHeight, screenWidth) : Container(),
                 ]),
               ),
             ),
@@ -92,6 +99,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
         child: TextFormField(
           //obscureText: true,
           controller: Passwordcontroller,
+          focusNode: passwordFocusNode,
           obscureText: showpassword,
 
           decoration: InputDecoration(
@@ -114,6 +122,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
         child: TextFormField(
           //obscureText: true,
           controller: Confirmpasswordcontroller,
+          focusNode: confirmFocusNode,
           obscureText: showconpassword,
 
           decoration: InputDecoration(
@@ -137,8 +146,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
       Container(
           width: screenWidth,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: appcolor),
+            style: ElevatedButton.styleFrom(backgroundColor: appcolor),
             // style: ElevatedButton.styleFrom(
             //   primary: Color.fromARGB(171, 3, 67, 52), // background
             //   onPrimary: Colors.white,
@@ -147,6 +155,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
             // ),
             onPressed: () async {
               if (Passwordcontroller.text.isEmpty) {
+                passwordFocusNode.requestFocus();
                 // Apptoast().showErrorToast("Enter Your Password");
                 Fluttertoast.showToast(
                     msg: 'Enter Your Password',
@@ -156,6 +165,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                     backgroundColor: Colors.red,
                     textColor: Colors.white);
               } else if (Passwordcontroller.text.length < 6) {
+                passwordFocusNode.requestFocus();
                 // Apptoast().showErrorToast('Please Enter Your 6 Digit Password');
                 Fluttertoast.showToast(
                     msg: 'Please Enter Your 6 Digit Password',
@@ -167,6 +177,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
               } else if (Passwordcontroller.text !=
                   Confirmpasswordcontroller.text) {
                 // Apptoast().showErrorToast('Confirm Password Mismatch');
+                confirmFocusNode.requestFocus();
                 Fluttertoast.showToast(
                     msg: 'Confirm Password Mismatch',
                     toastLength: Toast.LENGTH_SHORT,
@@ -178,7 +189,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                 var data1 = {
                   "email": Emailcontroller.text.toString(),
                   "password": Passwordcontroller.text.toString(),
-                  "mobileno":Mobilenocontroller.text.toString()
+                  "mobileno": Mobilenocontroller.text.toString()
                 };
                 // var list;
                 var list = await loginpage().changepassword(data1);
@@ -273,14 +284,21 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                 //   backgroundColor: WidgetStateProperty.all<Color>(
                 //       Colors.blue), // Change the color here
                 // ),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: appcolor),
+                // style: ElevatedButton.styleFrom(
+                //     backgroundColor: appcolor),
                 // style: ElevatedButton.styleFrom(
                 //   primary: Color.fromARGB(171, 3, 67, 52), // background
                 //   onPrimary: Colors.white,
 
                 //   // foreground
                 // ),
+                style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all<Color>(appcolor),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    )),
                 onPressed: () async {
                   if (Otp.toString() == enter_otp) {
                     // Apptoast().showErrorToast("OTP Verified Successfully");
@@ -295,9 +313,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                       password = true;
                       OTP = false;
                     });
-                  } else {
-
-                  }
+                  } else {}
                   // setState(() {
                   //   password = true;
                   //   OTP = false;
@@ -306,8 +322,9 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                 child: Container(
                   // color: Colors.green,
                   // padding: const EdgeInsets.all(14),
-                  
-                  child:  const Text("Submit", style: TextStyle(color: Colors.white)),
+
+                  child: const Text("Submit",
+                      style: TextStyle(color: Colors.white)),
                 ),
               ))
         ])),
@@ -346,6 +363,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
         // width: screenWidth * 0.65,
         child: TextField(
           controller: Emailcontroller,
+          focusNode: emailFocusNode,
           decoration: InputDecoration(
               border: OutlineInputBorder(), labelText: 'Enter Your Email'),
         ),
@@ -393,21 +411,16 @@ class _ForgotpasswordState extends State<Forgotpassword> {
       Container(
         width: screenWidth,
         child: ElevatedButton(
-          // style: ButtonStyle(
-          //   backgroundColor: WidgetStateProperty.all<Color>(
-          //       Colors.blue), // Change the color here
-          // ),
-          style:
-              ElevatedButton.styleFrom(backgroundColor:appcolor),
-          // style: ElevatedButton.styleFrom(
-          //   primary: Color.fromARGB(171, 3, 67, 52), // background
-          //   onPrimary: Colors.white,
-
-          //   // foreground
-          // ),
+          style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all<Color>(appcolor),
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              )),
           onPressed: () async {
             if (Emailcontroller.text.isEmpty) {
-              // Apptoast().showErrorToast('Enter Your Email');
+              emailFocusNode.requestFocus();
               Fluttertoast.showToast(
                   msg: 'Enter Your Email',
                   toastLength: Toast.LENGTH_SHORT,
@@ -421,25 +434,21 @@ class _ForgotpasswordState extends State<Forgotpassword> {
               };
               // var list;
               var list = await loginpage().getmobilenum(data);
-              if(Helper().isvalidElement(list['list'])){
+              if (Helper().isvalidElement(list['list'])) {
                 setState(() {
-                   var mobile = list['list']['contact_no'].toString();
-              Mobilenocontroller.text = mobile.toString();
-                  
+                  var mobile = list['list']['contact_no'].toString();
+                  Mobilenocontroller.text = mobile.toString();
                 });
-               
-
-              }else{
-                 Fluttertoast.showToast(
-                  msg: 'Pls Check the Email',
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.CENTER,
-                  timeInSecForIosWeb: 2,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white);
-
+              } else {
+                Fluttertoast.showToast(
+                    msg: 'Pls Check the Email',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 2,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white);
               }
-              
+
               // if (list['message'] == "successfully") {
               //   Apptoast().showSuccessToast(
               //       'Bill Cancel successfully');
@@ -469,7 +478,10 @@ class _ForgotpasswordState extends State<Forgotpassword> {
           readOnly: true,
           controller: Mobilenocontroller,
           decoration: InputDecoration(
-              border: OutlineInputBorder(), labelText: 'Mobile No'),
+            border: OutlineInputBorder(),
+            labelText: 'Mobile No',
+            counterText: "",
+          ),
           maxLength: 10,
         ),
       ),
@@ -481,17 +493,25 @@ class _ForgotpasswordState extends State<Forgotpassword> {
             //   backgroundColor: WidgetStateProperty.all<Color>(
             //       Colors.blue), // Change the color here
             // ),
-            style: ElevatedButton.styleFrom(
-                backgroundColor: appcolor),
+            // style: ElevatedButton.styleFrom(
+            //     backgroundColor: appcolor),
             // style: ElevatedButton.styleFrom(
             //   primary: Color.fromARGB(171, 3, 67, 52), // background
             //   onPrimary: Colors.white,
 
             //   // foreground
             // ),
+            style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all<Color>(appcolor),
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                )),
             onPressed: () async {
               if (Emailcontroller.text.isEmpty) {
                 // Apptoast().showErrorToast('Enter Your Email');
+                emailFocusNode.requestFocus();
                 Fluttertoast.showToast(
                     msg: 'Enter Your Email',
                     toastLength: Toast.LENGTH_SHORT,

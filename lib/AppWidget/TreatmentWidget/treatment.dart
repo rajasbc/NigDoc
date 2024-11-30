@@ -372,7 +372,10 @@ TextEditingController Treatmentcontroller = TextEditingController();
             child: Container(child:SpinLoader()
           )
           ),
-          floatingActionButton: FloatingActionButton(onPressed:(){
+          floatingActionButton: FloatingActionButton(
+            onPressed:(){
+              var tre = 'treatment';
+              storage.setItem('tre', tre);
              Navigator.push(
                           context,
                           MaterialPageRoute(

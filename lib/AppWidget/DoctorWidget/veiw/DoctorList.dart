@@ -427,7 +427,8 @@ var delete = 'Inactive';
                                   
                                 ),
                                                     onPressed: (){
-                                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorList()));
+                                                    //  Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorList()));
+                                                    Navigator.pop(context);
                                                     }, child: Text('NO' ,style: TextStyle(fontSize: 20,color: Colors.white),)),
                                                 ),
                                                 Container(

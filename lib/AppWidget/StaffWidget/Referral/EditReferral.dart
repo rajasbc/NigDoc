@@ -35,7 +35,8 @@ class _Edit_ReferralState extends State<Edit_Referral> {
   TextEditingController organizationcontroller =TextEditingController();
   
   
-  
+  final FocusNode referralnameFocusNode = FocusNode();
+  final FocusNode organizationFocusNode = FocusNode();
   var selected_item;
   var title={
        "Mr",
@@ -75,6 +76,10 @@ var data;
     });
 
    
+  }
+  void dispose(){
+    referralnameFocusNode.dispose();
+    organizationFocusNode.dispose();
   }
   Widget build(BuildContext context) {
      double screenHeight=MediaQuery.of(context).size.width;
@@ -151,7 +156,7 @@ var data;
              Padding(padding: EdgeInsets.all(8.0),
              child: TextFormField(
               controller: Referral_Namecontroller,
-          
+              focusNode: referralnameFocusNode,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Referral Name *",
@@ -168,6 +173,7 @@ var data;
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Mobile Number",
+                counterText: ""
               ),
              ),
              
@@ -335,6 +341,7 @@ var data;
                Padding(padding: EdgeInsets.all(8.0),
                child: TextFormField(
                 controller: organizationcontroller,
+                focusNode: organizationFocusNode,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: "Organization *"
@@ -368,6 +375,7 @@ var data;
                         NigDocToast().showErrorToast("Select Your Title");
                    
                       }else if(Referral_Namecontroller.text.isEmpty){
+                        referralnameFocusNode.requestFocus();
                         NigDocToast().showErrorToast("Enter Referral Name");
                    
                       // }else if(mobilecontroller.text.isEmpty){
@@ -397,6 +405,7 @@ var data;
                       //   NigDocToast().showErrorToast("Enter Your Anniversary Date");
                    
                       }else if(organizationcontroller.text.isEmpty){
+                        organizationFocusNode.requestFocus();
                         NigDocToast().showErrorToast("Enter Organizer");
                    
                       }else{

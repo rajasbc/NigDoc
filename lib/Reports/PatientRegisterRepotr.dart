@@ -317,17 +317,29 @@ getpatientreportList();
                                                 children: [
                                                   Container(
                                                     // color: Colors.amber,
-                                                    width: screenWidth * 0.44,
+                                                    width: screenWidth * 0.84,
                                                     child: Row(
                                                       children: [
-                                                        
                                                         Text("Balance : ${data['balance'].toString()}")
                                                       ],
                                                     ),
                                                   ),
-                                                  Container(
+                                                  // Container(
+                                                  //   // color: Colors.purple,
+                                                  //   width: screenWidth * 0.40,
+                                                  //   child: Row(
+                                                  //     children: [
+                                                      
+                                                  //       Text('Email :${data['email']}')
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              ),
+                                              SizedBox(height: screenHeight*0.01,),
+                                              Container(
                                                     // color: Colors.purple,
-                                                    width: screenWidth * 0.40,
+                                                    width: screenWidth * 0.84,
                                                     child: Row(
                                                       children: [
                                                       
@@ -335,8 +347,6 @@ getpatientreportList();
                                                       ],
                                                     ),
                                                   ),
-                                                ],
-                                              ),
                                               SizedBox(height: screenHeight*0.01,),
                                                             ],
                                                           ),

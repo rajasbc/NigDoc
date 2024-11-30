@@ -1,7 +1,7 @@
 // String base_url ="http://10.0.2.2:8000/api/";
-// String base_url = "https://sapi.nigsoft.com/api/";
+String base_url = "https://sapi.nigsoft.com/api/";
 // String base_url = "http://127.0.0.1:8000/api/";
-String base_url = "https://16e6-2405-201-e04a-c800-89eb-d4ff-6f60-d7a7.ngrok-free.app/api/";
+// String base_url = "https://d4a0-2405-201-e04a-c0bb-cd3-6358-996c-8b04.ngrok-free.app/api/";
 String userSignup = "auth/doc_sign_up";
 String userlogin = "auth/doctorLogin";
 // String StaffListEndpoint = "auth/getClinicStaffList";

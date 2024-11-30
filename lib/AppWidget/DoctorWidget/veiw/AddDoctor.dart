@@ -33,7 +33,14 @@ class _AddDoctorState extends State<AddDoctor> {
        TextEditingController userlevelcontroller = TextEditingController();
        TextEditingController usernamecontroller = TextEditingController();
        TextEditingController department1controller = TextEditingController();
-
+       final FocusNode doctornameFocusNode = FocusNode();
+       final FocusNode disignationFocusNode = FocusNode();
+       final FocusNode professionsFocusNode = FocusNode();
+       final FocusNode emailFocusNode = FocusNode();
+       final FocusNode mobileFocusNode = FocusNode();
+       final FocusNode addresssFocusNode = FocusNode();
+       final FocusNode passwordFocusNode = FocusNode();
+       final FocusNode confirmFocusNode = FocusNode();
 var add_User;
 var selected_level;
 var title =[
@@ -103,6 +110,16 @@ List department_List = [];
         departmentListList = List['list'];
       });
     }
+  }
+  void dispose(){
+    doctornameFocusNode.dispose();
+    disignationFocusNode.dispose();
+    professionsFocusNode.dispose();
+    emailFocusNode.dispose();
+    mobileFocusNode.dispose();
+    addresssFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmFocusNode.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -196,6 +213,7 @@ List department_List = [];
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller:staffnamecontroller,
+                      focusNode: doctornameFocusNode,
                      
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Doctor Name *'
@@ -213,6 +231,7 @@ List department_List = [];
                    child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: designationcontroller,
+                      focusNode: disignationFocusNode,
                      
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Designation *'
@@ -230,6 +249,7 @@ List department_List = [];
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: Professionscontroller,
+                      focusNode: professionsFocusNode,
                       
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Professions *'
@@ -361,6 +381,7 @@ List department_List = [];
                       
                       autovalidateMode: AutovalidateMode.always,
                       controller: emailcontroller,
+                      focusNode: emailFocusNode,
                       keyboardType: TextInputType.emailAddress,
                      
                       // maxLength: 10,
@@ -381,9 +402,12 @@ List department_List = [];
                       keyboardType: TextInputType.phone,
                       autovalidateMode: AutovalidateMode.always,
                       controller: mobilecontroller,
+                      focusNode: mobileFocusNode,
                     
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Mobile No *'),
+                          border: OutlineInputBorder(), labelText: 'Mobile No *',
+                          counterText: ""
+                          ),
                     ),
                   ),
                    SizedBox(height: screenHeight*0.01,),
@@ -396,6 +420,7 @@ List department_List = [];
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.always,
                       controller: addresscontroller,
+                      focusNode: addresssFocusNode,
                    
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: 'Address *'
@@ -432,6 +457,7 @@ List department_List = [];
                     autovalidateMode: AutovalidateMode.always,
                     keyboardType: TextInputType.text,
                     controller: passcontroller,
+                    focusNode: passwordFocusNode,
 
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -462,6 +488,7 @@ List department_List = [];
                         const EdgeInsets.only(top: 12.0, bottom: 2, left: 8, right: 8),
                           child: TextFormField(
                             controller: confirmpasscontroller,
+                            focusNode: confirmFocusNode,
                             obscureText: _passwordVisible2,
                             autovalidateMode: AutovalidateMode.always,
                              keyboardType: TextInputType.text,
@@ -515,14 +542,17 @@ List department_List = [];
                                             NigDocToast().showErrorToast('Please Select Title');
                                
                                            }else if(staffnamecontroller.text.isEmpty){
+                                            doctornameFocusNode.requestFocus();
                                           NigDocToast().showErrorToast('Please Enter Doctor Name');
                               
                                             }
                                             else if(designationcontroller.text.isEmpty){
+                                              disignationFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Please Enter Designation');
                                
                                             }
                                             else if(Professionscontroller.text.isEmpty){
+                                              professionsFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Please Enter Professions');
                                
                                             }
@@ -538,13 +568,19 @@ List department_List = [];
                                    .contains('@') ||
                                    !emailcontroller.text.contains('.') ||
                                    !emailcontroller.text.contains('com')) {
+                                    emailFocusNode.requestFocus();
                                     NigDocToast().showErrorToast("Please Enter Your Email id");
                                   }
                                             else if(mobilecontroller.text.isEmpty){
+                                              mobileFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Enter Mobile No');
-                               
+                                            }
+                                            else if(mobilecontroller.text.length<10){
+                                              mobileFocusNode.requestFocus();
+                                              NigDocToast().showErrorToast('Please Check The Mobile No');
                                             }
                                             else if (addresscontroller.text.isEmpty){
+                                              addresssFocusNode.requestFocus();
                                               NigDocToast().showErrorToast('Please Enter Address');
                                            
                                
@@ -554,13 +590,21 @@ List department_List = [];
                               
                                         //     }
                                             else if(passcontroller.text.isEmpty){
+                                              passwordFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Enter Password');
-                              
+                                            }
+                                            else if(passcontroller.text.length<6){
+                                              passwordFocusNode.requestFocus();
+                                              NigDocToast().showErrorToast('Password Must Contains Six Digits');
                                             }
                                             else if(confirmpasscontroller.text.isEmpty){
+                                              confirmFocusNode.requestFocus();
                                         NigDocToast().showErrorToast('Enter Confirm Password');
-                                     
-                                            }else{
+                                            }else if(passcontroller.text != confirmpasscontroller.text){
+                                              confirmFocusNode.requestFocus();
+                                              NigDocToast().showErrorToast('Confirm Password is Mismatch');
+                                            }
+                                            else{
                                                 var data={
                                                  
                                                     "title":selected_level.toString(),

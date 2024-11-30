@@ -20,6 +20,8 @@ class _EdittreatmentState extends State<Edittreatment> {
     TextEditingController Medicinecontroller = TextEditingController();
   TextEditingController Treatmentcontroller = TextEditingController();
   TextEditingController Feescontroller = TextEditingController();
+  final FocusNode treatmentFocusNode = FocusNode();
+  final FocusNode feesFocusNode = FocusNode();
   var departmentdropdown;
   List departmentListList =[];
   var SelectedPharmacy;
@@ -51,6 +53,10 @@ class _EdittreatmentState extends State<Edittreatment> {
       Feescontroller.text = data["fees"].toString();
       Medicine_List = demo;
     });
+  }
+  void dispose(){
+    treatmentFocusNode.dispose();
+    feesFocusNode.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -93,6 +99,7 @@ class _EdittreatmentState extends State<Edittreatment> {
                 SizedBox(height: screenHeight*0.02,),
                 TextFormField(
                   controller: Treatmentcontroller,
+                  focusNode: treatmentFocusNode,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Treatment Name'
@@ -144,6 +151,7 @@ class _EdittreatmentState extends State<Edittreatment> {
                 TextFormField(
                   keyboardType: TextInputType.number,
                      controller: Feescontroller,
+                     focusNode: feesFocusNode,
                       autovalidateMode: AutovalidateMode.always,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -182,12 +190,14 @@ class _EdittreatmentState extends State<Edittreatment> {
                       ),
                       onPressed: () async {
                         if (Treatmentcontroller.text.isEmpty) {
+                          treatmentFocusNode.requestFocus();
                           NigDocToast().showErrorToast('Enter Treatment Name');
                         } else if (Medicine_List.length == 0) {
                           NigDocToast().showErrorToast('Please Select Medicine List');
                         } else if (departmentdropdown == null ) {
                           NigDocToast().showErrorToast('Please Select Department');
                         } else if (Feescontroller.text.isEmpty) {
+                          feesFocusNode.requestFocus();
                           NigDocToast().showErrorToast('Enter Fees');
                          }else {
                            data1 = {

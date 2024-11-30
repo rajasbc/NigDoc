@@ -32,7 +32,14 @@ class _Add_staff extends State<Add_staff> {
    TextEditingController userlevelcontroller = TextEditingController();
     TextEditingController usernamecontroller = TextEditingController();
     TextEditingController department1controller = TextEditingController();
-
+final FocusNode staffnameFocusNode = FocusNode();
+final FocusNode designationFocusNode = FocusNode();
+final FocusNode professionsFocusNode = FocusNode();
+final FocusNode emailFocusNode = FocusNode();
+final FocusNode mobileFocusNode = FocusNode();
+final FocusNode addressFocusNode = FocusNode();
+final FocusNode passwordFocusNode = FocusNode();
+final FocusNode confirmpassFocusNode = FocusNode();
 var add_User;
 var selected_level;
 var title =[
@@ -88,7 +95,18 @@ var selectedTest;
         departmentListList = List['list'];
       });
     }
-  }  @override
+  } 
+  void dispose(){
+    staffnameFocusNode.dispose();
+    designationFocusNode.dispose();
+    professionsFocusNode.dispose();
+    emailFocusNode.dispose();
+    mobileFocusNode.dispose();
+    addressFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmpassFocusNode.dispose();
+  }
+   @override
   Widget build(BuildContext context) {
      double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -181,6 +199,7 @@ var selectedTest;
                       child: TextFormField(
                         autovalidateMode: AutovalidateMode.always,
                         controller:staffnamecontroller,
+                        focusNode: staffnameFocusNode,
                        
                         decoration: InputDecoration(
                             border: OutlineInputBorder(), labelText: 'Staff Name *'
@@ -195,6 +214,7 @@ var selectedTest;
                       child: TextFormField(
                         autovalidateMode: AutovalidateMode.always,
                         controller: designationcontroller,
+                        focusNode: designationFocusNode,
                        
                         decoration: InputDecoration(
                             border: OutlineInputBorder(), labelText: 'Designation *'
@@ -210,6 +230,7 @@ var selectedTest;
                       child: TextFormField(
                         autovalidateMode: AutovalidateMode.always,
                         controller: Professionscontroller,
+                        focusNode: professionsFocusNode,
                         
                         decoration: InputDecoration(
                             border: OutlineInputBorder(), labelText: 'Professions *'
@@ -267,12 +288,11 @@ var selectedTest;
                     : renderPatientAutoComplete(screenHeight, screenWidth)
                 // : renderTesttListWidget(screenHeight, screenWidth)
                 ),
-                      SizedBox(height: screenHeight*0.02),
+                      SizedBox(height: screenHeight*0.01),
                       department_List.length>0?renderTesttListWidget(screenHeight, screenWidth):Container(),
-         
-                      SizedBox(height: screenHeight*0.02,),    
+                      SizedBox(height: screenHeight*0.01),    
                       Container(
-                       height: screenHeight * 0.08,
+                       height: screenHeight * 0.06,
                        width: screenWidth * 0.96,
                        decoration: BoxDecoration(border: Border.all(color: Colors.grey),
                        borderRadius: BorderRadius.circular(5.0)
@@ -324,6 +344,7 @@ var selectedTest;
                         
                         autovalidateMode: AutovalidateMode.always,
                         controller: emailcontroller,
+                        focusNode: emailFocusNode,
                         keyboardType: TextInputType.emailAddress,
                        
                         // maxLength: 10,
@@ -333,9 +354,6 @@ var selectedTest;
                       ),
                     ),
                      SizedBox(height: screenHeight*0.01,),
-            
-            
-            
                       Padding(
                       padding:
                           const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
@@ -344,21 +362,21 @@ var selectedTest;
                         keyboardType: TextInputType.phone,
                         autovalidateMode: AutovalidateMode.always,
                         controller: mobilecontroller,
-                      
+                        focusNode: mobileFocusNode,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(), labelText: 'Mobile No *'),
+                            border: OutlineInputBorder(), labelText: 'Mobile No *',
+                            counterText: "",
+                            ),
                       ),
                     ),
                      SizedBox(height: screenHeight*0.01,),
-            
-            
-            
                     Padding(
                       padding:
                           const EdgeInsets.only(top: 8.0, bottom: 2, left: 8, right: 8),
                       child: TextFormField(
                         autovalidateMode: AutovalidateMode.always,
                         controller: addresscontroller,
+                        focusNode: addressFocusNode,
                      
                         decoration: InputDecoration(
                             border: OutlineInputBorder(), labelText: 'Address *'
@@ -390,6 +408,7 @@ var selectedTest;
                     child: TextFormField(
                       obscureText: _passwordVisible,
                       controller: passcontroller,
+                      focusNode: passwordFocusNode,
                       keyboardType: TextInputType.text,
                       autovalidateMode: AutovalidateMode.always,
                       decoration: InputDecoration(
@@ -419,6 +438,7 @@ var selectedTest;
                         obscureText:  !_passwordVisible2,
                         autovalidateMode: AutovalidateMode.always,
                         controller: confirmpasscontroller,
+                        focusNode: confirmpassFocusNode,
                      
                         decoration: InputDecoration(
                             border: OutlineInputBorder(), labelText: 'Confirm Password ',
@@ -470,14 +490,17 @@ var selectedTest;
                                               NigDocToast().showErrorToast('Please Select Title');
                                  
                                              }else if(staffnamecontroller.text.isEmpty){
+                                              staffnameFocusNode.requestFocus();
                                             NigDocToast().showErrorToast('Please Enter Staff Name');
                                 
                                               }
                                               else if(designationcontroller.text.isEmpty){
+                                                designationFocusNode.requestFocus();
                                           NigDocToast().showErrorToast('Please Enter Designation');
                                  
                                               }
                                               else if(Professionscontroller.text.isEmpty){
+                                                professionsFocusNode.requestFocus();
                                           NigDocToast().showErrorToast('Please Enter Professions');
                                  
                                               }
@@ -493,13 +516,18 @@ var selectedTest;
                                      .contains('@') ||
                                      !emailcontroller.text.contains('.') ||
                                      !emailcontroller.text.contains('com')) {
+                                      emailFocusNode.requestFocus();
                                       NigDocToast().showErrorToast("Please Enter Your Email id");
                                     }
                                               else if(mobilecontroller.text.isEmpty){
+                                                mobileFocusNode.requestFocus();
                                           NigDocToast().showErrorToast('Enter Mobile No');
-                                 
+                                              }else if(mobilecontroller.text.length<=9){
+                                                mobileFocusNode.requestFocus();
+                                          NigDocToast().showErrorToast('Please Check The Mobile No');
                                               }
                                               else if (addresscontroller.text.isEmpty){
+                                                addressFocusNode.requestFocus();
                                                 NigDocToast().showErrorToast('Please Enter Address');
                                              
                                  
@@ -509,13 +537,20 @@ var selectedTest;
                                 
                                           //     }
                                               else if(passcontroller.text.isEmpty){
+                                                passwordFocusNode.requestFocus();
                                           NigDocToast().showErrorToast('Enter Password');
-                                
+                                              }else if(passcontroller.text.length<6){
+                                                NigDocToast().showErrorToast('Password Must Contains Six Digits');
                                               }
                                               else if(confirmpasscontroller.text.isEmpty){
+                                                confirmpassFocusNode.requestFocus();
                                           NigDocToast().showErrorToast('Enter Confirm Password');
-                                       
-                                              }else{
+                                              }
+                                              else if(passcontroller.text !=confirmpasscontroller.text){
+                                                confirmpassFocusNode.requestFocus();
+                                                NigDocToast().showErrorToast('Confirm Password is Mismatch');
+                                              }
+                                              else{
                                                   var data={
                                                     "title":selected_level.toString(),
                                                     "name":staffnamecontroller.text.toString(),
@@ -721,7 +756,7 @@ var selectedTest;
             FocusNode focusNode,
             VoidCallback onFieldSubmitted) {
           return Container(
-            height: screenHeight * 0.07,
+            height: screenHeight * 0.06,
             width: screenWidth * 0.95,
             decoration: BoxDecoration(
               // color: Colors.white,
