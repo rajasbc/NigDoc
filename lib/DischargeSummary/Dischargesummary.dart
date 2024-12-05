@@ -82,9 +82,9 @@ class _dischargesummaryState extends State<dischargesummary> {
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.all(5.0),
                                       child: Text(
-                                        'Category List',
+                                        ' Category ',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
@@ -153,9 +153,9 @@ class _dischargesummaryState extends State<dischargesummary> {
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.all(5.0),
                                       child: Text(
-                                        'Groups List',
+                                        'Groups',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
@@ -223,7 +223,7 @@ class _dischargesummaryState extends State<dischargesummary> {
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.all(5.0),
                                       child: Text(
                                         'Summary',
                                         style: TextStyle(

@@ -507,7 +507,7 @@ class _DashState extends State<Dash> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: screenWidth * 0.30,
+                                        width: screenWidth * 0.4,
                                         // height: screenHeight * 0.07,
                                         decoration:
                                             Helper().ContainerShowdow(0, 'no'),
@@ -519,9 +519,9 @@ class _DashState extends State<Dash> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: screenWidth * 0.44,
+                                                width: screenWidth * 0.5,
                                                 child: Text(
-                                                  'Patient Count',
+                                                  'Patient \nCount',
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       color:
@@ -546,7 +546,7 @@ class _DashState extends State<Dash> {
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .amber,
-                                                                  fontSize: 22,
+                                                                  fontSize: 18,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),
@@ -567,7 +567,7 @@ class _DashState extends State<Dash> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: screenWidth * 0.3,
+                                        width: screenWidth * 0.4,
                                         height: screenHeight * 0.1,
                                         decoration:
                                             Helper().ContainerShowdow(0, 'no'),
@@ -579,9 +579,9 @@ class _DashState extends State<Dash> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: screenWidth * 0.44,
+                                                width: screenWidth * 0.5,
                                                 child: Text(
-                                                  'Prescription Count',
+                                                  'Prescription\nCount',
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       // color: Colors.blue,
@@ -607,7 +607,7 @@ class _DashState extends State<Dash> {
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .amber,
-                                                                  fontSize: 22,
+                                                                  fontSize: 18,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),
@@ -628,7 +628,7 @@ class _DashState extends State<Dash> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: screenWidth * 0.3,
+                                        width: screenWidth * 0.4,
                                         height: screenHeight * 0.1,
                                         decoration:
                                             Helper().ContainerShowdow(0, 'no'),
@@ -640,9 +640,9 @@ class _DashState extends State<Dash> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: screenWidth * 0.44,
+                                                width: screenWidth * 0.5,
                                                 child: Text(
-                                                  'Appointment Count',
+                                                  'Appointment\nCount',
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       // color: Colors.blue,
@@ -668,7 +668,7 @@ class _DashState extends State<Dash> {
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .amber,
-                                                                  fontSize: 22,
+                                                                  fontSize: 18,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),
@@ -689,7 +689,7 @@ class _DashState extends State<Dash> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        width: screenWidth * 0.3,
+                                        width: screenWidth * 0.5,
                                         height: screenHeight * 0.1,
                                         decoration:
                                             Helper().ContainerShowdow(0, 'no'),
@@ -702,7 +702,7 @@ class _DashState extends State<Dash> {
                                             // crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: screenWidth * 0.44,
+                                                width: screenWidth * 0.50,
                                                 child: Text(
                                                   'Pending Appointment Count',
                                                   style: TextStyle(
@@ -730,7 +730,7 @@ class _DashState extends State<Dash> {
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .amber,
-                                                                  fontSize: 22,
+                                                                  fontSize: 18,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),

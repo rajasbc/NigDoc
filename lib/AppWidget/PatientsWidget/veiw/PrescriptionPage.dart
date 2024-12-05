@@ -301,7 +301,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                         ),
                                         child: Center(
                                             child: Text(
-                                          "Treatment",
+                                          " Treatment ",
                                           style: TextStyle(
                                               color:
                                                   select_button == "treatment"

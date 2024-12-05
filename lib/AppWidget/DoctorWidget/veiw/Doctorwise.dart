@@ -22,7 +22,7 @@ class _doctor_wiseState extends State<doctor_wise> {
   var userResponse;
   var accesstoken;
   bool isLoading = true;
-   var DoctorList;
+   List DoctorList=[];
    String DoctorDropdownvalue = '';
   
   @override
@@ -209,7 +209,7 @@ var title =[
                               padding:
                                   const EdgeInsets.only(top: 0, left: 2, right: 0,),
                               child: Text(
-                                'Select Doctor *',
+                                'ALL',
                                 style: TextStyle(
                                     color: Color.fromARGB(255, 112, 107, 107)),
                               ),
@@ -331,6 +331,8 @@ var title =[
                                                   ? custom_color.lightcolor
                                                   : Colors.white,
                                                   child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    // crossAxisAlignment: CrossAxisAlignment.baseline,
                                                     children: [
                                                       Container(
                                                         child: Row(
@@ -373,7 +375,7 @@ var title =[
                                                   children: [
                                                     Container(
                                                       // color: Colors.amber,
-                                                      width: screenWidth * 0.38,
+                                                      width: screenWidth * 0.80,
                                                       child: Row(
                                                         children: [
                                                          
@@ -381,19 +383,33 @@ var title =[
                                                         ],
                                                       ),
                                                     ),
-                                                    Container(
-                                                      // color: Colors.purple,
-                                                      width: screenWidth * 0.43,
-                                                      child: Row(
-                                                        children: [
+                                                    // Container(
+                                                    //   // color: Colors.purple,
+                                                    //   width: screenWidth * 0.43,
+                                                    //   child: Row(
+                                                    //     children: [
                                                          
-                                                          Text('Name : ${data['name'].toString()}')
-                                                        ],
-                                                      ),
-                                                    ),
+                                                    //       Text('Name : ${data['name'].toString()}')
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
                                                   ],
                                                 ),
                                                 SizedBox(height: screenHeight*0.01,),
+                                                 Row(
+                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                   children: [
+                                                     Container(
+                                                          // color: Colors.purple,
+                                                          width: screenWidth * 0.80,
+                                                          child: Text('Name : ${data['name'].toString()}'),
+                                                        ),
+                                                         Container(
+                                                          child: Text(''),
+                                                         )
+                                                   ],
+                                                 ),
+                                                    SizedBox(height: screenHeight*0.01,),
                                                 Row(
                                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
@@ -545,8 +561,9 @@ var title =[
                      ),
                    )
                      
-                                 :Container(child:
-                      Text('No Data Found')
+                                 :Container(
+                                  height: screenHeight*0.4, child:
+                      Center(child: Text('No Data Found',style: TextStyle(fontWeight:FontWeight.bold),))
                     ):Container(child: SpinLoader(),)
                   ],
                 ),
@@ -571,10 +588,15 @@ var title =[
         Helper().isvalidElement(list['status']) &&
         list['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
+    }else if(Helper().isvalidElement(list) &&Helper().isvalidElement(list['message'])&&list['message']=="no data found"){
+ setState(() {
+  reportList = [];
+        isLoading = true;
+      });
     } else {
       reportList = list['list'];
      
-      this.setState(() {
+      setState(() {
         isLoading = true;
       });
     }
@@ -587,7 +609,12 @@ var title =[
         doctorlist['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
-      DoctorList = doctorlist['list'];
+      var d=[{
+        "name":'ALL',"id":''
+      }];
+      DoctorList=[];
+      DoctorList.add(d[0]);
+      DoctorList.addAll(doctorlist['list']);
       //  storage.setItem('diagnosisList', diagnosisList);
       this.setState(() {
         isLoading = true;
