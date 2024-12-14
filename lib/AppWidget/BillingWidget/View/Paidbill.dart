@@ -5,6 +5,7 @@ import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import 'package:nigdoc/Collections/Collections.dart';
 import '../../Common/colors.dart' as Customcolor;
 
 class paidbilllist extends StatefulWidget {
@@ -91,7 +92,7 @@ class _paidbilllistState extends State<paidbilllist> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Dash(),
+              builder: (context) => collection(),
             ));
         return true;
       },
@@ -107,7 +108,7 @@ class _paidbilllistState extends State<paidbilllist> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Dash(),
+                    builder: (context) => collection(),
                   ));
             },
             icon: Icon(

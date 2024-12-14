@@ -1,7 +1,7 @@
 // String base_url ="http://10.0.2.2:8000/api/";
 String base_url = "https://sapi.nigsoft.com/api/";
-// String base_url = "http://127.0.0.1:8000/api/";
-// String base_url = "https://d4a0-2405-201-e04a-c0bb-cd3-6358-996c-8b04.ngrok-free.app/api/";
+// String base_url = "https://testapi.nigsoft.com/api/";
+// String base_url = "https://a9e3-2405-201-e04a-c0bb-c55b-df08-dca4-7796.ngrok-free.app/api/";
 String userSignup = "auth/doc_sign_up";
 String userlogin = "auth/doctorLogin";
 // String StaffListEndpoint = "auth/getClinicStaffList";
@@ -86,5 +86,9 @@ String getPatientRegisterReport="auth/getPatientRegisterReport";
 String getCollectionReport="auth/getCollectionReport";
 String getDepartmentWisReport="auth/getDepartmentWisReport";
 String getDoctorwise="auth/getDoctorWise";
+String gerRegisterReport= 'auth/gerregisterreport';
+String getRegisterReportPayList= 'auth/getregisterreportpaylist';
+String DocRegisterReportPay= 'auth/docregisterreportpay';
+String DocRegisterReportSendOTP= 'auth/docregisterreportsendOTP';
 
 

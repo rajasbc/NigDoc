@@ -7,6 +7,7 @@ import 'package:nigdoc/AppWidget/BillingWidget/View/PendingPayment.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import 'package:nigdoc/Collections/Collections.dart';
 import '../../Common/colors.dart' as Customcolor;
 
 class Pendingbilllist extends StatefulWidget {
@@ -92,7 +93,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Dash(),
+              builder: (context) => collection(),
             ));
         return true;
       },
@@ -108,7 +109,7 @@ class _PendingbilllistState extends State<Pendingbilllist> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Dash(),
+                    builder: (context) => collection(),
                   ));
             },
             icon: Icon(

@@ -30,6 +30,8 @@ import 'package:nigdoc/AppWidget/VideoCall/join_screen.dart';
 import 'package:nigdoc/AppWidget/common/DeviceInfo.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
+import 'package:nigdoc/Collections/Collections.dart';
+import 'package:nigdoc/Collections/RegisterReport.dart';
 import 'package:nigdoc/DischargeSummary/Dischargesummary.dart';
 import 'package:nigdoc/DischargeSummary/summary.dart';
 import 'package:nigdoc/Reports/report.dart';
@@ -756,9 +758,10 @@ class _DashState extends State<Dash> {
                               // ),
                               Container(
                                 child: Row(
+                                  
                                   children: [
                                     Text(
-                                      "Collection",
+                                      "Billing",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
@@ -772,311 +775,418 @@ class _DashState extends State<Dash> {
                                 height: 5,
                               ),
                               Container(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        // height: screenHeight * 0.1500,
-                                        width: screenWidth * 0.30,
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        custom_color.appcolor,
-                                                    // border: width != 0 ?
-                                                    // Border.all(width: 2, color:custom_color.app_color1 )
-                                                    // : Border(),
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    10),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    10),
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    10),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    10)),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.2),
-                                                        spreadRadius: 4,
-                                                        blurRadius: 4,
-                                                        offset: Offset(0,
-                                                            1), // changes position of shadow
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 0.1,right: 115),
+                                    child: Row(
+                                      // mainAxisAlignment:
+                                      //     MainAxisAlignment.spaceAround,                                       
+                                      children: [
+                                         InkWell(
+                                          child: Container(
+                                            // height: screenHeight * 0.1500,
+                                            width: screenWidth * 0.30,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                    padding: const EdgeInsets.only(
+                                                        top: 8),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            custom_color.appcolor,
+                                                        // border: width != 0 ?
+                                                        // Border.all(width: 2, color:custom_color.app_color1 )
+                                                        // : Border(),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                topLeft:
+                                                                    Radius.circular(
+                                                                        10),
+                                                                topRight:
+                                                                    Radius.circular(
+                                                                        10),
+                                                                bottomLeft:
+                                                                    Radius.circular(
+                                                                        10),
+                                                                bottomRight:
+                                                                    Radius.circular(
+                                                                        10)),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(0.2),
+                                                            spreadRadius: 4,
+                                                            blurRadius: 4,
+                                                            offset: Offset(0,
+                                                                1), // changes position of shadow
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                5.0),
+                                                        child: Text(
+                                                          'Collections',
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight.bold),
+                                                        ),
+                                                      ),
+                                                    )),
+                                                Container(
+                                                  // color: Colors.amber,
+                                                  height: screenHeight * 0.1,
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      'Pending',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
+                                                        const EdgeInsets.all(8.0),
+                                                    child: Image.asset(
+                                                        'assets/pending.png'),
                                                   ),
-                                                )),
-                                            Container(
-                                              // color: Colors.amber,
-                                              height: screenHeight * 0.1,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                    'assets/pending.png'),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                          // color: custom_color.lightcolor,
-                                          color: Colors.white,
-                                          // border: width != 0 ?
-                                          // Border.all(width: 2, color:custom_color.app_color1 )
-                                          // : Border(),
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 4,
-                                              blurRadius: 4,
-                                              offset: Offset(0,
-                                                  1), // changes position of shadow
+                                                )
+                                              ],
                                             ),
-                                          ],
+                                            decoration: BoxDecoration(
+                                              // color: custom_color.lightcolor,
+                                              color: Colors.white,
+                                              // border: width != 0 ?
+                                              // Border.all(width: 2, color:custom_color.app_color1 )
+                                              // : Border(),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight: Radius.circular(10),
+                                                  bottomLeft: Radius.circular(10),
+                                                  bottomRight: Radius.circular(10)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color:
+                                                      Colors.grey.withOpacity(0.2),
+                                                  spreadRadius: 4,
+                                                  blurRadius: 4,
+                                                  offset: Offset(0,
+                                                      1), // changes position of shadow
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      collection(),
+                                                ));
+                                          },
                                         ),
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Pendingbilllist(),
-                                            ));
-                                      },
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        // height: screenHeight * 0.1567,
-                                        width: screenWidth * 0.30,
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        custom_color.appcolor,
-                                                    // border: width != 0 ?
-                                                    // Border.all(width: 2, color:custom_color.app_color1 )
-                                                    // : Border(),
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    10),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    10),
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    10),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    10)),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.2),
-                                                        spreadRadius: 4,
-                                                        blurRadius: 4,
-                                                        offset: Offset(0,
-                                                            1), // changes position of shadow
+                                         SizedBox(width: screenWidth*0.04,),
+                                        InkWell(
+                                          child: Container(
+                                            // height: screenHeight * 0.1500,
+                                            width: screenWidth * 0.30,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                    padding: const EdgeInsets.only(
+                                                        top: 8),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            custom_color.appcolor,
+                                                        // border: width != 0 ?
+                                                        // Border.all(width: 2, color:custom_color.app_color1 )
+                                                        // : Border(),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                topLeft:
+                                                                    Radius.circular(
+                                                                        10),
+                                                                topRight:
+                                                                    Radius.circular(
+                                                                        10),
+                                                                bottomLeft:
+                                                                    Radius.circular(
+                                                                        10),
+                                                                bottomRight:
+                                                                    Radius.circular(
+                                                                        10)),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(0.2),
+                                                            spreadRadius: 4,
+                                                            blurRadius: 4,
+                                                            offset: Offset(0,
+                                                                1), // changes position of shadow
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                5.0),
+                                                        child: Text(
+                                                          'Register Report',
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight.bold),
+                                                        ),
+                                                      ),
+                                                    )),
+                                                Container(
+                                                  // color: Colors.amber,
+                                                  height: screenHeight * 0.1,
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      '  Paid  ',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
+                                                        const EdgeInsets.all(8.0),
+                                                    child: Image.asset(
+                                                        'assets/pending.png'),
                                                   ),
-                                                )),
-                                            Container(
-                                              // color: Colors.amber,
-                                              height: screenHeight * 0.1,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                    'assets/paid.png'),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                          // color: custom_color.lightcolor,
-                                          color: Colors.white,
-                                          // border: width != 0 ?
-                                          // Border.all(width: 2, color:custom_color.app_color1 )
-                                          // : Border(),
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 4,
-                                              blurRadius: 4,
-                                              offset: Offset(0,
-                                                  1), // changes position of shadow
+                                                )
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  paidbilllist(),
-                                            ));
-                                      },
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        // height: screenHeight * 0.1567,
-                                        width: screenWidth * 0.30,
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        custom_color.appcolor,
-                                                    // border: width != 0 ?
-                                                    // Border.all(width: 2, color:custom_color.app_color1 )
-                                                    // : Border(),
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    10),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    10),
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    10),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    10)),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.2),
-                                                        spreadRadius: 4,
-                                                        blurRadius: 4,
-                                                        offset: Offset(0,
-                                                            1), // changes position of shadow
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      'Cancel',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                )),
-                                            Container(
-                                              // color: Colors.amber,
-                                              height: screenHeight * 0.1,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Image.asset(
-                                                    'assets/cancel.png'),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                          // color: custom_color.lightcolor,
-                                          color: Colors.white,
-                                          // border: width != 0 ?
-                                          // Border.all(width: 2, color:custom_color.app_color1 )
-                                          // : Border(),
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 4,
-                                              blurRadius: 4,
-                                              offset: Offset(0,
-                                                  1), // changes position of shadow
+                                            decoration: BoxDecoration(
+                                              // color: custom_color.lightcolor,
+                                              color: Colors.white,
+                                              // border: width != 0 ?
+                                              // Border.all(width: 2, color:custom_color.app_color1 )
+                                              // : Border(),
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight: Radius.circular(10),
+                                                  bottomLeft: Radius.circular(10),
+                                                  bottomRight: Radius.circular(10)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color:
+                                                      Colors.grey.withOpacity(0.2),
+                                                  spreadRadius: 4,
+                                                  blurRadius: 4,
+                                                  offset: Offset(0,
+                                                      1), // changes position of shadow
+                                                ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Registerreport(),
+                                                ));
+                                          },
                                         ),
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Cancelledbill(),
-                                            ));
-                                      },
+                                        // SizedBox(width: screenWidth*0.04,),
+                                        // InkWell(
+                                        //   child: Container(
+                                        //     // height: screenHeight * 0.1567,
+                                        //     width: screenWidth * 0.30,
+                                        //     child: Column(
+                                        //       children: [
+                                        //         Padding(
+                                        //             padding: const EdgeInsets.only(
+                                        //                 top: 8),
+                                        //             child: Container(
+                                        //               decoration: BoxDecoration(
+                                        //                 color:
+                                        //                     custom_color.appcolor,
+                                        //                 // border: width != 0 ?
+                                        //                 // Border.all(width: 2, color:custom_color.app_color1 )
+                                        //                 // : Border(),
+                                        //                 borderRadius:
+                                        //                     BorderRadius.only(
+                                        //                         topLeft:
+                                        //                             Radius.circular(
+                                        //                                 10),
+                                        //                         topRight:
+                                        //                             Radius.circular(
+                                        //                                 10),
+                                        //                         bottomLeft:
+                                        //                             Radius.circular(
+                                        //                                 10),
+                                        //                         bottomRight:
+                                        //                             Radius.circular(
+                                        //                                 10)),
+                                        //                 boxShadow: [
+                                        //                   BoxShadow(
+                                        //                     color: Colors.grey
+                                        //                         .withOpacity(0.2),
+                                        //                     spreadRadius: 4,
+                                        //                     blurRadius: 4,
+                                        //                     offset: Offset(0,
+                                        //                         1), // changes position of shadow
+                                        //                   ),
+                                        //                 ],
+                                        //               ),
+                                        //               child: Padding(
+                                        //                 padding:
+                                        //                     const EdgeInsets.all(
+                                        //                         5.0),
+                                        //                 child: Text(
+                                        //                   'Treatment Bill',
+                                        //                   style: TextStyle(
+                                        //                       color: Colors.white,
+                                        //                       fontWeight:
+                                        //                           FontWeight.bold),
+                                        //                 ),
+                                        //               ),
+                                        //             )),
+                                        //         Container(
+                                        //           // color: Colors.amber,
+                                        //           height: screenHeight * 0.1,
+                                        //           child: Padding(
+                                        //             padding:
+                                        //                 const EdgeInsets.all(8.0),
+                                        //             child: Image.asset(
+                                        //                 'assets/paid.png'),
+                                        //           ),
+                                        //         )
+                                        //       ],
+                                        //     ),
+                                        //     decoration: BoxDecoration(
+                                        //       // color: custom_color.lightcolor,
+                                        //       color: Colors.white,
+                                        //       // border: width != 0 ?
+                                        //       // Border.all(width: 2, color:custom_color.app_color1 )
+                                        //       // : Border(),
+                                        //       borderRadius: BorderRadius.only(
+                                        //           topLeft: Radius.circular(10),
+                                        //           topRight: Radius.circular(10),
+                                        //           bottomLeft: Radius.circular(10),
+                                        //           bottomRight: Radius.circular(10)),
+                                        //       boxShadow: [
+                                        //         BoxShadow(
+                                        //           color:
+                                        //               Colors.grey.withOpacity(0.2),
+                                        //           spreadRadius: 4,
+                                        //           blurRadius: 4,
+                                        //           offset: Offset(0,
+                                        //               1), // changes position of shadow
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        //   onTap: () {
+                                        //     Navigator.push(
+                                        //         context,
+                                        //         MaterialPageRoute(
+                                        //           builder: (context) =>
+                                        //               paidbilllist(),
+                                        //         ));
+                                        //   },
+                                        // ),
+                                        //  SizedBox(width: screenWidth*0.04,),
+                                        // InkWell(
+                                        //   child: Container(
+                                        //     // height: screenHeight * 0.1567,
+                                        //     width: screenWidth * 0.30,
+                                        //     child: Column(
+                                        //       children: [
+                                        //         Padding(
+                                        //             padding: const EdgeInsets.only(
+                                        //                 top: 8),
+                                        //             child: Container(
+                                        //               decoration: BoxDecoration(
+                                        //                 color:
+                                        //                     custom_color.appcolor,
+                                        //                 // border: width != 0 ?
+                                        //                 // Border.all(width: 2, color:custom_color.app_color1 )
+                                        //                 // : Border(),
+                                        //                 borderRadius:
+                                        //                     BorderRadius.only(
+                                        //                         topLeft:
+                                        //                             Radius.circular(
+                                        //                                 10),
+                                        //                         topRight:
+                                        //                             Radius.circular(
+                                        //                                 10),
+                                        //                         bottomLeft:
+                                        //                             Radius.circular(
+                                        //                                 10),
+                                        //                         bottomRight:
+                                        //                             Radius.circular(
+                                        //                                 10)),
+                                        //                 boxShadow: [
+                                        //                   BoxShadow(
+                                        //                     color: Colors.grey
+                                        //                         .withOpacity(0.2),
+                                        //                     spreadRadius: 4,
+                                        //                     blurRadius: 4,
+                                        //                     offset: Offset(0,
+                                        //                         1), // changes position of shadow
+                                        //                   ),
+                                        //                 ],
+                                        //               ),
+                                        //               child: Padding(
+                                        //                 padding:
+                                        //                     const EdgeInsets.all(
+                                        //                         5.0),
+                                        //                 child: Text(
+                                        //                   'Inpatient Summary Bill',
+                                        //                   style: TextStyle(
+                                        //                       color: Colors.white,
+                                        //                       fontWeight:
+                                        //                           FontWeight.bold),
+                                        //                 ),
+                                        //               ),
+                                        //             )),
+                                        //         Container(
+                                        //           // color: Colors.amber,
+                                        //           height: screenHeight * 0.1,
+                                        //           child: Padding(
+                                        //             padding:
+                                        //                 const EdgeInsets.all(8.0),
+                                        //             child: Image.asset(
+                                        //                 'assets/cancel.png'),
+                                        //           ),
+                                        //         )
+                                        //       ],
+                                        //     ),
+                                        //     decoration: BoxDecoration(
+                                        //       // color: custom_color.lightcolor,
+                                        //       color: Colors.white,
+                                        //       // border: width != 0 ?
+                                        //       // Border.all(width: 2, color:custom_color.app_color1 )
+                                        //       // : Border(),
+                                        //       borderRadius: BorderRadius.only(
+                                        //           topLeft: Radius.circular(10),
+                                        //           topRight: Radius.circular(10),
+                                        //           bottomLeft: Radius.circular(10),
+                                        //           bottomRight: Radius.circular(10)),
+                                        //       boxShadow: [
+                                        //         BoxShadow(
+                                        //           color:
+                                        //               Colors.grey.withOpacity(0.2),
+                                        //           spreadRadius: 4,
+                                        //           blurRadius: 4,
+                                        //           offset: Offset(0,
+                                        //               1), // changes position of shadow
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        //   onTap: () {
+                                        //     Navigator.push(
+                                        //         context,
+                                        //         MaterialPageRoute(
+                                        //           builder: (context) =>
+                                        //               Cancelledbill(),
+                                        //         ));
+                                        //   },
+                                        // ),
+                                    
+                                        // Text(
+                                        //   "Collection",
+                                        //   style: TextStyle(
+                                        //       fontWeight: FontWeight.bold, fontSize: 17,letterSpacing: 0.8),
+                                        // ),
+                                      ],
                                     ),
-
-                                    // Text(
-                                    //   "Collection",
-                                    //   style: TextStyle(
-                                    //       fontWeight: FontWeight.bold, fontSize: 17,letterSpacing: 0.8),
-                                    // ),
-                                  ],
+                                  ),
                                 ),
                               ),
                               SizedBox(
