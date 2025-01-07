@@ -11,18 +11,19 @@ import 'package:nigdoc/AppWidget/common/Colors.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/Collections/Collections.dart';
+import 'package:nigdoc/Collections/InPattient.dart';
 import 'package:nigdoc/Collections/RegisterReport.dart';
 import '../../../AppWidget/common/Colors.dart' as custom_color;
 
 
-class RegisterReportPay extends StatefulWidget {
-  const RegisterReportPay({super.key});
+class inpatientpay extends StatefulWidget {
+  const inpatientpay({super.key});
 
   @override
-  State<RegisterReportPay> createState() => _RegisterReportPayState();
+  State<inpatientpay> createState() => _inpatientpayState();
 }
 
-class _RegisterReportPayState extends State<RegisterReportPay> {
+class _inpatientpayState extends State<inpatientpay> {
   final LocalStorage storage = new LocalStorage('doctor_store');
   TextEditingController receivedController = TextEditingController();
   TextEditingController discountcontroller = TextEditingController();
@@ -59,7 +60,9 @@ class _RegisterReportPayState extends State<RegisterReportPay> {
   var def_amount;
   var id;
   var patient_id;
-  var register_reportpay;
+  var ipatient_paylist;
+  var admission_id;
+  var admission_no;
   bool isLoading = false;
   bool loding = false;
 
@@ -78,18 +81,20 @@ class _RegisterReportPayState extends State<RegisterReportPay> {
     await storage.ready;
     userResponse = await storage.getItem('userResponse');
     access_token = userResponse['access_token'];
-    var payment = await storage.getItem('register_report');
+    var payment = await storage.getItem('inpatient_list');
     
     setState(() {
       id = payment['id'].toString();
-      patient_id = payment['p_id'].toString();
+      patient_id = payment['patient_id'].toString();
+      admission_id = payment['admission_id'].toString();
+      admission_no = payment['admission_no'].toString();
       p_name = payment['p_name'].toString();
       // bill_no = payment['presc_id'].toString();
-      bill_date = payment['reg_date'].toString();
+      bill_date = payment['date'].toString();
       total_amount = payment['paid'].toString();
       bill_amount = payment['balance'].toString();
        bill_amount = payment['balance'].toString();
-      def_amount = payment['consulting_fees'].toString();
+      def_amount = payment['total'].toString();
     
     });
     await gerRegisterReportPay();
@@ -105,13 +110,13 @@ class _RegisterReportPayState extends State<RegisterReportPay> {
     // this.setState(() {
     //   isLoading = true;
     // });
-    register_reportpay = await billingapi().getRegisterReportPayList(access_token, data);
-    if (Helper().isvalidElement(register_reportpay) &&
-        Helper().isvalidElement(register_reportpay['status']) &&
-        register_reportpay['status'] == 'Token is Expired') {
+    ipatient_paylist = await billingapi().getInPatientPayList(access_token, data);
+    if (Helper().isvalidElement(ipatient_paylist) &&
+        Helper().isvalidElement(ipatient_paylist['status']) &&
+        ipatient_paylist['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
-      register_reportpay = register_reportpay['list'];
+      ipatient_paylist = ipatient_paylist['list'];
     
       this.setState(() {
         isLoading = true;
@@ -131,7 +136,7 @@ class _RegisterReportPayState extends State<RegisterReportPay> {
        
           Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Registerreport()),
+          MaterialPageRoute(builder: (context) => inpatient()),
         );
         return true;
       },
@@ -189,7 +194,7 @@ class _RegisterReportPayState extends State<RegisterReportPay> {
                    
           Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Registerreport()),
+          MaterialPageRoute(builder: (context) => const inpatient()),
         );
 
       
@@ -203,7 +208,7 @@ class _RegisterReportPayState extends State<RegisterReportPay> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Text(
-                    'Register Report Bill Pay',
+                    'Inpatient Summary Bill Pay',
                     style: TextStyle(
                         color:Colors.white,
                         fontSize: 22,
@@ -1310,16 +1315,20 @@ class _RegisterReportPayState extends State<RegisterReportPay> {
       var data = {
         
         'id': id.toString(),
+        "admission_id":admission_id.toString(),
         "patient_id":patient_id.toString(),
-        'discount':discountcontroller.text.toString(),
+        "admission_no":admission_no.toString(),
         'amt_received': receivedController.text.toString(),
-        'payment_mode':payDropdownvalue,
-        'final_amt': bill_amount.toString(),
+        'aft_discount': bill_amount.toString(),
+        'discount':discountcontroller.text.toString(),
         'otp':otpcontroller.text.toString(),
+        'payment_mode':payDropdownvalue,
+        
+       
        
       };
       print(data);
-      var getvalue = await billingapi().DocRegisterReportPay(access_token, data);
+      var getvalue = await billingapi().DocInpatientPay(access_token, data);
       print(getvalue);
       if (getvalue['message'] == 'payment successfully') {
           Fluttertoast.showToast(
@@ -1331,7 +1340,7 @@ class _RegisterReportPayState extends State<RegisterReportPay> {
                       textColor: Colors.white);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Registerreport()),
+          MaterialPageRoute(builder: (context) => inpatient()),
         );
 
       }else{
@@ -1545,16 +1554,7 @@ return Card(
                                                      width: screenWidth*0.5,
                                                     child: Row(
                                                       children: [
-                                                        // Icon(
-                                                        //   Icons.calendar_month,
-                                                        //   // color: custom_color.appcolor,
-                                                        //   // color: Color
-                                                        //   //     .fromARGB(
-                                                        //   //         255,
-                                                        //   //         98,
-                                                        //   //         96,
-                                                        //   //         96),
-                                                        // ),
+                                                        
                                                          Text(
                                                             'Description :', style: TextStyle(
                                                               fontWeight: FontWeight.bold),),
@@ -1573,26 +1573,17 @@ return Card(
                                                 child: Row(
                                                   children: [
                                                   
-                                                     Text(
-                                                        'Mode of Pay : ', style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight
-                                                                  .bold),),
+                                                     Container(
+                                                       width: screenWidth*0.4,
+                                                       child: Text(
+                                                          'Mode of Pay : ', style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),),
+                                                     ),
                                                     // Text(
                                                     //     ' ${data['p_name'].toString()}')
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(1.0),
-                                              child: Row(
-                                                // mainAxisAlignment:
-                                                //     MainAxisAlignment
-                                                //         .spaceBetween,
-                                                children: [
-                                                   Container(
+                                                     Container(
                                                     // color: Colors.blue,
                                                      width: screenWidth*0.4,
                                                     child: Row(
@@ -1609,52 +1600,81 @@ return Card(
                                                       ],
                                                     ),
                                                   ),
-                                                  Container(
-                                                    // color: Colors.blue,
-                                                     width: screenWidth*0.5,
-                                                    // width: screenwidht * 0.55,
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          'Total Dis : ',
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.bold),
-                                                        ),
-                                                        // Text(
-                                                        //     '${data['extra_fees'].toString()}')
-                                                      ],
-                                                    ),
-                                                  ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            // Padding(
+                                            //   padding:
+                                            //       const EdgeInsets.all(1.0),
+                                            //   child: Row(
+                                            //     // mainAxisAlignment:
+                                            //     //     MainAxisAlignment
+                                            //     //         .spaceBetween,
+                                            //     children: [
+                                            //        Container(
+                                            //         // color: Colors.blue,
+                                            //          width: screenWidth*0.4,
+                                            //         child: Row(
+                                            //           children: [
+                                            //             Text(
+                                            //               'Amt : ',
+                                            //               style: TextStyle(
+                                            //                   fontWeight:
+                                            //                       FontWeight
+                                            //                           .bold),
+                                            //             ),
+                                            //             Text(
+                                            //                 def_amount)
+                                            //           ],
+                                            //         ),
+                                            //       ),
+                                            //       Container(
+                                            //         // color: Colors.blue,
+                                            //          width: screenWidth*0.5,
+                                            //         // width: screenwidht * 0.55,
+                                            //         child: Row(
+                                            //           children: [
+                                            //             Text(
+                                            //               'Total Dis : ',
+                                            //               style: TextStyle(
+                                            //                   fontWeight: FontWeight.bold),
+                                            //             ),
+                                            //             // Text(
+                                            //             //     '${data['extra_fees'].toString()}')
+                                            //           ],
+                                            //         ),
+                                            //       ),
                                                 
                                              
-                                                ],
-                                              ),
-                                            ),
-                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(1.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          'Bal : ',
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight.bold),
-                                                        ),
-                                                        Text(
-                                                            '${Helper().isvalidElement(bill_amount) && bill_amount != "" ? bill_amount : '0'}')
-                                                      ],
-                                                    ),
-                                                  ),
+                                            //     ],
+                                            //   ),
+                                            // ),
+                                            //  Padding(
+                                            //   padding:
+                                            //       const EdgeInsets.all(1.0),
+                                            //   child: Row(
+                                            //     mainAxisAlignment:
+                                            //         MainAxisAlignment
+                                            //             .spaceBetween,
+                                            //     children: [
+                                            //       Container(
+                                            //         child: Row(
+                                            //           children: [
+                                            //             Text(
+                                            //               'Bal : ',
+                                            //               style: TextStyle(
+                                            //                   fontWeight: FontWeight.bold),
+                                            //             ),
+                                            //             // Text(
+                                            //             //     '${data['total_fees'].toString()}')
+                                            //           ],
+                                            //         ),
+                                            //       ),
                                                  
-                                                ],
-                                              ),
-                                            ),
+                                            //     ],
+                                            //   ),
+                                            // ),
                                            
                                           ],
                                         ),
@@ -1673,17 +1693,17 @@ return Card(
    padding: const EdgeInsets.all(5.0),
    child: Container(
        // height: screenHeight * 0.7596,
-       child: Helper().isvalidElement(register_reportpay) &&
-               register_reportpay.length > 0
+       child: Helper().isvalidElement(ipatient_paylist) &&
+               ipatient_paylist.length > 0
            ? 
              ListView.builder(
-               itemCount: register_reportpay.length,
+               itemCount: ipatient_paylist.length,
                physics: NeverScrollableScrollPhysics(),
                //  itemCount: 2,
                 shrinkWrap: true,
                itemBuilder:
                    (BuildContext context, int index) {
-                 var data = register_reportpay[index];
+                 var data = ipatient_paylist[index];
                  return Center(
                    child: Container(
                      color: index % 2 == 0
@@ -1751,8 +1771,8 @@ return Card(
                                               Text(
                                                  'Description :', style: TextStyle(
                                                    fontWeight: FontWeight.bold),),
-                                             Text(
-                                                 ' ${data['description'].toString().substring(0, 10)}')
+                                            //  Text(
+                                            //      ' ${data['description'].toString().substring(0, 10)}')
                                            ],
                                          ),
                                        ),
@@ -1802,53 +1822,52 @@ return Card(
                                            ],
                                          ),
                                        ),
-                                       Container(
-                                         // color: Colors.blue,
-                                          width: screenWidth*0.5,
-                                         // width: screenwidht * 0.55,
-                                         child: Row(
-                                           children: [
-                                             Text(
-                                               'Total Dis : ',
-                                               style: TextStyle(
-                                                   fontWeight: FontWeight.bold),
-                                             ),
-                                             Text(
-                                                 '${data['discount'].toString()}.00')
-                                           ],
-                                         ),
-                                       ),
+                                      //  Container(
+                                      //    // color: Colors.blue,
+                                      //     width: screenWidth*0.5,
+                                      //    // width: screenwidht * 0.55,
+                                      //    child: Row(
+                                      //      children: [
+                                      //        Text(
+                                      //          'Total Dis : ',
+                                      //          style: TextStyle(
+                                      //              fontWeight: FontWeight.bold),
+                                      //        ),
+                                      //        Text(
+                                      //            '${data['discount'].toString()}.00')
+                                      //      ],
+                                      //    ),
+                                      //  ),
                                      
                                   
                                      ],
                                    ),
                                  ),
-                                  Padding(
-                                   padding:
-                                       const EdgeInsets.all(1.0),
-                                   child: Row(
-                                     mainAxisAlignment:
-                                         MainAxisAlignment
-                                             .spaceBetween,
-                                     children: [
-                                       Container(
-                                         child: Row(
-                                           children: [
-                                             Text(
-                                               'Bal : ',
-                                               style: TextStyle(
-                                                   fontWeight: FontWeight.bold),
-                                             ),
-                                             Text(
-                                                 '${data['balance'].toString()}'
-                                                 )
-                                           ],
-                                         ),
-                                       ),
+                                //   Padding(
+                                //    padding:
+                                //        const EdgeInsets.all(1.0),
+                                //    child: Row(
+                                //      mainAxisAlignment:
+                                //          MainAxisAlignment
+                                //              .spaceBetween,
+                                //      children: [
+                                //        Container(
+                                //          child: Row(
+                                //            children: [
+                                //              Text(
+                                //                'Bal : ',
+                                //                style: TextStyle(
+                                //                    fontWeight: FontWeight.bold),
+                                //              ),
+                                //              Text(
+                                //                  '${data['balance'].toString()}')
+                                //            ],
+                                //          ),
+                                //        ),
                                       
-                                     ],
-                                   ),
-                                 ),
+                                //      ],
+                                //    ),
+                                //  ),
                                 
                                ],
                              ),

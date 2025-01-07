@@ -157,7 +157,7 @@ class _AddTretmentState extends State<AddTretment> {
                   focusNode: treatmentFocusNode,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Treatment Name'
+                    labelText: 'Treatment Name *'
                   ),
                 ),
                
@@ -305,13 +305,15 @@ class _AddTretmentState extends State<AddTretment> {
                         if (Treatmentcontroller.text.isEmpty) {
                           treatmentFocusNode.requestFocus();
                           NigDocToast().showErrorToast('Enter Treatment Name');
-                        } else if (Medicine_List.length == 0) {
-                          NigDocToast().showErrorToast('Please Select Medicine List');
+                        // } else if (Medicine_List.length == 0) {
+                        //   NigDocToast().showErrorToast('Please Select Medicine List');
                         } else if (departmentdropdown == "Select Department *") {
                           NigDocToast().showErrorToast('Please Select Department');
                         } else if (Feescontroller.text.isEmpty) {
                           feesFocusNode.requestFocus();
                           NigDocToast().showErrorToast('Enter Fees');
+                          } else if (Medicine_List.length == 0) {
+                          NigDocToast().showErrorToast('Please Select Medicine List');
                          }else {
                           var data = {
                             "treatmentname": Treatmentcontroller.text.toString(),
@@ -429,7 +431,7 @@ class _AddTretmentState extends State<AddTretment> {
               child: Center(
                 child: TextFormField(
                   decoration: InputDecoration(
-                      border: InputBorder.none, hintText: 'Medicine'),
+                      border: InputBorder.none, hintText: 'Medicine *'),
                   controller: textEditingController,
                   focusNode: focusNode,
                   onChanged: (text) {

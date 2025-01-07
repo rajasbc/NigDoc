@@ -8,6 +8,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/Common/utils.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/DashboardApi.dart';
+import 'package:nigdoc/AppWidget/Notification/AddAppoinment.dart';
 import 'package:nigdoc/AppWidget/VideoCall/api_call.dart';
 import 'package:nigdoc/AppWidget/VideoCall/meeting_screen.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
@@ -26,11 +27,14 @@ class AppointmentList extends StatefulWidget {
 class _AppointmentListState extends State<AppointmentList> {
   final LocalStorage storage = new LocalStorage('doctor_store');
   final GlobalKey slide = GlobalKey();
+  TextEditingController fromdateInputController = TextEditingController();
+  TextEditingController todateInputController = TextEditingController();
+  TextEditingController searchText = TextEditingController();
 
   var appoinmentList = null;
   late DateTime date;
   var date1 = DateTime.now();
-
+final DateFormate = "yyyy-MM-dd";
   DateTimeRange dateRange = DateTimeRange(
     start: DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day - 7),
@@ -48,6 +52,8 @@ class _AppointmentListState extends State<AppointmentList> {
   }
 
   init() async {
+     fromdateInputController.text = Helper().getCurrentDate();
+    todateInputController.text = Helper().getCurrentDate();
     await getAppoinmentList();
     //   WidgetsBinding.instance.addPostFrameCallback((_) async {
     //   ShowCaseWidget.of(context).startShowCase([slide]);
@@ -99,6 +105,11 @@ class _AppointmentListState extends State<AppointmentList> {
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: custom_color.appcolor,
+          // actions: [
+          //   IconButton(onPressed: (){
+          //   Navigator.push(context, MaterialPageRoute(builder: (context)=>Workinghours()));
+          //   }, icon: Icon(Icons.add_circle_rounded,color: Colors.white,))
+          // ],
           leading: IconButton(
             onPressed: () {
               Navigator.push(
@@ -122,7 +133,9 @@ class _AppointmentListState extends State<AppointmentList> {
                 child: Helper().isvalidElement(appoinmentList)
                     ? Column(
                         children: [
+                          SizedBox(height: screenHeight*0.01,),
                           renderDatePicker(),
+                           SizedBox(height: screenHeight*0.01,),
                           renderTabs(),
                           isLoading
                               ? Container(
@@ -134,6 +147,15 @@ class _AppointmentListState extends State<AppointmentList> {
                     : Container(
                         height: screenHeight * 0.85,
                         child: Center(child: const SpinLoader())))),
+                        floatingActionButton: FloatingActionButton(
+                          onPressed: (){
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Addappoinment()));
+                        },
+                           child:Icon(Icons.add,
+          size: 30,
+          color: Colors.white,),
+          backgroundColor: custom_color.appcolor,
+                        ),
       ),
     );
   }
@@ -476,7 +498,9 @@ class _AppointmentListState extends State<AppointmentList> {
     final end = dateRange.end;
     double screenwidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    
     return Center(
+      
       child: Container(
         height: screenHeight * 0.07,
         width: screenwidth * 0.9,
@@ -489,7 +513,7 @@ class _AppointmentListState extends State<AppointmentList> {
                 children: [
                   Container(
                     // width: screenwidth * 0.10,
-                    child: Text('From:'),
+                    child: Text('From : '),
                   ),
                   Container(
                       // width: screenwidth * 0.30,
@@ -520,7 +544,7 @@ class _AppointmentListState extends State<AppointmentList> {
                 children: [
                   Container(
                     width: screenwidth * 0.07,
-                    child: Text('To:'),
+                    child: Text('To : '),
                   ),
                   Container(
                     // width: screenwidth * 0.30,
@@ -546,6 +570,77 @@ class _AppointmentListState extends State<AppointmentList> {
             )
           ],
         ),
+        // child:  Container(
+        //   width: screenwidth,
+        //   height: screenHeight * 0.06,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       Container(
+                
+        //         width: screenwidth * 0.40,
+              
+        //         child: TextFormField(
+        //           decoration: InputDecoration(
+        //             hintText: 'From',
+        //             border: OutlineInputBorder(
+        //                 borderRadius: BorderRadius.circular(8),
+        //                  borderSide: BorderSide(
+        //             color: custom_color.appcolor,
+        //           ),
+        //           ),
+        //           enabledBorder: OutlineInputBorder(
+        //           borderRadius: BorderRadius.circular(10.0),
+        //           borderSide: BorderSide(
+        //             color: custom_color.appcolor,
+        //             width: 2.0,
+        //           ),
+        //           ),
+        //             labelText: 'From',
+        //             suffixIcon: Icon(
+        //               Icons.date_range,
+        //               color: custom_color.appcolor,
+        //             ),
+        //           ),
+        //           controller: fromdateInputController,
+        //           readOnly: true,
+        //           onTap: () async {
+        //             selectDate(context, 'from');
+        //           },
+        //         ),
+        //       ),
+        //       Container(
+        //         width: screenwidth * 0.40,
+        //         child: TextFormField(
+        //             decoration: InputDecoration(
+        //               hintText: 'To',
+        //               border: OutlineInputBorder(
+        //                   borderRadius: BorderRadius.circular(8), 
+        //                   borderSide: BorderSide(
+        //             color: custom_color.appcolor,
+        //           ),),
+        //            enabledBorder: OutlineInputBorder(
+        //           borderRadius: BorderRadius.circular(10.0),
+        //           borderSide: BorderSide(
+        //             color: custom_color.appcolor,
+        //             width: 2.0,
+        //           ),
+        //         ),
+        //               labelText: 'To',
+        //               suffixIcon: Icon(
+        //                 Icons.date_range,
+        //                 color: custom_color.appcolor,
+        //               ),
+        //             ),
+        //             controller: todateInputController,
+        //             readOnly: true,
+        //             onTap: () async {
+        //               selectDate(context, 'to');
+        //             }),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ),
     );
   }
@@ -631,7 +726,51 @@ class _AppointmentListState extends State<AppointmentList> {
     });
     await getAppoinmentList();
   }
+  
+ DateTime currentDate = DateTime.now();
+  Future<void> selectDate(BuildContext context, data) async {
+    var checkfield = data;
+    // print(data);
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: custom_color.appcolor,
+                onPrimary: Colors.white, 
+                onSurface: custom_color.appcolor, 
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  foregroundColor: custom_color.appcolor, 
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+        initialDate: currentDate,
+        firstDate: DateTime(DateTime.now().year-2, DateTime.now().month, DateTime.now().day),
+        lastDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
 
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+      });
+    if (checkfield == "from") {
+      // var formatter = new DateFormat('dd-MM-yyyy');
+      fromdateInputController.text =
+          DateFormat(DateFormate).format(pickedDate!);
+
+      // fromdateInputController.text = pickedDate.toString().split(' ')[0];
+      getAppoinmentList();
+    } else {
+      todateInputController.text = DateFormat(DateFormate).format(pickedDate!);
+      // todateInputController.text = pickedDate.toString().split(' ')[0];
+      getAppoinmentList();
+    }
+  }
   appointmentApprove_Cancel(data, type) async {
     if (type == "Fixed"&&data['tkn_status'].toString().toLowerCase()=='video') {
       await createMeeting().then((meetingId) async {

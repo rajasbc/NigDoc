@@ -426,7 +426,7 @@ class _Prescription_ListState extends State<Prescription_List> {
                                                                 child: Row(
                                                                   children: [
                                                                     Text(
-                                                                      'Pat Mobile : ${data['phone']}',
+                                                                      'Mobile No : ${data['phone']}',
                                                                       style: TextStyle(
                                                                           fontWeight:
                                                                               FontWeight.bold),

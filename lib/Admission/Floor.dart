@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:nigdoc/Admission/Admission.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/Medicine/AddMedicineList.dart';
 import 'package:nigdoc/AppWidget/Medicine/AddMedicineold.dart';
@@ -12,20 +13,19 @@ import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
-class MedicineList extends StatefulWidget {
-  const MedicineList({super.key});
+class FloorList extends StatefulWidget {
+  const FloorList({super.key});
 
   @override
-  State<MedicineList> createState() => _MedicineListState();
+  State<FloorList> createState() => _FloorListState();
 }
 
-class _MedicineListState extends State<MedicineList> {
+class _FloorListState extends State<FloorList> {
   final LocalStorage storage = new LocalStorage('doctor_store');
    TextEditingController searchText = TextEditingController();
-    TextEditingController medicine_Controller=TextEditingController();
-TextEditingController Alternative_Controller=TextEditingController();
-TextEditingController pattrn_Controller=TextEditingController();
-TextEditingController expdatecontroller =  TextEditingController();
+   TextEditingController editfloornamecontroller=TextEditingController();
+   TextEditingController floornamecontroller = TextEditingController();
+
 
    String medicineDropdownvalue="empty";
 
@@ -41,47 +41,17 @@ TextEditingController expdatecontroller =  TextEditingController();
   var treatmentList;
   var Treatment_List;
  var MediNameList;
- var medicineList;
- var medicine_List;
+ 
  bool valid=false;
  bool MedicineLoader=false;
 
- var selected_item;
-var item =[
- '0-0-0-1',
- '0-0-1-0',
- '0-0-1-1',
- '0-1-0-1',
- '0-1-1-0',
- '1-0-0-1',
- '1-0-1-0',
- '1-1-0-0',
- '0-1-1-1',
- '1-0-1-1',
- '1-1-0-1',
- '1-1-1-0',
- '1-1-1-1',
- '0-0-0-2',
- '0-0-2-0',
- '0-2-0-0',
- '2-0-0-0',
- '0-0-2-2',
- '0-2-0-2',
- '0-2-2-0',
- '2-0-0-2',
- '2-0-2-0',
- '2-2-0-0',
- '0-2-2-2',
- '2-0-2-2',
- '2-2-0-2',
- '2-2-2-0',
- '2-2-2-2',
-];
 var clinicconfig;
 var configDetails = null;
 var commonmedicine;
 var delete = 'yes';
 var shop_id;
+var floorList;
+var floor_List;
    @override
   void initState(){
     // userResponse = storage.getItem('userResponse');
@@ -102,7 +72,7 @@ var shop_id;
     userResponse = await storage.getItem('userResponse');
     accesstoken = await userResponse['access_token'];
     shop_id = userResponse['clinic_profile'];
-    await getMedicineList();
+    await getFloorList();
     
     var config_details =
         await ShopApi().getclinicconfig(accesstoken);
@@ -136,18 +106,18 @@ var shop_id;
       return new WillPopScope(
        onWillPop: () async {
          Navigator.push(
-          context, MaterialPageRoute(builder: (context)=> Dash(),)
+          context, MaterialPageRoute(builder: (context)=> Admission(),)
          );
          return true;
         },
         child:Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(title: Text('Medicine List',
+          appBar: AppBar(title: Text('Floor List',
           style: TextStyle(color: Colors.white),),
           backgroundColor:custom_color.appcolor,
           leading: IconButton(onPressed: (){
             Navigator.push(
-          context, MaterialPageRoute(builder: (context)=> Dash(),)
+          context, MaterialPageRoute(builder: (context)=> Admission(),)
          );
           }, icon: Icon(Icons.arrow_back,
           color: Colors.white,),),
@@ -208,7 +178,7 @@ var shop_id;
                                   filled: true,
                                   border: InputBorder.none,
                                   fillColor: Colors.white,
-                                  hintText: 'Search Medicine List Here...',
+                                  hintText: 'Search Floor List Here...',
                                 ),
                               ),
                             ),
@@ -243,7 +213,7 @@ var shop_id;
                           // SizedBox(height: screenHeight*0.01),
                          
                             
-                          Helper().isvalidElement(medicine_List) && medicine_List.length > 0 ?
+                          Helper().isvalidElement(floor_List) && floor_List.length > 0 ?
                            Container(
                             height:screenHeight * 0.85,
                             
@@ -254,10 +224,10 @@ var shop_id;
                             ListView.builder(
                               shrinkWrap: true,
                               // physics: NeverScrollableScrollPhysics(),
-                              itemCount: medicine_List.length,
+                              itemCount: floor_List.length,
                               itemBuilder: (BuildContext context, int index){
                                 list=index+1;
-                                var data=medicine_List[index];
+                                var data=floor_List[index];
                                 return Container(
                                   child: Column(
                                     children: [
@@ -266,11 +236,11 @@ var shop_id;
                                                       ?custom_color.lightcolor
                                                       : Colors.white,
                                         child: ListTile(
-                                          title: SizedBox(child: Text('${data['name']}')),
-                                          subtitle: Text('₹  ${data['mrp']}'),
+                                          title: SizedBox(child: Text('${data['floor_name']}')),
+                                          // subtitle: Text('₹  ${data['mrp']}'),
                                           leading: Padding(
                                             padding: const EdgeInsets.only(top:3.0),
-                                            child: Text('$list'),
+                                            child: Text('($list)'),
                                           ),
                             
                   
@@ -290,125 +260,40 @@ var shop_id;
                     ),
                    
                     onTap: () {
-                      if(commonmedicine == 'YES'){
-                     Navigator.push(
-                     context, MaterialPageRoute(builder: (context)=> Edit_MedicineList(selected_medicine :data,)));
-                      }else{
-                                  
+                        
                       
                     data2 = {
-                          medicine_Controller.text = data['name'].toString(),
-                          Alternative_Controller.text = data['aname'].toString(),
-                          selected_item= data['pattern'].toString(),
+                          editfloornamecontroller.text = data['floor_name'].toString(),
+                         
                                   
                          };
                    showDialog(context: context, builder: (context)=>AlertDialog(
                     
                           actions: [
-                         
+                          IconButton(onPressed: (){
+                       Navigator.push(context,MaterialPageRoute(builder: (context) => FloorList()));
+                        }, icon: Icon(Icons.close,color: Colors.red,)),
                             Padding(padding: EdgeInsets.all(10)),
-                  
+                    Center(child: Container(child: Text('Edit Floor',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),)),
+                  SizedBox(height: screenHeight*0.01,),
                             Container(
                               
-                              height: screenHeight*0.04,
+                              height: screenHeight*0.01,
                               width:screenWidth*0.8,
                             ),
                             TextFormField(
-                    controller: medicine_Controller,
+                    controller: editfloornamecontroller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       
-                      labelText: "Medicine Name "
+                      labelText: "Floor Name * "
                     ),
                   
                                   ),
                   
-                                   SizedBox(height: screenHeight*0.02,),
-                                   TextFormField(
-                  controller: Alternative_Controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      
-                      labelText: "Alternative Medicine"
-                    ),
-                   
-                     ),
-                     SizedBox(height: screenHeight*0.02,),
-                     Padding(
-                     padding: const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
-                    //padding: const EdgeInsets.all(20),
-                    child: Container(
-                      height: screenHeight * 0.07,
-                      width: screenWidth * 0.96,
-                      
-                      decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0)
-                          // border: OutlineInputBorder()
-                          ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        
-                        child: Center(
-                          child: DropdownButtonFormField(
-                          
-                            decoration: InputDecoration.collapsed(hintText: ''),
-                            isExpanded: true,
-                            hint: Padding(
-                           
-                            padding: const EdgeInsets.only(top: 0, left: 2, right: 0,),
-                              child: Text(
-                                'Pattern Type ',
-                               
-                              ),
-                              
-                            ),
-                           
-                            onChanged: (selected) {
-                              selected_item=selected;
-                              setState(() {
-                               
-                              });
-                            },
-                            items: item.map<DropdownMenuItem<String>>((item) {
-                              return new DropdownMenuItem(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 7, left: 8, right: 8),
-                                  child: new Text(item,style: TextStyle(fontSize: 15),),
-                                ),
-                                value: item.toString(),
-                              );
-                            }).toList(),
-                          ),
-                          
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: screenHeight*0.02,),
-                   Container(
-                                // width: screenWidth*0.49,
-                                child: TextField(
-                                   controller: expdatecontroller,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  fillColor: Colors.white,
-                                  //filled: true,
-                                  prefixIcon: Icon(Icons.calendar_today,color: custom_color.appcolor,),
-                        
-                                  labelText: "Exp Date"
-                                ),
-                        
-                                readOnly: true,
-                                onTap: (() {
-                                  _selectDate();
-                                }),
-                                
-                                ),
-                              ),
+                                   
                   SizedBox(height: screenHeight*0.04,),
                   Row(
                   children: [
@@ -429,7 +314,7 @@ var shop_id;
                     child:Text('Cancel',
                     style: TextStyle(fontSize: 20,color: Colors.white),),
                     onPressed: (() {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>FloorList()));
                     }),),
                     SizedBox(width: screenWidth*0.05,),
                     ElevatedButton( 
@@ -447,25 +332,18 @@ var shop_id;
                       child:Text('Update',
                       style: TextStyle(fontSize: 20,color: Colors.white),),
                       onPressed: ()async {
-                        if(medicine_Controller.text.isEmpty){
-                          NigDocToast().showErrorToast('Please Enter Medicine Nmae');
+                        if(editfloornamecontroller.text.isEmpty){
+                          NigDocToast().showErrorToast('Please Enter Floor Name');
                                       
-                        }else if(Alternative_Controller.text.isEmpty){
-                          NigDocToast().showErrorToast('Enter The Alter Medicine');
-                                      
-                        }
-                        else if(selected_item==null){
-                          NigDocToast().showErrorToast('Select Pattern Type');
+                       
                         }else{
                           var items={
-                              "id":data['id'],
-                              "name":medicine_Controller.text.toString(),
-                              "aname":Alternative_Controller.text.toString(),
-                              "pattern":selected_item.toString(),
-                              "exp_date":expdatecontroller.text.toString(),
+                              "id":data['id'].toString(),
+                              "floor_name":editfloornamecontroller.text.toString(),
+                             
                           };
                           var list = await PatientApi()
-                                     .Editmedicine( accesstoken, items);
+                                     .DocEditFloor(accesstoken, items);
                                  if (list['message'] ==
                                      "updated successfully") {
                                    NigDocToast().showSuccessToast(
@@ -473,7 +351,7 @@ var shop_id;
                                    Navigator.push(
                                        context,
                                        MaterialPageRoute(
-                                           builder: (context) => MedicineList()));
+                                           builder: (context) => FloorList()));
                                  } else {
                                    NigDocToast()
                                        .showErrorToast('Please TryAgain later');
@@ -483,29 +361,7 @@ var shop_id;
                         }
                        
                       }),
-                     
-                  
-                  //      Padding(
-                  //        padding: const EdgeInsets.only(top: 0,left: 30,right:10),
-                  //        child: ElevatedButton( 
-                          
-                  //         style: ButtonStyle(
-                  //             backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
-                  //             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                      
-                  //     RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(10),
-                  //     ),
-                      
-                  //   )
-                    
-                  // ),
-                  //        child:Text('Cancel',
-                  //        style: TextStyle(fontSize: 20,color: Colors.white),),
-                  //        onPressed: (() {
-                  //        Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
-                  //        }),),
-                  //      ),
+                   
                        SizedBox(height: screenHeight*0.04,),
                    ],
                                    ),
@@ -514,7 +370,7 @@ var shop_id;
                   
                    ));
                   
-                      }
+                      
                     }
                                         
                        ),
@@ -540,12 +396,14 @@ var shop_id;
                        showDialog(context: context, builder: (context)=>AlertDialog(
                     
                           actions: [
-                           
+                            IconButton(onPressed: (){
+                       Navigator.push(context,MaterialPageRoute(builder: (context) => FloorList()));
+                        }, icon: Icon(Icons.close,color: Colors.red,)),
                             SizedBox(height: screenHeight*0.02,),
-                             Center(child: Container(child: Text('DELETE PRODUCT',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),))),
+                             Center(child: Container(child: Text('DELETE FLOOR',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),))),
                              SizedBox(height: screenHeight*0.02,),
                              Container(
-                              child: Text('Are you sure you want to delete the Medicine Details?',style: TextStyle(fontSize: 16),),
+                              child: Text('Are you sure you want to delete the Floor Details?',style: TextStyle(fontSize: 16),),
                              ),
                               SizedBox(height: screenHeight*0.02,),
                              Container(
@@ -566,7 +424,7 @@ var shop_id;
                     
                   ),
                                       onPressed: (){
-                                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicineList()));
+                                    
                                       Navigator.pop(context);
                                       }, child: Text('Cancel' ,style: TextStyle(fontSize: 20,color: Colors.white),)),
                                   ),
@@ -587,11 +445,11 @@ var shop_id;
                                       onPressed: ()async{
                                         
                                                var value= {
-                                                "id":data['id'],
+                                                 "id":data['id'].toString(),
                                                  'is_delete':delete,
                                                };
                                                var list = await PatientApi()
-                                        .Deletemedicine( accesstoken, value);
+                                        .DocDeleteFloor( accesstoken, value);
                                     if (list['message'] ==
                                         "Deleted successfully") {
                                       NigDocToast().showSuccessToast(
@@ -599,7 +457,7 @@ var shop_id;
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => MedicineList()));
+                                              builder: (context) => FloorList()));
                                     } else {
                                       NigDocToast()
                                           .showErrorToast('Please TryAgain later');
@@ -645,12 +503,81 @@ var shop_id;
                floatingActionButton: FloatingActionButton(
             
             onPressed:(){
-              if(commonmedicine == 'YES'){
-               Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_MedicineList()));
-              }
-              else{
-                 Navigator.push(context,MaterialPageRoute(builder: (context)=>AddMedicineold()));
-              }
+             showDialog(context: context, builder: (context)=>AlertDialog(
+                    
+                          actions: [
+                        IconButton(onPressed: (){
+                       Navigator.push(context,MaterialPageRoute(builder: (context) => FloorList()));
+                        }, icon: Icon(Icons.close,color: Colors.red,)),
+
+                            Padding(padding: EdgeInsets.all(10)),
+                            Center(child: Container(child: Text('Add Floor',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),)),
+                  SizedBox(height: screenHeight*0.01,),
+                            Container(
+                              
+                              height: screenHeight*0.01,
+                              width:screenWidth*0.8,
+                            ),
+                            TextFormField(
+                    controller: floornamecontroller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      
+                      labelText: "Floor Name * "
+                    ),
+                    ),
+                  
+                                   
+                  SizedBox(height: screenHeight*0.02,),
+               
+                  Center(
+                    child: ElevatedButton( 
+                    style: ButtonStyle(
+                           backgroundColor: WidgetStateProperty.all<Color>(custom_color.appcolor),
+                                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                                          
+                                          RoundedRectangleBorder(
+                     borderRadius: BorderRadius.circular(10),  
+                                          ),
+                                          
+                                        )
+                                        
+                                      ),
+                      child:Text('Save',
+                      style: TextStyle(fontSize: 20,color: Colors.white),),
+                      onPressed: ()async {
+                        if(floornamecontroller.text.isEmpty){
+                          NigDocToast().showErrorToast('Please Enter Floor Name');
+                        }else{
+                          var data= {
+                             "floor_name":floornamecontroller.text.toString(),
+                          };
+                          var list = await PatientApi()
+                                     .DocAddFloor(accesstoken, data);
+                                 if (list['message'] ==
+                                     "Floor Add successfully") {
+                                   NigDocToast().showSuccessToast(
+                                       'Floor Add successfully');
+                                   Navigator.push(
+                                       context,
+                                       MaterialPageRoute(
+                                           builder: (context) => FloorList()));
+                                 } else {
+                                   NigDocToast()
+                                       .showErrorToast('Please TryAgain later');
+                                 }
+                        }
+                       
+                      }),
+                  ),
+                                     
+                     SizedBox(height: screenHeight*0.01,),
+                  
+                   ],
+                  
+                   ));
              
             },
           child:Icon(Icons.add,
@@ -663,97 +590,32 @@ var shop_id;
           )
           );
   }
-  // getMedicineList() async {
-  //   var data = {
-  //     "shop_id": Helper().isvalidElement(SelectedPharmacy)?  SelectedPharmacy.toString():'',
-  //   };
-
-  //   var List = await PatientApi().getmedicineList(accesstoken, data);
-  //   if (Helper().isvalidElement(List) &&
-  //       Helper().isvalidElement(List['status']) &&
-  //       List['status'] == 'Token is Expired') {
-  //     Helper().appLogoutCall(context, 'Session expeired');
-  //   } else {
-  //     setState(() {
-  //       //  MediAndLabNameList = List['list'];
-  //       medicineList = List['list'];
-  //       MedicineLoader=true;
-  //       valid=true;
-  //       isLoading=true;
-  //     });
-  //     // TreatmentList = List['list'];
-  //     //  storage.setItem('diagnosisList', diagnosisList);
-  //   }
-  // }
-
- getMedicineList() async {
-    var data = {
-      "shop_id": Helper().isvalidElement(SelectedPharmacy)?  SelectedPharmacy.toString():'',
-      //  "shop_id": shop_id['id'].toString(),
-    };
-
-    var List = await PatientApi().medicineList(accesstoken, data);
+   getFloorList() async {
+    var List = await PatientApi().getDocFloor(accesstoken);
     if (Helper().isvalidElement(List) &&
         Helper().isvalidElement(List['status']) &&
         List['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
       setState(() {
-        //  MediAndLabNameList = List['list'];
-        medicineList = List['list'];
-        MedicineLoader=true;
-        valid=true;
-        isLoading=true;
+        floorList = List['list'];
+        isLoading = true;
         filterItems(searchText.text);
       });
-      // TreatmentList = List['list'];
-      //  storage.setItem('diagnosisList', diagnosisList);
     }
   }
-  getMediAndLabNameList() async {
-    var data = {
-      "type": 'pharmacy',
-    };
-    var List = await PatientApi().getMediAndLabNameList(accesstoken, data);
-    if (Helper().isvalidElement(List) &&
-        Helper().isvalidElement(List['status']) &&
-        List['status'] == 'Token is Expired') {
-      Helper().appLogoutCall(context, 'Session expeired');
-    } else {
-      setState(() {
-        MediNameList = List['list'];
-        isLoading=true;
-        
-        // var values = MediAndLabNameList;
-      });
-      // TreatmentList = List['list'];
-      //  storage.setItem('diagnosisList', diagnosisList);
-    }
-  }
-   Future<void>_selectDate() async {
-      DateTime? _picked =  await showDatePicker(
-        context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1980), 
-      lastDate: DateTime(2050),
-      );
-      if(_picked != null){
-       setState(() {
-         expdatecontroller.text=_picked.toString().split(" ")[0];
-       });
-      }
-    }
+ 
     void filterItems(String text) {
     // setState(() {
     if (text.isEmpty) {
       setState(() {
-        medicine_List = medicineList;
+        floor_List = floorList;
       });
     } 
     else if (text.length >= 3) {
       setState(() {
-        medicine_List = medicineList.where((item) =>
-            item['name']
+        floor_List = floorList.where((item) =>
+            item['floor_name']
                 .toString()
                 .toLowerCase()
                 .contains(text.toLowerCase()),

@@ -7,29 +7,32 @@ import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/Collections/Collections.dart';
+import 'package:nigdoc/Collections/InPatientPay.dart';
+import 'package:nigdoc/Collections/InpatientBillPaid.dart';
 import 'package:nigdoc/Collections/RegisterReportPaid.dart';
 import 'package:nigdoc/Collections/RegisterReportPay.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
 
-class Registerreport extends StatefulWidget {
-  const Registerreport({super.key});
+class inpatient extends StatefulWidget {
+  const inpatient({super.key});
 
   @override
-  State<Registerreport> createState() => _RegisterreportState();
+  State<inpatient> createState() => _inpatientState();
 }
 
-class _RegisterreportState extends State<Registerreport> {
+class _inpatientState extends State<inpatient> {
   final LocalStorage storage = new LocalStorage('doctor_store');
-  TextEditingController searchText = TextEditingController();
   final DateFormate = "yyyy-MM-dd";
   TextEditingController fromdateInputController = TextEditingController();
   TextEditingController todateInputController = TextEditingController();
+  TextEditingController searchText = TextEditingController();
 
   var accesstoken;
   bool isLoading = false;
-  var register_report;
-  var registerreport;
+  var inpatient_list;
+  var inpatientlist;
+
   DateTime currentDate = DateTime.now();
   Future<void> selectDate(BuildContext context, data) async {
     var checkfield = data;
@@ -68,11 +71,11 @@ class _RegisterreportState extends State<Registerreport> {
           DateFormat(DateFormate).format(pickedDate!);
 
       // fromdateInputController.text = pickedDate.toString().split(' ')[0];
-      gerRegisterReport();
+      gerinpatient();
     } else {
       todateInputController.text = DateFormat(DateFormate).format(pickedDate!);
       // todateInputController.text = pickedDate.toString().split(' ')[0];
-      gerRegisterReport();
+      gerinpatient();
     }
   }
 
@@ -81,7 +84,7 @@ class _RegisterreportState extends State<Registerreport> {
     accesstoken = storage.getItem('userResponse')['access_token'];
     fromdateInputController.text = Helper().getCurrentDate();
     todateInputController.text = Helper().getCurrentDate();
-    gerRegisterReport();
+    gerinpatient();
 
     // print('ddd');
   }
@@ -104,7 +107,7 @@ class _RegisterreportState extends State<Registerreport> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Register Report',
+            'InPatient Summary Bill',
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: custom_color.appcolor,
@@ -254,15 +257,15 @@ class _RegisterreportState extends State<Registerreport> {
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                             // height: screenHeight * 0.7596,
-                            child: Helper().isvalidElement(registerreport) &&
-                                    registerreport.length > 0
+                            child: Helper().isvalidElement(inpatientlist) &&
+                                    inpatientlist.length > 0
                                 ? 
                                  ListView.builder(
-                                    itemCount: registerreport.length,
+                                    itemCount: inpatientlist.length,
                                     //  itemCount: 1,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      var data = registerreport[index];
+                                      var data = inpatientlist[index];
                                       return Center(
                                         child: Container(
                                           color: index % 2 == 0
@@ -312,7 +315,7 @@ class _RegisterreportState extends State<Registerreport> {
                                                                             FontWeight
                                                                                 .bold),),
                                                                       Text(
-                                                                      '${data['patient_id'].toString()}')
+                                                                      '${data['patient_no'].toString()}')
                                                                   // Helper().isvalidElement(
                                                                   //         data[
                                                                   //             'customer_name'])
@@ -338,7 +341,7 @@ class _RegisterreportState extends State<Registerreport> {
                                                                   //  Text(
                                                                   //     'Date ')
                                                                   Text(
-                                                                      ' ${data['reg_date'].toString().substring(0, 10)}')
+                                                                      ' ${data['date'].toString().substring(0, 10)}')
                                                                 ],
                                                               ),
                                                             ),
@@ -372,23 +375,23 @@ class _RegisterreportState extends State<Registerreport> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Container(
-                                                      //  color: Colors.blue,
-                                                      //  width: screenwidht*0.45,
-                                                       child: Row(
-                                                         children: [
-                                                           Text(
-                                                             'Consulting Fees : ',
-                                                             style: TextStyle(
-                                                                 fontWeight:
-                                                                     FontWeight
-                                                                         .bold),
-                                                           ),
-                                                           Text(
-                                                               '${data['consulting_fees'].toString()}')
-                                                         ],
-                                                       ),
-                                                         ),
+                                                      // Container(
+                                                      // //  color: Colors.blue,
+                                                      // //  width: screenwidht*0.45,
+                                                      //  child: Row(
+                                                      //    children: [
+                                                      //      Text(
+                                                      //        'Admission No : ',
+                                                      //        style: TextStyle(
+                                                      //            fontWeight:
+                                                      //                FontWeight
+                                                      //                    .bold),
+                                                      //      ),
+                                                      //      Text(
+                                                      //          '${data['admission_no'].toString()}')
+                                                      //    ],
+                                                      //  ),
+                                                      //    ),
                                                        Container(
                                                       //    color: Colors.red,
                                                       //  width: screenwidht*0.4,
@@ -396,12 +399,12 @@ class _RegisterreportState extends State<Registerreport> {
                                                        child: Row(
                                                          children: [
                                                            Text(
-                                                             'Extra Fees : ',
+                                                             'Doctor : ',
                                                              style: TextStyle(
                                                                  fontWeight: FontWeight.bold),
                                                            ),
                                                            Text(
-                                                               '${data['extra_fees'].toString()}')
+                                                               '${data['doctor'].toString()}')
                                                          ],
                                                        ),
                                                          ),
@@ -413,48 +416,39 @@ class _RegisterreportState extends State<Registerreport> {
                                                           //     MainAxisAlignment
                                                           //         .spaceBetween,
                                                           children: [
+                                                             Container(
+                                                      //  color: Colors.blue,
+                                                       width: screenwidht*0.5,
+                                                       child: Row(
+                                                         children: [
+                                                           Text(
+                                                             'Admission No : ',
+                                                             style: TextStyle(
+                                                                 fontWeight:
+                                                                     FontWeight
+                                                                         .bold),
+                                                           ),
+                                                           Text(
+                                                               '${data['admission_no'].toString()}')
+                                                         ],
+                                                       ),
+                                                         ),
                                                             Container(
                                                                 // color: Colors.blue,
-                                                              width: screenwidht*0.5,
+                                                              // width: screenwidht*0.5,
                                                               child: Row(
                                                                 children: [
                                                                   Text(
-                                                                    'Total Fees : ',
+                                                                    'Total Amt : ',
                                                                     style: TextStyle(
                                                                         fontWeight: FontWeight.bold),
                                                                   ),
                                                                   Text(
-                                                                      '${data['total_fees'].toString()}')
+                                                                      '${data['total'].toString()}')
                                                                 ],
                                                               ),
                                                             ),
-                                                            Container(
-                                                              // width: screenwidht * 0.55,
-                                                              child: Row(
-                                                                children: [
-                                                                  Text(
-                                                                    'Dis : ',
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.bold),
-                                                                  ),
-                                                                  Text(
-                                                                      '${data['discount'].toString()}')
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            // Container(
-                                                            //   child: Row(
-                                                            //     children: [
-                                                            //       Text(
-                                                            //         'Paid : ',
-                                                            //         style: TextStyle(
-                                                            //             fontWeight: FontWeight.bold),
-                                                            //       ),
-                                                            //       Text(
-                                                            //           '${data['paid'].toString()}')
-                                                            //     ],
-                                                            //   ),
-                                                            // ),
+                                                           
                                                            
                                                           ],
                                                         ),
@@ -468,8 +462,7 @@ class _RegisterreportState extends State<Registerreport> {
                                                           //         .spaceBetween,
                                                           children: [
                                                              Container(
-                                                              // color: Colors.blue,
-                                                              width: screenwidht*0.5,
+                                                              width: screenwidht * 0.5,
                                                               child: Row(
                                                                 children: [
                                                                   Text(
@@ -482,8 +475,9 @@ class _RegisterreportState extends State<Registerreport> {
                                                                 ],
                                                               ),
                                                             ),
-                                                            Container(
-                                                              // width: screenwidht * 0.55,
+                                                             Container(
+                                                              // color: Colors.blue,
+                                                              // width: screenwidht*0.5,
                                                               child: Row(
                                                                 children: [
                                                                   Text(
@@ -496,7 +490,7 @@ class _RegisterreportState extends State<Registerreport> {
                                                                 ],
                                                               ),
                                                             ),
-                                                          
+                                                           
                                                             
                                                           ],
                                                         ),
@@ -539,8 +533,9 @@ class _RegisterreportState extends State<Registerreport> {
                                                         ],
                                                       ),
                                                       onTap: (() async {
-                                                        await storage.setItem('register_report',data);
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterReportPay()));
+                                                        await storage.setItem('inpatient_list',data);
+                                                        //  Nator.push(context, MaterialPageRoute(builder: (context)=>PendingPayment()));
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>inpatientpay()));
                                                       }),
                                                     ): PopupMenuItem(
                                                       child: Row(
@@ -573,8 +568,9 @@ class _RegisterreportState extends State<Registerreport> {
                                                         ],
                                                       ),
                                                       onTap: (() async {
-                                                        await storage.setItem('register_report',data);
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterReportPaid()));
+                                                        await storage.setItem('inpatient_list',data);
+                                                        //  Nator.push(context, MaterialPageRoute(builder: (context)=>PendingPayment()));
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>inpatientpaid()));
                                                       }),
                                                     ),
                                                     
@@ -600,7 +596,7 @@ class _RegisterreportState extends State<Registerreport> {
     );
   }
   
-  gerRegisterReport() async {
+  gerinpatient() async {
     var formatter = new DateFormat('yyyy-MM-dd');
     var data = {
       "from_date": fromdateInputController.text.toString(),
@@ -610,29 +606,29 @@ class _RegisterreportState extends State<Registerreport> {
     // this.setState(() {
     //   isLoading = true;
     // });
-    register_report = await billingapi().gerRegisterReport(accesstoken, data);
-    if (Helper().isvalidElement(register_report) &&
-        Helper().isvalidElement(register_report['status']) &&
-        register_report['status'] == 'Token is Expired') {
+    inpatient_list = await billingapi().getDocInPatientDetails(accesstoken, data);
+    if (Helper().isvalidElement(inpatient_list) &&
+        Helper().isvalidElement(inpatient_list['status']) &&
+        inpatient_list['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
-      register_report = register_report['list'];
+      inpatient_list = inpatient_list['list'];
     
       this.setState(() {
         isLoading = true;
-         filterItems(searchText.text);
+        filterItems(searchText.text);
       });
     }
   }
-  void filterItems(String text) {
+   void filterItems(String text) {
    
     if (text.isEmpty) {
       setState(() {
-        registerreport = register_report;
+        inpatientlist = inpatient_list;
       });
     } else if (text.length >= 3) {
       setState(() {
-        registerreport = register_report
+        inpatientlist = inpatient_list
             .where(
               (item) => item['p_name']
                   .toString()

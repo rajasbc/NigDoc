@@ -688,4 +688,324 @@ Editpatient(access_token,data) async{
       return json.decode(response.body);
     }
   }
+  getDocFloor(access_token) async {
+    String getfloorlisturl = requestpath.base_url + requestpath.getDocFloor;
+   var response = await http.get(
+      Uri.parse(getfloorlisturl),      
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  DocEditFloor(access_token,data) async {
+    String editfloorurl = requestpath.base_url + requestpath.DocEditFloor;
+    var response = await http.post(Uri.parse(editfloorurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  DocAddFloor(access_token,data) async {
+    String addfloorurl = requestpath.base_url + requestpath.DocAddFloor;
+    var response = await http.post(Uri.parse(addfloorurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+    DocDeleteFloor(access_token,data) async {
+    String deletefloorlisturl = requestpath.base_url + requestpath.DocDeleteFloor;
+   var response = await http.post(
+      Uri.parse(deletefloorlisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   getDocWardList(access_token) async {
+    String getwardurl = requestpath.base_url + requestpath.getDocWardList;
+   var response = await http.get(
+      Uri.parse(getwardurl),      
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   DocAddWard(access_token,data) async {
+    String addwardurl = requestpath.base_url + requestpath.DocAddWard;
+    var response = await http.post(Uri.parse(addwardurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+      DocEditWard(access_token,data) async {
+    String editwardurl = requestpath.base_url + requestpath.DocEditWard;
+    var response = await http.post(Uri.parse(editwardurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+    DocDeleteWard(access_token,data) async {
+    String deletewardlisturl = requestpath.base_url + requestpath.DocDeleteWard;
+   var response = await http.post(
+      Uri.parse(deletewardlisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  getWardListRoom(access_token,data) async {
+    String deletewardlisturl = requestpath.base_url + requestpath.getWardListRoom;
+   var response = await http.post(
+      Uri.parse(deletewardlisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+    getRoomList(access_token) async {
+    String getwardurl = requestpath.base_url + requestpath.getRoomList;
+   var response = await http.get(
+      Uri.parse(getwardurl),      
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+      AddDocRoom(access_token,data) async {
+    String addroomurl = requestpath.base_url + requestpath.AddDocRoom;
+    var response = await http.post(Uri.parse(addroomurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+    getEditRoomList(access_token,data) async {
+    String editroomlisturl = requestpath.base_url + requestpath.getEditRoomList;
+    var response = await http.post(Uri.parse(editroomlisturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   DocEditRoom(access_token,data) async {
+    String editroomurl = requestpath.base_url + requestpath.DocEditRoom;
+    var response = await http.post(Uri.parse(editroomurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+    DocDeleteRoom(access_token,data) async {
+    String deletewardlisturl = requestpath.base_url + requestpath.DocDeleteRoom;
+   var response = await http.post(
+      Uri.parse(deletewardlisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   getBedCategoryList(access_token) async {
+    String getbedcategoryurl = requestpath.base_url + requestpath.getBedCategoryList;
+   var response = await http.get(
+      Uri.parse(getbedcategoryurl),      
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+    DocDeleteBedCategory(access_token,data) async {
+    String deletewardlisturl = requestpath.base_url + requestpath.DocDeleteBedCategory;
+   var response = await http.post(
+      Uri.parse(deletewardlisturl),
+      body: jsonEncode(data),
+      headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+    getBedCategoryRoomList(access_token,data) async {
+    String editroomlisturl = requestpath.base_url + requestpath.getBedCategoryRoomList;
+    var response = await http.post(Uri.parse(editroomlisturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+    AddBedCategory(access_token,data) async {
+    String addroomurl = requestpath.base_url + requestpath.AddBedCategory;
+    var response = await http.post(Uri.parse(addroomurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   getAdmissionList(access_token, data) async {
+    String admissionlisturl =
+        requestpath.base_url + requestpath.getAdmissionList;
+    var response = await http.post(Uri.parse(admissionlisturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+           if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   DocAddAppoinment(access_token,data) async {
+    String addappoinmenturl = requestpath.base_url + requestpath.DocAddAppoinment;
+    var response = await http.post(Uri.parse(addappoinmenturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   getSlotTimeDoctorList(access_token,data) async {
+    String doctorurl = requestpath.base_url + requestpath.getSlotTimeDoctorList;
+    var response = await http.post(Uri.parse(doctorurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   getSlotTime(access_token,data) async {
+    String slottimeurl = requestpath.base_url + requestpath.getSlotTime;
+    var response = await http.post(Uri.parse(slottimeurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+  getDocWorkingHours(access_token) async {
+    String workinghoursurl = requestpath.base_url + requestpath.getDocWorkingHours;
+    var response = await http.get(
+      Uri.parse(workinghoursurl),
+        headers: _setHeaders(access_token));
+        if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   AddDocWorkingHours(access_token,data) async {
+    String slottimeurl = requestpath.base_url + requestpath.AddDocWorkingHours;
+    var response = await http.post(Uri.parse(slottimeurl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+   }
+   getEditWorkingHoursDocList(access_token, data) async {
+    String doclisturl =
+        requestpath.base_url + requestpath.getEditWorkingHoursDocList;
+    var response = await http.post(Uri.parse(doclisturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+           if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+     getWorkingHoursViewList(access_token, data) async {
+    String viewlisturl =
+        requestpath.base_url + requestpath.getWorkingHoursViewList;
+    var response = await http.post(Uri.parse(viewlisturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+           if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   getDoctorScheduleList(access_token, data) async {
+    String viewlisturl =
+        requestpath.base_url + requestpath.getDoctorScheduleList;
+    var response = await http.post(Uri.parse(viewlisturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+           if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   AddDoctorTimeSchedule(access_token,data) async {
+    String addappoinmenturl = requestpath.base_url + requestpath.AddDoctorTimeSchedule;
+    var response = await http.post(Uri.parse(addappoinmenturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   AddDoctorLeave(access_token,data) async {
+    String addappoinmenturl = requestpath.base_url + requestpath.AddDoctorLeave;
+    var response = await http.post(Uri.parse(addappoinmenturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
+   getDoctorLeaveList(access_token, data) async {
+    String pendinglisturl =
+        requestpath.base_url + requestpath.getDoctorLeaveList;
+    var response = await http.post(Uri.parse(pendinglisturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+           if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
 }

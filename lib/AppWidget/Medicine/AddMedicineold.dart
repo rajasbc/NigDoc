@@ -222,7 +222,7 @@ class _AddMedicineoldState extends State<AddMedicineold> {
                     onPressed: () async {
                       if (medicine_Controller.text.isEmpty) {
                         NigDocToast()
-                            .showErrorToast('Please Enter Medicine Nmae');
+                            .showErrorToast('Please Enter Medicine Name');
                       } else if (Alternative_Controller.text.isEmpty) {
                         NigDocToast()
                             .showErrorToast('Enter Alternattive Medicine');

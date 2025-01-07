@@ -41,7 +41,7 @@ class _TestListState extends State<TestList> {
  var MediNameList;
  var testList;
  var test_List;
- bool valid=false;
+//  bool valid=false;
  bool MedicineLoader=false;
 
    @override
@@ -365,7 +365,7 @@ class _TestListState extends State<TestList> {
                      ],
             ),
           ):Center(
-            child: Container(child:SpinLoader()
+            child: Container(child: Text('No Data Found')
           )
           ),
            floatingActionButton: FloatingActionButton(onPressed: (){

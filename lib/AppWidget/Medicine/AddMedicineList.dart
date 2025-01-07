@@ -330,7 +330,8 @@ final FocusNode eachstripFocusNode = FocusNode();
                 
                   SizedBox(height: screenHeight*0.04,),
       
-              Container(width: screenWidth,
+              Container(
+                width: screenWidth*0.3,
                 child: ElevatedButton(
                   
                  style: ButtonStyle(
