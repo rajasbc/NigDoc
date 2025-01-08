@@ -61,7 +61,7 @@ dependencies:
   firebase_messaging: ^15.0.3
   permission_handler: ^11.0.0
   platform: ^3.1.2
-  device_info: ^2.0.3
+  # device_info: ^2.0.3
   device_info_plus: ^11.1.1
   marquee_widget: ^1.2.0
   url_launcher: ^6.2.4
@@ -137,6 +137,17 @@ flutter:
     - assets/collectionreport.png
     - assets/depwise.png
     - assets/doctorwise.png
+    - assets/collection.png
+    - assets/reports.png
+    - assets/bill.png
+    - assets/inpatient.png
+    - assets/stock1.png
+    - assets/medicine.png
+    - assets/floor.png
+    - assets/ward.png
+    - assets/bed.png
+    - assets/admission.png
+    - assets/working.png
 
 
 
