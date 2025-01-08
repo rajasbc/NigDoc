@@ -1,7 +1,7 @@
 // String base_url ="http://10.0.2.2:8000/api/";
 String base_url = "https://sapi.nigsoft.com/api/";
 // String base_url = "https://testapi.nigsoft.com/api/";
-// String base_url = "https://c387-49-47-217-83.ngrok-free.app/api/";
+// String base_url = "https://9451-2405-201-e04a-c0bb-bde8-c376-d57f-6480.ngrok-free.app/api/";
 String userSignup = "auth/doc_sign_up";
 String userlogin = "auth/doctorLogin";
 // String StaffListEndpoint = "auth/getClinicStaffList";
@@ -9,7 +9,7 @@ String StaffListEndpoint = "auth/getdocStaffList";
 String DoctorListEndpoint = "auth/getClinicDoctorList";
 String patientListEndpoint = "auth/getDocCustomerList";
 String treatmentListEndpoint = "auth/docGetTreatment";
-String getMediAndLabNameListEndpoint = "auth/getMediAndLabNameList";  
+String getMediAndLabNameListEndpoint = "auth/getMediAndLabNameList";
 String getlabtestListEndpoint = "auth/linkLabList";
 String getmedicineListEndpoint = "auth/linkMedicineList";
 String apppatientEndpoint = "auth/addPatient";
@@ -127,4 +127,5 @@ String getDoctorScheduleList= 'auth/getdoctorschedulelist';
 String AddDoctorTimeSchedule= 'auth/adddoctortimeschedule';
 String getDoctorLeaveList= 'auth/getdoctorleavelist';
 String AddDoctorLeave= 'auth/adddoctorleave';
+String getCommonBillingList= 'auth/getcommonbillinglist';
 

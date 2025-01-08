@@ -1008,4 +1008,15 @@ Editpatient(access_token,data) async{
       return json.decode(response.body);
     }
   }
+   getCommonBillingList(access_token, data) async {
+    String commonbilllisturl =
+        requestpath.base_url + requestpath.getCommonBillingList;
+    var response = await http.post(Uri.parse(commonbilllisturl),
+        body: jsonEncode(data), headers: _setHeaders(access_token));
+           if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  }
 }

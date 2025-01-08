@@ -35,6 +35,7 @@ import 'package:nigdoc/Collections/Collections.dart';
 import 'package:nigdoc/Collections/InPattient.dart';
 import 'package:nigdoc/Collections/RegisterReport.dart';
 import 'package:nigdoc/Collections/TreatmentBill.dart';
+import 'package:nigdoc/CommonBilling/CommonBilling.dart';
 import 'package:nigdoc/DischargeSummary/Dischargesummary.dart';
 import 'package:nigdoc/DischargeSummary/summary.dart';
 import 'package:nigdoc/MedicineStock/MedicineStock.dart';
@@ -74,6 +75,7 @@ class _DashState extends State<Dash> {
   var config;
   var admission_page;
   var medicine_page;
+  var common_bill;
   @override
   void initState() {
     // getvalue();
@@ -1746,6 +1748,61 @@ class _DashState extends State<Dash> {
                                 ),
                               )
                               :Container(),
+
+                              SizedBox(height: screenHeight * 0.01),
+                            common_bill =="yes"?
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CommonbillingList(),
+                                      ));
+                                },
+                                child: Container(
+                                  width: screenWidth * 0.95,
+                                  height: screenHeight * 0.060,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '  Common Billing',
+                                        style: TextStyle(
+                                          color: custom_color.appcolor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(Icons.line_style_sharp,
+                                            size: 20,
+                                            color: custom_color.appcolor),
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        width: 1, color: custom_color.appcolor),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        spreadRadius: 4,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 1),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              :Container(),
                             ],
                           ),
                         )
@@ -2020,6 +2077,7 @@ class _DashState extends State<Dash> {
       Config = config[0]['physiothraphy'];
       medicine_page = config[0]['medicine_page'];
       admission_page = config[0]['admission_page'];
+      common_bill = config[0]['required_common_bill'];
     }
   }
 }
