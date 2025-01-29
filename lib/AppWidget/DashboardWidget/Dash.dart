@@ -88,15 +88,15 @@ class _DashState extends State<Dash> {
   }
 
   init() async {
-    
+
     await handlePermissions();
     await handleNotification();
     await getvalue();
     await getFcmToken();
     // await getclinicconfig();
     appVersion();
-    
-   
+
+
   }
 
   getvalue() async {
@@ -104,7 +104,7 @@ class _DashState extends State<Dash> {
     accesstoken = await userResponse['access_token'];
      await getclinicconfig();
     getDashBoardList();
-   
+
   }
 
   Future getFcmToken() async {
@@ -771,7 +771,7 @@ class _DashState extends State<Dash> {
                               // ),
                               Container(
                                 child: Row(
-                                  
+
                                   children: [
                                     Text(
                                       "Billing",
@@ -788,14 +788,14 @@ class _DashState extends State<Dash> {
                                 height: 5,
                               ),
                               Container(
-                               
+
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 0.1,right: 0.1),
                                     child: Row(
                                       // mainAxisAlignment:
-                                      //     MainAxisAlignment.spaceAround,                                       
+                                      //     MainAxisAlignment.spaceAround,
                                       children: [
                                          InkWell(
                                           child: Container(
@@ -1192,7 +1192,7 @@ class _DashState extends State<Dash> {
                                                 ));
                                           },
                                         ),
-                             
+
                                       ],
                                     ),
                                   ),
@@ -1641,7 +1641,7 @@ class _DashState extends State<Dash> {
                                 ),
                               ),
                               SizedBox(height: screenHeight * 0.01),
-                         medicine_page == "yes"  ? 
+                         medicine_page == "yes"  ?
                          InkWell(
                                 onTap: () {
                                   Navigator.push(
