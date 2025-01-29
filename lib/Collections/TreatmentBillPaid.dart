@@ -308,7 +308,7 @@ class _TreatmentBillPaidState extends State<TreatmentBillPaid> {
                       SizedBox(
                         width: screenWidth * 0.3,
                         child: Text(
-                          '$total_amount.00',
+                          '$total_amount',
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),

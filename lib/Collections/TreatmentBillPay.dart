@@ -755,7 +755,7 @@ class _TreatmentBillPayState extends State<TreatmentBillPay> {
                       SizedBox(
                         width: screenWidth * 0.3,
                         child: Text(
-                          '$total_amount.00',
+                          '$total_amount',
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),
@@ -947,7 +947,7 @@ class _TreatmentBillPayState extends State<TreatmentBillPay> {
                       SizedBox(
                         width: screenWidth * 0.5,
                         child: const Text(
-                          'After Final Dis :',
+                          'After Final Dis (₹) :',
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
@@ -1031,7 +1031,7 @@ class _TreatmentBillPayState extends State<TreatmentBillPay> {
                       SizedBox(
                         width: screenWidth * 0.5,
                         child: const Text(
-                          'Amt Received :',
+                          'Amt Received (₹) :',
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
@@ -1082,7 +1082,7 @@ class _TreatmentBillPayState extends State<TreatmentBillPay> {
                       SizedBox(
                         width: screenWidth * 0.5,
                         child: const Text(
-                          'Remaining Bal :',
+                          'Remaining Bal (₹) :',
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
@@ -1595,7 +1595,7 @@ return Card(
                                                   children: [
                                                   
                                                      Text(
-                                                        'Mode of Pay : ', style: TextStyle(
+                                                        'Pay Method : ', style: TextStyle(
                                                           fontWeight:
                                                               FontWeight
                                                                   .bold),),
@@ -1611,7 +1611,7 @@ return Card(
                                              child: Row(
                                                children: [
                                                  Text(
-                                                   'Amt : ',
+                                                   'Amt (₹) : ',
                                                    style: TextStyle(
                                                        fontWeight:
                                                            FontWeight
@@ -1629,7 +1629,7 @@ return Card(
                                              child: Row(
                                                children: [
                                                  Text(
-                                                   'Total Dis : ',
+                                                   'Total Dis (₹) : ',
                                                    style: TextStyle(
                                                        fontWeight: FontWeight.bold),
                                                  ),
@@ -1650,7 +1650,7 @@ return Card(
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                          'Bal : ',
+                                                          'Bal (₹) : ',
                                                           style: TextStyle(
                                                               fontWeight: FontWeight.bold),
                                                         ),
@@ -1775,7 +1775,7 @@ return Card(
                                        children: [
                                        
                                           Text(
-                                             'Mode of Payt : ', style: TextStyle(
+                                             'Pay Method : ', style: TextStyle(
                                                fontWeight:
                                                    FontWeight
                                                        .bold),),

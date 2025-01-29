@@ -112,7 +112,7 @@ List DoctorList = [];
 var patient_detail;
 bool patient = true;
 var cid;
-  List slot_time = [];
+List slot_time1=[];
 DateTime currentDate = DateTime.now();
   Future<void> selectDate(BuildContext context, data) async {
     var checkfield = data;
@@ -343,6 +343,92 @@ Future<void> selectDateslot(BuildContext context, String data) async {
       //  storage.setItem('diagnosisList', diagnosisList);
     }
   }
+//   getSlotTime() async {
+//   var formatter = DateFormat('yyyy-MM-dd');
+//   var data = {
+//     "date": dateController.text.toString(),
+//     'id': doctordropdown.toString(),
+//   };
+
+//   try {
+//     var list = await PatientApi().getSlotTime(accesstoken, data);
+
+//     if (list is Map<String, dynamic> &&
+//         Helper().isvalidElement(list['status']) &&
+//         list['status'] == 'Token is Expired') {
+//       Helper().appLogoutCall(context, 'Session expired');
+//       return;
+//     }
+
+//     // if (list is Map<String, dynamic>) {
+//     //   var extractedList = list['list']; 
+//     //   print(extractedList);
+//     //   if (extractedList is List<dynamic>) {
+//     //     slot_time1 = extractedList;
+//     //   } else {
+//     //     print('Expected a List<dynamic>, but got ${extractedList.runtimeType}');
+//     //   }
+//     // } else {
+//     //   print('Unexpected response type: ${list.runtimeType}');
+//     // }
+//     if (list is Map<String, dynamic>) {
+//   var extractedList = list['list']; 
+//   print(extractedList);
+
+//   if (extractedList is List<dynamic>) {
+   
+//     slot_time1 = extractedList;
+//   } else if (extractedList is Map) {
+   
+//     slot_time1 = extractedList.values.map((entry) {
+//       return {"time": entry};
+//     }).toList();
+//     print(slot_time1);
+//   } else {
+   
+//     slot_time1 = []; 
+//   }
+// } else {
+ 
+//   slot_time1 = []; 
+// }
+
+// print('Assigned slot_time1: $slot_time1');
+
+
+//     setState(() {
+//       isLoading = true;
+//     });
+//   } catch (e) {
+//     print('Error fetching slot times: $e');
+//   }
+// }
+
+  getSlotTime() async {
+    
+    var formatter = new DateFormat('yyyy-MM-dd');
+    var data = {
+      "date": dateController.text.toString(),
+      'doctor_id':doctordropdown.toString()
+     
+    };
+    // this.setState(() {
+    //   isLoading = true;
+    // });
+    var list = await PatientApi().getSlotTime(accesstoken, data);
+    if (Helper().isvalidElement(list) &&
+        Helper().isvalidElement(list['status']) &&
+        list['status'] == 'Token is Expired') {
+      Helper().appLogoutCall(context, 'Session expeired');
+    } else {
+      // var ll=list;
+      slot_time1 = list['list'];
+      //  storage.setItem('diagnosisList', diagnosisList);
+      this.setState(() {
+        isLoading = true;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -431,6 +517,10 @@ Future<void> selectDateslot(BuildContext context, String data) async {
                   ),
                   // value:patternDropdownvalue,
                   onChanged: (item) async {
+                    setState(() {
+                   slot_time1=[];
+                   });
+                    
               
                     doctordropdown = item;
                     await getSlotTime();
@@ -495,8 +585,8 @@ Future<void> selectDateslot(BuildContext context, String data) async {
                               //      // border: OutlineInputBorder()
                               //      ),
                                child: Center(
-                                 child:slot_time.length>0? DropdownButtonFormField(
-                                 menuMaxHeight: 300,
+                                 child:slot_time1.length>0? DropdownButtonFormField<dynamic>(
+                                //  menuMaxHeight: 300,
                                    decoration: InputDecoration(
                                                    enabledBorder: OutlineInputBorder(
                                                      borderRadius: BorderRadius.circular(5.0),
@@ -526,15 +616,16 @@ Future<void> selectDateslot(BuildContext context, String data) async {
                                    ),
                                   
                                    onChanged: (selected) {
-                                     selected_slot=selected.toString();
+                                     var selected_slot1=selected.toString();
+                                     selected_slot=selected_slot1;
                                      setState(() {
                                       
                                      });
                                    },
-                                   items: slot_time
+                                   items:slot_time1
                                                      .map(
-                                                         (value) => DropdownMenuItem<String>(
-                                                               value: value['id'].toString(),
+                                                         (value) => DropdownMenuItem(
+                                                               value: value['time'].toString(),
                                                                child: Text(value["time"].toString()),
                                                              ))
                                                      .toList()
@@ -887,6 +978,7 @@ Future<void> selectDateslot(BuildContext context, String data) async {
                                   // height: screenHeight * 0.06,
                                   width: screenWidht * 0.46,
                                   child: TextFormField(
+                                    maxLength: 10,
                                      keyboardType:TextInputType.number,
                                     focusNode: mobileFocusNode,
                                     controller: mobilenocontroller,
@@ -902,6 +994,7 @@ Future<void> selectDateslot(BuildContext context, String data) async {
                               // height: screenHeight * 0.06,
                               width: screenWidht * 0.46,
                               child: TextFormField(
+                                maxLength: 10,
                                 keyboardType:TextInputType.number,
                                 controller: alternatenocontroller,
                                 decoration: InputDecoration(
@@ -1359,7 +1452,7 @@ Future<void> selectDateslot(BuildContext context, String data) async {
                               
                               "doctor_id":doctordropdown,
                               "appointment_date":dateController.text.toString(),
-                              "patient_id":cid,
+                              "patient_id":cid == null ?'':cid,
                               "patient_name":namecontroller.text.toString(),
                               "title":selected_title,
                               "mobileno":mobilenocontroller.text.toString(),
@@ -1372,6 +1465,7 @@ Future<void> selectDateslot(BuildContext context, String data) async {
                               "slot_time":Helper().isvalidElement(selected_slot) ? selected_slot:'0.00 AM to 0.00 PM'
                        
                           };
+                          print(items);
                           var list = await PatientApi()
                                      .DocAddAppoinment(accesstoken, items);
                                  if (list['message'] ==
@@ -1682,28 +1776,5 @@ Future<void> selectDateslot(BuildContext context, String data) async {
       ),
     );
   }
-   getSlotTime() async {
-    
-    var formatter = new DateFormat('yyyy-MM-dd');
-    var data = {
-      "date": dateController.text.toString(),
-      'id':doctordropdown.toString()
-     
-    };
-    // this.setState(() {
-    //   isLoading = true;
-    // });
-    var slottime = await PatientApi().getSlotTime(accesstoken, data);
-    if (Helper().isvalidElement(slottime) &&
-        Helper().isvalidElement(slottime['status']) &&
-        slottime['status'] == 'Token is Expired') {
-      Helper().appLogoutCall(context, 'Session expeired');
-    } else {
-      slot_time = slottime['time'];
-      //  storage.setItem('diagnosisList', diagnosisList);
-      this.setState(() {
-        isLoading = true;
-      });
-    }
-  }
+   
 }

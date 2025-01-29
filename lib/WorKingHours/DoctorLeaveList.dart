@@ -73,8 +73,8 @@ class _DoctorleavelistState extends State<Doctorleavelist> {
 
   var accesstoken;
   bool isLoading = false;
-  var Doctor_leave;
-  var Doctorleave;
+  List Doctor_leave = [];
+  List Doctorleave =[];
   var list = 0;
 var searchList;
   void initState() {
@@ -127,8 +127,9 @@ var searchList;
         //   title: Text('Paid Bill List'),
         //     backgroundColor: Customcolor.appcolor,
         // ),
-        body: isLoading
-            ? Container(
+        body: 
+        // isLoading? 
+        Container(
                 child: Column(
                   children: [
                     SizedBox(
@@ -373,8 +374,8 @@ var searchList;
                     )
                   ],
                 ),
-              )
-            : SpinLoader(),
+              ),
+            // : SpinLoader(),
            floatingActionButton: FloatingActionButton(
                           onPressed: (){
                              Navigator.push(context, MaterialPageRoute(builder: (context)=>AddDoctorleave()));
@@ -439,6 +440,9 @@ var searchList;
         list['status'] == 'Token is Expired') {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
+      if(list =='No Data Found'){
+        Doctor_leave=[];
+      }
       Doctor_leave = list['list'];
       //  storage.setItem('diagnosisList', diagnosisList);
       this.setState(() {

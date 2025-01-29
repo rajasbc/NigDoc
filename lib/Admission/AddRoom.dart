@@ -336,7 +336,7 @@ SizedBox(height: screenHeight*0.02,),
                         var bedValues = bedControllers.map((controller) => controller.text).toList();
                         var roomValues = roomControllers.map((controller) => controller.text).toList();
                       if(totalroomcontroller.text.isEmpty){
-                          NigDocToast().showErrorToast('Please Enter Room Name');
+                          NigDocToast().showErrorToast('Please Enter Total Room');
                                       
                        
                         }else{

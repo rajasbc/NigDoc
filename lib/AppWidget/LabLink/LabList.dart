@@ -5,6 +5,7 @@ import 'package:nigdoc/AppWidget/LabLink/AddLablist.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart'as custom_color;
@@ -81,78 +82,100 @@ class _LabListState extends State<LabList> {
             child:Column(
               children: [
                 SizedBox(height: screenHeight*0.02,),
-                Center(child: 
-                Container(
-                  height: screenHeight * 0.06,
-                  width: screenWidth*0.9,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border:
-                          Border.all(color:custom_color.appcolor),
-                      borderRadius: BorderRadius.all(Radius.circular(4))),
-                  child: Row(
-                    children: [
-                      // Container(
-                      //     width: screenWidth * 0.1,
-                      //     height: screenHeight,
-                      //     child: Icon(Icons.search,
-                      //         color: custom_color.appcolor)),
-                      Container(
-                        width: screenWidth * 0.65,
-                        child: TextField(
-                          controller: Searchcontroller,
-                          onChanged: (text) {
-                             filterItems(text);
-                            // print(text);
+                Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                                     controller: Searchcontroller,
+                                     hintText: 'Search Lab List Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         Searchcontroller.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+                // Center(child: 
+                // Container(
+                //   height: screenHeight * 0.06,
+                //   width: screenWidth*0.9,
+                //   decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       border:
+                //           Border.all(color:custom_color.appcolor),
+                //       borderRadius: BorderRadius.all(Radius.circular(4))),
+                //   child: Row(
+                //     children: [
+                //       // Container(
+                //       //     width: screenWidth * 0.1,
+                //       //     height: screenHeight,
+                //       //     child: Icon(Icons.search,
+                //       //         color: custom_color.appcolor)),
+                //       Container(
+                //         width: screenWidth * 0.65,
+                //         child: TextField(
+                //           controller: Searchcontroller,
+                //           onChanged: (text) {
+                //              filterItems(text);
+                //             // print(text);
 
-                            this.setState(() {
+                //             this.setState(() {
                              
                               
-                            });
-                            // var list = ProductListItem;
-                              // searchList = lablist.where((element) {
-                              //   var treatList = element['pharmacy_name'].toString().toLowerCase();
-                              //   return treatList.contains(text.toLowerCase());
-                              //   // return true;
-                              // }).toList();
-                              // this.setState(() {});
-                          },
-                          decoration: new InputDecoration(
-                            filled: true,
-                            border: InputBorder.none,
-                            fillColor: Colors.white,
-                            hintText: 'Search Lab List Here...',
-                          ),
-                        ),
-                      ),
-                      Searchcontroller.text.isNotEmpty
-                          ? Container(
-                              width: screenWidth * 0.06,
-                              height: screenHeight,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    Searchcontroller.clear();
-                                    filterItems(Searchcontroller.text);
-                                      // filterItems(Searchcontroller.text);
-                                    // Searchcontroller.text = '';
-                                    // searchList='';
-                                  });
-                                },
-                              ))
-                          : Container(),
-                          Container(
-                          width: screenWidth * 0.18,
-                          height: screenHeight,
-                          child: Icon(Icons.search,
-                              color: custom_color.appcolor)),
-                    ],
-                  ),
-                ),),
+                //             });
+                //             // var list = ProductListItem;
+                //               // searchList = lablist.where((element) {
+                //               //   var treatList = element['pharmacy_name'].toString().toLowerCase();
+                //               //   return treatList.contains(text.toLowerCase());
+                //               //   // return true;
+                //               // }).toList();
+                //               // this.setState(() {});
+                //           },
+                //           decoration: new InputDecoration(
+                //             filled: true,
+                //             border: InputBorder.none,
+                //             fillColor: Colors.white,
+                //             hintText: 'Search Lab List Here...',
+                //           ),
+                //         ),
+                //       ),
+                //       Searchcontroller.text.isNotEmpty
+                //           ? Container(
+                //               width: screenWidth * 0.06,
+                //               height: screenHeight,
+                //               child: IconButton(
+                //                 icon: Icon(
+                //                   Icons.close,
+                //                   color: Colors.red,
+                //                 ),
+                //                 onPressed: () {
+                //                   setState(() {
+                //                     Searchcontroller.clear();
+                //                     filterItems(Searchcontroller.text);
+                //                       // filterItems(Searchcontroller.text);
+                //                     // Searchcontroller.text = '';
+                //                     // searchList='';
+                //                   });
+                //                 },
+                //               ))
+                //           : Container(),
+                //           Container(
+                //           width: screenWidth * 0.18,
+                //           height: screenHeight,
+                //           child: Icon(Icons.search,
+                //               color: custom_color.appcolor)),
+                //     ],
+                //   ),
+                // ),),
                 SizedBox(height: screenHeight*0.02,),
                 Container(
                   child: Helper().isvalidElement(lab_List)&&lab_List.length>0? Container(

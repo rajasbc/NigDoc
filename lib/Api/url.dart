@@ -1,7 +1,7 @@
 // String base_url ="http://10.0.2.2:8000/api/";
 String base_url = "https://sapi.nigsoft.com/api/";
 // String base_url = "https://testapi.nigsoft.com/api/";
-// String base_url = "https://9451-2405-201-e04a-c0bb-bde8-c376-d57f-6480.ngrok-free.app/api/";
+// String base_url = "https://1857-2405-201-e04a-c0bb-b9b1-1565-e64-3f2b.ngrok-free.app/api/";
 String userSignup = "auth/doc_sign_up";
 String userlogin = "auth/doctorLogin";
 // String StaffListEndpoint = "auth/getClinicStaffList";
@@ -118,7 +118,8 @@ String AddBedCategory= 'auth/addbedcategory';
 String getAdmissionList= 'auth/getadmissionlist';
 String DocAddAppoinment= 'auth/docaddappoinment';
 String getSlotTimeDoctorList= 'auth/getslottimedoctorlist';
-String getSlotTime= 'auth/getslottime';
+// String getSlotTime= 'auth/getslottime';
+String getSlotTime= 'auth/getslot_time';
 String getDocWorkingHours= 'auth/getdocworkinghours';
 String AddDocWorkingHours= 'auth/adddocworkinghours';
 String getEditWorkingHoursDocList= 'auth/geteditworkinghoursdoclist';
@@ -128,4 +129,5 @@ String AddDoctorTimeSchedule= 'auth/adddoctortimeschedule';
 String getDoctorLeaveList= 'auth/getdoctorleavelist';
 String AddDoctorLeave= 'auth/adddoctorleave';
 String getCommonBillingList= 'auth/getcommonbillinglist';
+String EditorPrescriptionUpload = 'auth/editor_prescription_upload';
 

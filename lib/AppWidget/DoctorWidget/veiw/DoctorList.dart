@@ -9,6 +9,7 @@ import 'package:nigdoc/AppWidget/DoctorWidget/veiw/EditDoctor.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/StaffWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../../AppWidget/common/Colors.dart'as custom_color;
@@ -56,7 +57,7 @@ var delete = 'Inactive';
  var searchList;
   @override
   Widget build(BuildContext context) {
-    test_List1=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: test_List;
+    // test_List1=Helper().isvalidElement(searchList)&&searchText.text.isNotEmpty?searchList: test_List;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Map<String, String> data = {
@@ -91,71 +92,93 @@ var delete = 'Inactive';
                    SizedBox(height: screenHeight*0.02,),
                     Column(
                       children: [
-                        Center(child: 
-                              Container(
-                                height: screenHeight * 0.06,
-                                width: screenWidth*0.931,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border:
-                                        Border.all(color: custom_color.appcolor),
-                                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                                child: Row(
-                                  children: [
-                                    // Container(
-                                    //     width: screenWidth * 0.1,
-                                    //     height: screenHeight,
-                                    //     child: Icon(Icons.search,
-                                    //         color: custom_color.appcolor)),
-                                    Container(
-                                      width: screenWidth * 0.65,
-                                      child: TextField(
-                                        controller: searchText,
-                                        onChanged: (text) {
-                                          print(text);
+                         Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                                     controller: searchText,
+                                     hintText: 'Search Doctor List Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchText.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+                        // Center(child: 
+                        //       Container(
+                        //         height: screenHeight * 0.06,
+                        //         width: screenWidth*0.931,
+                        //         decoration: BoxDecoration(
+                        //             color: Colors.white,
+                        //             border:
+                        //                 Border.all(color: custom_color.appcolor),
+                        //             borderRadius: BorderRadius.all(Radius.circular(4))),
+                        //         child: Row(
+                        //           children: [
+                        //             // Container(
+                        //             //     width: screenWidth * 0.1,
+                        //             //     height: screenHeight,
+                        //             //     child: Icon(Icons.search,
+                        //             //         color: custom_color.appcolor)),
+                        //             Container(
+                        //               width: screenWidth * 0.65,
+                        //               child: TextField(
+                        //                 controller: searchText,
+                        //                 onChanged: (text) {
+                        //                   print(text);
                                     
-                                          this.setState(() {});
-                                          // var list = ProductListItem;
-                                            searchList =  test_List.where((element) {
-                                              var treatList = element['name'].toString().toLowerCase();
-                                              return treatList.contains(text.toLowerCase());
-                                              // return true;
-                                            }).toList();
-                                            this.setState(() {});
-                                        },
-                                        decoration: new InputDecoration(
-                                          filled: true,
-                                          border: InputBorder.none,
-                                          fillColor: Colors.white,
-                                          hintText: 'Search Doctor List Here...',
-                                        ),
-                                      ),
-                                    ),
-                                    searchText.text.isNotEmpty
-                                        ? Container(
-                                            width: screenWidth * 0.06,
-                                            height: screenHeight,
-                                            child: IconButton(
-                                              icon: Icon(
-                                                Icons.close,
-                                                color: Colors.red,
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  searchText.text = '';
-                                                  searchList='';
-                                                });
-                                              },
-                                            ))
-                                        : Container(),
-                                        Container(
-                                        width: screenWidth * 0.18,
-                                        height: screenHeight,
-                                        child: Icon(Icons.search,
-                                            color: custom_color.appcolor)),
-                                  ],
-                                ),
-                              ),),
+                        //                   this.setState(() {});
+                        //                   // var list = ProductListItem;
+                        //                     searchList =  test_List.where((element) {
+                        //                       var treatList = element['name'].toString().toLowerCase();
+                        //                       return treatList.contains(text.toLowerCase());
+                        //                       // return true;
+                        //                     }).toList();
+                        //                     this.setState(() {});
+                        //                 },
+                        //                 decoration: new InputDecoration(
+                        //                   filled: true,
+                        //                   border: InputBorder.none,
+                        //                   fillColor: Colors.white,
+                        //                   hintText: 'Search Doctor List Here...',
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //             searchText.text.isNotEmpty
+                        //                 ? Container(
+                        //                     width: screenWidth * 0.06,
+                        //                     height: screenHeight,
+                        //                     child: IconButton(
+                        //                       icon: Icon(
+                        //                         Icons.close,
+                        //                         color: Colors.red,
+                        //                       ),
+                        //                       onPressed: () {
+                        //                         setState(() {
+                        //                           searchText.text = '';
+                        //                           searchList='';
+                        //                         });
+                        //                       },
+                        //                     ))
+                        //                 : Container(),
+                        //                 Container(
+                        //                 width: screenWidth * 0.18,
+                        //                 height: screenHeight,
+                        //                 child: Icon(Icons.search,
+                        //                     color: custom_color.appcolor)),
+                        //           ],
+                        //         ),
+                        //       ),),
                       ],
                     ),
                   //     Container(
@@ -540,12 +563,39 @@ var delete = 'Inactive';
         if (data['user_type'] == "Doctor") {
           test_List.add(data);
         }
+        filterItems(searchText.text);
+        setState(() {
+          isloading = true;
+        });
       // }
           //  test_List = doctorlist;
            
     }
       this.setState(() {
         isloading = true;
+      });
+    }
+  }
+  void filterItems(String text) {
+    // setState(() {
+    if (text.isEmpty) {
+      setState(() {
+        test_List1 = test_List;
+      });
+    } else if (text.length >= 3) {
+      setState(() {
+        test_List1 = test_List
+            .where(
+              (item) => item['name']
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()),
+              // item['phone']
+              //     .toString()
+              //     .toLowerCase()
+              //     .contains(text.toLowerCase())
+            )
+            .toList();
       });
     }
   }

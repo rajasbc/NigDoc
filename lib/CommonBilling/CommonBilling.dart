@@ -5,6 +5,7 @@ import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/veiw/Dashboardpage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/Collections/Collections.dart';
@@ -190,66 +191,88 @@ setState(() {
                     Divider(
                       thickness: 3,
                     ),
-                    Center(child: 
-                      Container(
-                        height: screenHeight * 0.06,
-                        width: screenwidht*0.95,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border:
-                                Border.all(color: custom_color.appcolor,),
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
-                        child: Row(
-                          children: [
-                            // Container(
-                            //     width: screenWidth * 0.1,
-                            //     height: screenHeight,
-                            //     child: Icon(Icons.search,
-                            //         color: custom_color.appcolor,)),
-                            Container(
-                              width: screenwidht * 0.65,
-                              child: TextField(
-                                controller: searchText,
-                                onChanged: (text) {
-                                  print(text);
-                            filterItems(text);
-                                  this.setState(() {});
+                     Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                                     controller: searchText,
+                                     hintText: 'Search Name/Mobile List Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchText.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+                    // Center(child: 
+                    //   Container(
+                    //     height: screenHeight * 0.06,
+                    //     width: screenwidht*0.95,
+                    //     decoration: BoxDecoration(
+                    //         color: Colors.white,
+                    //         border:
+                    //             Border.all(color: custom_color.appcolor,),
+                    //         borderRadius: BorderRadius.all(Radius.circular(4))),
+                    //     child: Row(
+                    //       children: [
+                    //         // Container(
+                    //         //     width: screenWidth * 0.1,
+                    //         //     height: screenHeight,
+                    //         //     child: Icon(Icons.search,
+                    //         //         color: custom_color.appcolor,)),
+                    //         Container(
+                    //           width: screenwidht * 0.65,
+                    //           child: TextField(
+                    //             controller: searchText,
+                    //             onChanged: (text) {
+                    //               print(text);
+                    //         filterItems(text);
+                    //               this.setState(() {});
                                  
-                                },
-                                decoration: new InputDecoration(
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  fillColor: Colors.white,
-                                  hintText: 'Search Name/Mobile List Here...',
-                                ),
-                              ),
-                            ),
-                            searchText.text.isNotEmpty
-                                ? Container(
-                                    width: screenwidht * 0.06,
-                                    height: screenHeight,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        Icons.close,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          searchText.clear();
-                                          filterItems(searchText.text);
-                                          searchList='';
-                                        });
-                                      },
-                                    ))
-                                : Container(),
-                                 Container(
-                                width: screenwidht * 0.18,
-                                height: screenHeight,
-                                child: Icon(Icons.search,
-                                    color: custom_color.appcolor,)),
-                          ],
-                        ),
-                      ),),
+                    //             },
+                    //             decoration: new InputDecoration(
+                    //               filled: true,
+                    //               border: InputBorder.none,
+                    //               fillColor: Colors.white,
+                    //               hintText: 'Search Name/Mobile List Here...',
+                    //             ),
+                    //           ),
+                    //         ),
+                    //         searchText.text.isNotEmpty
+                    //             ? Container(
+                    //                 width: screenwidht * 0.06,
+                    //                 height: screenHeight,
+                    //                 child: IconButton(
+                    //                   icon: Icon(
+                    //                     Icons.close,
+                    //                     color: Colors.red,
+                    //                   ),
+                    //                   onPressed: () {
+                    //                     setState(() {
+                    //                       searchText.clear();
+                    //                       filterItems(searchText.text);
+                    //                       searchList='';
+                    //                     });
+                    //                   },
+                    //                 ))
+                    //             : Container(),
+                    //              Container(
+                    //             width: screenwidht * 0.18,
+                    //             height: screenHeight,
+                    //             child: Icon(Icons.search,
+                    //                 color: custom_color.appcolor,)),
+                    //       ],
+                    //     ),
+                    //   ),),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

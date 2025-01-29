@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/BillingWidget/Api.dart';
 import 'package:nigdoc/AppWidget/DashboardWidget/Dash.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/Collections/Collections.dart';
@@ -192,66 +193,88 @@ class _treatmentbillState extends State<treatmentbill> {
                     SizedBox(
                           height: 5,
                         ),
-                        Center(
-                          child: Container(
-                            height: screenHeight * 0.06,
-                            width: screenwidht * 0.9,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: custom_color.appcolor),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4))),
-                            child: Row(
-                              children: [
+                        Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                                     controller: searchText,
+                                     hintText: 'Search Name Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchText.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+                        // Center(
+                        //   child: Container(
+                        //     height: screenHeight * 0.06,
+                        //     width: screenwidht * 0.9,
+                        //     decoration: BoxDecoration(
+                        //         color: Colors.white,
+                        //         border:
+                        //             Border.all(color: custom_color.appcolor),
+                        //         borderRadius:
+                        //             BorderRadius.all(Radius.circular(4))),
+                        //     child: Row(
+                        //       children: [
                               
-                                Container(
-                                  width: screenwidht * 0.65,
-                                  child: TextField(
-                                    controller: searchText,
-                                    onChanged: (text) {
-                                      print(text);
-                                      filterItems(text);
-                                      this.setState(() {});
+                        //         Container(
+                        //           width: screenwidht * 0.65,
+                        //           child: TextField(
+                        //             controller: searchText,
+                        //             onChanged: (text) {
+                        //               print(text);
+                        //               filterItems(text);
+                        //               this.setState(() {});
                             
-                                    },
-                                    decoration: new InputDecoration(
-                                      filled: true,
-                                      border: InputBorder.none,
-                                      fillColor: Colors.white,
-                                      hintText: 'Search Name Here...',
-                                    ),
-                                  ),
-                                ),
-                                searchText.text.isNotEmpty
-                                    ? Container(
-                                        width: screenwidht * 0.06,
-                                        height: screenHeight,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.close,
-                                            color: Colors.red,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              searchText.clear();
-                                              filterItems(searchText.text);
+                        //             },
+                        //             decoration: new InputDecoration(
+                        //               filled: true,
+                        //               border: InputBorder.none,
+                        //               fillColor: Colors.white,
+                        //               hintText: 'Search Name Here...',
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         searchText.text.isNotEmpty
+                        //             ? Container(
+                        //                 width: screenwidht * 0.06,
+                        //                 height: screenHeight,
+                        //                 child: IconButton(
+                        //                   icon: Icon(
+                        //                     Icons.close,
+                        //                     color: Colors.red,
+                        //                   ),
+                        //                   onPressed: () {
+                        //                     setState(() {
+                        //                       searchText.clear();
+                        //                       filterItems(searchText.text);
                                            
-                                              // searchText.text = '';
-                                              // searchList='';
-                                            });
-                                          },
-                                        ))
-                                    : Container(),
-                                Container(
-                                    width: screenwidht * 0.18,
-                                    height: screenHeight,
-                                    child: Icon(Icons.search,
-                                        color: custom_color.appcolor)),
-                              ],
-                            ),
-                          ),
-                        ),
+                        //                       // searchText.text = '';
+                        //                       // searchList='';
+                        //                     });
+                        //                   },
+                        //                 ))
+                        //             : Container(),
+                        //         Container(
+                        //             width: screenwidht * 0.18,
+                        //             height: screenHeight,
+                        //             child: Icon(Icons.search,
+                        //                 color: custom_color.appcolor)),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -422,7 +445,7 @@ class _treatmentbillState extends State<treatmentbill> {
                                                               child: Row(
                                                                 children: [
                                                                   Text(
-                                                                    'Dis : ',
+                                                                    'Dis (₹) : ',
                                                                     style: TextStyle(
                                                                         fontWeight: FontWeight.bold),
                                                                   ),
@@ -432,32 +455,21 @@ class _treatmentbillState extends State<treatmentbill> {
                                                               ),
                                                             ),
                                                             Container(
-                                                              // width: screenwidht * 0.55,
+                                                              // color: Colors.blue,
+                                                              // width: screenwidht*0.5,
                                                               child: Row(
                                                                 children: [
                                                                   Text(
-                                                                    'Paid (₹) : ',
+                                                                    'Bal (₹) : ',
                                                                     style: TextStyle(
                                                                         fontWeight: FontWeight.bold),
                                                                   ),
                                                                   Text(
-                                                                      '${data['paid'].toString()}')
+                                                                      '${data['balance'].toString()}')
                                                                 ],
                                                               ),
                                                             ),
-                                                            // Container(
-                                                            //   child: Row(
-                                                            //     children: [
-                                                            //       Text(
-                                                            //         'Paid : ',
-                                                            //         style: TextStyle(
-                                                            //             fontWeight: FontWeight.bold),
-                                                            //       ),
-                                                            //       Text(
-                                                            //           '${data['paid'].toString()}')
-                                                            //     ],
-                                                            //   ),
-                                                            // ),
+                                                            
                                                            
                                                           ],
                                                         ),
@@ -471,20 +483,20 @@ class _treatmentbillState extends State<treatmentbill> {
                                                           //         .spaceBetween,
                                                           children: [
                                                              Container(
-                                                              // color: Colors.blue,
-                                                              width: screenwidht*0.5,
+                                                              width: screenwidht * 0.55,
                                                               child: Row(
                                                                 children: [
                                                                   Text(
-                                                                    'Bal (₹) : ',
+                                                                    'Paid (₹) : ',
                                                                     style: TextStyle(
                                                                         fontWeight: FontWeight.bold),
                                                                   ),
                                                                   Text(
-                                                                      '${data['balance'].toString()}')
+                                                                      '${data['paid'].toString()}')
                                                                 ],
                                                               ),
                                                             ),
+                                                             
                                                             // Container(
                                                             //   // width: screenwidht * 0.55,
                                                             //   child: Row(
@@ -526,7 +538,7 @@ class _treatmentbillState extends State<treatmentbill> {
                                                               children: [
                                                                 Icon(
                                                                   FontAwesomeIcons
-                                                                      .dollarSign,
+                                                                      .indianRupeeSign,
                                                                   color: Colors
                                                                       .blue,
                                                                 ),
@@ -562,7 +574,7 @@ class _treatmentbillState extends State<treatmentbill> {
                                                               children: [
                                                                 Icon(
                                                                   FontAwesomeIcons
-                                                                      .dollarSign,
+                                                                      .indianRupeeSign,
                                                                   color: Colors
                                                                       .blue,
                                                                 ),

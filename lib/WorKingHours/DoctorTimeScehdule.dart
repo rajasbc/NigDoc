@@ -209,10 +209,13 @@ class _DoctortimescehduleState extends State<Doctortimescehdule> {
                                                 children: [
                                                   Row(
                                                     children: [
-                                                      Text('($list) '),
+                                                      SizedBox(width: screenWidht*0.02,),
+                                                      Container(
+                                                        width: screenWidht*0.10,
+                                                        child: Text('($list) ')),
                                                       Container(
                                                         // color: Colors.amber,
-                                                         width: screenWidht*0.90,
+                                                         width: screenWidht*0.80,
                                                         child: Padding(
                                                           padding: const EdgeInsets.all(4.0),
                                                           child: Column(

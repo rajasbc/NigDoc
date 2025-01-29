@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/Reports/report.dart';
@@ -87,10 +88,10 @@ class _DepartmentcollectionState extends State<Departmentcollection> {
   }
   @override
   Widget build(BuildContext context) {
-    depList1 =
-        Helper().isvalidElement(searchList) && searchText.text.isNotEmpty
-            ? searchList
-            : depList;
+    // depList1 =
+        // Helper().isvalidElement(searchList) && searchText.text.isNotEmpty
+        //     ? searchList
+        //     : depList;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
      Map<String, String> data = {
@@ -255,82 +256,105 @@ class _DepartmentcollectionState extends State<Departmentcollection> {
                       //     ),
                       // SizedBox(height: screenHeight*0.02),
                       //  isLoading?Helper().isvalidElement(depList1) && depList1.length > 0 ?
+                      Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                            
+                                     controller: searchText,
+                                     hintText: 'Search Department Name Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchText.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
                      Container(
                       height:screenHeight,
                       child: 
                       Column(
                         children: [
-                             Container(
-                              height: screenHeight * 0.06,
-                              width: screenWidth,
-                              decoration: BoxDecoration(
-                                  // color: Colors.white,
-                                  border:
-                                      Border.all(color: custom_color.appcolor),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4))),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      width: screenWidth * 0.1,
-                                      height: screenHeight,
-                                      child: Icon(Icons.search,
-                                          color: custom_color.appcolor)),
-                                  Container(
-                                    width: screenWidth * 0.71,
-                                    child: TextField(
-                                      controller: searchText,
-                                      onChanged: (text) {
-                                        // Ensure the input is at least 3 characters long before filtering
-                                        if (text.length >= 3) {
-                                          setState(() {
-                                            searchList =
-                                                depList.where((element) {
-                                              var groupList1 =
-                                                  element['dep_name']
-                                                      .toString()
-                                                      .toLowerCase();
-                                              return groupList1
-                                                  .contains(text.toLowerCase());
-                                            }).toList();
-                                          });
-                                        } else {
-                                          setState(() {
-                                            searchList = [];
-                                          });
-                                        }
-                                      },
-                                      decoration: InputDecoration(
-                                        // filled: true,
-                                        border: InputBorder.none,
-                                        // fillColor: Colors.white,
-                                        hintText:
-                                            'Search Department Name Here...',
-                                      ),
-                                    ),
-                                  ),
+                          //    Container(
+                          //     height: screenHeight * 0.06,
+                          //     width: screenWidth,
+                          //     decoration: BoxDecoration(
+                          //         // color: Colors.white,
+                          //         border:
+                          //             Border.all(color: custom_color.appcolor),
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(4))),
+                          //     child: Row(
+                          //       children: [
+                          //         Container(
+                          //             width: screenWidth * 0.1,
+                          //             height: screenHeight,
+                          //             child: Icon(Icons.search,
+                          //                 color: custom_color.appcolor)),
+                          //         Container(
+                          //           width: screenWidth * 0.71,
+                          //           child: TextField(
+                          //             controller: searchText,
+                          //             onChanged: (text) {
+                          //               // Ensure the input is at least 3 characters long before filtering
+                          //               if (text.length >= 3) {
+                          //                 setState(() {
+                          //                   searchList =
+                          //                       depList.where((element) {
+                          //                     var groupList1 =
+                          //                         element['dep_name']
+                          //                             .toString()
+                          //                             .toLowerCase();
+                          //                     return groupList1
+                          //                         .contains(text.toLowerCase());
+                          //                   }).toList();
+                          //                 });
+                          //               } else {
+                          //                 setState(() {
+                          //                   searchList = [];
+                          //                 });
+                          //               }
+                          //             },
+                          //             decoration: InputDecoration(
+                          //               // filled: true,
+                          //               border: InputBorder.none,
+                          //               // fillColor: Colors.white,
+                          //               hintText:
+                          //                   'Search Department Name Here...',
+                          //             ),
+                          //           ),
+                          //         ),
 
-                                  searchText.text.isNotEmpty
-                                      ? Container(
-                                          width: screenWidth * 0.06,
-                                          height: screenHeight,
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.close,
-                                              color: Colors.red,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                searchText.text = '';
-                                                searchList = '';
-                                              });
-                                            },
-                                          ))
-                                      : Container(),
-                                ],
-                              ),
+                          //         searchText.text.isNotEmpty
+                          //             ? Container(
+                          //                 width: screenWidth * 0.06,
+                          //                 height: screenHeight,
+                          //                 child: IconButton(
+                          //                   icon: Icon(
+                          //                     Icons.close,
+                          //                     color: Colors.red,
+                          //                   ),
+                          //                   onPressed: () {
+                          //                     setState(() {
+                          //                       searchText.text = '';
+                          //                       searchList = '';
+                          //                     });
+                          //                   },
+                          //                 ))
+                          //             : Container(),
+                          //       ],
+                          //     ),
                           
-                          ),
+                          // ),
                        isLoading?Helper().isvalidElement(depList1) && depList1.length > 0 ?
                           Container(
                               height: screenHeight * 0.80,
@@ -439,14 +463,34 @@ class _DepartmentcollectionState extends State<Departmentcollection> {
       Helper().appLogoutCall(context, 'Session expeired');
     } else {
       depList = list['list'];
+       filterItems(searchText.text);
       // for(var data in prescriptionList){
-      //        if(DoctorDropdownvalue == 'All'){
-      //         presc_list.add(data);
-      //        }
-      // }
-      //  storage.setItem('diagnosisList', diagnosisList);
+     
       this.setState(() {
         isLoading = true;
+      });
+    }
+  }
+  void filterItems(String text) {
+   
+    if (text.isEmpty) {
+      setState(() {
+        depList1 = depList;
+      });
+    } else if (text.length >= 3) {
+      setState(() {
+        depList1 = depList
+            .where(
+              (item) => item['dep_name']
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()),
+              // item['phone']
+              //     .toString()
+              //     .toLowerCase()
+              //     .contains(text.toLowerCase())
+            )
+            .toList();
       });
     }
   }

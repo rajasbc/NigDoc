@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/Colors.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import 'package:nigdoc/MedicineStock/MedicineStock.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
@@ -208,66 +209,88 @@ var injectionList;
             // color: Colors.amber,
           ),
           SizedBox(height:screenHeight*0.01),
-           Center(
-                          child: Container(
-                            height: screenHeight * 0.06,
-                            // width: screenWidth * 0.9,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: custom_color.appcolor),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4))),
-                            child: Row(
-                              children: [
+          Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                                     controller: searchinjection,
+                                     hintText: 'Search Injection Name Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchinjection.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+          //  Center(
+          //                 child: Container(
+          //                   height: screenHeight * 0.06,
+          //                   // width: screenWidth * 0.9,
+          //                   decoration: BoxDecoration(
+          //                       color: Colors.white,
+          //                       border:
+          //                           Border.all(color: custom_color.appcolor),
+          //                       borderRadius:
+          //                           BorderRadius.all(Radius.circular(4))),
+          //                   child: Row(
+          //                     children: [
                               
-                                Container(
-                                  width: screenWidth * 0.65,
-                                  child: TextField(
-                                    controller: searchinjection,
-                                    onChanged: (text) {
-                                      print(text);
-                                      filterItems(text);
-                                      this.setState(() {});
+          //                       Container(
+          //                         width: screenWidth * 0.65,
+          //                         child: TextField(
+          //                           controller: searchinjection,
+          //                           onChanged: (text) {
+          //                             print(text);
+          //                             filterItems(text);
+          //                             this.setState(() {});
                             
-                                    },
-                                    decoration: new InputDecoration(
-                                      filled: true,
-                                      border: InputBorder.none,
-                                      fillColor: Colors.white,
-                                      hintText: 'Search Injection Name Here...',
-                                    ),
-                                  ),
-                                ),
-                                searchinjection.text.isNotEmpty
-                                    ? Container(
-                                        width: screenWidth * 0.06,
-                                        height: screenHeight,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.close,
-                                            color: Colors.red,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              searchinjection.clear();
-                                              filterItems(searchinjection.text);
+          //                           },
+          //                           decoration: new InputDecoration(
+          //                             filled: true,
+          //                             border: InputBorder.none,
+          //                             fillColor: Colors.white,
+          //                             hintText: 'Search Injection Name Here...',
+          //                           ),
+          //                         ),
+          //                       ),
+          //                       searchinjection.text.isNotEmpty
+          //                           ? Container(
+          //                               width: screenWidth * 0.06,
+          //                               height: screenHeight,
+          //                               child: IconButton(
+          //                                 icon: Icon(
+          //                                   Icons.close,
+          //                                   color: Colors.red,
+          //                                 ),
+          //                                 onPressed: () {
+          //                                   setState(() {
+          //                                     searchinjection.clear();
+          //                                     filterItems(searchinjection.text);
                                            
-                                              // searchText.text = '';
-                                              // searchList='';
-                                            });
-                                          },
-                                        ))
-                                    : Container(),
-                                Container(
-                                    width: screenWidth* 0.18,
-                                    height: screenHeight,
-                                    child: Icon(Icons.search,
-                                        color: custom_color.appcolor)),
-                              ],
-                            ),
-                          ),
-                        ),
+          //                                     // searchText.text = '';
+          //                                     // searchList='';
+          //                                   });
+          //                                 },
+          //                               ))
+          //                           : Container(),
+          //                       Container(
+          //                           width: screenWidth* 0.18,
+          //                           height: screenHeight,
+          //                           child: Icon(Icons.search,
+          //                               color: custom_color.appcolor)),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
                         SizedBox(height: screenHeight*0.01,),
        Container(
         
@@ -480,66 +503,88 @@ var injectionList;
             // color: Colors.amber,
           ),
           SizedBox(height: screenHeight*0.01,),
-           Center(
-                          child: Container(
-                            height: screenHeight * 0.06,
-                            // width: screenWidth * 0.9,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: custom_color.appcolor),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4))),
-                            child: Row(
-                              children: [
+          Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                                     controller: searchmedicine,
+                                     hintText: 'Search Medicine Name Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filtermedicine(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchmedicine.clear();
+                                         filtermedicine('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+          //  Center(
+          //                 child: Container(
+          //                   height: screenHeight * 0.06,
+          //                   // width: screenWidth * 0.9,
+          //                   decoration: BoxDecoration(
+          //                       color: Colors.white,
+          //                       border:
+          //                           Border.all(color: custom_color.appcolor),
+          //                       borderRadius:
+          //                           BorderRadius.all(Radius.circular(4))),
+          //                   child: Row(
+          //                     children: [
                               
-                                Container(
-                                  width: screenWidth * 0.65,
-                                  child: TextField(
-                                    controller: searchmedicine,
-                                    onChanged: (text) {
-                                      print(text);
-                                      filtermedicine(text);
-                                      this.setState(() {});
+          //                       Container(
+          //                         width: screenWidth * 0.65,
+          //                         child: TextField(
+          //                           controller: searchmedicine,
+          //                           onChanged: (text) {
+          //                             print(text);
+          //                             filtermedicine(text);
+          //                             this.setState(() {});
                             
-                                    },
-                                    decoration: new InputDecoration(
-                                      filled: true,
-                                      border: InputBorder.none,
-                                      fillColor: Colors.white,
-                                      hintText: 'Search Medicine Name Here...',
-                                    ),
-                                  ),
-                                ),
-                                searchmedicine.text.isNotEmpty
-                                    ? Container(
-                                        width: screenWidth * 0.06,
-                                        height: screenHeight,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.close,
-                                            color: Colors.red,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              searchmedicine.clear();
-                                              filtermedicine(searchmedicine.text);
+          //                           },
+          //                           decoration: new InputDecoration(
+          //                             filled: true,
+          //                             border: InputBorder.none,
+          //                             fillColor: Colors.white,
+          //                             hintText: 'Search Medicine Name Here...',
+          //                           ),
+          //                         ),
+          //                       ),
+          //                       searchmedicine.text.isNotEmpty
+          //                           ? Container(
+          //                               width: screenWidth * 0.06,
+          //                               height: screenHeight,
+          //                               child: IconButton(
+          //                                 icon: Icon(
+          //                                   Icons.close,
+          //                                   color: Colors.red,
+          //                                 ),
+          //                                 onPressed: () {
+          //                                   setState(() {
+          //                                     searchmedicine.clear();
+          //                                     filtermedicine(searchmedicine.text);
                                            
-                                              // searchText.text = '';
-                                              // searchList='';
-                                            });
-                                          },
-                                        ))
-                                    : Container(),
-                                Container(
-                                    width: screenWidth* 0.18,
-                                    height: screenHeight,
-                                    child: Icon(Icons.search,
-                                        color: custom_color.appcolor)),
-                              ],
-                            ),
-                          ),
-                        ),
+          //                                     // searchText.text = '';
+          //                                     // searchList='';
+          //                                   });
+          //                                 },
+          //                               ))
+          //                           : Container(),
+          //                       Container(
+          //                           width: screenWidth* 0.18,
+          //                           height: screenHeight,
+          //                           child: Icon(Icons.search,
+          //                               color: custom_color.appcolor)),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
                         SizedBox(height: screenHeight*0.01,),
        Container(
         

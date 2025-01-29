@@ -246,7 +246,7 @@ List<Map<String, bool>> bedSelections = List.generate(5, (index) => {'bed1': fal
                 style: TextStyle(fontWeight: FontWeight.bold, color: custom_color.appcolor,fontSize: 18),
               ),
               Text(
-                roomControllers[roomIndex]['id'].toString(),
+                roomControllers[roomIndex]['room_no'].toString(),
                 style: TextStyle(fontWeight: FontWeight.bold, color: custom_color.appcolor,fontSize: 18),
               ),
             ],

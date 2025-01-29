@@ -6,6 +6,7 @@ import 'package:nigdoc/Admission/Admission.dart';
 import 'package:nigdoc/Admission/EditRoom.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
 
@@ -29,6 +30,7 @@ class _BedCategoryState extends State<BedCategory> {
   var accesstoken;
   bool isLoading = false;
   var bedList;
+  List bedList1 =[];
   var floordropdown;
 var data2;
 var delete = 'yes';
@@ -60,7 +62,30 @@ var delete = 'yes';
       setState(() {
         bedList = List['list'];
         isLoading = true;
-        // filterItems(searchText.text);
+        filterItems(searchText.text);
+      });
+    }
+  }
+  void filterItems(String text) {
+   
+    if (text.isEmpty) {
+      setState(() {
+        bedList1 = bedList;
+      });
+    } else if (text.length >= 3) {
+      setState(() {
+        bedList1 = bedList
+            .where(
+              (item) => item['floor_name']
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()),
+              // item['phone']
+              //     .toString()
+              //     .toLowerCase()
+              //     .contains(text.toLowerCase())
+            )
+            .toList();
       });
     }
   }
@@ -121,75 +146,97 @@ var delete = 'yes';
               child: Container(
                 child: Column(
                   children: [
-                    Center(child: 
-                          Container(
-                            height: screenHeight * 0.06,
-                            width: screenWidht*0.95,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: custom_color.appcolor,),
-                                borderRadius: BorderRadius.all(Radius.circular(4))),
-                            child: Row(
-                              children: [
-                                // Container(
-                                //     width: screenWidth * 0.1,
-                                //     height: screenHeight,
-                                //     child: Icon(Icons.search,
-                                //         color: custom_color.appcolor,)),
-                                Container(
-                                  width: screenWidht * 0.65,
-                                  child: TextField(
-                                    controller: searchText,
-                                    onChanged: (text) {
-                                      print(text);
-                                // filterItems(text);
-                                      this.setState(() {});
-                                      // var list = ProductListItem;
-                                        // searchList = medicineList.where((element) {
-                                        //   var treatList = element['name'].toString().toLowerCase();
-                                        //   return treatList.contains(text.toLowerCase());
-                                        //   // return true;
-                                        // }).toList();
-                                        // this.setState(() {});
-                                    },
-                                    decoration: new InputDecoration(
-                                      filled: true,
-                                      border: InputBorder.none,
-                                      fillColor: Colors.white,
-                                      hintText: 'Search Room List Here...',
-                                    ),
-                                  ),
-                                ),
-                                searchText.text.isNotEmpty
-                                    ? Container(
-                                        width: screenWidht * 0.06,
-                                        height: screenHeight,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.close,
-                                            color: Colors.red,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              searchText.clear();
-                                              // filterItems(searchText.text);
-                                              searchList='';
-                                            });
-                                          },
-                                        ))
-                                    : Container(),
-                                     Container(
-                                    width: screenWidht * 0.18,
-                                    height: screenHeight,
-                                    child: Icon(Icons.search,
-                                        color: custom_color.appcolor,)),
+                     Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                                     controller: searchText,
+                                     hintText: 'Search Floor Name Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchText.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+                    // Center(child: 
+                    //       Container(
+                    //         height: screenHeight * 0.06,
+                    //         width: screenWidht*0.95,
+                    //         decoration: BoxDecoration(
+                    //             color: Colors.white,
+                    //             border:
+                    //                 Border.all(color: custom_color.appcolor,),
+                    //             borderRadius: BorderRadius.all(Radius.circular(4))),
+                    //         child: Row(
+                    //           children: [
+                    //             // Container(
+                    //             //     width: screenWidth * 0.1,
+                    //             //     height: screenHeight,
+                    //             //     child: Icon(Icons.search,
+                    //             //         color: custom_color.appcolor,)),
+                    //             Container(
+                    //               width: screenWidht * 0.65,
+                    //               child: TextField(
+                    //                 controller: searchText,
+                    //                 onChanged: (text) {
+                    //                   print(text);
+                    //             // filterItems(text);
+                    //                   this.setState(() {});
+                    //                   // var list = ProductListItem;
+                    //                     // searchList = medicineList.where((element) {
+                    //                     //   var treatList = element['name'].toString().toLowerCase();
+                    //                     //   return treatList.contains(text.toLowerCase());
+                    //                     //   // return true;
+                    //                     // }).toList();
+                    //                     // this.setState(() {});
+                    //                 },
+                    //                 decoration: new InputDecoration(
+                    //                   filled: true,
+                    //                   border: InputBorder.none,
+                    //                   fillColor: Colors.white,
+                    //                   hintText: 'Search Floor Here...',
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             searchText.text.isNotEmpty
+                    //                 ? Container(
+                    //                     width: screenWidht * 0.06,
+                    //                     height: screenHeight,
+                    //                     child: IconButton(
+                    //                       icon: Icon(
+                    //                         Icons.close,
+                    //                         color: Colors.red,
+                    //                       ),
+                    //                       onPressed: () {
+                    //                         setState(() {
+                    //                           searchText.clear();
+                    //                           // filterItems(searchText.text);
+                    //                           searchList='';
+                    //                         });
+                    //                       },
+                    //                     ))
+                    //                 : Container(),
+                    //                  Container(
+                    //                 width: screenWidht * 0.18,
+                    //                 height: screenHeight,
+                    //                 child: Icon(Icons.search,
+                    //                     color: custom_color.appcolor,)),
                                         
-                              ],
-                            ),
-                          ),),
+                    //           ],
+                    //         ),
+                    //       ),),
                           SizedBox(height: screenHeight*0.02,),
-                           Helper().isvalidElement(bedList) && bedList.length > 0 ?
+                           Helper().isvalidElement(bedList1) && bedList1.length > 0 ?
                            Container(
                             height:screenHeight * 0.85,
                             
@@ -200,7 +247,7 @@ var delete = 'yes';
                             ListView.builder(
                               shrinkWrap: true,
                               // physics: NeverScrollableScrollPhysics(),
-                              itemCount: bedList.length,
+                              itemCount: bedList1.length,
                               // itemCount: 1,
                               itemBuilder: (BuildContext context, int index){
                                 list=index+1;

@@ -3,6 +3,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:nigdoc/Admission/Admission.dart';
 import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/common/NigDocToast.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
@@ -127,73 +128,95 @@ var delete = 'yes';
               child: Container(
                 child: Column(
                   children: [
-                    Center(child: 
-                          Container(
-                            height: screenHeight * 0.06,
-                            width: screenWidht*0.95,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: custom_color.appcolor,),
-                                borderRadius: BorderRadius.all(Radius.circular(4))),
-                            child: Row(
-                              children: [
-                                // Container(
-                                //     width: screenWidth * 0.1,
-                                //     height: screenHeight,
-                                //     child: Icon(Icons.search,
-                                //         color: custom_color.appcolor,)),
-                                Container(
-                                  width: screenWidht * 0.65,
-                                  child: TextField(
-                                    controller: searchText,
-                                    onChanged: (text) {
-                                      print(text);
-                                filterItems(text);
-                                      this.setState(() {});
-                                      // var list = ProductListItem;
-                                        // searchList = medicineList.where((element) {
-                                        //   var treatList = element['name'].toString().toLowerCase();
-                                        //   return treatList.contains(text.toLowerCase());
-                                        //   // return true;
-                                        // }).toList();
-                                        // this.setState(() {});
-                                    },
-                                    decoration: new InputDecoration(
-                                      filled: true,
-                                      border: InputBorder.none,
-                                      fillColor: Colors.white,
-                                      hintText: 'Search Ward List Here...',
-                                    ),
-                                  ),
-                                ),
-                                searchText.text.isNotEmpty
-                                    ? Container(
-                                        width: screenWidht * 0.06,
-                                        height: screenHeight,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Icons.close,
-                                            color: Colors.red,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              searchText.clear();
-                                              filterItems(searchText.text);
-                                              searchList='';
-                                            });
-                                          },
-                                        ))
-                                    : Container(),
-                                     Container(
-                                    width: screenWidht * 0.18,
-                                    height: screenHeight,
-                                    child: Icon(Icons.search,
-                                        color: custom_color.appcolor,)),
+                     Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: SearchBarWithIcons(
+                                     controller: searchText,
+                                     hintText: 'Search Ward List Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchText.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+                    // Center(child: 
+                    //       Container(
+                    //         height: screenHeight * 0.06,
+                    //         width: screenWidht*0.95,
+                    //         decoration: BoxDecoration(
+                    //             color: Colors.white,
+                    //             border:
+                    //                 Border.all(color: custom_color.appcolor,),
+                    //             borderRadius: BorderRadius.all(Radius.circular(4))),
+                    //         child: Row(
+                    //           children: [
+                    //             // Container(
+                    //             //     width: screenWidth * 0.1,
+                    //             //     height: screenHeight,
+                    //             //     child: Icon(Icons.search,
+                    //             //         color: custom_color.appcolor,)),
+                    //             Container(
+                    //               width: screenWidht * 0.65,
+                    //               child: TextField(
+                    //                 controller: searchText,
+                    //                 onChanged: (text) {
+                    //                   print(text);
+                    //             filterItems(text);
+                    //                   this.setState(() {});
+                    //                   // var list = ProductListItem;
+                    //                     // searchList = medicineList.where((element) {
+                    //                     //   var treatList = element['name'].toString().toLowerCase();
+                    //                     //   return treatList.contains(text.toLowerCase());
+                    //                     //   // return true;
+                    //                     // }).toList();
+                    //                     // this.setState(() {});
+                    //                 },
+                    //                 decoration: new InputDecoration(
+                    //                   filled: true,
+                    //                   border: InputBorder.none,
+                    //                   fillColor: Colors.white,
+                    //                   hintText: 'Search Ward List Here...',
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             searchText.text.isNotEmpty
+                    //                 ? Container(
+                    //                     width: screenWidht * 0.06,
+                    //                     height: screenHeight,
+                    //                     child: IconButton(
+                    //                       icon: Icon(
+                    //                         Icons.close,
+                    //                         color: Colors.red,
+                    //                       ),
+                    //                       onPressed: () {
+                    //                         setState(() {
+                    //                           searchText.clear();
+                    //                           filterItems(searchText.text);
+                    //                           searchList='';
+                    //                         });
+                    //                       },
+                    //                     ))
+                    //                 : Container(),
+                    //                  Container(
+                    //                 width: screenWidht * 0.18,
+                    //                 height: screenHeight,
+                    //                 child: Icon(Icons.search,
+                    //                     color: custom_color.appcolor,)),
                                         
-                              ],
-                            ),
-                          ),),
+                    //           ],
+                    //         ),
+                    //       ),),
                           SizedBox(height: screenHeight*0.02,),
                            Helper().isvalidElement(ward_List) && ward_List.length > 0 ?
                            Container(

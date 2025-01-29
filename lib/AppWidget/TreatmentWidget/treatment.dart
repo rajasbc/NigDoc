@@ -6,6 +6,7 @@ import 'package:nigdoc/AppWidget/PatientsWidget/Api.dart';
 import 'package:nigdoc/AppWidget/Setting/Setting.dart';
 import 'package:nigdoc/AppWidget/TreatmentWidget/AddTreatment.dart';
 import 'package:nigdoc/AppWidget/TreatmentWidget/EditTreatment.dart';
+import 'package:nigdoc/AppWidget/common/SearchBar.dart';
 import 'package:nigdoc/AppWidget/common/SpinLoader.dart';
 import 'package:nigdoc/AppWidget/common/utils.dart';
 import '../../AppWidget/common/Colors.dart' as custom_color;
@@ -108,7 +109,7 @@ TextEditingController Treatmentcontroller = TextEditingController();
           // ],
           ),
           body:isLoading? SingleChildScrollView(
-            child: Padding(padding: const EdgeInsets.all(0.0),
+            child: Padding(padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
                 // Container(
@@ -127,72 +128,97 @@ TextEditingController Treatmentcontroller = TextEditingController();
                  SizedBox(
                   height: 10,
                 ),
-                Center(child: 
-                Container(
-                  height: screenHeight * 0.06,
-                  width: screenWidth*0.9,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border:
-                          Border.all(color:custom_color.appcolor),
-                      borderRadius: BorderRadius.all(Radius.circular(0))),
-                  child: Row(
-                    children: [
-                      // Container(
-                      //     width: screenWidth * 0.1,
-                      //     height: screenHeight,
-                      //     child: Icon(Icons.search,
-                      //         color: custom_color.appcolor)),
-                      Container(
-                        width: screenWidth * 0.65,
-                        child: TextField(
-                          controller: searchText,
-                          onChanged: (text) {
-                            print(text);
-                            filterItems(text);
-                            this.setState(() {});
-                            // var list = ProductListItem;
-                              // searchList = treatmentList.where((element) {
-                              //   var treatList = element['treatment'].toString().toLowerCase();
-                              //   return treatList.contains(text.toLowerCase());
-                              //   // return true;
-                              // }).toList();
-                              // this.setState(() {});
-                          },
-                          decoration: new InputDecoration(
-                            filled: true,
-                            border: InputBorder.none,
-                            fillColor: Colors.white,
-                            hintText: 'Search Treatment List Here...',
-                          ),
-                        ),
-                      ),
-                      searchText.text.isNotEmpty
-                          ? Container(
-                              width: screenWidth * 0.06,
-                              height: screenHeight,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    searchText.clear();
-                                    filterItems(searchText.text);
-                                    // searchList='';
-                                  });
-                                },
-                              ))
-                          : Container(),
-                          Container(
-                          width: screenWidth * 0.18,
-                          height: screenHeight,
-                          child: Icon(Icons.search,
-                              color: custom_color.appcolor)),
-                    ],
-                  ),
-                ),),
+                Padding(
+                           padding: const EdgeInsets.all(0.0),
+                           child: SearchBarWithIcons(
+                                     controller: searchText,
+                                     hintText: 'Search Treatment List Here...',
+                                     onTextChanged: (text) {
+                                       setState(() {
+                                         filterItems(text);
+                                       });
+                                     },
+                                     onClearPressed: () {
+                                       setState(() {
+                                         searchText.clear();
+                                         filterItems('');
+                                       });
+                                     },
+                                     onSearchPressed: () {
+                                      
+                                       
+                                     },
+                                   ),
+                         ),
+                         SizedBox(
+                  height: 10,
+                ),
+                // Center(child: 
+                // Container(
+                //   height: screenHeight * 0.06,
+                //   width: screenWidth*0.9,
+                //   decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       border:
+                //           Border.all(color:custom_color.appcolor),
+                //       borderRadius: BorderRadius.all(Radius.circular(0))),
+                //   child: Row(
+                //     children: [
+                //       // Container(
+                //       //     width: screenWidth * 0.1,
+                //       //     height: screenHeight,
+                //       //     child: Icon(Icons.search,
+                //       //         color: custom_color.appcolor)),
+                //       Container(
+                //         width: screenWidth * 0.65,
+                //         child: TextField(
+                //           controller: searchText,
+                //           onChanged: (text) {
+                //             print(text);
+                //             filterItems(text);
+                //             this.setState(() {});
+                //             // var list = ProductListItem;
+                //               // searchList = treatmentList.where((element) {
+                //               //   var treatList = element['treatment'].toString().toLowerCase();
+                //               //   return treatList.contains(text.toLowerCase());
+                //               //   // return true;
+                //               // }).toList();
+                //               // this.setState(() {});
+                //           },
+                //           decoration: new InputDecoration(
+                //             filled: true,
+                //             border: InputBorder.none,
+                //             fillColor: Colors.white,
+                //             hintText: 'Search Treatment List Here...',
+                //           ),
+                //         ),
+                //       ),
+                //       searchText.text.isNotEmpty
+                //           ? Container(
+                //               width: screenWidth * 0.06,
+                //               height: screenHeight,
+                //               child: IconButton(
+                //                 icon: Icon(
+                //                   Icons.close,
+                //                   color: Colors.red,
+                //                 ),
+                //                 onPressed: () {
+                //                   setState(() {
+                //                     searchText.clear();
+                //                     filterItems(searchText.text);
+                //                     // searchList='';
+                //                   });
+                //                 },
+                //               ))
+                //           : Container(),
+                //           Container(
+                //           width: screenWidth * 0.18,
+                //           height: screenHeight,
+                //           child: Icon(Icons.search,
+                //               color: custom_color.appcolor)),
+                //     ],
+                //   ),
+                // ),),
 
 
                     // SizedBox(height: screenHeight*0.01),
@@ -203,7 +229,7 @@ TextEditingController Treatmentcontroller = TextEditingController();
                       
 
                      width: screenWidth,
-                      padding:EdgeInsets.all(15),
+                      padding:EdgeInsets.all(0),
                       child: 
                       ListView.builder(
                         // shrinkWrap: true,
