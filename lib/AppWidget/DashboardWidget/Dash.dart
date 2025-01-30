@@ -47,6 +47,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../../AppWidget/common/Colors.dart' as custom_color;
+import '../PatientsWidget/veiw/EditorPrescription.dart';
 
 class Dash extends StatefulWidget {
   const Dash({super.key});
@@ -88,23 +89,19 @@ class _DashState extends State<Dash> {
   }
 
   init() async {
-
     await handlePermissions();
     await handleNotification();
     await getvalue();
     await getFcmToken();
     // await getclinicconfig();
     appVersion();
-
-
   }
 
   getvalue() async {
     userResponse = storage.getItem('userResponse');
     accesstoken = await userResponse['access_token'];
-     await getclinicconfig();
+    await getclinicconfig();
     getDashBoardList();
-
   }
 
   Future getFcmToken() async {
@@ -771,7 +768,6 @@ class _DashState extends State<Dash> {
                               // ),
                               Container(
                                 child: Row(
-
                                   children: [
                                     Text(
                                       "Billing",
@@ -788,49 +784,51 @@ class _DashState extends State<Dash> {
                                 height: 5,
                               ),
                               Container(
-
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 0.1,right: 0.1),
+                                    padding: const EdgeInsets.only(
+                                        left: 0.1, right: 0.1),
                                     child: Row(
                                       // mainAxisAlignment:
                                       //     MainAxisAlignment.spaceAround,
                                       children: [
-                                         InkWell(
+                                        InkWell(
                                           child: Container(
                                             // height: screenHeight * 0.1500,
                                             width: screenWidth * 0.30,
                                             child: Column(
                                               children: [
                                                 Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        top: 8),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 8),
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        color:
-                                                            custom_color.appcolor,
+                                                        color: custom_color
+                                                            .appcolor,
                                                         // border: width != 0 ?
                                                         // Border.all(width: 2, color:custom_color.app_color1 )
                                                         // : Border(),
                                                         borderRadius:
                                                             BorderRadius.only(
-                                                                topLeft:
-                                                                    Radius.circular(
+                                                                topLeft: Radius
+                                                                    .circular(
                                                                         10),
-                                                                topRight:
-                                                                    Radius.circular(
+                                                                topRight: Radius
+                                                                    .circular(
                                                                         10),
-                                                                bottomLeft:
-                                                                    Radius.circular(
+                                                                bottomLeft: Radius
+                                                                    .circular(
                                                                         10),
-                                                                bottomRight:
-                                                                    Radius.circular(
+                                                                bottomRight: Radius
+                                                                    .circular(
                                                                         10)),
                                                         boxShadow: [
                                                           BoxShadow(
                                                             color: Colors.grey
-                                                                .withOpacity(0.2),
+                                                                .withOpacity(
+                                                                    0.2),
                                                             spreadRadius: 4,
                                                             blurRadius: 4,
                                                             offset: Offset(0,
@@ -840,14 +838,16 @@ class _DashState extends State<Dash> {
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                5.0),
+                                                            const EdgeInsets
+                                                                .all(5.0),
                                                         child: Text(
                                                           'Collections',
                                                           style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontWeight:
-                                                                  FontWeight.bold),
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                     )),
@@ -856,7 +856,8 @@ class _DashState extends State<Dash> {
                                                   height: screenHeight * 0.1,
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Image.asset(
                                                         'assets/collection.png'),
                                                   ),
@@ -872,12 +873,14 @@ class _DashState extends State<Dash> {
                                               borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
-                                                  bottomLeft: Radius.circular(10),
-                                                  bottomRight: Radius.circular(10)),
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  bottomRight:
+                                                      Radius.circular(10)),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color:
-                                                      Colors.grey.withOpacity(0.2),
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
                                                   spreadRadius: 4,
                                                   blurRadius: 4,
                                                   offset: Offset(0,
@@ -895,7 +898,9 @@ class _DashState extends State<Dash> {
                                                 ));
                                           },
                                         ),
-                                         SizedBox(width: screenWidth*0.04,),
+                                        SizedBox(
+                                          width: screenWidth * 0.04,
+                                        ),
                                         InkWell(
                                           child: Container(
                                             // height: screenHeight * 0.1500,
@@ -903,33 +908,35 @@ class _DashState extends State<Dash> {
                                             child: Column(
                                               children: [
                                                 Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        top: 8),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 8),
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        color:
-                                                            custom_color.appcolor,
+                                                        color: custom_color
+                                                            .appcolor,
                                                         // border: width != 0 ?
                                                         // Border.all(width: 2, color:custom_color.app_color1 )
                                                         // : Border(),
                                                         borderRadius:
                                                             BorderRadius.only(
-                                                                topLeft:
-                                                                    Radius.circular(
+                                                                topLeft: Radius
+                                                                    .circular(
                                                                         10),
-                                                                topRight:
-                                                                    Radius.circular(
+                                                                topRight: Radius
+                                                                    .circular(
                                                                         10),
-                                                                bottomLeft:
-                                                                    Radius.circular(
+                                                                bottomLeft: Radius
+                                                                    .circular(
                                                                         10),
-                                                                bottomRight:
-                                                                    Radius.circular(
+                                                                bottomRight: Radius
+                                                                    .circular(
                                                                         10)),
                                                         boxShadow: [
                                                           BoxShadow(
                                                             color: Colors.grey
-                                                                .withOpacity(0.2),
+                                                                .withOpacity(
+                                                                    0.2),
                                                             spreadRadius: 4,
                                                             blurRadius: 4,
                                                             offset: Offset(0,
@@ -939,14 +946,16 @@ class _DashState extends State<Dash> {
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                5.0),
+                                                            const EdgeInsets
+                                                                .all(5.0),
                                                         child: Text(
                                                           'Register Report',
                                                           style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontWeight:
-                                                                  FontWeight.bold),
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                     )),
@@ -955,7 +964,8 @@ class _DashState extends State<Dash> {
                                                   height: screenHeight * 0.1,
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Image.asset(
                                                         'assets/reports.png'),
                                                   ),
@@ -971,12 +981,14 @@ class _DashState extends State<Dash> {
                                               borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
-                                                  bottomLeft: Radius.circular(10),
-                                                  bottomRight: Radius.circular(10)),
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  bottomRight:
+                                                      Radius.circular(10)),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color:
-                                                      Colors.grey.withOpacity(0.2),
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
                                                   spreadRadius: 4,
                                                   blurRadius: 4,
                                                   offset: Offset(0,
@@ -994,7 +1006,9 @@ class _DashState extends State<Dash> {
                                                 ));
                                           },
                                         ),
-                                        SizedBox(width: screenWidth*0.04,),
+                                        SizedBox(
+                                          width: screenWidth * 0.04,
+                                        ),
                                         InkWell(
                                           child: Container(
                                             // height: screenHeight * 0.1567,
@@ -1002,33 +1016,35 @@ class _DashState extends State<Dash> {
                                             child: Column(
                                               children: [
                                                 Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        top: 8),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 8),
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        color:
-                                                            custom_color.appcolor,
+                                                        color: custom_color
+                                                            .appcolor,
                                                         // border: width != 0 ?
                                                         // Border.all(width: 2, color:custom_color.app_color1 )
                                                         // : Border(),
                                                         borderRadius:
                                                             BorderRadius.only(
-                                                                topLeft:
-                                                                    Radius.circular(
+                                                                topLeft: Radius
+                                                                    .circular(
                                                                         10),
-                                                                topRight:
-                                                                    Radius.circular(
+                                                                topRight: Radius
+                                                                    .circular(
                                                                         10),
-                                                                bottomLeft:
-                                                                    Radius.circular(
+                                                                bottomLeft: Radius
+                                                                    .circular(
                                                                         10),
-                                                                bottomRight:
-                                                                    Radius.circular(
+                                                                bottomRight: Radius
+                                                                    .circular(
                                                                         10)),
                                                         boxShadow: [
                                                           BoxShadow(
                                                             color: Colors.grey
-                                                                .withOpacity(0.2),
+                                                                .withOpacity(
+                                                                    0.2),
                                                             spreadRadius: 4,
                                                             blurRadius: 4,
                                                             offset: Offset(0,
@@ -1038,14 +1054,16 @@ class _DashState extends State<Dash> {
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                5.0),
+                                                            const EdgeInsets
+                                                                .all(5.0),
                                                         child: Text(
                                                           'Treatment Bill',
                                                           style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontWeight:
-                                                                  FontWeight.bold),
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                     )),
@@ -1054,7 +1072,8 @@ class _DashState extends State<Dash> {
                                                   height: screenHeight * 0.1,
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Image.asset(
                                                         'assets/bill.png'),
                                                   ),
@@ -1070,12 +1089,14 @@ class _DashState extends State<Dash> {
                                               borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
-                                                  bottomLeft: Radius.circular(10),
-                                                  bottomRight: Radius.circular(10)),
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  bottomRight:
+                                                      Radius.circular(10)),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color:
-                                                      Colors.grey.withOpacity(0.2),
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
                                                   spreadRadius: 4,
                                                   blurRadius: 4,
                                                   offset: Offset(0,
@@ -1093,7 +1114,9 @@ class _DashState extends State<Dash> {
                                                 ));
                                           },
                                         ),
-                                         SizedBox(width: screenWidth*0.04,),
+                                        SizedBox(
+                                          width: screenWidth * 0.04,
+                                        ),
                                         InkWell(
                                           child: Container(
                                             // height: screenHeight * 0.1567,
@@ -1101,33 +1124,35 @@ class _DashState extends State<Dash> {
                                             child: Column(
                                               children: [
                                                 Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        top: 8),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 8),
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        color:
-                                                            custom_color.appcolor,
+                                                        color: custom_color
+                                                            .appcolor,
                                                         // border: width != 0 ?
                                                         // Border.all(width: 2, color:custom_color.app_color1 )
                                                         // : Border(),
                                                         borderRadius:
                                                             BorderRadius.only(
-                                                                topLeft:
-                                                                    Radius.circular(
+                                                                topLeft: Radius
+                                                                    .circular(
                                                                         10),
-                                                                topRight:
-                                                                    Radius.circular(
+                                                                topRight: Radius
+                                                                    .circular(
                                                                         10),
-                                                                bottomLeft:
-                                                                    Radius.circular(
+                                                                bottomLeft: Radius
+                                                                    .circular(
                                                                         10),
-                                                                bottomRight:
-                                                                    Radius.circular(
+                                                                bottomRight: Radius
+                                                                    .circular(
                                                                         10)),
                                                         boxShadow: [
                                                           BoxShadow(
                                                             color: Colors.grey
-                                                                .withOpacity(0.2),
+                                                                .withOpacity(
+                                                                    0.2),
                                                             spreadRadius: 4,
                                                             blurRadius: 4,
                                                             offset: Offset(0,
@@ -1137,14 +1162,17 @@ class _DashState extends State<Dash> {
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                5.0),
+                                                            const EdgeInsets
+                                                                .all(5.0),
                                                         child: Text(
                                                           'Inpatient Summary Bill',
                                                           style: TextStyle(
-                                                              color: Colors.white,fontSize: 12,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
                                                               fontWeight:
-                                                                  FontWeight.bold),
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                     )),
@@ -1153,7 +1181,8 @@ class _DashState extends State<Dash> {
                                                   height: screenHeight * 0.08,
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.all(4.0),
+                                                        const EdgeInsets.all(
+                                                            4.0),
                                                     child: Image.asset(
                                                         'assets/inpatient.png'),
                                                   ),
@@ -1169,12 +1198,14 @@ class _DashState extends State<Dash> {
                                               borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(10),
                                                   topRight: Radius.circular(10),
-                                                  bottomLeft: Radius.circular(10),
-                                                  bottomRight: Radius.circular(10)),
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  bottomRight:
+                                                      Radius.circular(10)),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color:
-                                                      Colors.grey.withOpacity(0.2),
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
                                                   spreadRadius: 4,
                                                   blurRadius: 4,
                                                   offset: Offset(0,
@@ -1192,7 +1223,6 @@ class _DashState extends State<Dash> {
                                                 ));
                                           },
                                         ),
-
                                       ],
                                     ),
                                   ),
@@ -1467,21 +1497,24 @@ class _DashState extends State<Dash> {
                               // ),
                               InkWell(
                                 onTap: () {
-                                  // if (Config == 'NO') {
+                                  if (clinicconfig?['list']?[0]?['medicine_ck']
+                                          ?.toString()
+                                          .toLowerCase() ==
+                                      'yes') {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              EditorPrescription(),
+                                        ));
+                                  } else {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PrescriptionPage(),
                                         ));
-                                  // } else {
-                                  //   Navigator.push(
-                                  //       context,
-                                  //       MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             PhysiotherapyAddprescription(),
-                                  //       ));
-                                  // }
+                                  }
                                 },
                                 child: Container(
                                   width: screenWidth * 0.95,
@@ -1641,168 +1674,181 @@ class _DashState extends State<Dash> {
                                 ),
                               ),
                               SizedBox(height: screenHeight * 0.01),
-                         medicine_page == "yes"  ?
-                         InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MedicineStock(),
-                                      ));
-                                },
-                                child: Container(
-                                  width: screenWidth * 0.95,
-                                  height: screenHeight * 0.060,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '  Medicine & Stock',
-                                        style: TextStyle(
-                                          color: custom_color.appcolor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
+                              medicine_page == "yes"
+                                  ? InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MedicineStock(),
+                                            ));
+                                      },
+                                      child: Container(
+                                        width: screenWidth * 0.95,
+                                        height: screenHeight * 0.060,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '  Medicine & Stock',
+                                              style: TextStyle(
+                                                color: custom_color.appcolor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                  Icons.medical_information,
+                                                  size: 20,
+                                                  color: custom_color.appcolor),
+                                            ),
+                                          ],
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: custom_color.appcolor),
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 4,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 1),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Icon(Icons.medical_information,
-                                            size: 20,
-                                            color: custom_color.appcolor),
-                                      ),
-                                    ],
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        width: 1, color: custom_color.appcolor),
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10),
-                                        bottomRight: Radius.circular(10)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 4,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 1),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              :Container(),
+                                    )
+                                  : Container(),
                               SizedBox(height: screenHeight * 0.01),
-                            admission_page =="yes"?
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Admission(),
-                                      ));
-                                },
-                                child: Container(
-                                  width: screenWidth * 0.95,
-                                  height: screenHeight * 0.060,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '  Admission',
-                                        style: TextStyle(
-                                          color: custom_color.appcolor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
+                              admission_page == "yes"
+                                  ? InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => Admission(),
+                                            ));
+                                      },
+                                      child: Container(
+                                        width: screenWidth * 0.95,
+                                        height: screenHeight * 0.060,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '  Admission',
+                                              style: TextStyle(
+                                                color: custom_color.appcolor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Icon(Icons.list,
+                                                  size: 20,
+                                                  color: custom_color.appcolor),
+                                            ),
+                                          ],
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: custom_color.appcolor),
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 4,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 1),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Icon(Icons.list,
-                                            size: 20,
-                                            color: custom_color.appcolor),
-                                      ),
-                                    ],
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        width: 1, color: custom_color.appcolor),
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10),
-                                        bottomRight: Radius.circular(10)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 4,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 1),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              :Container(),
+                                    )
+                                  : Container(),
 
                               SizedBox(height: screenHeight * 0.01),
-                            common_bill =="yes"?
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CommonbillingList(),
-                                      ));
-                                },
-                                child: Container(
-                                  width: screenWidth * 0.95,
-                                  height: screenHeight * 0.060,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '  Common Billing',
-                                        style: TextStyle(
-                                          color: custom_color.appcolor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
+                              common_bill == "yes"
+                                  ? InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CommonbillingList(),
+                                            ));
+                                      },
+                                      child: Container(
+                                        width: screenWidth * 0.95,
+                                        height: screenHeight * 0.060,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '  Common Billing',
+                                              style: TextStyle(
+                                                color: custom_color.appcolor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                  Icons.line_style_sharp,
+                                                  size: 20,
+                                                  color: custom_color.appcolor),
+                                            ),
+                                          ],
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: custom_color.appcolor),
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 4,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 1),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Icon(Icons.line_style_sharp,
-                                            size: 20,
-                                            color: custom_color.appcolor),
-                                      ),
-                                    ],
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        width: 1, color: custom_color.appcolor),
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10),
-                                        bottomRight: Radius.circular(10)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 4,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 1),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              :Container(),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         )
